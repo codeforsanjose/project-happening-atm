@@ -1,0 +1,170 @@
+@import "../../utils/colors";
+
+.meeting-item-list-view {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 10px;
+  margin: 0 10px 20px;
+  padding: 10px;
+
+  @media only screen
+  and (min-device-width: 812px) {
+    margin: 0 0 20px;
+    padding: 20px;
+  }
+
+  .top-icon {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px 20px;
+    line-height: 1.50;
+  }
+
+  &.completed {
+    background: $lightGray;
+    color: $darkTeal;
+
+    .top-icon {
+      color: $darkTeal;
+      font-size: 18px;
+      top: 18px;
+      left: 17px;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        top: 27px;
+        left: 27px;
+      }
+    }
+
+    .background-circle {
+      color: $offWhite;
+    }
+  }
+
+  &.in-progress {
+    background: $darkTeal;
+    color: $mustardYellow;
+
+    .details {
+      color: $offWhite;
+    }
+
+    .status {
+      color: $mustardYellow;
+      padding-top: 10px;
+    }
+
+    .top-icon-2 {
+      color: $darkTeal;
+      position: absolute;
+      z-index: 3;
+      font-size: 14px;
+      top: 22px;
+      left: 19px;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        top: 30.5px;
+        left: 28.5px;
+      }
+    }
+
+    .top-icon-1 {
+      color: $mustardYellow;
+      position: absolute;
+      z-index: 2;
+      font-size: 18px;
+      top: 20px;
+      left: 17px;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        top: 29.5px;
+        left: 26.5px;
+      }
+    }
+
+    .top-icon {
+      color: $darkTeal;
+      font-size: 26px;
+      top: 17px;
+      left: 13px;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        top: 26.5px;
+        left: 22.5px;
+      }
+    }
+
+    .background-circle {
+      color: $mustardYellow;
+    }
+  }
+
+  &.moved {
+    background: $lightGray;
+    color: $darkTeal;
+
+    .top-icon {
+      color: $darkTeal;
+      font-size: 18px;
+      top: 18px;
+      left: 23px;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        top: 28px;
+        left: 32.5px;
+      }
+    }
+
+    .background-circle {
+      color: $offWhite;
+    }
+  }
+
+  &.pending {
+    background: $teal;
+    color: $offWhite;
+
+    .top-icon {
+      color: $teal;
+      font-size: 26px;
+      top: 17px;
+      left: 13px;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        top: 27px;
+        left: 23px;
+      }
+    }
+
+    .background-circle {
+      color: $offWhite;
+    }
+  }
+
+  .expanded-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+
+  .button {
+    padding: 10px 15px;
+
+    i {
+      margin-right: 8px;
+    }
+  }
+}
