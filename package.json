@@ -2,7 +2,10 @@
   "name": "gov-agenda-notifier",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server/app.js",
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -28,10 +31,10 @@
   },
   "scripts": {
     "dev": "PGHOST=127.0.0.1 PGUSER=docker PGPASSWORD=docker PGDATABASE=devdb PGPORT=8888 nodemon server/app.js",
-    "start": "cd client; react-scripts start",
-    "build": "cd client; react-scripts build",
-    "test": "cd client; react-scripts test",
-    "eject": "cd client; react-scripts eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,5 +48,17 @@
   "bugs": {
     "url": "https://github.com/codeforsanjose/gov-agenda-notifier/issues"
   },
-  "homepage": "."
+  "homepage": ".",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
