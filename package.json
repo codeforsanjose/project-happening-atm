@@ -1,0 +1,49 @@
+{
+  "name": "gov-agenda-notifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "classnames": "^2.2.6",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "node-sass": "^4.14.1",
+    "pg": "^8.3.3",
+    "react": "^16.13.1",
+    "react-autocomplete": "^1.8.1",
+    "react-dom": "^16.13.1",
+    "react-infinite-scroll-component": "^5.1.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "twilio": "^3.49.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "dev": "PGHOST=127.0.0.1 PGUSER=docker PGPASSWORD=docker PGDATABASE=devdb PGPORT=8888 nodemon server/app.js",
+    "start": "cd client; react-scripts start",
+    "build": "cd client; react-scripts build",
+    "test": "cd client; react-scripts test",
+    "eject": "cd client; react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeforsanjose/gov-agenda-notifier.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeforsanjose/gov-agenda-notifier/issues"
+  },
+  "homepage": "."
+}
