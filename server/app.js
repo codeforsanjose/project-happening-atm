@@ -1,7 +1,10 @@
 require('dotenv').config();
+require('./auth/passportSetup');
 const path = require("path");
 const express = require("express");
-const apiResponse = require("./utilities/apiResponse");
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+const routes = require("./routes/index");
 const PORT = process.env.PORT || 3000;
 
 // Dependencies
@@ -23,17 +26,17 @@ app.use( (req, res, done) => {
     done();
 });
 
-// Expose frontend
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// Initialize passport and passport sessions for auth
+// TODO: Fix these hardcoded test values
+app.use(cookieSession({
+    name: 'test-session',
+    keys: ['key1', 'key2']
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Handle 404s
-app.all("*", (req, res) => {
-	return apiResponse.pageNotFound(res);
-});
+// Expose our routes
+app.use(routes);
 
 // Listen for requests
-app.listen(PORT, () => {
-    logger.info(`App listening on port ${PORT}`);
-});
+app.listen(PORT, () => logger.info(`App listening on port ${PORT}`));

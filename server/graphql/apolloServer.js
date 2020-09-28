@@ -130,5 +130,11 @@ module.exports = (dbClient, twilioClient, logger) => {
     return new ApolloServer({
         typeDefs,
         resolvers,
+        // TODO: This might be useful for auth later
+        // context: ({ req, res }) => {
+        //     const token = req.headers.authorization || '';
+        //     const user = getUser(token);
+        //     return { user };
+        // }
     });
 };

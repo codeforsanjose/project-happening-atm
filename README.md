@@ -19,6 +19,7 @@ The City of San Jose is interested in this service, but this is a project that c
     * GraphQL
     * Apollo
     * Twilio
+    * OAuth 2.0
     * [Postgres](https://wiki.postgresql.org/wiki/Homebrew)
     * [Docker](https://www.docker.com/products/docker-desktop)
 
