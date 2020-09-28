@@ -1,79 +1,76 @@
-const { buildSchema } = require('graphql');
-const { graphqlHTTP } = require('express-graphql');
-const queryResolver = require('./resolvers/query');
+const { ApolloServer, gql } = require('apollo-server-express');
 const mutationResolver = require('./resolvers/mutation');
+const queryResolver = require('./resolvers/query');
 
-const schema = buildSchema(`
-  type Query {
-    getMeeting(id: Int!): meeting
-    getAllMeetings: [meeting]
+module.exports = (dbClient, twilioClient, logger) => {
+    const typeDefs = gql`
+    type Query {
+        getMeeting(id: Int!): meeting
+        getAllMeetings: [meeting]
 
-    getMeetingItem(id: Int!): meeting_item
-    getAllMeetingItems: [meeting_item]
+        getMeetingItem(id: Int!): meeting_item
+        getAllMeetingItems: [meeting_item]
 
-    getMeetingWithItems(id: Int!): meeting_with_items
-    getAllMeetingsWithItems: [meeting_with_items]
+        getMeetingWithItems(id: Int!): meeting_with_items
+        getAllMeetingsWithItems: [meeting_with_items]
 
-    getSubscription(id: Int!): subscription
-    getAllSubscriptions: [subscription]
-  }
+        getSubscription(id: Int!): subscription
+        getAllSubscriptions: [subscription]
+    }
 
-  type Mutation {
-    createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String): meeting
-    updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String): meeting
-    
-    createMeetingItem(meeting_id: Int!, order_number: Int, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String, description_loc_key: String, title_loc_key: String): meeting_item
-    updateMeetingItem(id: Int, order_number: Int, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String, description_loc_key: String, title_loc_key: String): meeting_item
+    type Mutation {
+        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String): meeting
+        updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String): meeting
+        
+        createMeetingItem(meeting_id: Int!, order_number: Int, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String, description_loc_key: String, title_loc_key: String): meeting_item
+        updateMeetingItem(id: Int, order_number: Int, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String, description_loc_key: String, title_loc_key: String): meeting_item
 
-    createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
-  }
+        createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
+    }
 
-  type subscription {
-    id: Int
-    phone_number: String
-    email_address: String
-    meeting_item_id: Int
-    meeting_id: Int
-    created_timestamp: String
-    updated_timestamp: String
-  }
+    type subscription {
+        id: Int
+        phone_number: String
+        email_address: String
+        meeting_item_id: Int
+        meeting_id: Int
+        created_timestamp: String
+        updated_timestamp: String
+    }
 
-  type meeting_with_items {
-    meeting: meeting
-    items: [meeting_item]
-  }
+    type meeting_with_items {
+        meeting: meeting
+        items: [meeting_item]
+    }
 
-  type meeting {
-    id: Int
-    status: String
-    meeting_type: String
-    created_timestamp: String
-    updated_timestamp: String
-    meeting_start_timestamp: String
-    meeting_end_timestamp: String
-    virtual_meeting_url: String
-  }
+    type meeting {
+        id: Int
+        status: String
+        meeting_type: String
+        created_timestamp: String
+        updated_timestamp: String
+        meeting_start_timestamp: String
+        meeting_end_timestamp: String
+        virtual_meeting_url: String
+    }
 
-  type meeting_item {
-    id: Int
-    meeting_id: Int
-    order_number: Int
-    status: String
-    created_timestamp: String
-    updated_timestamp: String
-    meeting_start_timestamp: String
-    meeting_end_timestamp: String
-    content_categories: String
-    description_loc_key: String
-    title_loc_key: String
-  }
-`);
+    type meeting_item {
+        id: Int
+        meeting_id: Int
+        order_number: Int
+        status: String
+        created_timestamp: String
+        updated_timestamp: String
+        meeting_start_timestamp: String
+        meeting_end_timestamp: String
+        content_categories: String
+        description_loc_key: String
+        title_loc_key: String
+    }
+    `;
 
-module.exports = (dbClient, twilioClient) => {
-    return graphqlHTTP({
-        schema: schema,
-        graphiql: true,
-        rootValue: { 
+    const resolvers = {
+        Query: {
             getAllMeetings: async () => {
                 return await queryResolver.getAllMeetings(dbClient);
             },
@@ -109,7 +106,9 @@ module.exports = (dbClient, twilioClient) => {
             },
             getAllSubscriptions: async () => {
                 return await queryResolver.getAllSubscriptions(dbClient)
-            },
+            }
+        },
+        Mutation: {
             createMeeting: async ({ meeting_type, meeting_start_timestamp, virtual_meeting_url, status }) => {
                 return await mutationResolver.createMeeting(dbClient, meeting_type, meeting_start_timestamp, virtual_meeting_url, status);
             },
@@ -127,5 +126,10 @@ module.exports = (dbClient, twilioClient) => {
                 return await mutationResolver.createSubscription(dbClient, phone_number, email_address, meeting_item_id, meeting_id);
             }
         }
+    };
+
+    return new ApolloServer({
+        typeDefs,
+        resolvers,
     });
 };
