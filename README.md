@@ -16,8 +16,9 @@ The City of San Jose is interested in this service, but this is a project that c
 * Backend
     * [Node.js and npm](https://www.npmjs.com/get-npm)
     * Express
-    * Twilio
     * GraphQL
+    * Apollo
+    * Twilio
     * [Postgres](https://wiki.postgresql.org/wiki/Homebrew)
     * [Docker](https://www.docker.com/products/docker-desktop)
 
