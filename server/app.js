@@ -4,13 +4,13 @@ const path = require("path");
 const express = require("express");
 const passport = require('passport');
 const cookieSession = require('cookie-session');
-const routes = require("./routes/index");
 const PORT = process.env.PORT || 3000;
 
 // Dependencies
 const logger = require("./utilities/logger");
 const dbClient = require("./db/dbClient")(logger);
 const twilioClient = require("./twilio/twilioClient")(logger);
+const routes = require("./routes/index")(logger);
 
 // Server objects
 const apolloServer = require("./graphql/apolloServer")(dbClient, twilioClient, logger);

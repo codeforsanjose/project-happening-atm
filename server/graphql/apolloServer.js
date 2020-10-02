@@ -1,8 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server-express');
-const mutationResolver = require('./resolvers/mutation');
-const queryResolver = require('./resolvers/query');
 
 module.exports = (dbClient, twilioClient, logger) => {
+    const mutationResolver = require('./resolvers/mutation')(logger, dbClient, twilioClient);
+    const queryResolver = require('./resolvers/query')(logger, dbClient);
+
     const typeDefs = gql`
     type Query {
         getMeeting(id: Int!): meeting
@@ -72,57 +73,57 @@ module.exports = (dbClient, twilioClient, logger) => {
     const resolvers = {
         Query: {
             getAllMeetings: async (parent, args, context, info) => {
-                return await queryResolver.getAllMeetings(dbClient);
+                return await queryResolver.getAllMeetings();
             },
             getMeeting: async (parent, args, context, info) => {
-                return await queryResolver.getMeeting(dbClient, args.id);
+                return await queryResolver.getMeeting(args.id);
             },
             getMeetingItem: async (parent, args, context, info) => {
-                return await queryResolver.getMeetingItem(dbClient, args.id);
+                return await queryResolver.getMeetingItem(args.id);
             },
             getAllMeetingItems: async (parent, args, context, info) => {
-                return await queryResolver.getAllMeetingItems(dbClient);
+                return await queryResolver.getAllMeetingItems();
             },
             getMeetingWithItems: async (parent, args, context, info) => {
-                return await queryResolver.getMeetingWithItems(dbClient, args.id);
+                return await queryResolver.getMeetingWithItems(args.id);
             },
             getAllMeetingsWithItems: async (parent, args, context, info) => {
-                return await queryResolver.getAllMeetingsWithItems(dbClient);
+                return await queryResolver.getAllMeetingsWithItems();
             },
             getSubscription: async (parent, args, context, info) => {
-                return await queryResolver.getSubscription(dbClient, args.id);
+                return await queryResolver.getSubscription(args.id);
             },
             getAllSubscriptions: async (parent, args, context, info) => {
-                return await queryResolver.getAllSubscriptions(dbClient);
+                return await queryResolver.getAllSubscriptions();
             },
             getSubscription: async (parent, args, context, info) => {
-                return await queryResolver.getSubscription(dbClient, args.id)
+                return await queryResolver.getSubscription(args.id)
             },
             getAllSubscriptions: async (parent, args, context, info) => {
-                return await queryResolver.getAllSubscriptions(dbClient)
+                return await queryResolver.getAllSubscriptions()
             },
             getSubscription: async (parent, args, context, info) => {
-                return await queryResolver.getSubscription(dbClient, args.id)
+                return await queryResolver.getSubscription(args.id)
             },
             getAllSubscriptions: async (parent, args, context, info) => {
-                return await queryResolver.getAllSubscriptions(dbClient)
+                return await queryResolver.getAllSubscriptions()
             }
         },
         Mutation: {
             createMeeting: async ( parent, args, context, info ) => {
-                return await mutationResolver.createMeeting(dbClient, args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
+                return await mutationResolver.createMeeting(args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
             },
             updateMeeting: async (parent, args, context, info) => {
-                return await mutationResolver.updateMeeting(dbClient, twilioClient, args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
+                return await mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
             },
             createMeetingItem: async (parent, args, context, info) => {
-                return await mutationResolver.createMeetingItem(dbClient, args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
+                return await mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
             },
             updateMeetingItem: async (parent, args, context, info) => {
-                return await mutationResolver.updateMeetingItem(dbClient, twilioClient, args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
+                return await mutationResolver.updateMeetingItem(args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
             },
             createSubscription: async (parent, args, context, info) => {
-                return await mutationResolver.createSubscription(dbClient, args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id);
+                return await mutationResolver.createSubscription(args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id);
             }
         }
     };
