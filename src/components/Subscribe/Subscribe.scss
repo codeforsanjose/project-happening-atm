@@ -8,4 +8,50 @@
   top:0;
   left:0;
   background: $offWhite;
+
+  .wrapper {
+    margin: 3.5em 1.8em;
+  }
+
+  .text {
+    margin: 1em 0;
+    text-align: center;
+
+    h1 {
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
+  }
+
+  .form {
+    $form-font-size: 18px;
+    margin-top: 2.5em;
+
+    .input-group {
+      label {
+        font-size: $form-font-size;
+      }
+
+      input {
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        padding: 1em;
+        margin: 0.5em 0 1em;
+        border-radius: 18px;
+        border: 1px solid #000;
+        font-size: $form-font-size;
+      }
+    }
+
+    button {
+      width: 100%;
+      margin: 1em 0;
+      padding: 1em;
+      border-radius: 32px;
+      background-color: #000;
+      color: #fff;
+      font-size: $form-font-size;
+    }
+  }
 }
