@@ -1,8 +1,8 @@
 const express = require('express');
 const apiResponse = require("../utilities/apiResponse");
 
-module.exports = (logger) => {
-    const authRoutes = require('./authRoutes')(logger);
+module.exports = (logger, dbClient) => {
+    const authRoutes = require('./authRoutes')(logger, dbClient);
     const frontendRoutes = require('./frontendRoutes')(logger);
     const router = express.Router();
     

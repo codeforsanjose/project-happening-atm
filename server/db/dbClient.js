@@ -170,5 +170,10 @@ module.exports = (logger) => {
         return dbQuery(`SELECT * FROM subscription WHERE meeting_item_id in ${id_list_string}`);
     };
 
+    module.getAdminByEmail = async (email) => {
+        logger.info('dbClient: getAdminByEmail');
+        return dbQuery(`SELECT * FROM admin WHERE email_address = '${email}'`);
+    };
+
     return module;
 }

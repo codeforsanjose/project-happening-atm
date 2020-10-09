@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 // Dependencies
 const logger = require("./utilities/logger");
 const dbClient = require("./db/dbClient")(logger);
+const routes = require("./routes/index")(logger, dbClient);
 const twilioClient = require("./twilio/twilioClient")(logger);
-const routes = require("./routes/index")(logger);
 
 // Server objects
 const apolloServer = require("./graphql/apolloServer")(dbClient, twilioClient, logger);

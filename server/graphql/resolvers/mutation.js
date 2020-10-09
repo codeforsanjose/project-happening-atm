@@ -32,6 +32,7 @@ module.exports = (logger, dbClient, twilioClient) => {
         res = await dbClient.getMeetingItem(id);
         meeting_item = res.rows[0];
     
+        // TODO: Validation required: only send notifications if update was successful
         switch(status) {
             case "COMPLETED":
                 subscriptionController.notifyItemSubscribers(id, "ITEM(S) COMPLETED: ");
@@ -48,6 +49,7 @@ module.exports = (logger, dbClient, twilioClient) => {
     module.updateMeeting = async (id, status, meeting_type, virtual_meeting_url, meeting_start_timestamp, meeting_end_timestamp) => {
         res = await dbClient.updateMeeting(id, status, meeting_type, virtual_meeting_url, meeting_start_timestamp, meeting_end_timestamp);
         
+        // TODO: Validation required: only send notifications if update was successful
         switch(status) {
             case "COMPLETED":
                 subscriptionController.notifyMeetingSubscribers(id, "MEETING COMPLETE: ");
