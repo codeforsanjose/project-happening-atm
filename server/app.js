@@ -27,10 +27,9 @@ app.use( (req, res, done) => {
 });
 
 // Initialize passport and passport sessions for auth
-// TODO: Fix these hardcoded test values
 app.use(cookieSession({
-    name: 'test-session',
-    keys: ['key1', 'key2']
+    name: 'gov-agenda-notifier',
+    secret: process.env.COOKIE_SESSION_SECRET
 }));
 app.use(passport.initialize());
 app.use(passport.session());

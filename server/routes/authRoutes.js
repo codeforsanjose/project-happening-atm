@@ -4,7 +4,6 @@ const authMiddleware = require("../auth/authMiddleware");
 
 module.exports = (logger) => {
   const authController = require('../controllers/authController')(logger);
-
   const router = express.Router({ mergeParams: true });
 
   router.route('/google').get(passport.authenticate('google', { scope: ['profile', 'email'] }));
