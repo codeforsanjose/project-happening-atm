@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Subscribe.scss';
 import classnames from 'classnames';
-import SubscribeViaEmail from './SubscribeViaEmail';
-import SubscribeViaText from './SubscribeViaText';
 import { Link } from 'react-router-dom';
 
 function Subscribe() {
-    const [showTextForm, setShowTextForm] = useState(false);
-    const [showEmailForm, setShowEmailForm] = useState(false);
-
     return (
         <div className={classnames('subscribe-view')}>
             <div className="wrapper">
