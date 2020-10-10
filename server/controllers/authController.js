@@ -1,6 +1,4 @@
-const express = require('express');
-const passport = require('passport');
-const authMiddleware = require("../auth/authMiddleware");
+const jwt = require('jsonwebtoken')
 
 module.exports = (logger, dbClient) => {
     let module = {};
@@ -8,20 +6,33 @@ module.exports = (logger, dbClient) => {
         res.send('You Failed to log in!');
     };
 
-    module.logginSuccess = async (req, res) => {
-        let userEmail = req.user._json.email;
-        let userName = req.user.displayName;
-        logger.info('User logged in: ' + userEmail + ' : ' + userName);
+    module.logginSuccess = (req, res) => {
+        let userEmail = req.user.email;
+        let userName = req.user.name;
+        let admin = req.user.admin;
+        logger.info('User logged in: ' + userEmail + ' - ' + userName);
+        logger.info('Admin: ' + admin);
 
-        // Verify admin rights
-        let dbResponse = await dbClient.getAdminByEmail(userEmail);
-        req.ADMIN = dbResponse.rows.length > 0;
-        logger.info('Admin: ' + req.ADMIN);
-
-        res.send(`Welcome ${userName}! Administrator: ${req.ADMIN}`);
+        res.send(`Welcome ${userName}! Administrator: ${admin}`);
     };
 
-    module.googleCallback = (req, res) => {
+    module.googleCallback = async (req, res) => {
+        let user = {
+            displayName: req.user.displayName,
+            name: req.user.name.givenName,
+            email: req.user._json.email,
+            provider: req.user.provider 
+        };
+
+        // Verify admin rights
+        let dbResponse = await dbClient.getAdminByEmail(user.email);
+        user.admin = dbResponse.rows.length > 0;
+
+        let token = jwt.sign({
+            data: user
+        }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.cookie('jwt', token)
         res.redirect('/good');
     };
     

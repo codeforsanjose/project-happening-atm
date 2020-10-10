@@ -1,9 +1,12 @@
 require('dotenv').config();
 require('./auth/passportSetup');
 const path = require("path");
-const express = require("express");
+const cors = require('cors');
+const express = require('express');
 const passport = require('passport');
-const cookieSession = require('cookie-session');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
 const PORT = process.env.PORT || 3000;
 
 // Dependencies
@@ -17,22 +20,18 @@ const apolloServer = require("./graphql/apolloServer")(dbClient, twilioClient, l
 const app = express();
 
 // Middleware
-apolloServer.applyMiddleware({ app });
+app.use(cors());
 app.use(express.static(path.join(__dirname, "..", "build")));
-app.use(express.static("public"));
+app.use(express.static("public")); // TODO: Is this needed???
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(passport.initialize());
 app.use( (req, res, done) => {
     logger.info('Request URL: ' + req.originalUrl);
     logger.info('Request body: ' + JSON.stringify(req.body));
     done();
 });
-
-// Initialize passport and passport sessions for auth
-app.use(cookieSession({
-    name: 'gov-agenda-notifier',
-    secret: process.env.COOKIE_SESSION_SECRET
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+apolloServer.applyMiddleware({ app });
 
 // Expose our routes
 app.use(routes);
