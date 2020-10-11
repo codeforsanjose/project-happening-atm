@@ -1,98 +1,96 @@
 module.exports = (logger, dbClient, twilioClient) => {
-    let module = {};
-    const notifySubscribers = (messageBody, subscriptionQueryResponse) => {
-        // Here we'll populate phone number and email maps to store subscription data.
-        // Users can be subscribed to multiple items that have identical "order numbers".
-        // This means that users can be subscribed to items that are scheduled at the same time.
-        // Rather than having individual texts for every subscription, we should intelligently include
-        // simultaneously scheduled subscription data in a single text message notification.
-        // We'll do this by associating subscription data array values to contact keys in maps.
-        phoneNumberMap = new Map();
-        emailMap = new Map();
-        const subscriptions = subscriptionQueryResponse.rows;
-        subscriptions.forEach(sub => {
-            phoneNumber = sub.phone_number;
-            email = sub.phone_number.email_address;
-            if (phoneNumber !== '') {
-                if (phoneNumberMap.has(phoneNumber)) {
-                    if (!phoneNumberMap.get(phoneNumber).includes(sub)) {
-                        phoneNumberMap.get(phoneNumber).push(sub);
-                    }
-                }
-                else {
-                    phoneNumberMap.set(phoneNumber, [sub]);
-                }
-            }
-            if (email !== '') {
-                if (emailMap.has(email)) {
-                    if (!emailMap.get(email).includes(sub)) {
-                        emailMap.get(email).push(sub);
-                    }
-                }
-                else {
-                    emailMap.set(sub.email, [sub]);
-                }
-            }
-        });
-    
-        const getTitlesArray = async (subscriptionArray) => {
-            let titles = [];
-            for (let i = 0; i < subscriptionArray.length; i++) {
-                sub = subscriptionArray[i]
-                if (sub.meeting_item_id !== 0) {
-                    res = await dbClient.getMeetingItem(sub.meeting_item_id);
-                    item = res.rows[0];
-                    titles.push('"' + item.title_loc_key + '"');
-                }
-                else {
-                    res = await dbClient.getMeeting(sub.meeting_id);
-                    meeting = res.rows[0];
-                    titles.push('"' + meeting.meeting_type + '"');
-                }
-            }
-            return titles;
-        };
-    
-        // Gather each phone number's subscription data for their text message notification
-        [...phoneNumberMap.keys()].forEach( async number => {
-            let associatedSubscriptionArray = phoneNumberMap.get(number);
-            let titles = await getTitlesArray(associatedSubscriptionArray);
-            let updateMessageBody = messageBody + titles;
-            twilioClient.sendTextMessage(phoneNumber, updateMessageBody);
-            // TODO: To avoid API rate limit issues, it might be a good idea to implement some kind of sleep logic here
-        });
-    }
-    
-    module.notifyItemSubscribers = async (id, message_body) => {
-        logger.info('Notifying item subscribers')
-        res = await dbClient.getSubscriptionsByMeetingItemID(id);
-        notifySubscribers(message_body, res);
-    };
-    
-    module.notifyMeetingSubscribers = async (id, message_body) => {
-        logger.info('Notifying meeting subscribers')
-        res = await dbClient.getSubscriptionsByMeetingID(id);
-        notifySubscribers(message_body, res);
-    };
-    
-    module.notifyNextItemSubscribers = async (meeting_item, message_body) => {
-        logger.info('Notifying next item subscribers')
-        meeting_id = meeting_item['meeting_id'];
-        current_order_number = meeting_item['order_number'];
-    
-        res = await dbClient.getMeetingItemsByMeetingID(meeting_id);
-        meeting_items = res.rows;
-    
-        next_items_ids = [];
-        meeting_items.forEach(item => {
-            if (item.order_number === current_order_number + 1) {
-                next_items_ids.push(item.id);
-            }
-        });
-    
-        res = await dbClient.getSubscriptionsByMeetingIDList(next_items_ids);
-        notifySubscribers(message_body, res);
-    }
+  const module = {};
+  const notifySubscribers = (messageBody, subscriptionQueryResponse) => {
+    // Here we'll populate phone number and email maps to store subscription data.
+    // Users can be subscribed to multiple items that have identical "order numbers".
+    // This means that users can be subscribed to items that are scheduled at the same time.
+    // Rather than having individual texts for every subscription, we should intelligently include
+    // simultaneously scheduled subscription data in a single text message notification.
+    // We'll do this by associating subscription data array values to contact keys in maps.
+    const phoneNumberMap = new Map();
+    const emailMap = new Map();
+    const subscriptions = subscriptionQueryResponse.rows;
+    subscriptions.forEach((sub) => {
+      const phoneNumber = sub.phone_number;
+      const email = sub.phone_number.email_address;
+      if (phoneNumber !== '') {
+        if (phoneNumberMap.has(phoneNumber)) {
+          if (!phoneNumberMap.get(phoneNumber).includes(sub)) {
+            phoneNumberMap.get(phoneNumber).push(sub);
+          }
+        } else {
+          phoneNumberMap.set(phoneNumber, [sub]);
+        }
+      }
+      if (email !== '') {
+        if (emailMap.has(email)) {
+          if (!emailMap.get(email).includes(sub)) {
+            emailMap.get(email).push(sub);
+          }
+        } else {
+          emailMap.set(sub.email, [sub]);
+        }
+      }
+    });
 
-    return module;
+    const getTitlesArray = async (subscriptionArray) => {
+      const titles = [];
+      for (let i = 0; i < subscriptionArray.length; i += 1) {
+        const sub = subscriptionArray[i];
+        if (sub.meeting_item_id !== 0) {
+          const res = await dbClient.getMeetingItem(sub.meeting_item_id);
+          const item = res.rows[0];
+          titles.push(`"${item.title_loc_key}"`);
+        } else {
+          const res = await dbClient.getMeeting(sub.meeting_id);
+          const meeting = res.rows[0];
+          titles.push(`"${meeting.meeting_type}"`);
+        }
+      }
+      return titles;
+    };
+
+    // Gather each phone number's subscription data for their text message notification
+    [...phoneNumberMap.keys()].forEach(async (number) => {
+      const associatedSubscriptionArray = phoneNumberMap.get(number);
+      const titles = await getTitlesArray(associatedSubscriptionArray);
+      const updateMessageBody = messageBody + titles;
+      twilioClient.sendTextMessage(number, updateMessageBody);
+      // TODO: To avoid API rate limit issues, it might be a good idea to
+      // implement some kind of sleep logic here
+    });
+  };
+
+  module.notifyItemSubscribers = async (id, messageBody) => {
+    logger.info('Notifying item subscribers');
+    const res = await dbClient.getSubscriptionsByMeetingItemID(id);
+    notifySubscribers(messageBody, res);
+  };
+
+  module.notifyMeetingSubscribers = async (id, messageBody) => {
+    logger.info('Notifying meeting subscribers');
+    const res = await dbClient.getSubscriptionsByMeetingID(id);
+    notifySubscribers(messageBody, res);
+  };
+
+  module.notifyNextItemSubscribers = async (meetingItem, messageBody) => {
+    logger.info('Notifying next item subscribers');
+    const meetingID = meetingItem.meeting_id;
+    const currentOrderNumber = meetingItem.order_number;
+
+    const res = await dbClient.getMeetingItemsByMeetingID(meetingID);
+    const meetingItems = res.rows;
+
+    const nextItemsids = [];
+    meetingItems.forEach((item) => {
+      if (item.order_number === currentOrderNumber + 1) {
+        nextItemsids.push(item.id);
+      }
+    });
+
+    const subscriptionsRes = await dbClient.getSubscriptionsByMeetingIDList(nextItemsids);
+    notifySubscribers(messageBody, subscriptionsRes);
+  };
+
+  return module;
 };

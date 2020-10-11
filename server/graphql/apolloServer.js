@@ -1,15 +1,19 @@
-const jwt = require('jsonwebtoken')
+/* eslint-disable max-len */
 const {
-    ApolloServer,
-    gql,
-    AuthenticationError,
+  ApolloServer,
+  gql,
+  AuthenticationError,
 } = require('apollo-server-express');
+const jwt = require('jsonwebtoken');
+
+const getMutationResolver = require('./resolvers/mutation');
+const getQueryResolver = require('./resolvers/query');
 
 module.exports = (dbClient, twilioClient, logger) => {
-    const mutationResolver = require('./resolvers/mutation')(logger, dbClient, twilioClient);
-    const queryResolver = require('./resolvers/query')(logger, dbClient);
+  const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
+  const queryResolver = getQueryResolver(logger, dbClient);
 
-    const typeDefs = gql`
+  const typeDefs = gql`
     type Query {
         getMeeting(id: Int!): meeting
         getAllMeetings: [meeting]
@@ -75,95 +79,64 @@ module.exports = (dbClient, twilioClient, logger) => {
     }
     `;
 
-    const resolvers = {
-        Query: {
-            getAllMeetings: async (parent, args, context, info) => {
-                return await queryResolver.getAllMeetings();
-            },
-            getMeeting: async (parent, args, context, info) => {
-                return await queryResolver.getMeeting(args.id);
-            },
-            getMeetingItem: async (parent, args, context, info) => {
-                return await queryResolver.getMeetingItem(args.id);
-            },
-            getAllMeetingItems: async (parent, args, context, info) => {
-                return await queryResolver.getAllMeetingItems();
-            },
-            getMeetingWithItems: async (parent, args, context, info) => {
-                return await queryResolver.getMeetingWithItems(args.id);
-            },
-            getAllMeetingsWithItems: async (parent, args, context, info) => {
-                return await queryResolver.getAllMeetingsWithItems();
-            },
-            getSubscription: async (parent, args, context, info) => {
-                return await queryResolver.getSubscription(args.id);
-            },
-            getAllSubscriptions: async (parent, args, context, info) => {
-                return await queryResolver.getAllSubscriptions();
-            },
-            getSubscription: async (parent, args, context, info) => {
-                return await queryResolver.getSubscription(args.id)
-            },
-            getAllSubscriptions: async (parent, args, context, info) => {
-                return await queryResolver.getAllSubscriptions()
-            },
-            getSubscription: async (parent, args, context, info) => {
-                return await queryResolver.getSubscription(args.id)
-            },
-            getAllSubscriptions: async (parent, args, context, info) => {
-                return await queryResolver.getAllSubscriptions()
-            }
-        },
-        Mutation: {
-            createMeeting: async ( parent, args, context, info ) => {
-                if (!context.user.admin) {
-                    logger.debug('createMeeting: Attempted without Admin credentials')
-                    logger.debug(JSON.stringify(context))
-                    throw new AuthenticationError('not admin');
-                }
-                return await mutationResolver.createMeeting(args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
-            },
-            updateMeeting: async (parent, args, context, info) => {
-                if (!context.user.admin) {
-                    logger.debug('updateMeeting: Attempted without Admin credentials')
-                    throw new AuthenticationError('not admin');
-                }
-                return await mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
-            },
-            createMeetingItem: async (parent, args, context, info) => {
-                if (!context.user.admin) {
-                    logger.debug('createMeetingItem: Attempted without Admin credentials')
-                    throw new AuthenticationError('not admin');
-                }
-                return await mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
-            },
-            updateMeetingItem: async (parent, args, context, info) => {
-                if (!context.user.admin) {
-                    logger.debug('updateMeetingItem: Attempted without Admin credentials')
-                    throw new AuthenticationError('not admin');
-                }
-                return await mutationResolver.updateMeetingItem(args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
-            },
-            createSubscription: async (parent, args, context, info) => {
-                return await mutationResolver.createSubscription(args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id);
-            }
+  const resolvers = {
+    Query: {
+      getAllMeetings: async () => queryResolver.getAllMeetings(),
+      getMeeting: async (_parent, args) => queryResolver.getMeeting(args.id),
+      getMeetingItem: async (_parent, args) => queryResolver.getMeetingItem(args.id),
+      getAllMeetingItems: async () => queryResolver.getAllMeetingItems(),
+      getMeetingWithItems: async (_parent, args) => queryResolver.getMeetingWithItems(args.id),
+      getAllMeetingsWithItems: async () => queryResolver.getAllMeetingsWithItems(),
+      getSubscription: async (_parent, args) => queryResolver.getSubscription(args.id),
+      getAllSubscriptions: async () => queryResolver.getAllSubscriptions(),
+    },
+    Mutation: {
+      createMeeting: async (_parent, args, context) => {
+        if (!context.user.admin) {
+          logger.debug('createMeeting: Attempted without Admin credentials');
+          throw new AuthenticationError('not admin');
         }
-    };
-
-    return new ApolloServer({
-        typeDefs,
-        resolvers,
-        context: ({ req }) => {
-            // For some reason the user object isn't available in req.
-            // This baffles me because passport middleware should have already deserialized it by this point...
-            // I couldn't find much info on this issue so for the time being
-            // I'm manually decoding the jwt token here to get around the problem.
-
-            let token = req.cookies['jwt'];
-            let decoded = jwt.verify(token, process.env.JWT_SECRET);
-            // TODO: Implement error handling for bad/missing/expired tokens
-            
-            return { user: decoded.data }
+        return mutationResolver.createMeeting(args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
+      },
+      updateMeeting: async (_parent, args, context) => {
+        if (!context.user.admin) {
+          logger.debug('updateMeeting: Attempted without Admin credentials');
+          throw new AuthenticationError('not admin');
         }
-    });
+        return mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
+      },
+      createMeetingItem: async (_parent, args, context) => {
+        if (!context.user.admin) {
+          logger.debug('createMeetingItem: Attempted without Admin credentials');
+          throw new AuthenticationError('not admin');
+        }
+        return mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
+      },
+      updateMeetingItem: async (_parent, args, context) => {
+        if (!context.user.admin) {
+          logger.debug('updateMeetingItem: Attempted without Admin credentials');
+          throw new AuthenticationError('not admin');
+        }
+        return mutationResolver.updateMeetingItem(args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
+      },
+      createSubscription: async (_parent, args) => mutationResolver.createSubscription(args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id),
+    },
+  };
+
+  return new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => {
+      // For some reason the user object isn't available in req.
+      // This baffles me because passport middleware should have already deserialized it by this point...
+      // I couldn't find much info on this issue so for the time being
+      // I'm manually decoding the jwt token here to get around the problem.
+
+      const token = req.cookies.jwt;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // TODO: Implement error handling for bad/missing/expired tokens
+
+      return { user: decoded.data };
+    },
+  });
 };
