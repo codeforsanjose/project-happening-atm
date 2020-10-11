@@ -38,3 +38,8 @@ CREATE TABLE subscription (
     phone_number VARCHAR(255),
     email_address VARCHAR(255)
 );
+
+CREATE TABLE admin (
+    id SERIAL NOT NULL PRIMARY KEY,
+    email_address VARCHAR(255)
+);
