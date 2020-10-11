@@ -31,7 +31,7 @@ module.exports = (logger, dbClient) => {
 
     const token = jwt.sign({
       data: user,
-    }, process.env.JWT_SECRET, { expiresIn: '10h' });
+    }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.cookie('jwt', token);
     res.redirect('/good');
