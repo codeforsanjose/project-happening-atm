@@ -127,14 +127,28 @@ module.exports = (dbClient, twilioClient, logger) => {
     typeDefs,
     resolvers,
     context: ({ req }) => {
+      // TODO:
       // For some reason the user object isn't available in req.
       // This baffles me because passport middleware should have already deserialized it by this point...
       // I couldn't find much info on this issue so for the time being
       // I'm manually decoding the jwt token here to get around the problem.
 
-      const token = req.cookies.jwt;
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // TODO: Implement error handling for bad/missing/expired tokens
+      const jwtToken = req.cookies.jwt;
+
+      let decoded = {};
+      try {
+        decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+      } catch (err) {
+        switch (err.name) {
+          case 'TokenExpiredError':
+            logger.error(`JWT token expired error. Token expired on: ${err.expiredAt}`);
+            decoded.data = { expired: true };
+            break;
+          default:
+            logger.error(err);
+        }
+        decoded.data = { admin: false };
+      }
 
       return { user: decoded.data };
     },

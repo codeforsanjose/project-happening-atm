@@ -16,9 +16,8 @@ const routes = require('./routes/index')(logger, dbClient);
 const twilioClient = require('./twilio/twilioClient')(logger);
 
 // Server objects
-const apolloServer = require('./graphql/apolloServer')(dbClient, twilioClient, logger);
-
 const app = express();
+const apolloServer = require('./graphql/apolloServer')(dbClient, twilioClient, logger);
 
 // Middleware
 app.use(cors());
