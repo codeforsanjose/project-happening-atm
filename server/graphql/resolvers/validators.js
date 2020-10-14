@@ -6,21 +6,21 @@ module.exports = (logger) => {
   // TODO: We might want to have these set up in a config file for easy modification
   const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];
 
-  module.validateAuthorization = (isAdmin, loggerMsgPrefix) => {
+  module.validateAuthorization = (isAdmin, context) => {
     if (!isAdmin) {
-      logger.debug(`${loggerMsgPrefix}: Attempted without admin credentials`);
-      throw new ForbiddenError('No admin credentials found. Log back into an admin account.');
+      logger.debug(`${context}: Attempted without admin credentials`);
+      throw new ForbiddenError('No admin credentials provisioned. Log in.');
     }
   };
 
-  const throwUserInputError = (loggerMsgPrefix, errorMsg) => {
-    logger.debug(loggerMsgPrefix + errorMsg);
+  const throwUserInputError = (errorMsg, context) => {
+    logger.debug(`UserInputError - ${context}: ${errorMsg}`);
     throw new UserInputError(errorMsg);
   };
 
   module.validateCreateMeeting = (meetingType,
     meetingStartTimestamp, virtualMeetingUrl, status) => {
-    const loggerMsgPrefix = 'UserInputError: validateCreateMeeting - ';
+    const context = 'validateCreateMeeting';
 
     // The timestamp needs to be a future date
     const now = new Date();
@@ -34,13 +34,13 @@ module.exports = (logger) => {
       logger.debug(`Numeric: ${TSIsNumeric}`);
       logger.debug(`isValidDate: ${isValidDate}`);
       logger.debug(`isFutureDate: ${isFutureDate}`);
-      throwUserInputError(loggerMsgPrefix, msg);
+      throwUserInputError(msg, context);
     }
 
     // The status should be included in the list of allowed statuses
     if (!possibleStatuses.includes(status)) {
       const msg = 'Invalid "status" field';
-      throwUserInputError(loggerMsgPrefix, msg);
+      throwUserInputError(msg, context);
     }
   };
 
