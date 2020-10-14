@@ -144,8 +144,15 @@ module.exports = (dbClient, twilioClient, logger) => {
             logger.error(`JWT token expired error. Token expired on: ${err.expiredAt}`);
             decoded.data = { expired: true };
             break;
+          case 'JsonWebTokenError':
+            if (err.message === 'jwt must be provided') {
+              logger.error('No JWT token provided');
+              break;
+            }
+          // eslint-disable-next-line no-fallthrough
+          // This fallthrough is necessary to catch more generic JWT errors
           default:
-            logger.error(err);
+            logger.error(JSON.stringify(err));
         }
         decoded.data = { admin: false };
       }
