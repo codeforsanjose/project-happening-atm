@@ -10,7 +10,14 @@
   background: $offWhite;
 
   .wrapper {
+    box-sizing: border-box;
     margin: 3.5em 1.8em;
+
+    @media screen
+    and (min-width: 812px) {
+      max-width: 812px;
+      margin: 3.5em auto;
+    }
   }
 
   .text {
