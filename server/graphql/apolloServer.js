@@ -1,17 +1,15 @@
 /* eslint-disable max-len */
-const {
-  ApolloServer,
-  gql,
-  AuthenticationError,
-} = require('apollo-server-express');
+const { ApolloServer, gql } = require('apollo-server-express');
 const jwt = require('jsonwebtoken');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
+const getValidator = require('./resolvers/validators');
 
 module.exports = (dbClient, twilioClient, logger) => {
   const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
   const queryResolver = getQueryResolver(logger, dbClient);
+  const validator = getValidator(logger);
 
   const typeDefs = gql`
     type Query {
@@ -92,31 +90,19 @@ module.exports = (dbClient, twilioClient, logger) => {
     },
     Mutation: {
       createMeeting: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('createMeeting: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'createMeeting');
         return mutationResolver.createMeeting(args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
       },
       updateMeeting: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('updateMeeting: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'updateMeeting');
         return mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
       },
       createMeetingItem: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('createMeetingItem: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'createMeetingItem');
         return mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
       },
       updateMeetingItem: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('updateMeetingItem: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
         return mutationResolver.updateMeetingItem(args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
       },
       createSubscription: async (_parent, args) => mutationResolver.createSubscription(args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id),
@@ -141,12 +127,12 @@ module.exports = (dbClient, twilioClient, logger) => {
       } catch (err) {
         switch (err.name) {
           case 'TokenExpiredError':
-            logger.error(`JWT token expired error. Token expired on: ${err.expiredAt}`);
+            logger.debug(`JWT token expired error. Token expired on: ${err.expiredAt}`);
             decoded.data = { expired: true };
             break;
           case 'JsonWebTokenError':
             if (err.message === 'jwt must be provided') {
-              logger.error('No JWT token provided');
+              logger.debug('No JWT token provided');
               break;
             }
           // eslint-disable-next-line no-fallthrough
