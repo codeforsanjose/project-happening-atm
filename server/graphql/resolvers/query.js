@@ -1,68 +1,73 @@
 // TODO: error handling and data validation is required here
 // ex: verify that ids exist, undefined values should be passed as empty strings, etc...
 
-const getAllMeetings = async (dbClient) => {
-    res = await dbClient.getAllMeetings();
+module.exports = (logger, dbClient) => {
+  const module = {};
+
+  const getAllMeetings = async () => {
+    const res = await dbClient.getAllMeetings();
     return res.rows;
-};
+  };
 
-const getMeeting = async (dbClient, id) => {
-    res = await dbClient.getMeeting(id);
+  const getMeeting = async (id) => {
+    const res = await dbClient.getMeeting(id);
     return res.rows[0];
-};
+  };
 
-const getAllMeetingItems = async (dbClient) => {
-    res = await dbClient.getAllMeetingItems();
+  const getAllMeetingItems = async () => {
+    const res = await dbClient.getAllMeetingItems();
     return res.rows;
-};
+  };
 
-const getMeetingItem = async (dbClient, id) => {
-    res = await dbClient.getMeetingItem(id);
+  const getMeetingItem = async (id) => {
+    const res = await dbClient.getMeetingItem(id);
     return res.rows[0];
-};
+  };
 
-const getMeetingWithItems = async (dbClient, id) => {
-    meetingObj = getMeeting(dbClient, id);
-    res = await dbClient.getMeetingItemsByMeetingID(id);
-    associatedItems = res.rows;
+  const getMeetingWithItems = async (id) => {
+    const meetingObj = getMeeting(id);
+    const res = await dbClient.getMeetingItemsByMeetingID(id);
+    const associatedItems = res.rows;
 
     return {
-        meeting: meetingObj,
-        items: associatedItems
+      meeting: meetingObj,
+      items: associatedItems,
     };
-};
+  };
 
-const getAllMeetingsWithItems = async (dbClient) => {
-    meetingIDs = [];
-    res = await dbClient.getAllMeetingIDs();
-    res.rows.forEach(row => {
-        meetingIDs.push(row.id);
+  const getAllMeetingsWithItems = async () => {
+    const meetingIDs = [];
+    const res = await dbClient.getAllMeetingIDs();
+    res.rows.forEach((row) => {
+      meetingIDs.push(row.id);
     });
 
-    allMeetingsWithItems = [];
-    meetingIDs.forEach(id => {
-        meetingWithItems = getMeetingWithItems(dbClient, id);
-        allMeetingsWithItems.push(meetingWithItems);
+    const allMeetingsWithItems = [];
+    meetingIDs.forEach((id) => {
+      const meetingWithItems = getMeetingWithItems(id);
+      allMeetingsWithItems.push(meetingWithItems);
     });
 
     return allMeetingsWithItems;
-};
+  };
 
-const getSubscription = async (dbClient, id) => {
-    res = await dbClient.getSubscription(id);
+  const getSubscription = async (id) => {
+    const res = await dbClient.getSubscription(id);
     return res.rows[0];
-};
+  };
 
-const getAllSubscriptions = async (dbClient) => {
-    res = await dbClient.getAllSubscriptions();
+  const getAllSubscriptions = async () => {
+    const res = await dbClient.getAllSubscriptions();
     return res.rows;
-};
+  };
 
-module.exports.getAllMeetings = getAllMeetings;
-module.exports.getMeeting = getMeeting;
-module.exports.getAllMeetingItems = getAllMeetingItems;
-module.exports.getMeetingItem = getMeetingItem;
-module.exports.getMeetingWithItems = getMeetingWithItems;
-module.exports.getAllMeetingsWithItems = getAllMeetingsWithItems;
-module.exports.getSubscription = getSubscription;
-module.exports.getAllSubscriptions = getAllSubscriptions;
+  module.getAllMeetings = getAllMeetings;
+  module.getMeeting = getMeeting;
+  module.getAllMeetingItems = getAllMeetingItems;
+  module.getMeetingItem = getMeetingItem;
+  module.getMeetingWithItems = getMeetingWithItems;
+  module.getAllMeetingsWithItems = getAllMeetingsWithItems;
+  module.getSubscription = getSubscription;
+  module.getAllSubscriptions = getAllSubscriptions;
+  return module;
+};
