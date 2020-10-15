@@ -24,13 +24,13 @@ The City of San Jose is interested in this service, but this is a project that c
     * [Docker](https://www.docker.com/products/docker-desktop)
 
 # Resources
-Slack Channel: #csj-city-meeting-participation
+*   Slack Channel: #csj-city-meeting-participation
 
-[Google Drive](https://drive.google.com/drive/folders/1LAloOcCLCf4Mi-ulkx1ofZw1iIip2T0s)
+*   [Google Drive](https://drive.google.com/drive/folders/1LAloOcCLCf4Mi-ulkx1ofZw1iIip2T0s)
 
-[Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
+*   [Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
 
-[List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
+*   [List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
 # Local Development
 
@@ -54,9 +54,11 @@ Slack Channel: #csj-city-meeting-participation
 
 ## To Begin Work on the Backend / Serve the Entire Web App (Backend + Frontend)
 Frontend specific development doesn't require these steps. Setting up the DB is only necessary if you'll be wanting to interact with the entire web app, including the backend API.
-1. Go to the issues page to find something to work on:
+1. Visit the issues page to find something to work on:
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Initialize the local DB
+    *   This step requires the `make` utility. 
+        *   Additional configuration for this is required on [Windows](https://vispud.blogspot.com/2019/02/how-to-run-makefile-in-windows.html)
     1.  Install [Docker](https://www.docker.com/products/docker-desktop)
     2.  Create the Docker image for the local DB
         * This only needs to be done once unless modifcations have been made to `/server/docker/dev/init.sql`. See notes below.
@@ -71,7 +73,7 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
             ```bash
             make container
             ```
-3.  Create the `.env` file
+3.  Create a `.env` file at the root of the project directory
     1.  Make sure the file includes these keys:
         ```
         NODE_ENV=development
@@ -92,6 +94,8 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
 
         JWT_SECRET=THIS-IS-TOP-SECRET
         ```
+        *   Message Trace Ohrt on Slack if you need secret key values
+
 4.  Initialize server
     1.  Install project dependencies:
         1. Navigate to the root of the project's directory
@@ -99,14 +103,13 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
             ```bash
             npm install
             ```
-    2. Message Trace Ohrt on Slack and ask him for the .env properties
-    3. Run command:
+    2. Run command:
        ```bash
        npm run dev
        ```
-    4. View the website (aka frontend) at http://localhost:3000
-    5. View the GraphQL api playground at http://localhost:3000/graphql
-5. Make modifications to the codebase to address the issue your working on
+    3. View the website (aka frontend) at http://localhost:3000
+    4. View the GraphQL api playground at http://localhost:3000/graphql
+5. Make modifications to the codebase to address the issue you're working on
 
 ### Notes
 If changes are made to `/server/docker/dev/init.sql`, the old docker image must be deleted, regenerated and containerized for the changes to take place.
