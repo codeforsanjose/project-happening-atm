@@ -74,6 +74,8 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
 3.  Create the `.env` file
     1.  Make sure the file includes these keys:
         ```
+        NODE_ENV=development
+
         PGHOST=127.0.0.1 
         PGUSER=docker 
         PGPASSWORD=docker 

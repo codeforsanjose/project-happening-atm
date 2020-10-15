@@ -1,17 +1,15 @@
 /* eslint-disable max-len */
-const {
-  ApolloServer,
-  gql,
-  AuthenticationError,
-} = require('apollo-server-express');
-const jwt = require('jsonwebtoken');
+const { ApolloServer, gql } = require('apollo-server-express');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
+const getValidator = require('./resolvers/validators');
+const authController = require('../controllers/authController')();
 
 module.exports = (dbClient, twilioClient, logger) => {
   const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
   const queryResolver = getQueryResolver(logger, dbClient);
+  const validator = getValidator(logger);
 
   const typeDefs = gql`
     type Query {
@@ -92,31 +90,19 @@ module.exports = (dbClient, twilioClient, logger) => {
     },
     Mutation: {
       createMeeting: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('createMeeting: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'createMeeting');
         return mutationResolver.createMeeting(args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
       },
       updateMeeting: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('updateMeeting: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'updateMeeting');
         return mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
       },
       createMeetingItem: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('createMeetingItem: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'createMeetingItem');
         return mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
       },
       updateMeetingItem: async (_parent, args, context) => {
-        if (!context.user.admin) {
-          logger.debug('updateMeetingItem: Attempted without Admin credentials');
-          throw new AuthenticationError('not admin');
-        }
+        validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
         return mutationResolver.updateMeetingItem(args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
       },
       createSubscription: async (_parent, args) => mutationResolver.createSubscription(args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id),
@@ -126,17 +112,6 @@ module.exports = (dbClient, twilioClient, logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => {
-      // For some reason the user object isn't available in req.
-      // This baffles me because passport middleware should have already deserialized it by this point...
-      // I couldn't find much info on this issue so for the time being
-      // I'm manually decoding the jwt token here to get around the problem.
-
-      const token = req.cookies.jwt;
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // TODO: Implement error handling for bad/missing/expired tokens
-
-      return { user: decoded.data };
-    },
+    context: ({ req }) => authController.apolloServerContextInit(req),
   });
 };

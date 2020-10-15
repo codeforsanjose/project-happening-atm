@@ -2,19 +2,31 @@
 // ex: verify that ids exist in related tables, undefined
 // values should be passed as empty strings, etc...
 const getSubscriptionController = require('../../controllers/subscriptionsController');
+const getValidator = require('./validators');
 
 module.exports = (logger, dbClient, twilioClient) => {
   const subscriptionController = getSubscriptionController(logger, dbClient, twilioClient);
+  const validator = getValidator(logger);
 
   const module = {};
 
   module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
+    validator.validateCreateMeeting(meetingType, meetingStartTimestamp, virtualMeetingUrl, status);
     let res = await dbClient.createMeeting(
       meetingType, meetingStartTimestamp, virtualMeetingUrl, status,
     );
-    const newId = res.rows[0].id;
-    res = await dbClient.getMeeting(newId);
-    return res.rows[0];
+
+    if (res != null) {
+      const newId = res.rows[0].id;
+      res = await dbClient.getMeeting(newId);
+    } else {
+      throw Error('Internal Error');
+    }
+
+    if (res != null) {
+      return res.rows[0];
+    }
+    throw Error('Internal Error');
   };
 
   module.createMeetingItem = async (

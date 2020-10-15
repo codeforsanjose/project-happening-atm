@@ -5,6 +5,7 @@ module.exports = (logger) => {
 
   const client = new Client();
 
+  // TODO: Implement DB connection pools
   client.connect((err) => {
     if (err) {
       logger.error(`DB connection error: ${err.stack}`);
