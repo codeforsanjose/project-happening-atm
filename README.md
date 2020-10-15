@@ -23,6 +23,15 @@ The City of San Jose is interested in this service, but this is a project that c
     * [Postgres](https://wiki.postgresql.org/wiki/Homebrew)
     * [Docker](https://www.docker.com/products/docker-desktop)
 
+# Resources
+Slack Channel: #csj-city-meeting-participation
+
+[Google Drive](https://drive.google.com/drive/folders/1LAloOcCLCf4Mi-ulkx1ofZw1iIip2T0s)
+
+[Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
+
+[List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
+
 # Local Development
 
 ## To Begin Work on the Frontend / Serve Frontend
@@ -62,18 +71,40 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
             ```bash
             make container
             ```
-3.  Initialize server
+3.  Create the `.env` file
+    1.  Make sure the file includes these keys:
+        ```
+        PGHOST=127.0.0.1 
+        PGUSER=docker 
+        PGPASSWORD=docker 
+        PGDATABASE=devdb 
+        PGPORT=8888 
+
+        TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
+        TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
+        TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
+
+        OAUTH_CLIENT_ID=THIS-IS-TOP-SECRET
+        OAUTH_CLIENT_SECRET=THIS-IS-TOP-SECRET
+        OAUTH_CALLBACK_URL=http://localhost:3000/google/callback
+
+        JWT_SECRET=THIS-IS-TOP-SECRET
+        ```
+4.  Initialize server
     1.  Install project dependencies:
         1. Navigate to the root of the project's directory
         2. Run command:
             ```bash
             npm install
             ```
-    2.  Run command:
-        ```bash
-        npm run dev
-        ```
-4. Make modifications to the codebase to address the issue your working on
+    2. Message Trace Ohrt on Slack and ask him for the .env properties
+    3. Run command:
+       ```bash
+       npm run dev
+       ```
+    4. View the website (aka frontend) at http://localhost:3000
+    5. View the GraphQL api playground at http://localhost:3000/graphql
+5. Make modifications to the codebase to address the issue your working on
 
 ### Notes
 If changes are made to `/server/docker/dev/init.sql`, the old docker image must be deleted, regenerated and containerized for the changes to take place.

@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Subscribe.scss';
 import classnames from 'classnames';
-import SubscribeViaEmail from './SubscribeViaEmail';
-import SubscribeViaText from './SubscribeViaText';
 import { Link } from 'react-router-dom';
 
 function Subscribe() {
-    const [showTextForm, setShowTextForm] = useState(false);
-    const [showEmailForm, setShowEmailForm] = useState(false);
-
     return (
         <div className={classnames('subscribe-view')}>
-            <Link to="/">Back</Link>
-            <h1>Subscribe to City Council Agenda Item</h1>
-            <p>Get notified:</p>
-            <ul>
-                <li>when the item is up next</li>
-                <li>when discussions about the item have started</li>
-                <li>when discussions about the item have ended</li>
-                <li>if the agenda item is rescheduled</li>
-            </ul>
-            <h3>How do you want to be notified?</h3>
-            <div className={classnames('button-row')}>
-                <button onClick={() => setShowEmailForm(true)}>Email</button>
-                <button onClick={() => setShowTextForm(true)}>Text</button>
-            </div>
+            <div className="wrapper">
+                <Link to="/">Back</Link>
 
-            <SubscribeViaEmail
-                showEmailForm={showEmailForm}
-                setShowEmailForm={setShowEmailForm}
-            />
-            <SubscribeViaText
-                showTextForm={showTextForm}
-                setShowTextForm={setShowTextForm}
-            />
+                <div className="text">
+                    <h1>Subscribe to item</h1>
+                    <p>
+                        Receive a notification when this item is up next and when discussions have started.
+                    </p>
+                </div>
+
+                <div className="form">
+                    <div className="input-group">
+                        <label htmlFor="phone">Text Notification</label>
+                        <input
+                            type="tel"
+                            placeholder="Enter your phone number"
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="email">Email Notification</label>
+                        <input
+                            type="text"
+                            placeholder="Enter your email address"
+                        />
+                    </div>
+                    <button>Subscribe</button>
+                </div>
+            </div>
         </div>
     );
 }
