@@ -36,7 +36,7 @@
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "dev": "PGHOST=127.0.0.1 PGUSER=docker PGPASSWORD=docker PGDATABASE=devdb PGPORT=8888 nodemon server/app.js",
+    "dev": "nodemon server/app.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
