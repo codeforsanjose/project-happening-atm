@@ -43,3 +43,26 @@ CREATE TABLE admin (
     id SERIAL NOT NULL PRIMARY KEY,
     email_address VARCHAR(255)
 );
+
+INSERT INTO meeting(meeting_type, status, created_timestamp, updated_timestamp, meeting_start_timestamp, meeting_end_timestamp, virtual_meeting_url)
+VALUES ('test', 'PENDING', current_timestamp, current_timestamp, current_timestamp, current_timestamp, 'google.com');
+
+
+INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
+VALUES (1, 1, current_timestamp, current_timestamp, current_timestamp, current_timestamp, 'PENDING', '[]', 'Description loc key', 'Title loc key');
+
+INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
+VALUES (1, 2, current_timestamp, current_timestamp, current_timestamp, current_timestamp, 'PENDING', '[]', 'Description loc key', 'Title loc key');
+
+INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
+VALUES (1, 2, current_timestamp, current_timestamp, current_timestamp, current_timestamp, 'PENDING', '[]', 'Description loc key', 'Title loc key');
+
+
+INSERT INTO subscription(meeting_item_id, meeting_id, created_timestamp, updated_timestamp, phone_number, email_address)
+VALUES (1, 1, current_timestamp, current_timestamp, current_timestamp, 'fake@faker.gov');
+
+INSERT INTO subscription(meeting_item_id, meeting_id, created_timestamp, updated_timestamp, phone_number, email_address)
+VALUES (2, 1, current_timestamp, current_timestamp, current_timestamp, 'fake@faker.gov');
+
+INSERT INTO subscription(meeting_item_id, meeting_id, created_timestamp, updated_timestamp, phone_number, email_address)
+VALUES (3, 1, current_timestamp, current_timestamp, current_timestamp, 'fake@faker.gov');
