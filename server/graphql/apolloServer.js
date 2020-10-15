@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 const { ApolloServer, gql } = require('apollo-server-express');
-const jwt = require('jsonwebtoken');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
 const getValidator = require('./resolvers/validators');
+const authController = require('../controllers/authController')();
 
 module.exports = (dbClient, twilioClient, logger) => {
   const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
@@ -112,38 +112,6 @@ module.exports = (dbClient, twilioClient, logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => {
-      // TODO:
-      // For some reason the user object isn't available in req.
-      // This baffles me because passport middleware should have already deserialized it by this point...
-      // I couldn't find much info on this issue so for the time being
-      // I'm manually decoding the jwt token here to get around the problem.
-
-      const jwtToken = req.cookies.jwt;
-
-      let decoded = {};
-      try {
-        decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
-      } catch (err) {
-        switch (err.name) {
-          case 'TokenExpiredError':
-            logger.debug(`JWT token expired error. Token expired on: ${err.expiredAt}`);
-            decoded.data = { expired: true };
-            break;
-          case 'JsonWebTokenError':
-            if (err.message === 'jwt must be provided') {
-              logger.debug('No JWT token provided');
-              break;
-            }
-          // eslint-disable-next-line no-fallthrough
-          // This fallthrough is necessary to catch more generic JWT errors
-          default:
-            logger.error(JSON.stringify(err));
-        }
-        decoded.data = { admin: false };
-      }
-
-      return { user: decoded.data };
-    },
+    context: ({ req }) => authController.apolloServerContextInit(req),
   });
 };
