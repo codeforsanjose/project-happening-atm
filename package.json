@@ -7,6 +7,7 @@
     "node": "14.x"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -17,23 +18,24 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "node-sass": "^4.14.1",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.3.3",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-autocomplete": "^1.8.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-infinite-scroll-component": "^5.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "twilio": "^3.49.2",
+    "twilio": "^3.50.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.5"
   },
   "scripts": {
     "dev": "nodemon server/app.js",

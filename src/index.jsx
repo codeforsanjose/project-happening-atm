@@ -16,6 +16,25 @@ import NavigationMenu from './components/Header/NavigationMenu';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 
+import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from '@apollo/client';
+import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
+
+const client = new ApolloClient({
+    uri: 'http://localhost:3000/graphql',
+    cache: new InMemoryCache()
+  });  
+
+function SampleQuery() {
+    const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
+
+    if (loading) console.log('THE Loading: ', loading);
+    if (error) console.log('THE Error: ', error);
+
+    console.log(data);
+
+    return null;
+}
+  
 function App() {
     const [showMenu, setShowMenu] = useState(false);
 
@@ -25,36 +44,40 @@ function App() {
 
     return (
         <React.StrictMode>
-            <div className={classnames('app-root')}>
-                <Router>
-                    <div className="ribbon" />
-                    <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
-                    <div className="fade-box" />
-                    {/*
-                     A <Switch> looks through all its children <Route>
-                     elements and renders the first one whose path
-                     matches the current URL. Use a <Switch> any time
-                     you have multiple routes, but you want only one
-                     of them to render at a time
-                     */}
-                    <Switch>
-                        <Route exact path="/">
-                            <MeetingView />
-                        </Route>
-                        <Route path="/subscribe/:id">
-                            <Subscribe />
-                        </Route>
-                        <Route path="/meeting-item/:id">
-                            <MeetingItem />
-                        </Route>
-                    </Switch>
-                    <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu}/>
-                </Router>
-            </div>
+            <ApolloProvider client={client}>
+                <div className={classnames('app-root')}>
+                    <Router>
+                        <div className="ribbon" />
+                        <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
+                        <div className="fade-box" />
+                        {/*
+                        A <Switch> looks through all its children <Route>
+                        elements and renders the first one whose path
+                        matches the current URL. Use a <Switch> any time
+                        you have multiple routes, but you want only one
+                        of them to render at a time
+                        */}
+                        <Switch>
+                            <Route exact path="/">
+                                <MeetingView />
+                            </Route>
+                            <Route path="/subscribe/:id">
+                                <Subscribe />
+                            </Route>
+                            <Route path="/meeting-item/:id">
+                                <MeetingItem />
+                            </Route>
+                        </Switch>
+                        <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu}/>
+                    </Router>
+                    <SampleQuery/>
+                </div>
+            </ApolloProvider>
         </React.StrictMode>
     )
 
 }
+
 ReactDOM.render(
   <App />,
   document.getElementById('root')
