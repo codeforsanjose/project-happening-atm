@@ -27,14 +27,12 @@ const client = new ApolloClient({
 function SampleQuery() {
     const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
-    if (loading) return 'Loading...'
-    if (error) return `THE Error: ${error}`
+    if (loading) console.log('THE Loading: ', loading);
+    if (error) console.log('THE Error: ', error);
 
-    return data.getAllMeetingsWithItems[0].items.map(
-        ({order_number, id, title_loc_key, status}) => (
-            <p>{`${order_number}.${id} - ${title_loc_key} [${status}]`}</p>
-        )
-    );
+    console.log(data);
+
+    return null;
 }
   
 function App() {
@@ -43,7 +41,7 @@ function App() {
     const toggleMenu = useCallback(() => {
         setShowMenu(!showMenu);
     }, [showMenu, setShowMenu]);
-        
+
     return (
         <React.StrictMode>
             <ApolloProvider client={client}>
