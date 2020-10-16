@@ -25,17 +25,17 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.3.3",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-autocomplete": "^1.8.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-infinite-scroll-component": "^5.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "twilio": "^3.49.2",
+    "twilio": "^3.50.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.5"
   },
   "scripts": {
     "dev": "nodemon server/app.js",
