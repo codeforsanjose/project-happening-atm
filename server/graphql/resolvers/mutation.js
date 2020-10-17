@@ -10,10 +10,10 @@ module.exports = (logger, dbClient, twilioClient) => {
 
   const module = {};
 
-  module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
-    validator.validateCreateMeeting(meetingType, meetingStartTimestamp, virtualMeetingUrl, status);
+  module.createMeeting = async (args) => {
+    validator.validateCreateMeeting(args);
     let res = await dbClient.createMeeting(
-      meetingType, meetingStartTimestamp, virtualMeetingUrl, status,
+      args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status,
     );
 
     if (res != null) {
