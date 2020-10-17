@@ -78,28 +78,26 @@ module.exports = (logger, dbClient, twilioClient) => {
     return meetingItem;
   };
 
-  module.updateMeeting = async (
-    id, status, meetingType, virtualMeetingUrl,
-    meetingStartTimestamp, meetingEndTimestamp,
-  ) => {
+  module.updateMeeting = async (args) => {
+    validator.validateUpdateMeeting(args);
     let res = await dbClient.updateMeeting(
-      id, status, meetingType, virtualMeetingUrl,
-      meetingStartTimestamp, meetingEndTimestamp,
+      args.id, args.status, args.meeting_type, args.virtual_meeting_url,
+      args.meeting_start_timestamp, args.meeting_end_timestamp,
     );
 
     // TODO: Validation required: only send notifications if update was successful
-    switch (status) {
+    switch (args.status) {
       case 'COMPLETED':
-        subscriptionController.notifyMeetingSubscribers(id, 'MEETING COMPLETE: ');
+        subscriptionController.notifyMeetingSubscribers(args.id, 'MEETING COMPLETE: ');
         break;
       case 'IN PROGRESS':
-        subscriptionController.notifyMeetingSubscribers(id, 'MEETING IN PROGRESS: ');
+        subscriptionController.notifyMeetingSubscribers(args.id, 'MEETING IN PROGRESS: ');
         break;
       default:
           // TODO: This state should be impossible, handle as an error
     }
 
-    res = await dbClient.getMeeting(id);
+    res = await dbClient.getMeeting(args.id);
     return res.rows[0];
   };
 

@@ -95,7 +95,7 @@ module.exports = (dbClient, twilioClient, logger) => {
       },
       updateMeeting: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'updateMeeting');
-        return mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
+        return mutationResolver.updateMeeting(args);
       },
       createMeetingItem: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'createMeetingItem');
