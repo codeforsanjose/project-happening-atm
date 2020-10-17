@@ -5,15 +5,7 @@ const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];
 const possibleTypes = ['test'];
 
 module.exports = (logger) => {
-  const module = {};
-
-  module.validateAuthorization = (isAdmin, context) => {
-    if (!isAdmin) {
-      logger.debug(`${context}: Attempted without admin credentials`);
-      throw new ForbiddenError('No admin credentials provisioned. Log in.');
-    }
-  };
-
+  // Reusable functionality that's found in multiple validators is here at the top
   const throwUserInputError = (errorMsg, context) => {
     logger.debug(`UserInputError - ${context}: ${errorMsg}`);
     throw new UserInputError(errorMsg);
@@ -60,6 +52,16 @@ module.exports = (logger) => {
       const msg = `Invalid "${fieldName}" field. Bad URL.`;
       logger.debug(`URL: ${url}`);
       throwUserInputError(msg, context);
+    }
+  };
+
+  // Here's the actual exported validation functionality:
+  const module = {};
+
+  module.validateAuthorization = (isAdmin, context) => {
+    if (!isAdmin) {
+      logger.debug(`${context}: Attempted without admin credentials`);
+      throw new ForbiddenError('No admin credentials provisioned. Log in.');
     }
   };
 
