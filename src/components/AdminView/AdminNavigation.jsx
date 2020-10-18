@@ -28,30 +28,31 @@ const LINKS = [
 ]
 
 function AdminNavigation() {
+  return (
+    <div className="admin-navigation">
+      <img className="logo" src={cityLogo} />
 
-    return (
-        <div className="admin-navigation">
-            <img className="logo" src={cityLogo} />
+      <div className="links">
+        <ul>
+          {
+            LINKS.map(link => {
+              return (
+                <AdminNavigationLink
+                  key={link.key}
+                  icon={link.icon}
+                  linkText={link.linkText}
+                  handleClick={() => console.log(link.key)}    // DEBUG: replace with click function
+                  active={link.key === 'editDetails'}   // DEBUG: replace with conditional
+                />
+              );
+            })
+          }
+        </ul>
+      </div>
 
-            <div className="links">
-              <ul>
-                {
-                  LINKS.map(link => {
-                    return (
-                      <AdminNavigationLink
-                        key={link.key}
-                        icon={link.icon}
-                        linkText={link.linkText}
-                      />
-                    );
-                  })
-                }
-              </ul>
-            </div>
-
-            <button className="admin-publish-button">Publish Changes</button>
-        </div>
-    );
+      <button className="admin-publish-button">Publish Changes</button>
+    </div>
+  );
 }
 
 export default AdminNavigation;

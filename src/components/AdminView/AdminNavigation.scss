@@ -1,8 +1,10 @@
 @import "../../utils/_colors.scss";
 @import "./margin.scss";
 
+$navWidth: 480px;
+
 .admin-navigation {
-  max-width: 480px;
+  max-width: $navWidth;
   display: flex;
   flex-direction: column;
   background: #fff;

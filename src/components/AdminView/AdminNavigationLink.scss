@@ -6,7 +6,6 @@
   .button-group {
     box-sizing: border-box;
     display: flex;
-    justify-content: flex-end;
   }
 
   .button-group-inner {
@@ -18,12 +17,16 @@
   }
 
   button {
+    box-sizing: border-box;
     width: 100%;
     padding: 0.8em 0;
+    padding-left: $navMargin;
     border: none;
     background: transparent;
+    color: $black;
     text-align: left;
     cursor: pointer;
+    border-left: 8px solid transparent;
   }
 
   button:hover {
@@ -35,10 +38,11 @@
     font-size: 18px;
     vertical-align: middle;
     font-weight: 600;
-    color: $black;
   }
 
   .button-active {
-
+    border-left: 8px solid $cityBlue;
+    background: $cityBlue10;
+    color: $cityBlue;
   }
 }

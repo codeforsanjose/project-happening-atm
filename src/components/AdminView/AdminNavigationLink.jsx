@@ -1,13 +1,12 @@
 import React from 'react';
 import './AdminNavigationLink.scss';
 
-function AdminNavigationLink({ icon, linkText }) {
+function AdminNavigationLink({ icon, linkText, setView, active }) {
 
 
   return (
     <li className="admin-nav-link">
-
-      <button>
+      <button className={active ? "button-active" : ""}onClick={setView}>
         <div className="button-group">
           <div className="button-group-inner">
             <img className="button-icon" src={icon} />
