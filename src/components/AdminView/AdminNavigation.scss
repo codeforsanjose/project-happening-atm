@@ -30,16 +30,16 @@ $navWidth: 480px;
     font-size: 20px;
     font-weight: 900;
     cursor: pointer;
-  }
 
-  .admin-publish-button:hover {
-    background-color: $cityBronze;
-  }
+    &:hover {
+      background-color: $cityBronze;
+    }
 
-  .admin-publish-button:disabled {
-    background-color: #fff;
-    border: 4px solid $cloudy;
-    color: $cloudy;
-    cursor: not-allowed;
+    &:disabled {
+      background-color: #fff;
+      border: 4px solid $cloudy;
+      color: $cloudy;
+      cursor: not-allowed;
+    }
   }
 }

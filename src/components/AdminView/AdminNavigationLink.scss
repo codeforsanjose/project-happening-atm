@@ -21,11 +21,12 @@
         padding: 0 2em;
       }
     }
+
+    &:hover {
+      background: $cityBlue5;
+    }
   }
 
-  button:hover {
-    background: $cityBlue5;
-  }
 
   .button-icon {
     vertical-align: middle;
@@ -47,9 +48,9 @@
     .button-icon {
       fill: $cityBlue;
     }
-  }
 
-  .button-active:hover {
-    background: $cityBlue10;
+    &:hover {
+      background: $cityBlue10;
+    }
   }
 }
