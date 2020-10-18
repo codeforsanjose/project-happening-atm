@@ -49,7 +49,7 @@ function AdminNavigation() {
               </ul>
             </div>
 
-            <button>Publish Changes</button>
+            <button className="admin-publish-button">Publish Changes</button>
         </div>
     );
 }
