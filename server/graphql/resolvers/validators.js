@@ -1,3 +1,7 @@
+/* eslint-disable camelcase */
+// I'm disabling this error because we're using variable names from the schema
+// that use snake_case since they're referencing values in our DB that also uses snake_case
+
 const { UserInputError, ForbiddenError } = require('apollo-server-express');
 
 // TODO: We might want to have these set up in a config file for easy modification
@@ -99,33 +103,28 @@ module.exports = (logger) => {
 
   module.validateCreateMeeting = (args) => {
     const context = 'validateCreateMeeting';
+    const {
+      status, meeting_start_timestamp, virtual_meeting_url, meeting_type,
+    } = args;
 
-    const meetingStartTimestamp = args.meeting_start_timestamp;
-    const virtualMeetingURL = args.virtual_meeting_url;
-    const meetingType = args.meeting_type;
-    const { status } = args;
-
-    validateFutureTimestamp(meetingStartTimestamp, 'meeting_start_timestamp', context);
-    validateURL(virtualMeetingURL, 'virtual_meeting_url', context);
-    validateType(meetingType, 'meeting_type', context);
+    validateFutureTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
+    validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
+    validateType(meeting_type, 'meeting_type', context);
     validateStatus(status, 'status', context);
   };
 
   module.validateUpdateMeeting = (args) => {
     const context = 'validateUpdateMeeting';
+    const {
+      status, meeting_start_timestamp, meeting_end_timestamp, virtual_meeting_url, meeting_type,
+    } = args;
 
     // No need to validate ID here because the graphQL schema takes care of it well enough
 
-    const { status } = args;
-    const meetingType = args.meeting_type;
-    const virtualMeetingUrl = args.virtual_meeting_url;
-    const meetingStartTimestamp = args.meeting_start_timestamp;
-    const meetingEndTimestamp = args.meeting_end_timestamp;
-
-    validateTimestamp(meetingStartTimestamp, 'meeting_start_timestamp', context);
-    validateTimestamp(meetingEndTimestamp, 'meeting_end_timestamp', context);
-    validateURL(virtualMeetingUrl, 'virtual_meeting_url', context);
-    validateType(meetingType, 'meeting_type', context);
+    validateTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
+    validateTimestamp(meeting_end_timestamp, 'meeting_end_timestamp', context);
+    validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
+    validateType(meeting_type, 'meeting_type', context);
     validateStatus(status, 'status', context);
   };
 
@@ -134,12 +133,12 @@ module.exports = (logger) => {
 
     // No need to validate meeting_id, order_number. The schema's validation is good enough
 
+    // TODO: description_loc_key and title_loc_key aren't yet references
+    // to anything - additional validation is not required for them yet
+
     const {
-      item_start_timestamp, item_end_timestamp,
-      status, content_categories,
+      item_start_timestamp, item_end_timestamp, status, content_categories,
       // description_loc_key, title_loc_key,
-      // TODO: description_loc_key and title_loc_key aren't yet references
-      // to anything - additional validaiton is not required for them yet
     } = args;
 
     validateFutureTimestamp(item_start_timestamp, 'item_start_timestamp', context);
