@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, gql } = require('apollo-server-lambda');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
@@ -90,19 +90,19 @@ module.exports = (dbClient, twilioClient, logger) => {
     },
     Mutation: {
       createMeeting: async (_parent, args, context) => {
-        validator.validateAuthorization(context.user.admin, 'createMeeting');
+        // validator.validateAuthorization(context.user.admin, 'createMeeting');
         return mutationResolver.createMeeting(args);
       },
       updateMeeting: async (_parent, args, context) => {
-        validator.validateAuthorization(context.user.admin, 'updateMeeting');
+        // validator.validateAuthorization(context.user.admin, 'updateMeeting');
         return mutationResolver.updateMeeting(args);
       },
       createMeetingItem: async (_parent, args, context) => {
-        validator.validateAuthorization(context.user.admin, 'createMeetingItem');
+        // validator.validateAuthorization(context.user.admin, 'createMeetingItem');
         return mutationResolver.createMeetingItem(args);
       },
       updateMeetingItem: async (_parent, args, context) => {
-        validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
+        // validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
         return mutationResolver.updateMeetingItem(args);
       },
       createSubscription: async (_parent, args) => mutationResolver.createSubscription(args),
@@ -112,6 +112,12 @@ module.exports = (dbClient, twilioClient, logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => authController.apolloServerContextInit(req),
+    // context: ({ req }) => authController.apolloServerContextInit(req),
+    context: ({ event, context }) => ({
+      headers: event.headers,
+      functionName: context.functionName,
+      event,
+      context,
+    }),
   });
 };
