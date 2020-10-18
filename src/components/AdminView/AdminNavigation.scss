@@ -5,7 +5,6 @@
   max-width: 480px;
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
   background: #fff;
 
   .logo {
@@ -20,7 +19,7 @@
   }
 
   .admin-publish-button {
-    margin: 0 auto;
+    margin: $navMargin auto;
     padding: 0.5em;
     border: none;
     border-radius: 6px;
