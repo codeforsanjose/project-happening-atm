@@ -29,13 +29,11 @@ module.exports = (logger, dbClient, twilioClient) => {
     throw Error('Internal Error');
   };
 
-  module.createMeetingItem = async (
-    meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
-    status, contentCategories, descriptionLocKey, titleLocKey,
-  ) => {
+  module.createMeetingItem = async (args) => {
+    validator.validateCreateMeetingItem(args);
     let res = await dbClient.createMeetingItem(
-      meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
-      status, contentCategories, descriptionLocKey, titleLocKey,
+      args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp,
+      args.status, args.content_categories, args.description_loc_key, args.title_loc_key,
     );
     const newId = res.rows[0].id;
     res = await dbClient.getMeetingItem(newId);

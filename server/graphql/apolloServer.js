@@ -99,7 +99,7 @@ module.exports = (dbClient, twilioClient, logger) => {
       },
       createMeetingItem: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'createMeetingItem');
-        return mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
+        return mutationResolver.createMeetingItem(args);
       },
       updateMeetingItem: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'updateMeetingItem');

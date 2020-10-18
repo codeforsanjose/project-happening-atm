@@ -3,6 +3,7 @@ const { UserInputError, ForbiddenError } = require('apollo-server-express');
 // TODO: We might want to have these set up in a config file for easy modification
 const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];
 const possibleTypes = ['test'];
+const possibleContentCategories = ['test', 'gov', 'tech', 'lol'];
 
 module.exports = (logger) => {
   // --- Reusable functionality that's found in multiple validators is here at the top ---
@@ -15,7 +16,7 @@ module.exports = (logger) => {
   const validateStatus = (status, fieldName, context) => {
     // The status should be included in the list of allowed statuses
     if (!possibleStatuses.includes(status)) {
-      const msg = 'Invalid "status" field';
+      const msg = 'Invalid "status" field input: ';
       logger.debug(`Status input: ${status}`);
       throwUserInputError(msg, context);
     }
@@ -28,6 +29,19 @@ module.exports = (logger) => {
       logger.debug(`Type input: ${type}`);
       throwUserInputError(msg, context);
     }
+  };
+
+  const validateContentCategories = (contentCategories, fieldName, context) => {
+    // TODO: This validation logic is likely to change as it's
+    // currently dependent on the client sending a string.
+    // That's a little gross. Why not an array?
+    const categoryArray = contentCategories.split(', ');
+    categoryArray.forEach((category) => {
+      if (!possibleContentCategories.includes(category)) {
+        const msg = `Invalid "${fieldName}" field input: ${category}`;
+        throwUserInputError(msg, context);
+      }
+    });
   };
 
   // Taken from: https://stackoverflow.com/questions/175739/built-in-way-in-javascript-to-check-if-a-string-is-a-valid-number
@@ -118,6 +132,25 @@ module.exports = (logger) => {
     validateTimestamp(meetingEndTimestamp, 'meeting_end_timestamp', context);
     validateURL(virtualMeetingUrl, 'virtual_meeting_url', context);
     validateType(meetingType, 'meeting_type', context);
+    validateStatus(status, 'status', context);
+  };
+
+  module.validateCreateMeetingItem = (args) => {
+    const context = 'createMeetingItem';
+
+    // No need to validate meeting_id, order_number. The schema's validation is good enough
+
+    const {
+      item_start_timestamp, item_end_timestamp,
+      status, content_categories,
+      // description_loc_key, title_loc_key,
+      // TODO: description_loc_key and title_loc_key aren't yet references
+      // to anything - additional validaiton is not required for them yet
+    } = args;
+
+    validateFutureTimestamp(item_start_timestamp, 'item_start_timestamp', context);
+    validateFutureTimestamp(item_end_timestamp, 'item_end_timestamp', context);
+    validateContentCategories(content_categories, 'content_categories', context);
     validateStatus(status, 'status', context);
   };
 
