@@ -16,8 +16,7 @@ module.exports = (logger) => {
   const validateStatus = (status, fieldName, context) => {
     // The status should be included in the list of allowed statuses
     if (!possibleStatuses.includes(status)) {
-      const msg = 'Invalid "status" field input: ';
-      logger.debug(`Status input: ${status}`);
+      const msg = `Invalid "${fieldName}" field input value: ${status}`;
       throwUserInputError(msg, context);
     }
   };
@@ -25,8 +24,7 @@ module.exports = (logger) => {
   const validateType = (type, fieldName, context) => {
     // Meeting type should be included in the list of allowed types
     if (!possibleTypes.includes(type)) {
-      const msg = `Invalid "${fieldName}" field.`;
-      logger.debug(`Type input: ${type}`);
+      const msg = `Invalid "${fieldName}" field input value: ${type}`;
       throwUserInputError(msg, context);
     }
   };
@@ -38,7 +36,7 @@ module.exports = (logger) => {
     const categoryArray = contentCategories.split(', ');
     categoryArray.forEach((category) => {
       if (!possibleContentCategories.includes(category)) {
-        const msg = `Invalid "${fieldName}" field input: ${category}`;
+        const msg = `Invalid "${fieldName}" field input value: ${category}`;
         throwUserInputError(msg, context);
       }
     });
@@ -51,14 +49,12 @@ module.exports = (logger) => {
   const validateTimestamp = (ts, fieldName, context) => {
     const tsIsNumeric = isNumericString(ts);
     if (!tsIsNumeric) {
-      const msg = `Invalid "${fieldName}" field. Timestamp is not numeric.`;
-      logger.debug(`Timestamp: ${ts}`);
+      const msg = `Invalid "${fieldName}" field. Timestamp is not numeric: ${ts}`;
       throwUserInputError(msg, context);
     }
     const isValidDate = new Date(parseInt(ts, 10)).getTime() > 0;
     if (!isValidDate) {
-      const msg = `Invalid "${fieldName}" field. Timestamp is not a valid date.`;
-      logger.debug(`Timestamp: ${ts}`);
+      const msg = `Invalid "${fieldName}" field. Timestamp is not a valid date: ${ts}`;
       throwUserInputError(msg, context);
     }
   };
@@ -69,8 +65,7 @@ module.exports = (logger) => {
     const now = new Date();
     const isFutureDate = ts >= now;
     if (!isFutureDate) {
-      const msg = `Invalid "${fieldName}" field. Timestamp doesn't reference a future date.`;
-      logger.debug(`Timestamp: ${ts}`);
+      const msg = `Invalid "${fieldName}" field. Timestamp doesn't reference a future date: ${ts}`;
       throwUserInputError(msg, context);
     }
   };
@@ -86,8 +81,7 @@ module.exports = (logger) => {
     const isvalidURL = pattern.test(url);
 
     if (!isvalidURL) {
-      const msg = `Invalid "${fieldName}" field. Bad URL.`;
-      logger.debug(`URL: ${url}`);
+      const msg = `Invalid "${fieldName}" field. Bad URL: ${url}`;
       throwUserInputError(msg, context);
     }
   };
