@@ -5,24 +5,24 @@ import AdminNavigationLink from './AdminNavigationLink';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
-import infoIcon from '../../assets/info-24px.svg';
-import editIcon from '../../assets/edit-24px.svg';
-import publishIcon from '../../assets/publish-24px.svg';
+import { ReactComponent as InfoIcon } from '../../assets/info-24px.svg';
+import { ReactComponent as EditIcon } from '../../assets/edit-24px.svg';
+import { ReactComponent as PublishIcon } from '../../assets/publish-24px.svg';
 
 const LINKS = [
   {
     key: 'editDetails',
-    icon: infoIcon,
+    icon: InfoIcon,
     linkText: 'Edit Meeting Details'
   },
   {
     key: 'editAgenda',
-    icon: editIcon,
+    icon: EditIcon,
     linkText: 'Edit Agenda Items'
   },
   {
     key: 'uploadAgenda',
-    icon: publishIcon,
+    icon: PublishIcon,
     linkText: 'Upload New Agenda'
   }
 ]
@@ -39,7 +39,7 @@ function AdminNavigation() {
               return (
                 <AdminNavigationLink
                   key={link.key}
-                  icon={link.icon}
+                  Icon={link.icon}
                   linkText={link.linkText}
                   handleClick={() => console.log(link.key)}    // DEBUG: replace with click function
                   active={link.key === 'editDetails'}   // DEBUG: replace with conditional
