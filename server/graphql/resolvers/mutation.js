@@ -49,24 +49,23 @@ module.exports = (logger, dbClient, twilioClient) => {
     return res.rows[0];
   };
 
-  module.updateMeetingItem = async (
-    id, orderNumber, status, itemStartTimestamp,
-    itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey,
-  ) => {
+  module.updateMeetingItem = async (args) => {
+    validator.validateUpdateMeetingItem(args);
     let res = await dbClient.updateMeetingItem(
-      id, orderNumber, status, itemStartTimestamp,
-      itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey,
+      args.id, args.order_number, args.status, args.item_start_timestamp,
+      args.item_end_timestamp, args.content_categories, args.description_loc_key,
+      args.title_loc_key,
     );
-    res = await dbClient.getMeetingItem(id);
+    res = await dbClient.getMeetingItem(args.id);
     const meetingItem = res.rows[0];
 
     // TODO: Validation required: only send notifications if update was successful
-    switch (status) {
+    switch (args.status) {
       case 'COMPLETED':
-        subscriptionController.notifyItemSubscribers(id, 'ITEM(S) COMPLETED: ');
+        subscriptionController.notifyItemSubscribers(args.id, 'ITEM(S) COMPLETED: ');
         break;
       case 'IN PROGRESS':
-        subscriptionController.notifyItemSubscribers(id, 'ITEM(S) IN PROGRESS: ');
+        subscriptionController.notifyItemSubscribers(args.id, 'ITEM(S) IN PROGRESS: ');
         subscriptionController.notifyNextItemSubscribers(meetingItem, 'YOUR ITEM(S) IS/ARE UP NEXT: ');
         break;
       default:

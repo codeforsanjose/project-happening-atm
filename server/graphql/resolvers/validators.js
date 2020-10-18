@@ -37,7 +37,7 @@ module.exports = (logger) => {
     // TODO: This validation logic is likely to change as it's
     // currently dependent on the client sending a string.
     // That's a little gross. Why not an array?
-    const categoryArray = contentCategories.split(', ');
+    const categoryArray = contentCategories.split(',');
     categoryArray.forEach((category) => {
       if (!possibleContentCategories.includes(category)) {
         const msg = `Invalid "${fieldName}" field input value: ${category}`;
@@ -143,6 +143,25 @@ module.exports = (logger) => {
 
     validateFutureTimestamp(item_start_timestamp, 'item_start_timestamp', context);
     validateFutureTimestamp(item_end_timestamp, 'item_end_timestamp', context);
+    validateContentCategories(content_categories, 'content_categories', context);
+    validateStatus(status, 'status', context);
+  };
+
+  module.validateUpdateMeetingItem = (args) => {
+    const context = 'updateMeetingItem';
+
+    // No need to validate meeting_id, order_number. The schema's validation is good enough
+
+    // TODO: description_loc_key and title_loc_key aren't yet references
+    // to anything - additional validation is not required for them yet
+
+    const {
+      item_start_timestamp, item_end_timestamp, status, content_categories,
+      // description_loc_key, title_loc_key,
+    } = args;
+
+    validateTimestamp(item_start_timestamp, 'item_start_timestamp', context);
+    validateTimestamp(item_end_timestamp, 'item_end_timestamp', context);
     validateContentCategories(content_categories, 'content_categories', context);
     validateStatus(status, 'status', context);
   };
