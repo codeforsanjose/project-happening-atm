@@ -40,9 +40,10 @@ module.exports = (logger, dbClient, twilioClient) => {
     return res.rows[0];
   };
 
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
+  module.createSubscription = async (args) => {
+    validator.validateCreateSubscription(args);
     let res = await dbClient.createSubscription(
-      phoneNumber, emailAddress, meetingItemId, meetingId,
+      args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id,
     );
     const newId = res.rows[0].id;
     res = await dbClient.getSubscription(newId);

@@ -90,7 +90,35 @@ module.exports = (logger) => {
     }
   };
 
-  // --- Here's the actual exported validation functionality: ---
+  const isValidEmailString = (email) => {
+    // Taken from: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validateEmail = (email, fieldName, context) => {
+    if (!isValidEmailString(email)) {
+      const msg = `Invalid "${fieldName}" field value. Bad email: ${email}`;
+      throwUserInputError(msg, context);
+    }
+  };
+
+  const validateTwilioSafePhoneNumber = (phoneNumber, fieldName, context) => {
+    logger.error(phoneNumber.charAt(0));
+
+    if (!isNumericString(phoneNumber)) {
+      const msg = `Invalid "${fieldName}" field value. Number not numeric: ${phoneNumber}`;
+      throwUserInputError(msg, context);
+    } else if (!(phoneNumber.charAt(0) === '1')) {
+      const msg = `Invalid "${fieldName}" field value. Country code is required to be 1: ${phoneNumber}`;
+      throwUserInputError(msg, context);
+    } else if (phoneNumber.length !== 11) {
+      const msg = `Invalid "${fieldName}" field value. Unexpected length. Country and area codes are required: ${phoneNumber}`;
+      throwUserInputError(msg, context);
+    }
+  };
+
+  // --- Here's the exported validation functionality: ---
 
   const module = {};
 
@@ -164,6 +192,22 @@ module.exports = (logger) => {
     validateTimestamp(item_end_timestamp, 'item_end_timestamp', context);
     validateContentCategories(content_categories, 'content_categories', context);
     validateStatus(status, 'status', context);
+  };
+
+  module.validateCreateSubscription = (args) => {
+    const context = 'createSubscription';
+
+    // TODO: Handle meeting_item_id, meeting_id validation
+    // I'd like to enforce these records only having one of these
+    // values, but I need to verify requirements
+
+    const {
+      phone_number, email_address,
+      // meeting_item_id, meeting_id,
+    } = args;
+
+    validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+    validateEmail(email_address, 'email_address', context);
   };
 
   return module;
