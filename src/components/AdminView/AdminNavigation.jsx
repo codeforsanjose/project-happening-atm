@@ -27,6 +27,10 @@ const LINKS = [
   }
 ]
 
+/**
+ * Admin side navigation component
+ */
+
 function AdminNavigation() {
   return (
     <div className="admin-navigation">
@@ -42,7 +46,7 @@ function AdminNavigation() {
                   Icon={link.icon}
                   linkText={link.linkText}
                   handleClick={() => console.log(link.key)}    // DEBUG: replace with click function
-                  active={link.key === 'editDetails'}   // DEBUG: replace with conditional
+                  active={link.key === 'editDetails'}   // DEBUG: replace with conditional for current view
                 />
               );
             })
