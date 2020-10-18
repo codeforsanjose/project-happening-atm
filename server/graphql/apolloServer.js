@@ -91,21 +91,21 @@ module.exports = (dbClient, twilioClient, logger) => {
     Mutation: {
       createMeeting: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'createMeeting');
-        return mutationResolver.createMeeting(args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status);
+        return mutationResolver.createMeeting(args);
       },
       updateMeeting: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'updateMeeting');
-        return mutationResolver.updateMeeting(args.id, args.status, args.meeting_type, args.virtual_meeting_url, args.meeting_start_timestamp, args.meeting_end_timestamp);
+        return mutationResolver.updateMeeting(args);
       },
       createMeetingItem: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'createMeetingItem');
-        return mutationResolver.createMeetingItem(args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp, args.status, args.content_categories, args.description_loc_key, args.title_loc_key);
+        return mutationResolver.createMeetingItem(args);
       },
       updateMeetingItem: async (_parent, args, context) => {
         validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
-        return mutationResolver.updateMeetingItem(args.id, args.order_number, args.status, args.item_start_timestamp, args.item_end_timestamp, args.content_categories, args.description_loc_key, args.title_loc_key);
+        return mutationResolver.updateMeetingItem(args);
       },
-      createSubscription: async (_parent, args) => mutationResolver.createSubscription(args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id),
+      createSubscription: async (_parent, args) => mutationResolver.createSubscription(args),
     },
   };
 
