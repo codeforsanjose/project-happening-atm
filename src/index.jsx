@@ -48,9 +48,9 @@ function App() {
             <ApolloProvider client={client}>
                 <div className={classnames('app-root')}>
                     <Router>
-                        {/* <div className="ribbon" />
+                        <div className="ribbon" />
                         <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
-                        <div className="fade-box" /> */}
+                        <div className="fade-box" />
                         {/*
                         A <Switch> looks through all its children <Route>
                         elements and renders the first one whose path
