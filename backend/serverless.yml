@@ -1,0 +1,30 @@
+service: apollo-lambda
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-west-1
+  environment:
+    IS_LAMBDA: true
+    NODE_ENV: development
+    PGHOST: 127.0.0.1 
+    PGUSER: docker 
+    PGPASSWORD: docker 
+    PGDATABASE: devdb 
+    PGPORT: 8888 
+
+    TWILIO_ACCOUNT_SID: AC-XXX-SECRET-XXX # This secret needs to start with AC or the Twilio client crashes
+    TWILIO_AUTH_TOKEN: XXX-SECRET-XXX
+    TWILIO_PHONE_NUMBER: XXX-SECRET-XXX
+functions:
+  graphql:
+    # this is formatted as <FILENAME>.<HANDLER>
+    handler: handler.graphqlHandler
+    events:
+    - http:
+        path: graphql
+        method: post
+        cors: true
+    - http:
+        path: graphql
+        method: get
+        cors: true

@@ -1,15 +1,16 @@
 /* eslint-disable max-len */
-const { ApolloServer, gql } = require('apollo-server-lambda');
+const isLambda = process.env.IS_LAMBDA;
+const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
-const getValidator = require('./resolvers/validators');
-const authController = require('../controllers/authController')();
+// const getValidator = require('./resolvers/validators');
+// const authController = require('../controllers/authController')();
 
 module.exports = (dbClient, twilioClient, logger) => {
   const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
   const queryResolver = getQueryResolver(logger, dbClient);
-  const validator = getValidator(logger);
+  // const validator = getValidator(logger);
 
   const typeDefs = gql`
     type Query {
@@ -89,22 +90,18 @@ module.exports = (dbClient, twilioClient, logger) => {
       getAllSubscriptions: async () => queryResolver.getAllSubscriptions(),
     },
     Mutation: {
-      createMeeting: async (_parent, args, context) => {
+      createMeeting: async (_parent, args, context) =>
         // validator.validateAuthorization(context.user.admin, 'createMeeting');
-        return mutationResolver.createMeeting(args);
-      },
-      updateMeeting: async (_parent, args, context) => {
+        mutationResolver.createMeeting(args),
+      updateMeeting: async (_parent, args, context) =>
         // validator.validateAuthorization(context.user.admin, 'updateMeeting');
-        return mutationResolver.updateMeeting(args);
-      },
-      createMeetingItem: async (_parent, args, context) => {
+        mutationResolver.updateMeeting(args),
+      createMeetingItem: async (_parent, args, context) =>
         // validator.validateAuthorization(context.user.admin, 'createMeetingItem');
-        return mutationResolver.createMeetingItem(args);
-      },
-      updateMeetingItem: async (_parent, args, context) => {
+        mutationResolver.createMeetingItem(args),
+      updateMeetingItem: async (_parent, args, context) =>
         // validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
-        return mutationResolver.updateMeetingItem(args);
-      },
+        mutationResolver.updateMeetingItem(args),
       createSubscription: async (_parent, args) => mutationResolver.createSubscription(args),
     },
   };
@@ -112,10 +109,13 @@ module.exports = (dbClient, twilioClient, logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
+    playground: {
+      endpoint: '/dev/graphql',
+    },
     // context: ({ req }) => authController.apolloServerContextInit(req),
     context: ({ event, context }) => ({
-      headers: event.headers,
-      functionName: context.functionName,
+      // headers: event.headers,
+      // functionName: context.functionName,
       event,
       context,
     }),
