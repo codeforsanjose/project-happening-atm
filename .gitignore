@@ -96,6 +96,7 @@ dist
 
 # Serverless directories
 .serverless/
+secrets.json
 
 # FuseBox cache
 .fusebox/
