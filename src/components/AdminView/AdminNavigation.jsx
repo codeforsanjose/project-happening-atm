@@ -54,7 +54,12 @@ function AdminNavigation() {
         </ul>
       </div>
 
-      <button className="admin-publish-button">Publish Changes</button>
+      <button
+        className="admin-publish-button"
+        onClick={() => console.log('publish clicked')}    // DEBUG: replace with publish action
+      >
+        Publish Changes
+      </button>
     </div>
   );
 }
