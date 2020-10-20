@@ -15,6 +15,7 @@ import classnames from 'classnames';
 import NavigationMenu from './components/Header/NavigationMenu';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
+import AdminView from './components/AdminView/AdminView';
 
 import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from '@apollo/client';
 import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
@@ -22,7 +23,7 @@ import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
 const client = new ApolloClient({
     uri: 'http://localhost:3000/graphql',
     cache: new InMemoryCache()
-  });  
+  });
 
 function SampleQuery() {
     const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
@@ -34,7 +35,7 @@ function SampleQuery() {
 
     return null;
 }
-  
+
 function App() {
     const [showMenu, setShowMenu] = useState(false);
 
@@ -66,6 +67,9 @@ function App() {
                             </Route>
                             <Route path="/meeting-item/:id">
                                 <MeetingItem />
+                            </Route>
+                            <Route exact path="/admin">
+                                <AdminView />
                             </Route>
                         </Switch>
                         <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu}/>
