@@ -114,8 +114,8 @@ module.exports = (dbClient, twilioClient, logger) => {
     },
     // context: ({ req }) => authController.apolloServerContextInit(req),
     context: ({ event, context }) => ({
-      // headers: event.headers,
-      // functionName: context.functionName,
+      headers: event.headers,
+      functionName: context.functionName,
       event,
       context,
     }),

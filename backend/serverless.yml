@@ -31,12 +31,97 @@ custom:
       Fn::GetAtt: [PostgreSqlRDSInstance, Endpoint.Port]
     HOST:
       Fn::GetAtt: [PostgreSqlRDSInstance, Endpoint.Address]
+    VPC_CIDR: 10
 
 plugins:
   - serverless-pseudo-parameters
 resources:
-  Resources:
+  Resources:    
+    ServerlessInternetGateway:
+      Type: AWS::EC2::InternetGateway
+      Properties:
+        Tags: 
+          - 
+            Key: "Name"
+            Value: "ServerlessInternetGateway"
+      
+    ServerlessVPC:
+      Type: AWS::EC2::VPC
+      Properties:
+        CidrBlock: ${self:custom.POSTGRESQL.VPC_CIDR}.0.0.0/16
+        EnableDnsSupport: true
+        EnableDnsHostnames: true
+        InstanceTenancy: default
+        Tags: 
+          - 
+            Key: "Name"
+            Value: "ServerlessVPC"
+
+    ServerlessVPCGA:    
+      Type: AWS::EC2::VPCGatewayAttachment
+      Properties:
+        VpcId:
+          Ref: ServerlessVPC
+        InternetGatewayId:
+          Ref: ServerlessInternetGateway
+
+    ServerlessSubnetA:
+      DependsOn: ServerlessVPC
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId:
+          Ref: ServerlessVPC
+        AvailabilityZone: ${self:provider.region}a
+        CidrBlock: ${self:custom.POSTGRESQL.VPC_CIDR}.0.0.0/24
+        Tags: 
+          - 
+            Key: "Name"
+            Value: "ServerlessSubnetA"
+
+    ServerlessSubnetB:
+      DependsOn: ServerlessVPC
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId:
+          Ref: ServerlessVPC
+        AvailabilityZone: ${self:provider.region}b
+        CidrBlock: ${self:custom.POSTGRESQL.VPC_CIDR}.0.1.0/24
+        Tags: 
+          - 
+            Key: "Name"
+            Value: "ServerlessSubnetB"
+
+    ServerlessSubnetGroup:
+      Type: AWS::RDS::DBSubnetGroup
+      Properties:
+        DBSubnetGroupDescription: "RDS Subnet Group"
+        SubnetIds:
+          - Ref: ServerlessSubnetA
+          - Ref: ServerlessSubnetB
+        Tags: 
+          - 
+            Key: "Name"
+            Value: "ServerlessSubnetGroup"
+
+    ServerlessSecurityGroup:
+      DependsOn: ServerlessVPC
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: SecurityGroup for Serverless Functions
+        VpcId:
+          Ref: ServerlessVPC
+        SecurityGroupIngress:
+          - IpProtocol: tcp
+            FromPort: '0'
+            ToPort: '65535'
+            CidrIp: "0.0.0.0/0"
+        Tags: 
+          - 
+            Key: "Name"
+            Value: "ServerlessSecurityGroup"
+
     PostgreSqlRDSInstance: 
+      DependsOn: ServerlessVPCGA
       Type: AWS::RDS::DBInstance
       Properties:
         Engine: postgres
@@ -46,6 +131,10 @@ resources:
         DBName: ${self:custom.POSTGRESQL.DBNAME}
         MasterUsername: ${self:custom.POSTGRESQL.USER}
         MasterUserPassword: ${self:custom.POSTGRESQL.PASS}
+        VPCSecurityGroups:
+        - !GetAtt ServerlessSecurityGroup.GroupId
+        DBSubnetGroupName:
+          Ref: ServerlessSubnetGroup
 
 functions:
   graphql:
