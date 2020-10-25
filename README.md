@@ -15,7 +15,7 @@ The City of San Jose is interested in this service, but this is a project that c
     * SASS
 * Backend
     * [Node.js and npm](https://www.npmjs.com/get-npm)
-    * Express
+    * AWS Lambda
     * GraphQL
     * Apollo
     * Twilio
@@ -39,20 +39,20 @@ The City of San Jose is interested in this service, but this is a project that c
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Install [Node.js and npm](https://www.npmjs.com/get-npm)
 3.  Install project dependencies:
-    1. Navigate to the root of the project's directory
+    1. Navigate to the `/frontend` directory
     2. Run command:
         ```bash
         npm install
         ```
 4. Make modifications to the codebase to address the issue your working on
 5. See your changes:
-    1.  Navigate to the root of the project's directory
+    1.  Navigate to the `/frontend` directory
     2.  Run command:
         ```bash
         npm run start
         ```
 
-## To Begin Work on the Backend / Serve the Entire Web App (Backend + Frontend)
+## To Begin Work on the Backend / Serve Backend
 Frontend specific development doesn't require these steps. Setting up the DB is only necessary if you'll be wanting to interact with the entire web app, including the backend API.
 1. Visit the issues page to find something to work on:
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
@@ -62,18 +62,18 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
     1.  Install [Docker](https://www.docker.com/products/docker-desktop)
     2.  Create the Docker image for the local DB
         * This only needs to be done once unless modifcations have been made to `/server/docker/dev/init.sql`. See notes below.
-        1.  Navigate to `/server/docker/dev/`
+        1.  Navigate to `/backend/docker/dev/`
         2.  Run command: 
             ```bash
             make image
             ```
     3.  Spin up a corresponding Docker container ("Turn it on")
-        1.  Navigate to `/server/docker/dev/`
+        1.  Navigate to `/backend/docker/dev/`
         2.  Run command:
             ```bash
             make container
             ```
-3.  Create a `.env` file at the root of the project directory
+3.  Create a `.env` file in the `/backend` directory
     1.  Make sure the file includes these keys:
         ```
         NODE_ENV=development
@@ -96,23 +96,24 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
         ```
         *   Message Trace Ohrt on Slack if you need secret key values
 
-4.  Initialize server
+4.  Initialize server locally
     1.  Install project dependencies:
-        1. Navigate to the root of the project's directory
+        1. Navigate to the `/backend` directory
         2. Run command:
             ```bash
             npm install
             ```
-    2. Run command:
-       ```bash
-       npm run dev
-       ```
-    3. View the website (aka frontend) at http://localhost:3000
-    4. View the GraphQL api playground at http://localhost:3000/graphql
+    2. Start server:
+        1. Navigate to the `/backend` directory
+        2. Run command: 
+            ```bash
+            npm run start
+            ```
+    4. View the GraphQL API playground at http://localhost:3000/graphql
 5. Make modifications to the codebase to address the issue you're working on
 
 ### Notes
-If changes are made to `/server/docker/dev/init.sql`, the old docker image must be deleted, regenerated and containerized for the changes to take place.
+If changes are made to `/backend/docker/dev/init.sql`, the old docker image must be deleted, regenerated and containerized for the changes to take place.
 
 The command for deleting the previous image is:
 ```bash
