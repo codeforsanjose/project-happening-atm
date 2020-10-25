@@ -59,10 +59,10 @@ VALUES (1, 2, current_timestamp, current_timestamp, current_timestamp, current_t
 
 
 INSERT INTO subscription(meeting_item_id, meeting_id, created_timestamp, updated_timestamp, phone_number, email_address)
-VALUES (1, 1, current_timestamp, current_timestamp, current_timestamp, 'fake@faker.gov');
+VALUES (1, 1, current_timestamp, current_timestamp, '12345678901', 'fake@faker.gov');
 
 INSERT INTO subscription(meeting_item_id, meeting_id, created_timestamp, updated_timestamp, phone_number, email_address)
-VALUES (2, 1, current_timestamp, current_timestamp, current_timestamp, 'fake@faker.gov');
+VALUES (2, 1, current_timestamp, current_timestamp, '12345678901', 'fake@faker.gov');
 
 INSERT INTO subscription(meeting_item_id, meeting_id, created_timestamp, updated_timestamp, phone_number, email_address)
-VALUES (3, 1, current_timestamp, current_timestamp, current_timestamp, 'fake@faker.gov');
+VALUES (3, 1, current_timestamp, current_timestamp, '12345678901', 'fake@faker.gov');
