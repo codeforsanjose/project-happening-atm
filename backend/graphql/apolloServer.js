@@ -112,12 +112,18 @@ module.exports = (dbClient, twilioClient, logger) => {
     playground: {
       endpoint: '/dev/graphql',
     },
+    // Auth implementation:
     // context: ({ req }) => authController.apolloServerContextInit(req),
-    context: ({ event, context }) => ({
-      headers: event.headers,
-      functionName: context.functionName,
-      event,
-      context,
-    }),
+
+    // Lambda Implementation:
+    // context: ({ event, context }) => ({
+    //   headers: event.headers,
+    //   functionName: context.functionName,
+    //   event,
+    //   context,
+    // }),
+
+    // Empty implementation for local and deployed dev use:
+    context: {},
   });
 };
