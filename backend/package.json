@@ -28,7 +28,9 @@
     "nodemon": "^2.0.5",
     "serverless-pseudo-parameters": "^2.5.0"
   },
-  "scripts": {},
+  "scripts": {
+    "start": "nodemon backend/handler"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
