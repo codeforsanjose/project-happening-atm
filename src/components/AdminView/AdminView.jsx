@@ -2,6 +2,7 @@ import React from 'react';
 import './AdminView.scss';
 
 import AdminNavigation from './AdminNavigation'
+import AdminUploadView from './AdminViewPages/AdminUploadView/AdminUploadView';
 
 function AdminView() {
 
@@ -10,7 +11,7 @@ function AdminView() {
           <AdminNavigation />
 
           <div className="wrapper">
-            I am the Admin View
+            <AdminUploadView />
           </div>
         </div>
     );
