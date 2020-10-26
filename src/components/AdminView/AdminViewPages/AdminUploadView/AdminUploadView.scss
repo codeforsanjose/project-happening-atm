@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-#upload-area {
+.upload-area {
   padding: 10em;
   margin: 0 auto;
   display: flex;
@@ -16,5 +16,18 @@
 
   p {
     margin: 0.5em 0;
+  }
+
+  label {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
   }
 }
