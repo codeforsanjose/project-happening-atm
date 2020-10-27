@@ -47,8 +47,7 @@ function DragAndDrop({ dropHandler, children }) {
     setDragging(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      // dropHandler(e.dataTransfer.files)
-      console.log(e.dataTransfer.files);
+      dropHandler(e.dataTransfer.files)
     }
 
     e.dataTransfer.clearData()
