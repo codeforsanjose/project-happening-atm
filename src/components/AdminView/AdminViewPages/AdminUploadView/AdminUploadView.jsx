@@ -68,6 +68,7 @@ function AdminUploadView() {
 
       {showConfirmModal &&
         <AdminUploadConfirmModal
+          fileName={fileList[0].name}
           closeModal={closeModal}
           confirmModal={confirmModal}
         />
