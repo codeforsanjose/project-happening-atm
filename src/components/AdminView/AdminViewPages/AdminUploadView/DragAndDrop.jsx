@@ -50,7 +50,6 @@ function DragAndDrop({ dropHandler, children }) {
       dropHandler(e.dataTransfer.files)
     }
 
-    e.dataTransfer.clearData()
     dragCounter = 0;
   }
 
