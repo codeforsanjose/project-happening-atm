@@ -8,24 +8,24 @@ import DragAndDrop from './DragAndDrop';
 function AdminUploadView() {
   const fileInputRef = useRef();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [fileList, setFileList] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   function handleFileChange() {
     const fileRef = fileInputRef.current;
     // TODO: Validate files?
-    setFileList(fileRef.files);
+    setSelectedFile(fileRef.files[0]);
     setShowConfirmModal(true);
   }
 
   function handleFileDrop(files) {
     // TODO: Validate dropped files?
-    setFileList(files);
+    setSelectedFile(files[0]);
     setShowConfirmModal(true);
   }
 
   function resetUpload() {
     fileInputRef.current.value = '';
-    setFileList(null);
+    setSelectedFile(null);
     setShowConfirmModal(false);
   }
 
@@ -35,14 +35,15 @@ function AdminUploadView() {
   }
 
   function confirmModal() {
-    uploadCSV(fileList);
+    uploadCSV(selectedFile);
     // TODO: Display success/confirmation, handle errors
     resetUpload();
   }
 
   /** Send CSV file to back end */
-  function uploadCSV(fileList) {
-    console.log('Uploading: ', fileList);
+  function uploadCSV(selectedFile) {
+    console.log('Uploading: ', selectedFile);
+    // TODO: Implement upload
   }
 
   return (
@@ -68,7 +69,7 @@ function AdminUploadView() {
 
       {showConfirmModal &&
         <AdminUploadConfirmModal
-          fileName={fileList[0].name}
+          fileName={selectedFile.name}
           closeModal={closeModal}
           confirmModal={confirmModal}
         />
