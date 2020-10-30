@@ -31,6 +31,7 @@
     "react-infinite-scroll-component": "^5.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "rsuite": "^4.8.4",
     "twilio": "^3.50.0",
     "winston": "^3.3.3"
   },
