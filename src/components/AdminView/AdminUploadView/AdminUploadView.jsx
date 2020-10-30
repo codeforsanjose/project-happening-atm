@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './AdminUploadView.scss';
 
-import { ReactComponent as PublishIcon } from '../../../../assets/publish-24px.svg';
+import { ReactComponent as PublishIcon } from '../../../assets/publish-24px.svg';
 import AdminUploadConfirmModal from './AdminUploadConfirmModal';
 import DragAndDrop from './DragAndDrop';
 
