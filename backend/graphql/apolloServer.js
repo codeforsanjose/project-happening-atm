@@ -4,13 +4,10 @@ const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : requi
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
-// const getValidator = require('./resolvers/validators');
-// const authController = require('../controllers/authController')();
 
 module.exports = (dbClient, twilioClient, logger) => {
   const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
   const queryResolver = getQueryResolver(logger, dbClient);
-  // const validator = getValidator(logger);
 
   const typeDefs = gql`
     type Query {
@@ -90,18 +87,10 @@ module.exports = (dbClient, twilioClient, logger) => {
       getAllSubscriptions: async () => queryResolver.getAllSubscriptions(),
     },
     Mutation: {
-      createMeeting: async (_parent, args, context) =>
-        // validator.validateAuthorization(context.user.admin, 'createMeeting');
-        mutationResolver.createMeeting(args),
-      updateMeeting: async (_parent, args, context) =>
-        // validator.validateAuthorization(context.user.admin, 'updateMeeting');
-        mutationResolver.updateMeeting(args),
-      createMeetingItem: async (_parent, args, context) =>
-        // validator.validateAuthorization(context.user.admin, 'createMeetingItem');
-        mutationResolver.createMeetingItem(args),
-      updateMeetingItem: async (_parent, args, context) =>
-        // validator.validateAuthorization(context.user.admin, 'updateMeetingItem');
-        mutationResolver.updateMeetingItem(args),
+      createMeeting: async (_parent, args, context) => mutationResolver.createMeeting(args),
+      updateMeeting: async (_parent, args, context) => mutationResolver.updateMeeting(args),
+      createMeetingItem: async (_parent, args, context) => mutationResolver.createMeetingItem(args),
+      updateMeetingItem: async (_parent, args, context) => mutationResolver.updateMeetingItem(args),
       createSubscription: async (_parent, args) => mutationResolver.createSubscription(args),
     },
   };
@@ -112,18 +101,8 @@ module.exports = (dbClient, twilioClient, logger) => {
     playground: {
       endpoint: '/dev/graphql',
     },
-    // Auth implementation:
-    // context: ({ req }) => authController.apolloServerContextInit(req),
-
-    // Lambda Implementation:
-    // context: ({ event, context }) => ({
-    //   headers: event.headers,
-    //   functionName: context.functionName,
-    //   event,
-    //   context,
-    // }),
-
     // Empty implementation for local and deployed dev use:
+    // TODO: Auth needs to be refactored for AWS
     context: {},
   });
 };
