@@ -11,6 +11,8 @@ if (process.env.IS_LAMBDA) {
   exports.graphqlHandler = server.createHandler({
     cors: {
       origin: '*',
+      // TODO: This needs changed when we're ready for prod
+      // This is facilitating easy testing of deployed lambdas but isn't secure
     },
   });
 } else {
