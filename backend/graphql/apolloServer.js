@@ -95,6 +95,7 @@ module.exports = (dbClient, twilioClient, logger) => {
     },
   };
 
+  // ApolloServer documentation: https://www.apollographql.com/docs/apollo-server/
   return new ApolloServer({
     typeDefs,
     resolvers,
