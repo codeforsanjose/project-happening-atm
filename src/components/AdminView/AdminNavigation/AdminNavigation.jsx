@@ -4,10 +4,10 @@ import './AdminNavigation.scss';
 import AdminNavigationLink from './AdminNavigationLink';
 
 // Asset imports
-import cityLogo from '../../assets/SanJoseCityLogo.png';
-import { ReactComponent as InfoIcon } from '../../assets/info-24px.svg';
-import { ReactComponent as EditIcon } from '../../assets/edit-24px.svg';
-import { ReactComponent as PublishIcon } from '../../assets/publish-24px.svg';
+import cityLogo from '../../../assets/SanJoseCityLogo.png';
+import { ReactComponent as InfoIcon } from '../../../assets/info-24px.svg';
+import { ReactComponent as EditIcon } from '../../../assets/edit-24px.svg';
+import { ReactComponent as PublishIcon } from '../../../assets/publish-24px.svg';
 
 const LINKS = [
   {
