@@ -1,7 +1,7 @@
 import React from 'react';
 import './AdminView.scss';
 
-import AdminNavigation from './AdminNavigation'
+import AdminNavigation from './AdminNavigation/AdminNavigation'
 
 function AdminView() {
 
