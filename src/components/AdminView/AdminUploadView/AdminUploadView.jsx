@@ -12,6 +12,7 @@ function AdminUploadView() {
 
   function handleFileChange() {
     const fileRef = fileInputRef.current;
+    if (fileRef.files.length === 0) return;
     // TODO: Validate files:
     // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     setSelectedFile(fileRef.files[0]);
@@ -19,6 +20,7 @@ function AdminUploadView() {
   }
 
   function handleFileDrop(files) {
+    if (files.length === 0) return;
     // TODO: Validate dropped files:
     // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     setSelectedFile(files[0]);
@@ -72,6 +74,7 @@ function AdminUploadView() {
       </DragAndDrop>
 
       {showConfirmModal &&
+        selectedFile &&
         <AdminUploadConfirmModal
           fileName={selectedFile.name}
           closeModal={closeModal}
