@@ -12,13 +12,15 @@ function AdminUploadView() {
 
   function handleFileChange() {
     const fileRef = fileInputRef.current;
-    // TODO: Validate files?
+    // TODO: Validate files:
+    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     setSelectedFile(fileRef.files[0]);
     setShowConfirmModal(true);
   }
 
   function handleFileDrop(files) {
-    // TODO: Validate dropped files?
+    // TODO: Validate dropped files:
+    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     setSelectedFile(files[0]);
     setShowConfirmModal(true);
   }
@@ -36,14 +38,16 @@ function AdminUploadView() {
 
   function confirmModal() {
     uploadCSV(selectedFile);
-    // TODO: Display success/confirmation, handle errors
+    // TODO: Display success/confirmation, handle errors:
+    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     resetUpload();
   }
 
   /** Send CSV file to back end */
   function uploadCSV(selectedFile) {
     console.log('Uploading: ', selectedFile);
-    // TODO: Implement upload
+    // TODO: Implement upload:
+    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
   }
 
   return (
