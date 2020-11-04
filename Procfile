@@ -1,1 +1,1 @@
-web: node backend/heroku-server.js
+web: node frontend/heroku-server.js
