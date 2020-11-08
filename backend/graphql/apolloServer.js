@@ -6,10 +6,11 @@ const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : requi
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
+const getDBClient = require('../db/dbClient');
 
-module.exports = (dbClient, twilioClient, logger) => {
-  const mutationResolver = getMutationResolver(logger, dbClient, twilioClient);
-  const queryResolver = getQueryResolver(logger, dbClient);
+module.exports = (logger) => {
+  const mutationResolver = getMutationResolver(logger);
+  const queryResolver = getQueryResolver(logger);
 
   const typeDefs = gql`
     type Query {
@@ -77,23 +78,86 @@ module.exports = (dbClient, twilioClient, logger) => {
     }
     `;
 
+  // We are handling the lifecycle of the DB client here rather than inside individual resolver functions because
+  // some resolver functions are nested within eachother. (Ex: getAllMeetingsWithItems, getMeetingWithItems and getMeeting)
+  // If the resolver functions themselves handled the connections, the logic required to effeciently manage them such that only
+  // one DB connection is used per GrapQL request would be unnecessarily complex.
+  // So, we'll handle the connection's lifecycle here at the initial function call and throw it downstream.
+  const resolverHandler = async (resolverFunc, args) => {
+    let dbClient;
+    try {
+      dbClient = await getDBClient(logger);
+      await dbClient.init();
+      return await resolverFunc(dbClient, args);
+    } catch (err) {
+      logger.error(`Resolver error: ${err}`);
+      throw err;
+    } finally {
+      try {
+        logger.info('Ending DB connection');
+        await dbClient.end();
+      } catch (err) {
+        logger.error(`Error ending DB connection: ${err.stack}`);
+      }
+    }
+  };
+
   const resolvers = {
     Query: {
-      getAllMeetings: async () => queryResolver.getAllMeetings(),
-      getMeeting: async (_parent, args) => queryResolver.getMeeting(args.id),
-      getMeetingItem: async (_parent, args) => queryResolver.getMeetingItem(args.id),
-      getAllMeetingItems: async () => queryResolver.getAllMeetingItems(),
-      getMeetingWithItems: async (_parent, args) => queryResolver.getMeetingWithItems(args.id),
-      getAllMeetingsWithItems: async () => queryResolver.getAllMeetingsWithItems(),
-      getSubscription: async (_parent, args) => queryResolver.getSubscription(args.id),
-      getAllSubscriptions: async () => queryResolver.getAllSubscriptions(),
+      getAllMeetings: async () => {
+        logger.info('Initiating GetAllMeetings Query resolver');
+        return resolverHandler(queryResolver.getAllMeetings);
+      },
+      getMeeting: async (_parent, args) => {
+        logger.info('Initiating GetMeeting Query resolver');
+        return resolverHandler(queryResolver.getMeeting, args.id);
+      },
+      getMeetingItem: async (_parent, args) => {
+        logger.info('Initiating GetMeetingItem Query resolver');
+        return resolverHandler(queryResolver.getMeetingItem, args.id);
+      },
+      getAllMeetingItems: async () => {
+        logger.info('Initiating GetAllMeetingItems Query resolver');
+        return resolverHandler(queryResolver.getAllMeetingItems);
+      },
+      getMeetingWithItems: async (_parent, args) => {
+        logger.info('Initiating GetMeetingWithItems Query resolver');
+        return resolverHandler(queryResolver.getMeetingWithItems, args.id);
+      },
+      getAllMeetingsWithItems: async () => {
+        logger.info('Initiating GetAllMeetingsWithItems Query resolver');
+        return resolverHandler(queryResolver.getAllMeetingsWithItems);
+      },
+      getSubscription: async (_parent, args) => {
+        logger.info('Initiating GetSubscription Query resolver');
+        return resolverHandler(queryResolver.getSubscription, args.id);
+      },
+      getAllSubscriptions: async () => {
+        logger.info('Initiating GetAllSubscriptions Query resolver');
+        return resolverHandler(queryResolver.getAllSubscriptions);
+      },
     },
     Mutation: {
-      createMeeting: async (_parent, args, context) => mutationResolver.createMeeting(args),
-      updateMeeting: async (_parent, args, context) => mutationResolver.updateMeeting(args),
-      createMeetingItem: async (_parent, args, context) => mutationResolver.createMeetingItem(args),
-      updateMeetingItem: async (_parent, args, context) => mutationResolver.updateMeetingItem(args),
-      createSubscription: async (_parent, args) => mutationResolver.createSubscription(args),
+      createMeeting: async (_parent, args, context) => {
+        logger.info('Initiating CreateMeeting Mutation resolver');
+        return resolverHandler(mutationResolver.createMeeting, args);
+      },
+      updateMeeting: async (_parent, args, context) => {
+        logger.info('Initiating UpdateMeeting Mutation resolver');
+        return resolverHandler(mutationResolver.updateMeeting, args);
+      },
+      createMeetingItem: async (_parent, args, context) => {
+        logger.info('Initiating CreateMeetingItem Mutation resolver');
+        return resolverHandler(mutationResolver.createMeetingItem, args);
+      },
+      updateMeetingItem: async (_parent, args, context) => {
+        logger.info('Initiating UpdateMeetingItem Mutation resolver');
+        return resolverHandler(mutationResolver.updateMeetingItem, args);
+      },
+      createSubscription: async (_parent, args) => {
+        logger.info('Initiating CreateSubscription Mutation resolver');
+        return resolverHandler(mutationResolver.createSubscription, args);
+      },
     },
   };
 
