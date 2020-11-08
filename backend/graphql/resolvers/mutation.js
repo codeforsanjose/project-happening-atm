@@ -4,70 +4,138 @@
 const getSubscriptionController = require('../../controllers/subscriptionsController');
 const getValidator = require('./validators');
 
-module.exports = (logger, dbClient, twilioClient) => {
-  const subscriptionController = getSubscriptionController(logger, dbClient, twilioClient);
+module.exports = (logger) => {
+  const subscriptionController = getSubscriptionController(logger);
   const validator = getValidator(logger);
 
   const module = {};
 
-  module.createMeeting = async (args) => {
+  module.createMeeting = async (dbClient, args) => {
     validator.validateCreateMeeting(args);
-    let res = await dbClient.createMeeting(
-      args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status,
-    );
+
+    let res;
+    try {
+      res = await dbClient.createMeeting(
+        args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status,
+      );
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
 
     if (res != null) {
       const newId = res.rows[0].id;
-      res = await dbClient.getMeeting(newId);
+      try {
+        res = await dbClient.getMeeting(newId);
+      } catch (e) {
+        logger.error(`createMeeting resolver error - dbClient.getMeeting: ${e}`);
+        throw e;
+      }
     } else {
+      logger.error('createMeeting resolver error - dbClient.createMeeting response is null');
       throw Error('Internal Error');
     }
 
     if (res != null) {
       return res.rows[0];
     }
+    logger.error('createMeeting resolver error - dbClient.getMeeting response is null');
     throw Error('Internal Error');
   };
 
-  module.createMeetingItem = async (args) => {
+  module.createMeetingItem = async (dbClient, args) => {
     validator.validateCreateMeetingItem(args);
-    let res = await dbClient.createMeetingItem(
-      args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp,
-      args.status, args.content_categories, args.description_loc_key, args.title_loc_key,
-    );
+
+    let res;
+    try {
+      res = await dbClient.createMeetingItem(
+        args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp,
+        args.status, args.content_categories, args.description_loc_key, args.title_loc_key,
+      );
+    } catch (e) {
+      logger.error(`createMeetingItem resolver error - dbClient.createMeetingItem: ${e}`);
+      throw e;
+    }
     const newId = res.rows[0].id;
-    res = await dbClient.getMeetingItem(newId);
+
+    try {
+      res = await dbClient.getMeetingItem(newId);
+    } catch (e) {
+      logger.error(`createMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
+      throw e;
+    }
     return res.rows[0];
   };
 
-  module.createSubscription = async (args) => {
+  module.createSubscription = async (dbClient, args) => {
     validator.validateCreateSubscription(args);
-    let res = await dbClient.createSubscription(
-      args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id,
-    );
+
+    let res;
+    try {
+      res = await dbClient.createSubscription(
+        args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id,
+      );
+    } catch (e) {
+      logger.error(`createSubscription resolver error - dbClient.createSubscription: ${e}`);
+      throw e;
+    }
     const newId = res.rows[0].id;
-    res = await dbClient.getSubscription(newId);
+
+    try {
+      res = await dbClient.getSubscription(newId);
+    } catch (e) {
+      logger.error(`createSubscription resolver error - dbClient.getSubscription: ${e}`);
+      throw e;
+    }
     return res.rows[0];
   };
 
-  module.updateMeetingItem = async (args) => {
+  module.updateMeetingItem = async (dbClient, args) => {
     validator.validateUpdateMeetingItem(args);
-    let res = await dbClient.updateMeetingItem(
-      args.id, args.order_number, args.status, args.item_start_timestamp,
-      args.item_end_timestamp, args.content_categories, args.description_loc_key,
-      args.title_loc_key,
-    );
-    res = await dbClient.getMeetingItem(args.id);
+
+    let res;
+    try {
+      res = await dbClient.updateMeetingItem(
+        args.id, args.order_number, args.status, args.item_start_timestamp,
+        args.item_end_timestamp, args.content_categories, args.description_loc_key,
+        args.title_loc_key,
+      );
+    } catch (e) {
+      logger.error(`updateMeetingItem resolver error - dbClient.updateMeetingItem: ${e}`);
+      throw e;
+    }
+
+    // TODO: Check if update was successful
+
+    try {
+      res = await dbClient.getMeetingItem(args.id);
+    } catch (e) {
+      logger.error(`updateMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
+      throw e;
+    }
     const meetingItem = res.rows[0];
 
     // TODO: Validation required: only send notifications if update was successful
     switch (args.status) {
       case 'COMPLETED':
-        subscriptionController.notifyItemSubscribers(args.id, 'ITEM(S) COMPLETED: ');
+        try {
+          await subscriptionController.notifyItemSubscribers(dbClient, args.id, 'ITEM(S) COMPLETED: ');
+        } catch (e) {
+          logger.error(`Error notifying item subscribers: ${e}`);
+        }
         break;
+
       case 'IN PROGRESS':
-        subscriptionController.notifyItemSubscribers(args.id, 'ITEM(S) IN PROGRESS: ');
-        subscriptionController.notifyNextItemSubscribers(meetingItem, 'YOUR ITEM(S) IS/ARE UP NEXT: ');
+        try {
+          await subscriptionController.notifyItemSubscribers(dbClient, args.id, 'ITEM(S) IN PROGRESS: ');
+        } catch (e) {
+          logger.error(`Error notifying item subscribers: ${e}`);
+        }
+        try {
+          await subscriptionController.notifyNextItemSubscribers(dbClient, meetingItem, 'YOUR ITEM(S) IS/ARE UP NEXT: ');
+        } catch (e) {
+          logger.error(`Error notifying "next" item subscribers: ${e}`);
+        }
         break;
       default:
           // TODO: This state should be impossible, handle as an error
@@ -76,26 +144,48 @@ module.exports = (logger, dbClient, twilioClient) => {
     return meetingItem;
   };
 
-  module.updateMeeting = async (args) => {
+  module.updateMeeting = async (dbClient, args) => {
     validator.validateUpdateMeeting(args);
-    let res = await dbClient.updateMeeting(
-      args.id, args.status, args.meeting_type, args.virtual_meeting_url,
-      args.meeting_start_timestamp, args.meeting_end_timestamp,
-    );
+
+    let res;
+    try {
+      res = await dbClient.updateMeeting(
+        args.id, args.status, args.meeting_type, args.virtual_meeting_url,
+        args.meeting_start_timestamp, args.meeting_end_timestamp,
+      );
+    } catch (e) {
+      logger.error(`updateMeeting resolver error - dbClient.updateMeeting: ${e}`);
+      throw e;
+    }
 
     // TODO: Validation required: only send notifications if update was successful
     switch (args.status) {
       case 'COMPLETED':
-        subscriptionController.notifyMeetingSubscribers(args.id, 'MEETING COMPLETE: ');
+        try {
+          await subscriptionController.notifyMeetingSubscribers(dbClient, args.id, 'MEETING COMPLETE: ');
+        } catch (e) {
+          logger.error(`updateMeeting resolver error - subscriptionController.notifyMeetingSubscribers: ${e}`);
+          throw e;
+        }
         break;
       case 'IN PROGRESS':
-        subscriptionController.notifyMeetingSubscribers(args.id, 'MEETING IN PROGRESS: ');
+        try {
+          await subscriptionController.notifyMeetingSubscribers(dbClient, args.id, 'MEETING IN PROGRESS: ');
+        } catch (e) {
+          logger.error(`updateMeeting resolver error - subscriptionController.notifyMeetingSubscribers: ${e}`);
+          throw e;
+        }
         break;
       default:
           // TODO: This state should be impossible, handle as an error
     }
 
-    res = await dbClient.getMeeting(args.id);
+    try {
+      res = await dbClient.getMeeting(args.id);
+    } catch (e) {
+      logger.error(`updateMeeting resolver error - dbClient.getMeeting: ${e}`);
+      throw e;
+    }
     return res.rows[0];
   };
 
