@@ -16,6 +16,7 @@ import NavigationMenu from './components/Header/NavigationMenu';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
+import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
 
 import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from '@apollo/client';
 import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
@@ -68,8 +69,31 @@ function App() {
                             <Route path="/meeting-item/:id">
                                 <MeetingItem />
                             </Route>
+
+                            {/* Remove when done */}
                             <Route exact path="/admin">
-                                <AdminView />
+                                <AdminView component={AdminUploadView}/>
+                            </Route>
+
+                            <Route path="/admin/edit-meeting/:id">
+                                <AdminView
+                                    headerText="Edit Meeting Details"
+                                    component={AdminUploadView}
+                                />
+                            </Route>
+
+                            <Route path="/admin/edit-agenda/:id">
+                                <AdminView
+                                    headerText="EditAgendaItems"
+                                    component={AdminUploadView}
+                                />
+                            </Route>
+
+                            <Route path="/admin/upload/:id">
+                                <AdminView
+                                    headerText="Upload New Agenda"
+                                    component={AdminUploadView}
+                                />
                             </Route>
                         </Switch>
                         <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu}/>

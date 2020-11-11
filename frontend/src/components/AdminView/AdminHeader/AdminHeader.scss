@@ -1,0 +1,20 @@
+@import '../../../utils/colors';
+
+.AdminHeader {
+
+  .top-nav {
+    width: 100%;
+    padding: 1em;
+    display: flex;
+    justify-content: flex-end;
+    background-color: $cityBlue;
+    border: 1px solid blue;
+  }
+
+  .header-text {
+    font-size: 2em;
+    margin: 1.3em;
+    border-bottom: 2px solid $cityBronze;
+    color: $black;
+  }
+}
