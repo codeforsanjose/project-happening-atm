@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import './AdminView.scss';
 
 import AdminNavigation from './AdminNavigation/AdminNavigation'
@@ -15,6 +15,8 @@ const TEST_MEETINGS = {
 function AdminView({ headerText, component: ComponentToRender }) {
   const { id } = useParams();
   const history = useHistory();
+  const location = useLocation();
+
   const [meetingId, setMeetingId] = useState(id);
   const [currentMeeting, setCurrentMeeting] = useState({});
   const [meetingIdList, setMeetingIdList] = useState([]);
@@ -24,19 +26,22 @@ function AdminView({ headerText, component: ComponentToRender }) {
    */
   useEffect(function loadMeetingIds() {
     console.log('running loadMeetingIds') // DEBUG
+
     async function getMeetingIds() {
       setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 3000) // MOCK API CALL
     }
     getMeetingIds();
   }, []);
 
-
   /**
    * Fetch meeting when meetingId is changed
    */
   useEffect(function loadMeeting() {
     console.log('running loadMeeting') // DEBUG
-    history.replace(`/admin/edit-meeting/${meetingId}`)
+
+    const updatedPath = location.pathname.replace(/\w+$/, meetingId);
+    history.replace(updatedPath);
+
     async function getMeeting() {
       setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 3000) // MOCK API CALL
     }
