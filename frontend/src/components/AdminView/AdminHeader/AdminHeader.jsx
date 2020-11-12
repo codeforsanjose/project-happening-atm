@@ -14,11 +14,11 @@ export default function AdminHeader({ headerText, meetingIdList, meetingId, setM
             meetingIdList.map(id => <option key={id} value={id}>{id}</option>)
           }
         </select>
-        <button>Log Out</button>
+        <button>Sign Out</button>
       </div>
 
       <div className="header-text">
-        {headerText}
+        <h3>{headerText}</h3>
       </div>
     </div>
   )
