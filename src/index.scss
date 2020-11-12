@@ -1,4 +1,4 @@
-@import "./utils/_colors.scss";
+@import './utils/_colors.scss';
 
 body {
   margin: 0;
@@ -22,8 +22,7 @@ body {
   position: fixed;
   margin: 225px 7.5% 0;
 
-  @media only screen
-  and (min-device-width: 812px) {
+  @media only screen and (min-device-width: 812px) {
     margin: 500px 225px 0;
     width: 25px;
   }
@@ -32,11 +31,7 @@ body {
 .fade-box {
   height: 100px;
   width: 100%;
-  background: linear-gradient(
-                  to bottom,
-                  #ffffff,
-                  rgba(#ffffff, 0)
-  );
+  background: linear-gradient(to bottom, #ffffff, rgba(#ffffff, 0));
   margin-top: 250px;
   position: fixed;
   z-index: 90;
@@ -44,8 +39,7 @@ body {
 
 // Common Classes
 .responsive-padding {
-  @media only screen
-  and (min-device-width: 812px) {
+  @media only screen and (min-device-width: 812px) {
     padding: 0 200px;
   }
 }

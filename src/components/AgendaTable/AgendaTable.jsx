@@ -7,7 +7,7 @@ const SortableTable = SortableContainer(Table);
 const SortableTableRowRenderer = SortableElement(defaultTableRowRenderer);
 
 function rowRenderer(props) {
-  return <SortableTableRowRenderer {...props} />;
+  return <SortableTableRowRenderer {...props} />
 }
 // change is about to come
 function CustomizedTable(props) {
@@ -20,23 +20,18 @@ function CustomizedTable(props) {
       headerHeight={20}
       rowHeight={30}
       rowCount={props.items.length}
-      {...props} 
+      {...props}
     >
-      <Column 
-        label="Select" 
-        dataKey="checkbox" 
-        width={25} 
+      <Column
+        label="Select"
+        dataKey="checkbox"
+        width={25}
         headerRenderer={() => {
           // something
-          return <input type="checkbox"/>
+          return <input type="checkbox" />
         }}
-        cellRenderer={({cellData}) => {
-          return (
-            <input 
-              type="checkbox" 
-              checked={cellData}
-            />
-          )
+        cellRenderer={({ cellData }) => {
+          return <input type="checkbox" checked={cellData} />
         }}
       />
       <Column 
@@ -60,7 +55,7 @@ function CustomizedTable(props) {
         }}
       />
     </SortableTable>
-  );
+  )
 }
 
 class SortableCustomizedTable extends Component {
@@ -83,29 +78,29 @@ class SortableCustomizedTable extends Component {
   }
 
   registerTableRef = tableInstance => {
-    this.Table = tableInstance;
+    this.Table = tableInstance
   }
 
-  onSortEnd = ({oldIndex, newIndex}) => {
-    if (oldIndex === newIndex) return;
-    const {items} = this.state;
+  onSortEnd = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) return
+    const { items } = this.state
     this.setState({
-      items: arrayMove(items, oldIndex, newIndex)
-    });
+      items: arrayMove(items, oldIndex, newIndex),
+    })
     // this.Table.recomputeRowHeight();
     // this.Table.forceUpdate();
   }
 
   render() {
-    const {items} = this.state;
-    return(
+    const { items } = this.state
+    return (
       <CustomizedTable
         items={items}
         getRef={this.registerTableRef}
         onSortEnd={this.onSortEnd}
       />
-    );
+    )
   }
 }
 
-export default SortableCustomizedTable;
+export default SortableCustomizedTable

@@ -1,5 +1,5 @@
-import React from 'react';
-import './AdminNavigationLink.scss';
+import React from 'react'
+import './AdminNavigationLink.scss'
 
 /**
  * Navigation button link component for the AdminNavigation component.
@@ -14,7 +14,7 @@ import './AdminNavigationLink.scss';
 function AdminNavigationLink({ Icon, linkText, handleClick, active }) {
   return (
     <li className="admin-nav-link">
-      <button className={active ? "button-active" : ""} onClick={handleClick}>
+      <button className={active ? 'button-active' : ''} onClick={handleClick}>
         <div className="button-group">
           <div className="button-group-inner">
             <Icon className="button-icon" />
@@ -23,7 +23,7 @@ function AdminNavigationLink({ Icon, linkText, handleClick, active }) {
         </div>
       </button>
     </li>
-  );
+  )
 }
 
-export default AdminNavigationLink;
+export default AdminNavigationLink
