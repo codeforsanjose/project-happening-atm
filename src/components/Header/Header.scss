@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .header {
   background: $offWhite;
@@ -16,8 +16,7 @@
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
 
-    @media only screen
-    and (min-device-width: 812px) {
+    @media only screen and (min-device-width: 812px) {
       padding: 30px 30px 200px;
       margin: 0 200px;
     }
@@ -36,11 +35,11 @@
       margin-right: 20px;
     }
 
-    .title, .date {
+    .title,
+    .date {
       text-align: right;
 
-      @media only screen
-      and (min-device-width: 812px) {
+      @media only screen and (min-device-width: 812px) {
         padding-right: 40px; // TODO
       }
     }
@@ -49,8 +48,7 @@
       font-size: 20px;
       padding-bottom: 10px;
 
-      @media only screen
-      and (min-device-width: 812px) {
+      @media only screen and (min-device-width: 812px) {
         font-size: 40px;
       }
     }
@@ -59,8 +57,7 @@
       font-size: 16px;
       padding-bottom: 40px;
 
-      @media only screen
-      and (min-device-width: 812px) {
+      @media only screen and (min-device-width: 812px) {
         font-size: 26px;
       }
     }

@@ -1,11 +1,11 @@
-@import "../../utils/colors";
+@import '../../utils/colors';
 
 .navigation-menu {
   background: $offWhite;
   position: absolute;
-  top:0;
-  left:0;
-  height:100%;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
   transition: opacity 0.5s, visibility 0s 0.5s;
 
