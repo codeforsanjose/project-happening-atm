@@ -20,6 +20,7 @@ import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadV
 
 import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from '@apollo/client';
 import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
+import AdminPaths from './constants/AdminPaths';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/graphql',
@@ -75,21 +76,21 @@ function App() {
                                 <AdminView component={AdminUploadView}/>
                             </Route>
 
-                            <Route path="/admin/edit-meeting/:id">
+                            <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                                 <AdminView
                                     headerText="Edit Meeting Details"
                                     component={AdminUploadView}
                                 />
                             </Route>
 
-                            <Route path="/admin/edit-agenda/:id">
+                            <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
                                 <AdminView
                                     headerText="Edit Agenda Items"
                                     component={AdminUploadView}
                                 />
                             </Route>
 
-                            <Route path="/admin/upload/:id">
+                            <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
                                 <AdminView
                                     headerText="Upload New Agenda"
                                     component={AdminUploadView}

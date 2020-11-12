@@ -2,6 +2,7 @@ import React from 'react';
 import './AdminNavigation.scss';
 
 import AdminNavigationLink from './AdminNavigationLink';
+import AdminPaths from '../../../constants/AdminPaths';
 
 // Asset imports
 import cityLogo from '../../../assets/SanJoseCityLogo.png';
@@ -14,19 +15,19 @@ const LINKS = [
     key: 'editDetails',
     icon: InfoIcon,
     linkText: 'Edit Meeting Details',
-    path: '/admin/edit-meeting/'
+    path: AdminPaths.EDIT_MEETING
   },
   {
     key: 'editAgenda',
     icon: EditIcon,
     linkText: 'Edit Agenda Items',
-    path: '/admin/edit-agenda/'
+    path: AdminPaths.EDIT_AGENDA
   },
   {
     key: 'uploadAgenda',
     icon: PublishIcon,
     linkText: 'Upload New Agenda',
-    path: '/admin/upload/'
+    path: AdminPaths.UPLOAD_CSV
   }
 ]
 
@@ -48,7 +49,7 @@ function AdminNavigation({ meetingId }) {
                   key={link.key}
                   Icon={link.icon}
                   linkText={link.linkText}
-                  path={link.path+meetingId}
+                  path={link.path + '/' + meetingId}
                 />
               );
             })
