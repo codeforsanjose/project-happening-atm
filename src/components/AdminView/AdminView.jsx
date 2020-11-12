@@ -7,7 +7,12 @@ function AdminView() {
     return (
         <div className="admin-view">
           <AdminNavigation />
-          <div className="wrapper">
+          <div className="admin-view-content">
+            <div className="admin-view-forehead">
+              <h3>Agenda for Tiw's Day,  Septemo-membris Unus</h3>
+            </div>
+            <h3 id="header">Edit Agenda Items</h3>
+            <hr/>
             <AgendaTable />
           </div>
         </div>
