@@ -1,21 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import './AdminView.scss';
 
 import AdminNavigation from './AdminNavigation/AdminNavigation'
 import AdminHeader from './AdminHeader/AdminHeader';
 
+const TEST_MEETING_IDS = [1,2,3];
+const TEST_MEETINGS = {
+  1: {id:1,text:'test one'},
+  2: {id:2,text:'test two'},
+  3: {id:3,text:'test three'},
+};
+
 function AdminView({ headerText, component: ComponentToRender }) {
+  const { id } = useParams();
+  const history = useHistory();
+  const [meetingId, setMeetingId] = useState(id);
+  const [currentMeeting, setCurrentMeeting] = useState({});
+  const [meetingIdList, setMeetingIdList] = useState([]);
 
-    return (
-        <div className="admin-view">
-          <AdminNavigation />
+  /**
+   * Fetch all meeting ids on load
+   */
+  useEffect(function loadMeetingIds() {
+    console.log('running loadMeetingIds')
+    async function getMeetingIds() {
+      setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 3000)
+    }
+    getMeetingIds();
+  }, []);
 
-          <div className="wrapper">
-            <AdminHeader headerText={headerText} />
-            <ComponentToRender />
+
+  /**
+   * Fetch meeting when meetingId is changed
+   */
+  useEffect(function loadMeeting() {
+    console.log('running loadMeeting')
+    history.replace(`/admin/edit-meeting/${meetingId}`)
+    async function getMeeting() {
+      setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 3000)
+    }
+    getMeeting();
+  }, [meetingId, setMeetingId]);
+
+  return (
+      <div className="admin-view">
+        <AdminNavigation />
+
+        <div className="wrapper">
+          <AdminHeader
+            headerText={headerText}
+            meetingIdList={meetingIdList}
+            meetingId={meetingId}
+            setMeetingId={setMeetingId}
+          />
+          <ComponentToRender />
+          <div>
+            current id is: {meetingId}
           </div>
+
+          {/* DEBUG */}
+          <div style={{width: "600px", margin: "20px auto", backgroundColor: "#eee", color: "#361515", padding: "10px 20px", border: "1px solid #aaa"}}>
+            <p>***** THE CURRENT currentMeeting IS *****</p>
+            <div><pre>{JSON.stringify(currentMeeting, null, 2)}</pre></div>
+          </div>
+          {/* END DEBUG */}
+
         </div>
-    );
+      </div>
+  );
 }
 
 export default AdminView;
