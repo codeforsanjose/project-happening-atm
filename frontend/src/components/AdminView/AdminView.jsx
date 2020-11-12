@@ -23,9 +23,9 @@ function AdminView({ headerText, component: ComponentToRender }) {
    * Fetch all meeting ids on load
    */
   useEffect(function loadMeetingIds() {
-    console.log('running loadMeetingIds')
+    console.log('running loadMeetingIds') // DEBUG
     async function getMeetingIds() {
-      setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 3000)
+      setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 3000) // MOCK API CALL
     }
     getMeetingIds();
   }, []);
@@ -35,17 +35,17 @@ function AdminView({ headerText, component: ComponentToRender }) {
    * Fetch meeting when meetingId is changed
    */
   useEffect(function loadMeeting() {
-    console.log('running loadMeeting')
+    console.log('running loadMeeting') // DEBUG
     history.replace(`/admin/edit-meeting/${meetingId}`)
     async function getMeeting() {
-      setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 3000)
+      setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 3000) // MOCK API CALL
     }
     getMeeting();
   }, [meetingId, setMeetingId]);
 
   return (
       <div className="admin-view">
-        <AdminNavigation />
+        <AdminNavigation meetingId={meetingId} />
 
         <div className="wrapper">
           <AdminHeader

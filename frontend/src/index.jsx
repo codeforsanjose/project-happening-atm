@@ -84,7 +84,7 @@ function App() {
 
                             <Route path="/admin/edit-agenda/:id">
                                 <AdminView
-                                    headerText="EditAgendaItems"
+                                    headerText="Edit Agenda Items"
                                     component={AdminUploadView}
                                 />
                             </Route>

@@ -13,17 +13,20 @@ const LINKS = [
   {
     key: 'editDetails',
     icon: InfoIcon,
-    linkText: 'Edit Meeting Details'
+    linkText: 'Edit Meeting Details',
+    path: '/admin/edit-meeting/'
   },
   {
     key: 'editAgenda',
     icon: EditIcon,
-    linkText: 'Edit Agenda Items'
+    linkText: 'Edit Agenda Items',
+    path: '/admin/edit-agenda/'
   },
   {
     key: 'uploadAgenda',
     icon: PublishIcon,
-    linkText: 'Upload New Agenda'
+    linkText: 'Upload New Agenda',
+    path: '/admin/upload/'
   }
 ]
 
@@ -31,7 +34,7 @@ const LINKS = [
  * Admin side navigation component
  */
 
-function AdminNavigation() {
+function AdminNavigation({ meetingId }) {
   return (
     <div className="admin-navigation">
       <img className="logo" src={cityLogo} />
@@ -45,8 +48,7 @@ function AdminNavigation() {
                   key={link.key}
                   Icon={link.icon}
                   linkText={link.linkText}
-                  handleClick={() => console.log(link.key)}    // DEBUG: replace with click function
-                  active={link.key === 'editDetails'}   // DEBUG: replace with conditional for current view
+                  path={link.path+meetingId}
                 />
               );
             })
