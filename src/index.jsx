@@ -43,16 +43,15 @@ function App() {
   const toggleMenu = useCallback(() => {
     setShowMenu(!showMenu)
   }, [showMenu, setShowMenu])
-
-  return (
-    <React.StrictMode>
-      <ApolloProvider client={client}>
-        <div className={classnames('app-root')}>
-          <Router>
-            {/* <div className="ribbon" />
+    return (
+        <React.StrictMode>
+            <ApolloProvider client={client}>
+                <div className={classnames('app-root')}>
+                    <Router>
+                        {/* <div className="ribbon" />
                         <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
                         <div className="fade-box" /> */}
-            {/*
+                        {/*
                         A <Switch> looks through all its children <Route>
                         elements and renders the first one whose path
                         matches the current URL. Use a <Switch> any time

@@ -1,0 +1,15 @@
+@import "../../utils/_colors.scss";
+.ReactVirtualized__Table {
+    margin-left: 35px;
+}
+.ReactVirtualized__Table__headerRow {
+    background-color: $cityBlue;
+    color: $offWhite;
+    text-transform: none;
+    padding: 10px;
+}
+.ReactVirtualized__Table__Grid {
+    background-color: white;
+    color: black;
+    font-size: 11pt;
+}

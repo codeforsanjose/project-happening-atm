@@ -2,11 +2,28 @@
 
 .admin-view {
   display: flex;
+  flex-direction: row;
   // z-index: 3000;
   height: 100%;
   width: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
-  background: $offWhite;
+  top:0;
+  left:0;
+  background: $blueSky;
+}
+.admin-view-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%
+}
+.admin-view-forehead {
+  margin: 0;
+  color: white;
+  background-color: $royalBlue;
+}
+h3 {
+  padding-left: 35px;
+}
+#header {
+  margin: 50px 0px 5px 0px;
 }
