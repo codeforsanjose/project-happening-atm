@@ -8,8 +8,7 @@ import './AdminNavigationLink.scss';
  * props:
  *  Icon - SVG Icon component displayed on the button
  *  linkText - Text displayed on the button
- *  handleClick - Callback function for the button
- *  active - Boolean to indicate if button is active
+ *  path - url path of the link
  */
 
 function AdminNavigationLink({ Icon, linkText, path }) {
