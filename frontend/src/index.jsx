@@ -74,14 +74,14 @@ function App() {
                             <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                                 <AdminView
                                     headerText="Edit Meeting Details"
-                                    component={AdminUploadView}     // REPLACE WHEN COMPLETED
+                                    component={() => <div>Placeholder for Edit Meeting</div>}     // REPLACE WHEN COMPLETED
                                 />
                             </Route>
 
                             <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
                                 <AdminView
                                     headerText="Edit Agenda Items"
-                                    component={AdminUploadView}     // REPLACE WHEN COMPLETED
+                                    component={() => <div>Placeholder for Edit Agenda</div>}     // REPLACE WHEN COMPLETED
                                 />
                             </Route>
 
