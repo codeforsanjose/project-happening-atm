@@ -25,10 +25,8 @@ function AdminView({ headerText, component: ComponentToRender }) {
    * Fetch all meeting ids on load
    */
   useEffect(function loadMeetingIds() {
-    console.log('running loadMeetingIds') // DEBUG
-
     async function getMeetingIds() {
-      setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 3000) // MOCK API CALL
+      setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 1000) // MOCK API CALL
     }
     getMeetingIds();
   }, []);
@@ -37,13 +35,11 @@ function AdminView({ headerText, component: ComponentToRender }) {
    * Fetch meeting when meetingId is changed
    */
   useEffect(function loadMeeting() {
-    console.log('running loadMeeting') // DEBUG
-
     const updatedPath = location.pathname.replace(/\w+$/, meetingId);
     history.replace(updatedPath);
 
     async function getMeeting() {
-      setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 3000) // MOCK API CALL
+      setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 2000) // MOCK API CALL
     }
     getMeeting();
   }, [meetingId, setMeetingId]);
@@ -59,18 +55,7 @@ function AdminView({ headerText, component: ComponentToRender }) {
             meetingId={meetingId}
             setMeetingId={setMeetingId}
           />
-          <ComponentToRender />
-          <div>
-            current id is: {meetingId}
-          </div>
-
-          {/* DEBUG */}
-          <div style={{width: "600px", margin: "20px auto", backgroundColor: "#eee", color: "#361515", padding: "10px 20px", border: "1px solid #aaa"}}>
-            <p>***** THE CURRENT currentMeeting IS *****</p>
-            <div><pre>{JSON.stringify(currentMeeting, null, 2)}</pre></div>
-          </div>
-          {/* END DEBUG */}
-
+          <ComponentToRender meeting={currentMeeting} />
         </div>
       </div>
   );
