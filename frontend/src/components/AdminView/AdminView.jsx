@@ -12,6 +12,25 @@ const TEST_MEETINGS = {
   3: {id:3,text:'test three'},
 };
 
+/**
+ * Main view component for Admin pages
+ * On load it will fetch the meeting with the id retrieved from the URL parameter.
+ *
+ * props:
+ *    headerText
+ *      This is the h3 element that is displayed at the top of the view
+ *    component
+ *      This is the component rendered in the view
+ *
+ * state:
+ *    meetingId
+ *      Current selected meeting id from the dropdown selection box
+ *    currentMeeting
+ *      Meeting object that is passed to the current view
+ *    meetingIdList
+ *      An array of all meeting ids for the dropdown selection box
+ */
+
 function AdminView({ headerText, component: ComponentToRender }) {
   const { id } = useParams();
   const history = useHistory();

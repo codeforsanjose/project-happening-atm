@@ -1,6 +1,20 @@
 import React from 'react';
 import './AdminHeader.scss';
 
+/**
+ * Header component that is displayed on each Admin page
+ *
+ * props:
+ *    headerText
+ *      Text for the h3 element
+ *    meetingIdList
+ *      An array of meeting ids for the select dropdown box
+ *    meetingId
+ *      The currently selected meeting id
+ *    setMeetingId
+ *      State setter from AdminView
+ */
+
 export default function AdminHeader({ headerText, meetingIdList, meetingId, setMeetingId }) {
   const handleSelect = (e) => {
     setMeetingId(e.target.value);
