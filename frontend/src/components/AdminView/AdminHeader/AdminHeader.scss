@@ -1,7 +1,6 @@
 @import '../../../utils/colors';
 
 .AdminHeader {
-
   .top-nav {
     padding: 1em 2em;
     display: flex;
@@ -18,6 +17,14 @@
       &:hover {
         background-color: $cityBronze;
       }
+    }
+
+    label {
+      color: #fff;
+    }
+
+    select {
+      margin-left: 0.5em;
     }
   }
 

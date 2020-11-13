@@ -9,11 +9,14 @@ export default function AdminHeader({ headerText, meetingIdList, meetingId, setM
   return (
     <div className="AdminHeader">
       <div className="top-nav">
-        <select value={meetingId} onChange={handleSelect}>
-          {
-            meetingIdList.map(id => <option key={id} value={id}>{id}</option>)
-          }
-        </select>
+        <label>
+          Meeting:
+          <select value={meetingId} onChange={handleSelect}>
+            {
+              meetingIdList.map(id => <option key={id} value={id}>{id}</option>)
+            }
+          </select>
+        </label>
         <button>Sign Out</button>
       </div>
 

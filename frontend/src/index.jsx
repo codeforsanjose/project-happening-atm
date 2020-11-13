@@ -71,10 +71,14 @@ function App() {
                                 <MeetingItem />
                             </Route>
 
+
+
                             {/* Remove when done */}
                             <Route exact path="/admin">
                                 <AdminView component={AdminUploadView}/>
                             </Route>
+
+
 
                             <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                                 <AdminView
