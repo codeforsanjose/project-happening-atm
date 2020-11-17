@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './index.scss';
 
 import MeetingView from './components/MeetingView/MeetingView';
-import Header from './components/Header/Header';
 import classnames from 'classnames';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';

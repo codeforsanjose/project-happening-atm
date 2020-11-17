@@ -1,36 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
+import HamburgerIcon from './HamburgerIcon';
+import NavLinks from './NavLinks';
 import './Header.scss';
-import HamburgerMenuIcon from './HamburgerMenuIcon';
-import classnames from 'classnames';
-import Search from './Search';
 
-function Header({ toggleMenu, shouldHide }) {
-    return (
-        <div className={classnames('header', {
-            'hide': shouldHide,
-        })}>
-            <div className={classnames('header-content')}>
-                <div className="row">
-                    <HamburgerMenuIcon onClick={toggleMenu}/>
-                </div>
-                <div className="meeting-info">
-                    <div className="title">
-                        San Jose City Council Agenda
-                    </div>
+function Header() {
+  const [toggled, setToggled] = useState(false);
 
-                    <div className="date">
-                        August 18, 2020 at 11:00 AM
-                    </div>
-                </div>
-                <div className="row header-buttons">
-                    <button className="button admin-login-button">Login As Admin</button>
-                    <button className="button join-virtual-meeting-button">Join the Virtual Meeting</button>
-                </div>
+  function handleToggle() {
+    setToggled(!toggled);
+  }
 
-                <Search />
-            </div>
+  function handleTitleClick() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setToggled(false);
+  }
+
+  return (
+    <header>
+      <nav className='no-select'>
+        <div className='nav-bar'>
+          <button onClick={handleTitleClick} className='nav-title'>
+            My City's Agenda
+          </button>
+          <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
-    );
+        <NavLinks toggled={toggled} />
+      </nav>
+      <div
+        className={`nav-bg ${toggled ? '' : 'nav-bg-deactive'}`}
+        onClick={handleToggle}
+      ></div>
+    </header>
+  );
 }
 
 export default Header;
