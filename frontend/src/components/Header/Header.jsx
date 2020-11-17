@@ -19,9 +19,7 @@ function Header() {
     <header>
       <nav className='no-select'>
         <div className='nav-bar'>
-          <button onClick={handleTitleClick} className='nav-title'>
-            My City's Agenda
-          </button>
+          <button onClick={handleTitleClick}>My City's Agenda</button>
           <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
         <NavLinks toggled={toggled} />
