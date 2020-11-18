@@ -5,9 +5,7 @@ import AdminNavigationLink from './AdminNavigationLink';
 
 // Asset imports
 import cityLogo from '../../../assets/SanJoseCityLogo.png';
-import { ReactComponent as InfoIcon } from '../../../assets/icons/info-24px.svg';
-import { ReactComponent as EditIcon } from '../../../assets/icons/edit-24px.svg';
-import { ReactComponent as PublishIcon } from '../../../assets/icons/publish-24px.svg';
+import { InfoIcon, EditIcon, PublishIcon } from '../../utils/_icons';
 
 const LINKS = [
   {
