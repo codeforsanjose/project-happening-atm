@@ -5,9 +5,7 @@ import AdminNavigationLink from './AdminNavigationLink';
 
 // Asset imports
 import cityLogo from '../../../assets/SanJoseCityLogo.png';
-import { ReactComponent as InfoIcon } from '../../../assets/info-24px.svg';
-import { ReactComponent as EditIcon } from '../../../assets/edit-24px.svg';
-import { ReactComponent as PublishIcon } from '../../../assets/publish-24px.svg';
+import { InfoIcon, EditIcon, PublishIcon } from '../../utils/_fonts';
 
 const LINKS = [
   {
@@ -25,7 +23,7 @@ const LINKS = [
     icon: PublishIcon,
     linkText: 'Upload New Agenda'
   }
-]
+];
 
 /**
  * Admin side navigation component
@@ -33,30 +31,28 @@ const LINKS = [
 
 function AdminNavigation() {
   return (
-    <div className="admin-navigation">
-      <img className="logo" src={cityLogo} />
+    <div className='admin-navigation'>
+      <img className='logo' src={cityLogo} />
 
-      <div className="links">
+      <div className='links'>
         <ul>
-          {
-            LINKS.map(link => {
-              return (
-                <AdminNavigationLink
-                  key={link.key}
-                  Icon={link.icon}
-                  linkText={link.linkText}
-                  handleClick={() => console.log(link.key)}    // DEBUG: replace with click function
-                  active={link.key === 'editDetails'}   // DEBUG: replace with conditional for current view
-                />
-              );
-            })
-          }
+          {LINKS.map(link => {
+            return (
+              <AdminNavigationLink
+                key={link.key}
+                Icon={link.icon}
+                linkText={link.linkText}
+                handleClick={() => console.log(link.key)} // DEBUG: replace with click function
+                active={link.key === 'editDetails'} // DEBUG: replace with conditional for current view
+              />
+            );
+          })}
         </ul>
       </div>
 
       <button
-        className="admin-publish-button"
-        onClick={() => console.log('publish clicked')}    // DEBUG: replace with publish action
+        className='admin-publish-button'
+        onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
       >
         Publish Changes
       </button>
