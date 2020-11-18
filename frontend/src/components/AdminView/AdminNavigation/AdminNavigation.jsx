@@ -5,7 +5,7 @@ import AdminNavigationLink from './AdminNavigationLink';
 
 // Asset imports
 import cityLogo from '../../../assets/SanJoseCityLogo.png';
-import { InfoIcon, EditIcon, PublishIcon } from '../../utils/_fonts';
+import { InfoIcon, EditIcon, PublishIcon } from '../../../utils/_icons';
 
 const LINKS = [
   {
