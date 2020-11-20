@@ -1,1 +1,65 @@
 @import '../../utils/_colors.scss';
+
+.no-select {
+  /* prevent blue highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  /* prevent text selection */
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* for chrome on android */
+  -webkit-tap-highlight-color: transparent;
+}
+
+header {
+  background-color: $cityBlue;
+  /* height: 8vh; */
+  padding: 0.5em 2.5vw;
+  width: 100%;
+  z-index: 999;
+  position: fixed;
+  box-sizing: border-box;
+  margin: inherit;
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1020px;
+    margin: 0 auto;
+    z-index: 2;
+
+    * {
+      color: $offWhite;
+      cursor: pointer;
+      svg {
+        fill: $offWhite;
+      }
+      button {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 0;
+        transition: 0.15s;
+        &:hover {
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .nav-bar {
+      padding: 0.5em 0;
+      background-color: var(--color-primary);
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      .nav-title {
+        text-align: left;
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+}

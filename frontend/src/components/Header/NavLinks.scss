@@ -1,0 +1,35 @@
+@import '../../utils/_colors.scss';
+
+ul {
+  position: absolute;
+  background-color: $cityBlue;
+  flex-direction: column;
+  max-width: none;
+  width: 100vw;
+  top: calc(1.08em - 0.05vw + 0.5em + 0.3em);
+  left: 0;
+  padding: 2em;
+  box-sizing: border-box;
+  z-index: 1;
+  transform: translateY(-111%);
+  transition: 0.2s;
+  .nav-links-active {
+    transform: translateY(0) !important;
+  }
+  li {
+    a {
+      text-decoration: none;
+      padding: 0.3em 0.5em !important;
+      transition: 0.15s;
+      &:hover {
+        opacity: 0.5;
+      }
+      svg {
+        padding-right: 0.3em;
+        height: 1.2em;
+        position: relative;
+        top: 0.22em;
+      }
+    }
+  }
+}

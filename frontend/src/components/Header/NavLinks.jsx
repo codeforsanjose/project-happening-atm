@@ -1,4 +1,6 @@
 import React from 'react';
+import './NavLinks.scss';
+
 import {
   CalendarTodayIcon,
   VoiceChatIcon,

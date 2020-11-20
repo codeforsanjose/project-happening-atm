@@ -19,15 +19,13 @@ function Header() {
     <header>
       <nav className='no-select'>
         <div className='nav-bar'>
-          <button onClick={handleTitleClick}>My City's Agenda</button>
+          <button className='nav-title' onClick={handleTitleClick}>
+            My City's Agenda
+          </button>
           <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
         <NavLinks toggled={toggled} />
       </nav>
-      <div
-        className={`nav-bg ${toggled ? '' : 'nav-bg-deactive'}`}
-        onClick={handleToggle}
-      ></div>
     </header>
   );
 }
