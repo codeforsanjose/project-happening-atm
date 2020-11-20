@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 
-module.exports = (logger) => {
+module.exports = async (logger) => {
   const module = {};
 
   const client = new Client({
@@ -11,34 +11,33 @@ module.exports = (logger) => {
     password: process.env.PGPASSWORD,
   });
 
-  // TODO: Implement DB connection pools
-  client.connect((err) => {
-    if (err) {
-      logger.error(`DB connection error: ${err.stack}`);
-    } else {
-      logger.info('DB connected');
-    }
-  });
-
   client.on('error', (err) => {
     logger.error(`Error with DB: ${err.stack}`);
   });
 
-  const dbQuery = async (queryString) => {
+  const query = async (queryString) => {
+    logger.debug(queryString);
     try {
-      logger.debug(`Query: ${queryString}`);
-      return await new Promise((resolve, reject) => {
-        client.query(queryString, (err, res) => {
-          if (err) {
-            reject(err.stack);
-          }
-          resolve(res);
-        });
-      });
-    } catch (err) {
-      logger.error(err);
-      return null;
+      return await client.query(queryString);
+    } catch (e) {
+      logger.error(`dbClient querry error: ${e.stack}`);
+      logger.debug(`errored query: ${queryString}`);
+      throw e;
     }
+  };
+
+  module.init = async () => {
+    try {
+      await client.connect();
+      logger.info('DB connected');
+    } catch (e) {
+      logger.error(`DB connection error: ${e.stack}`);
+      throw e;
+    }
+  };
+
+  module.end = async () => {
+    await client.end();
   };
 
   module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
@@ -50,17 +49,17 @@ module.exports = (logger) => {
         INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
         VALUES ('${meetingType}', to_timestamp(${meetingStartTimestamp}), '${virtualMeetingUrl}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), '${status}')
         RETURNING id;`;
-    return dbQuery(queryString);
+    return query(queryString);
   };
 
   module.getAllMeetings = async () => {
     logger.info('dbClient: getAllMeetings');
-    return dbQuery('SELECT * FROM meeting');
+    return query('SELECT * FROM meeting');
   };
 
   module.getMeeting = async (id) => {
     logger.info('dbClient: getMeeting');
-    return dbQuery(`SELECT * FROM meeting WHERE id = ${id}`);
+    return query(`SELECT * FROM meeting WHERE id = ${id}`);
   };
 
   module.createMeetingItem = async (meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
@@ -73,27 +72,27 @@ module.exports = (logger) => {
         INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
         VALUES ('${meetingId}', '${orderNumber}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), to_timestamp(${itemStartTimestamp}), to_timestamp(${itemEndTimestamp}), '${status}', '${contentCategories}', '${descriptionLocKey}', '${titleLocKey}')
         RETURNING id;`;
-    return dbQuery(queryString);
+    return query(queryString);
   };
 
   module.getAllMeetingItems = async () => {
     logger.info('dbClient: getAllMeetingItems');
-    return dbQuery('SELECT * FROM meeting_item');
+    return query('SELECT * FROM meeting_item');
   };
 
   module.getMeetingItem = async (id) => {
     logger.info('dbClient: getMeetingItem');
-    return dbQuery(`SELECT * FROM meeting_item WHERE id = ${id}`);
+    return query(`SELECT * FROM meeting_item WHERE id = ${id}`);
   };
 
   module.getMeetingItemsByMeetingID = async (meetingId) => {
-    logger.info('dbClient: getMegetMeetingItemsByMeetingIDetingItem');
-    return dbQuery(`SELECT * FROM meeting_item WHERE meeting_id = ${meetingId}`);
+    logger.info('dbClient: getMeetingItemsByMeetingID');
+    return query(`SELECT * FROM meeting_item WHERE meeting_id = ${meetingId}`);
   };
 
   module.getAllMeetingIDs = async () => {
     logger.info('dbClient: getAllMeetingIDs');
-    return dbQuery('SELECT id FROM meeting');
+    return query('SELECT id FROM meeting');
   };
 
   module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
@@ -105,27 +104,27 @@ module.exports = (logger) => {
         INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id, created_timestamp, updated_timestamp)
         VALUES ('${phoneNumber}', '${emailAddress}', '${meetingItemId}', '${meetingId}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
         RETURNING id;`;
-    return dbQuery(queryString);
+    return query(queryString);
   };
 
   module.getSubscription = async (id) => {
     logger.info('dbClient: getSubscription');
-    return dbQuery(`SELECT * FROM subscription WHERE id = ${id}`);
+    return query(`SELECT * FROM subscription WHERE id = ${id}`);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingID');
-    return dbQuery(`SELECT * FROM subscription WHERE meeting_id = ${id}`);
+    return query(`SELECT * FROM subscription WHERE meeting_id = ${id}`);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingItemID');
-    return dbQuery(`SELECT * FROM subscription WHERE meeting_item_id = ${id}`);
+    return query(`SELECT * FROM subscription WHERE meeting_item_id = ${id}`);
   };
 
   module.getAllSubscriptions = async () => {
     logger.info('dbClient: getAllSubscriptions');
-    return dbQuery('SELECT * FROM subscription');
+    return query('SELECT * FROM subscription');
   };
 
   module.updateMeetingItem = async (id, orderNumber, status, itemStartTimestamp,
@@ -144,7 +143,7 @@ module.exports = (logger) => {
             description_loc_key = '${descriptionLocKey}',
             title_loc_key = '${titleLocKey}'
         WHERE id = ${id}`;
-    return dbQuery(queryString);
+    return query(queryString);
   };
 
   module.updateMeeting = async (id, status, meetingType, virtualMeetingUrl,
@@ -161,7 +160,7 @@ module.exports = (logger) => {
             meeting_end_timestamp = to_timestamp(${meetingEndTimestamp}),
             updated_timestamp = to_timestamp(${updatedTimestamp})
         WHERE id = ${id}`;
-    return dbQuery(queryString);
+    return query(queryString);
   };
 
   module.getSubscriptionsByMeetingIDList = async (idList) => {
@@ -175,12 +174,12 @@ module.exports = (logger) => {
       }
     });
     idListString += ')';
-    return dbQuery(`SELECT * FROM subscription WHERE meeting_item_id in ${idListString}`);
+    return query(`SELECT * FROM subscription WHERE meeting_item_id in ${idListString}`);
   };
 
   module.getAdminByEmail = async (email) => {
     logger.info('dbClient: getAdminByEmail');
-    return dbQuery(`SELECT * FROM admin WHERE email_address = '${email}'`);
+    return query(`SELECT * FROM admin WHERE email_address = '${email}'`);
   };
 
   return module;
