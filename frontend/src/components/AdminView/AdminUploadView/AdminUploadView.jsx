@@ -58,7 +58,7 @@ function AdminUploadView() {
         <div className="upload-area">
           <PublishIcon />
           <p>Drag and Drop CSV File</p>
-          <label for="csv">
+          <label htmlFor="csv">
             Or Upload from your Computer
           </label>
           <input

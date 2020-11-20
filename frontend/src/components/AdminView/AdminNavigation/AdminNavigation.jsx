@@ -38,7 +38,7 @@ const LINKS = [
 function AdminNavigation({ meetingId }) {
   return (
     <div className="admin-navigation">
-      <img className="logo" src={cityLogo} />
+      <img className="logo" src={cityLogo} alt="logo" />
 
       <div className="links">
         <ul>
