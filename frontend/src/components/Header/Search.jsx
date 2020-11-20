@@ -8,7 +8,7 @@ function Search() {
 
     return (
         <div className={classnames('search-container')}>
-            <i className="fas fa-search fa-lg"/>
+            <i className="fas fa-search"/>
             <ReactAutocomplete
                 items={[
                     { id: 'baz', label: 'Call to Order and Roll Call' },
@@ -38,7 +38,7 @@ function Search() {
                     borderRadius: '10px',
                 }}
                 inputProps={{
-                    placeholder: "Search Agenda Items"
+                    placeholder: "Search Agenda"
                 }}
             />
         </div>
