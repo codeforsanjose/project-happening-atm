@@ -106,8 +106,6 @@ module.exports = (logger) => {
   };
 
   const validateTwilioSafePhoneNumber = (phoneNumber, fieldName, context) => {
-    logger.error(phoneNumber.charAt(0));
-
     if (!isNumericString(phoneNumber)) {
       const msg = `Invalid "${fieldName}" field value. Number not numeric: ${phoneNumber}`;
       throwUserInputError(msg, context);
