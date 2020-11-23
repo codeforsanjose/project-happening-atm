@@ -1,21 +1,21 @@
 @import '../../utils/_colors.scss';
 
-ul {
+ul.nav-links {
+  width: 100%;
+  list-style-type: none;
+  justify-content: space-between;
+  align-items: center;
+  // height: 5vh;
   position: absolute;
   background-color: $cityBlue;
   flex-direction: column;
   max-width: none;
-  width: 100vw;
   top: calc(1.08em - 0.05vw + 0.5em + 0.3em);
   left: 0;
   padding: 2em;
+  margin: 0;
   box-sizing: border-box;
-  z-index: 1;
-  transform: translateY(-111%);
-  transition: 0.2s;
-  .nav-links-active {
-    transform: translateY(0) !important;
-  }
+
   li {
     a {
       text-decoration: none;

@@ -24,7 +24,7 @@ function Header() {
           </button>
           <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
-        <NavLinks toggled={toggled} />
+        <NavLinks toggled={toggled} className='nav-links' />
       </nav>
     </header>
   );
