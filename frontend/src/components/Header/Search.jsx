@@ -20,12 +20,7 @@ function Search() {
                 renderItem={(item, highlighted) =>
                     <div
                         key={item.id}
-                        style={{
-                            color: "#153948",
-                            padding: "10px 0 10px 10px",
-                            borderBlockEnd: "solid #153948",
-                            borderWidth: "2px",
-                        }}
+                        className="menu-item"
                     >
                         {item.label}
                     </div>
@@ -39,6 +34,16 @@ function Search() {
                 }}
                 inputProps={{
                     placeholder: "Search Agenda"
+                }}
+                menuStyle={{
+                    position: 'absolute',
+                    top: '45px',
+                    left: '0',
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                    paddingTop: '2px',
+                    fontSize: '0.9em',
+                    overflow: 'auto',
                 }}
             />
         </div>

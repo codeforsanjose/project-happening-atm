@@ -6,6 +6,7 @@
   margin: 20px 0;
   background: #FFFFFF;
   position: relative;
+  font-family: 'Poppins', sans-serif;
 
   input[role=combobox] {
     width: 100%;
@@ -16,8 +17,12 @@
     padding-left: 45px;
     font-size: 1em;
     color: $cityBlue;
-    font-family: 'Poppins', sans-serif;
     letter-spacing: 1.2px;
+
+    &:focus {
+      border: 1px solid $cityBronze;
+      outline: 1px solid $cityBronze;
+    }
 
     &::placeholder {
       color: $cityBlue;
@@ -36,5 +41,16 @@
     z-index: 1001;
     top: 12px;
     left: 15px;
+  }
+
+  .menu-item {
+    color: #153948;
+    padding: 10px 0 10px 10px;
+    border-block-end: solid #153948;
+    border-width: 2px;
+
+    &:hover {
+      background: $cityBronze;
+    }
   }
 }
