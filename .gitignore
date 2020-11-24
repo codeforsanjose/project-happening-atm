@@ -1,3 +1,8 @@
+# Terraform
+.terraform/
+*tfstate*
+*.zip
+
 # Builds
 build/
 
