@@ -21,7 +21,7 @@
 
     &:focus {
       border: 1px solid $cityBronze;
-      outline: 1px solid $cityBronze;
+      outline-style: none;
     }
 
     &::placeholder {
