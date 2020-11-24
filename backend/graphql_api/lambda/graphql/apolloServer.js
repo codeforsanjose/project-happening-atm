@@ -66,6 +66,7 @@ module.exports = (logger) => {
     type meeting_item {
         id: Int
         meeting_id: Int
+        parent_meeting_item_id: Int
         order_number: Int
         status: String
         created_timestamp: String
