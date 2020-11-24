@@ -39,16 +39,19 @@ const LINKS = [
 
 function NavLinks({ toggled }) {
   return (
-    <ul className={toggled ? 'nav-links nav-links-active' : 'nav-links'}>
-      {LINKS.map(link => (
-        <li key={link.key}>
-          <a href='#' rel='noopener noreferrer'>
-            <link.icon className='nav-link-icon' />
-            <span className='nav-link-text'>{link.text}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <div className={toggled ? 'nav-links nav-links-active' : 'nav-links'}>
+      <div className='nav-links-title'>Menu</div>
+      <ul className='nav-links-list'>
+        {LINKS.map(link => (
+          <li key={link.key}>
+            <a href='#' rel='noopener noreferrer'>
+              <link.icon className='nav-link-icon' />
+              <span className='nav-link-text'>{link.text}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
