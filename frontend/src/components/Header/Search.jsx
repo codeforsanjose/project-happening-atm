@@ -8,7 +8,7 @@ function Search() {
 
     return (
         <div className={classnames('search-container')}>
-            <i className="fas fa-search fa-lg"/>
+            <i className="fas fa-search"/>
             <ReactAutocomplete
                 items={[
                     { id: 'baz', label: 'Call to Order and Roll Call' },
@@ -20,12 +20,7 @@ function Search() {
                 renderItem={(item, highlighted) =>
                     <div
                         key={item.id}
-                        style={{
-                            color: "#153948",
-                            padding: "10px 0 10px 10px",
-                            borderBlockEnd: "solid #153948",
-                            borderWidth: "2px",
-                        }}
+                        className="menu-item"
                     >
                         {item.label}
                     </div>
@@ -38,7 +33,17 @@ function Search() {
                     borderRadius: '10px',
                 }}
                 inputProps={{
-                    placeholder: "Search Agenda Items"
+                    placeholder: "Search Agenda"
+                }}
+                menuStyle={{
+                    position: 'absolute',
+                    top: '45px',
+                    left: '0',
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                    paddingTop: '2px',
+                    fontSize: '0.9em',
+                    overflow: 'auto',
                 }}
             />
         </div>
