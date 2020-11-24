@@ -1,0 +1,30 @@
+@import '../../utils/_colors.scss';
+#dropdown-wrapper-active {
+  position: relative;
+  top: 75px;
+  z-index: 2;
+}
+.dropdown-wrapper {
+  border: 1px solid $cloudy;
+}
+.current-status {
+  padding-left: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+.arrow-icon {
+  background-color: $darkRoyalBlue;
+  margin-left: auto;
+}
+.remaining-options {
+  background-color: $blueSky;
+}
+.status-option {
+  padding: 10px 0px 10px 0px;
+}
+.status-option:hover {
+  background-color: $cityBronze;
+}
