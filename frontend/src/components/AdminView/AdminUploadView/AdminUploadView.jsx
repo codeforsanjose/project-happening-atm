@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './AdminUploadView.scss';
 
-import { ReactComponent as PublishIcon } from '../../../assets/publish-24px.svg';
+import { PublishIcon } from '../../../utils/_icons';
 import AdminUploadConfirmModal from './AdminUploadConfirmModal';
 import DragAndDrop from './DragAndDrop';
 
@@ -58,7 +58,7 @@ function AdminUploadView() {
         <div className="upload-area">
           <PublishIcon />
           <p>Drag and Drop CSV File</p>
-          <label for="csv">
+          <label htmlFor="csv">
             Or Upload from your Computer
           </label>
           <input

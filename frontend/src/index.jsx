@@ -16,9 +16,11 @@ import NavigationMenu from './components/Header/NavigationMenu';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
+import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
 
 import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from '@apollo/client';
 import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
+import AdminPaths from './constants/AdminPaths';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/graphql',
@@ -68,8 +70,26 @@ function App() {
                             <Route path="/meeting-item/:id">
                                 <MeetingItem />
                             </Route>
-                            <Route exact path="/admin">
-                                <AdminView />
+
+                            <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
+                                <AdminView
+                                    headerText="Edit Meeting Details"
+                                    component={() => <div>Placeholder for Edit Meeting</div>}     // REPLACE WHEN COMPLETED
+                                />
+                            </Route>
+
+                            <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
+                                <AdminView
+                                    headerText="Edit Agenda Items"
+                                    component={() => <div>Placeholder for Edit Agenda</div>}     // REPLACE WHEN COMPLETED
+                                />
+                            </Route>
+
+                            <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
+                                <AdminView
+                                    headerText="Upload New Agenda"
+                                    component={AdminUploadView}
+                                />
                             </Route>
                         </Switch>
                         <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu}/>
