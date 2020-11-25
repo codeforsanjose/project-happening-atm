@@ -3,18 +3,11 @@
 .admin-view {
   display: flex;
   flex-direction: row;
-  // z-index: 3000;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: $blueSky;
+  background-color: white;
 }
 .admin-view-content {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 .admin-view-forehead {
   margin: 0;

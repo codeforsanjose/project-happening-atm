@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './index.scss'
 
 import MeetingView from './components/MeetingView/MeetingView'
-import Header from './components/Header/Header'
 import classnames from 'classnames'
 import NavigationMenu from './components/Header/NavigationMenu'
 import Subscribe from './components/Subscribe/Subscribe'
@@ -22,7 +21,7 @@ import {
 import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  // uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
 })
 
@@ -43,21 +42,22 @@ function App() {
   const toggleMenu = useCallback(() => {
     setShowMenu(!showMenu)
   }, [showMenu, setShowMenu])
-    return (
-        <React.StrictMode>
-            <ApolloProvider client={client}>
-                <div className={classnames('app-root')}>
-                    <Router>
-                        {/* <div className="ribbon" />
-                        <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
-                        <div className="fade-box" /> */}
-                        {/*
-                        A <Switch> looks through all its children <Route>
-                        elements and renders the first one whose path
-                        matches the current URL. Use a <Switch> any time
-                        you have multiple routes, but you want only one
-                        of them to render at a time
-                        */}
+  return (
+    /* One of the libraries in the table produces quite a few errors
+     in the console on Strict Mode:
+     https://github.com/bvaughn/react-virtualized/issues/1353 */
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <div className={classnames('app-root')}>
+          <Router>
+            {/* <div className="ribbon" />
+                  <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
+                <div className="fade-box" /> */}
+            {/* A <Switch> looks through all its children <Route>
+              elements and renders the first one whose path
+              matches the current URL. Use a <Switch> any time
+              you have multiple routes, but you want only one
+              of them to render at a time */}
             <Switch>
               <Route exact path="/">
                 <MeetingView />

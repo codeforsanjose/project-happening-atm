@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './CustomDropdown.scss'
+import { KeyboardArrowDownIcon, KeyboardArrowUpIcon } from '../../utils/_icons'
 
 class CustomDropdown extends Component {
   state = {
@@ -38,7 +39,7 @@ class CustomDropdown extends Component {
     document.removeEventListener('click', this.handleClickOutside)
   }
   render() {
-    const { cellData, children, remainingOptions } = this.props
+    const { cellData, remainingOptions } = this.props
     const { isOpen } = this.state
     return (
       <div
@@ -51,7 +52,13 @@ class CustomDropdown extends Component {
           ref={ref => (this.dropTogglerRef = ref)}
         >
           <span>{cellData}</span>
-          <span className="arrow-icon">{isOpen ? '🔼' : '🔽'}</span>
+          <span className="arrow-icon">
+            {isOpen ? (
+              <KeyboardArrowUpIcon style={{ fill: 'white' }} />
+            ) : (
+              <KeyboardArrowDownIcon style={{ fill: 'white' }} />
+            )}
+          </span>
         </div>
         <div className="remaining-options">
           {isOpen && (

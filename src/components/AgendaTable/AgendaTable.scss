@@ -1,15 +1,24 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 .ReactVirtualized__Table {
-    margin-left: 35px;
+  margin-left: 35px;
+  background-color: white;
+  color: black;
+  font-size: 11pt;
+  * {
+    overflow: visible !important;
+  }
 }
 .ReactVirtualized__Table__headerRow {
-    background-color: $cityBlue;
-    color: $offWhite;
-    text-transform: none;
-    padding: 10px;
+  background-color: $cityBlue;
+  color: $offWhite;
+  text-transform: none;
+  text-align: center;
+  padding: 10px 0px 10px 0px;
 }
-.ReactVirtualized__Table__Grid {
-    background-color: white;
-    color: black;
-    font-size: 11pt;
+.ReactVirtualized__Table__row {
+  position: relative;
+  font-size: 10pt;
+}
+.ReactVirtualized__Table__rowColumn {
+  vertical-align: middle;
 }
