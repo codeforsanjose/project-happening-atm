@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './AdminNavigationLink.scss';
 
 /**
@@ -7,21 +8,20 @@ import './AdminNavigationLink.scss';
  * props:
  *  Icon - SVG Icon component displayed on the button
  *  linkText - Text displayed on the button
- *  handleClick - Callback function for the button
- *  active - Boolean to indicate if button is active
+ *  path - url path of the link
  */
 
-function AdminNavigationLink({ Icon, linkText, handleClick, active }) {
+function AdminNavigationLink({ Icon, linkText, path }) {
   return (
     <li className="admin-nav-link">
-      <button className={active ? "button-active" : ""} onClick={handleClick}>
+      <NavLink activeClassName="button-active" to={path}>
         <div className="button-group">
           <div className="button-group-inner">
             <Icon className="button-icon" />
             <span className="button-text">{linkText}</span>
           </div>
         </div>
-      </button>
+      </NavLink>
     </li>
   );
 }

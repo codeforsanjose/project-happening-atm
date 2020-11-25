@@ -10,11 +10,6 @@ function Header() {
     setToggled(!toggled);
   }
 
-  function handleTitleClick() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setToggled(false);
-  }
-
   return (
     <header>
       <nav className='no-select'>

@@ -2,6 +2,7 @@ import React from 'react';
 import './AdminNavigation.scss';
 
 import AdminNavigationLink from './AdminNavigationLink';
+import AdminPaths from '../../../constants/AdminPaths';
 
 // Asset imports
 import cityLogo from '../../../assets/SanJoseCityLogo.png';
@@ -11,17 +12,20 @@ const LINKS = [
   {
     key: 'editDetails',
     icon: InfoIcon,
-    linkText: 'Edit Meeting Details'
+    linkText: 'Edit Meeting Details',
+    path: AdminPaths.EDIT_MEETING
   },
   {
     key: 'editAgenda',
     icon: EditIcon,
-    linkText: 'Edit Agenda Items'
+    linkText: 'Edit Agenda Items',
+    path: AdminPaths.EDIT_AGENDA
   },
   {
     key: 'uploadAgenda',
     icon: PublishIcon,
-    linkText: 'Upload New Agenda'
+    linkText: 'Upload New Agenda',
+    path: AdminPaths.UPLOAD_CSV
   }
 ];
 
@@ -29,10 +33,10 @@ const LINKS = [
  * Admin side navigation component
  */
 
-function AdminNavigation() {
+function AdminNavigation({ meetingId }) {
   return (
     <div className='admin-navigation'>
-      <img className='logo' src={cityLogo} />
+      <img className='logo' src={cityLogo} alt='logo' />
 
       <div className='links'>
         <ul>
@@ -42,8 +46,7 @@ function AdminNavigation() {
                 key={link.key}
                 Icon={link.icon}
                 linkText={link.linkText}
-                handleClick={() => console.log(link.key)} // DEBUG: replace with click function
-                active={link.key === 'editDetails'} // DEBUG: replace with conditional for current view
+                path={link.path + '/' + meetingId}
               />
             );
           })}
