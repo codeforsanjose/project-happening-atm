@@ -2,12 +2,13 @@ import React from 'react';
 import './NavLinks.scss';
 
 import {
+  ChevronRightIcon,
   CalendarTodayIcon,
   VoiceChatIcon,
   OnDemandVideoIcon,
   EmailIcon,
   NewReleasesIcon,
-  ChevronRightIcon
+  FeedbackIcon
 } from '../../utils/_icons';
 
 const LINKS = [
@@ -35,6 +36,11 @@ const LINKS = [
     key: 'requestConsideration',
     icon: NewReleasesIcon,
     text: 'Request Separate Consideration of a Consent Calendar Item'
+  },
+  {
+    key: 'sendFeedback',
+    icon: FeedbackIcon,
+    text: 'Send Feedback'
   }
 ];
 

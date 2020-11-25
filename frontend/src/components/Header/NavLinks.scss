@@ -23,9 +23,9 @@
     padding: 0;
 
     li {
-      text-indent: -2.3em;
       line-height: 0.1em;
-      padding-left: 2.3em;
+      text-indent: -2.6em;
+      padding-left: 2.6em;
 
       a {
         opacity: 0.8;
@@ -41,9 +41,9 @@
         fill: $offWhite;
         position: relative;
         &.nav-link-icon {
-          height: 1.3em;
-          top: 0.22em;
-          padding-right: 0.3em;
+          height: 2.5em;
+          top: 0.9em;
+          padding-right: 0.6em;
         }
         &.nav-link-chevron {
           height: 2.5em;
