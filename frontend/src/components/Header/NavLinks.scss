@@ -23,13 +23,41 @@
     padding: 0;
 
     li {
-      svg {
-        padding-right: 0.3em;
-        height: 1.2em;
-        position: relative;
-        top: 0.22em;
-        fill: $offWhite;
+      text-indent: -2.3em;
+      line-height: 0.1em;
+      padding-left: 2.3em;
+
+      a {
+        opacity: 0.8;
+        &:hover {
+          opacity: 1;
+          .nav-link-chevron {
+            transform: translateX(0.8em);
+          }
+        }
       }
+
+      svg {
+        fill: $offWhite;
+        position: relative;
+        &.nav-link-icon {
+          height: 1.3em;
+          top: 0.22em;
+          padding-right: 0.3em;
+        }
+        &.nav-link-chevron {
+          height: 2.5em;
+          top: 0.9em;
+          transition: 0.2s;
+        }
+      }
+    }
+
+    .nav-link-separator {
+      border-bottom: 1px solid $lightGray;
+      opacity: 0.3;
+      width: 87vw;
+      margin: 1.8em auto 1em;
     }
   }
 }

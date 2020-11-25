@@ -6,7 +6,8 @@ import {
   VoiceChatIcon,
   OnDemandVideoIcon,
   EmailIcon,
-  NewReleasesIcon
+  NewReleasesIcon,
+  ChevronRightIcon
 } from '../../utils/_icons';
 
 const LINKS = [
@@ -42,13 +43,19 @@ function NavLinks({ toggled }) {
     <div className={toggled ? 'nav-links nav-links-active' : 'nav-links'}>
       <div className='nav-links-title'>Menu</div>
       <ul className='nav-links-list'>
-        {LINKS.map(link => (
-          <li key={link.key}>
-            <a href='#' rel='noopener noreferrer'>
-              <link.icon className='nav-link-icon' />
-              <span className='nav-link-text'>{link.text}</span>
-            </a>
-          </li>
+        {LINKS.map((link, index) => (
+          <>
+            <li key={link.key}>
+              <a href='#' rel='noopener noreferrer'>
+                <link.icon className='nav-link-icon' />
+                <span className='nav-link-text'>{link.text}</span>
+                <ChevronRightIcon className='nav-link-chevron' />
+              </a>
+            </li>
+            {index < LINKS.length - 1 ? (
+              <div className='nav-link-separator'></div>
+            ) : null}
+          </>
         ))}
       </ul>
     </div>
