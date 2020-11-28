@@ -1,0 +1,74 @@
+@import "../../utils/_colors.scss";
+
+.header {
+  background: $blueSky;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  z-index: 100;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1.1px;
+
+  .header-content {
+    padding: 1em 1.25em;
+    color: $black;
+
+    @media only screen
+    and (min-device-width: 812px) {
+      margin: 0 200px;
+    }
+
+    .logo {
+      width: 77px;  
+    }
+
+    .meeting-info {
+      font-weight: 600;
+      font-size: 1em;
+      margin-top: 0.7em;
+
+      @media only screen
+      and (min-device-width: 812px) {
+        padding-top: 4em;
+      }
+    }
+
+    .title {
+      font-size: 1.5em;
+      line-height: 1.5em;
+      margin-bottom: 1.7em;
+    }
+
+    .details-title, .status {
+      font-size: 1.15em;
+    }
+
+    .details-title {
+      width: 200px;
+      padding-bottom: 0.3em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px $cityBronze solid;
+    }
+
+    .date, .time {
+      margin-bottom: 0.3em;
+    }
+
+    .time {
+      margin-bottom: 0.5em;
+
+      .no-bold {
+        font-weight: 400;
+      }
+    }
+
+    .status {
+      color: $lightBlue;
+      margin-bottom: 2.5em;
+    }
+
+    .hide {
+      // TODO
+    }
+  }
+}

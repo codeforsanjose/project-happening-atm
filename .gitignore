@@ -1,3 +1,8 @@
+# Terraform
+.terraform/
+*tfstate*
+*.zip
+
 # Builds
 build/
 
@@ -96,6 +101,7 @@ dist
 
 # Serverless directories
 .serverless/
+secrets.json
 
 # FuseBox cache
 .fusebox/

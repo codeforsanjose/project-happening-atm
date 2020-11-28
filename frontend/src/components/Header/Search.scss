@@ -1,0 +1,56 @@
+@import "../../utils/colors";
+
+.search-container {
+  color: $cityBlue;
+  border-radius: 4pt;
+  margin: 20px 0;
+  background: #FFFFFF;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+
+  input[role=combobox] {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    background: #FFFFFF;
+    padding-left: 45px;
+    font-size: 1em;
+    color: $cityBlue;
+    letter-spacing: 1.2px;
+
+    &:focus {
+      border: 1px solid $cityBronze;
+      outline-style: none;
+    }
+
+    &::placeholder {
+      color: $cityBlue;
+    }
+
+    @media only screen
+    and (min-device-width: 812px) {
+      /*padding-left: 45px;
+      font-size: 18px;*/
+    }
+  }
+
+  .fa-search {
+    position: absolute;
+    color: #000000;
+    z-index: 1001;
+    top: 12px;
+    left: 15px;
+  }
+
+  .menu-item {
+    color: #153948;
+    padding: 10px 0 10px 10px;
+    border-block-end: solid #153948;
+    border-width: 2px;
+
+    &:hover {
+      background: $cityBronze;
+    }
+  }
+}
