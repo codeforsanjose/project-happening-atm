@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "lambda_log_policy" {
 #   }
 # }
 
-resource "aws_iam_role" "gan_graphql_lambda" {
+resource "aws_iam_role" "gan_lambda" {
   # name               = "lambda-vpc-execution-role"
   assume_role_policy = "${data.aws_iam_policy_document.lambda_assume_role.json}"
 }
@@ -41,11 +41,11 @@ resource "aws_iam_role" "gan_graphql_lambda" {
 resource "aws_iam_role_policy" "lambda_logging" {
   name   = "lambda_logging"
   policy = "${data.aws_iam_policy_document.lambda_log_policy.json}"
-  role   = "${aws_iam_role.gan_graphql_lambda.id}"
+  role   = "${aws_iam_role.gan_lambda.id}"
 }
 
 resource "aws_iam_role_policy_attachment" "vpc_access_execution_policy" {
   # role       = "${aws_iam_role.gan_graphql_lambda.name}"
-  role       = "${aws_iam_role.gan_graphql_lambda.id}"
+  role       = "${aws_iam_role.gan_lambda.id}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }

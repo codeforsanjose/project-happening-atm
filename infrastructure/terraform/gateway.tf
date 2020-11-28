@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "gan" {
   name        = "gan_api-${terraform.workspace}-gateway"
-  description = "This is my API for demonstration purposes"
+  description = "Government Agenda Notifier API Gateway"
 }
 
 resource "aws_api_gateway_deployment" "dev" {
