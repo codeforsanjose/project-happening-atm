@@ -43,8 +43,8 @@ function MeetingView() {
       </div>
 
       <Accordion allowZeroExpanded allowMultipleExpanded>
-        {items.map((item,i) => (
-            <MeetingAgendaGroup key={i} item={item} />
+        {items.map((agendaGroup,i) => (
+            <MeetingAgendaGroup key={i} agendaGroup={agendaGroup} />
         ))}
       </Accordion>
     </div>

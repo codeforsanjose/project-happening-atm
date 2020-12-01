@@ -7,23 +7,23 @@ import {
 } from 'react-accessible-accordion';
 import './MeetingAgendaGroup.scss';
 
-function MeetingAgendaGroup({ item }) {
+import MeetingAgendaItem from './MeetingAgendaItem';
+
+function MeetingAgendaGroup({ agendaGroup }) {
   return (
     <AccordionItem className="MeetingAgendaGroup">
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button">
           <div className="button-text">
-            <div className="group-title">{item.title}</div>
+            <div className="group-title">{agendaGroup.title}</div>
             <div className="group-status">
-              {item.status === 'Pending' ? '' : item.status}
+              {agendaGroup.status === 'Pending' ? '' : agendaGroup.status}
             </div>
           </div>
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel>
-        <ul>
-          {item.items.map((item,i) => <li key={i}>{item.title}</li>)}
-        </ul>
+        {agendaGroup.items.map((item,i) => <MeetingAgendaItem key={i} item={item} />)}
       </AccordionItemPanel>
     </AccordionItem>
   )
