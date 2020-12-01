@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './MeetingView.scss';
 
+import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
+
 const TEST_ITEMS = [1,2,3,4,5].map(makeTestItem);
 
 function makeTestItem(index) {
@@ -24,12 +26,19 @@ function makeTestSubItem(parentIndex, index, status) {
 
 function MeetingView() {
     const [ items, setItems ] = useState(TEST_ITEMS);
+    const [ showCompleted, setShowCompleted ] = useState(false);
 
     return (
         <div className="meeting-view">
-            <div>
-
+            <div
+              className="complete-toggle"
+              onClick={() => setShowCompleted(completed => !completed)}
+            >
+              {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
+              <p>Show Completed Items</p>
             </div>
+
+
         </div>
     );
 }

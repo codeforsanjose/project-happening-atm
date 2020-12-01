@@ -7,4 +7,14 @@
   and (min-device-width: 812px) {
     margin: 0 200px 0;
   }
+
+  .complete-toggle {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+
+    p {
+      margin: 0 0.5em;
+    }
+  }
 }
