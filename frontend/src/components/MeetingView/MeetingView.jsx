@@ -1,42 +1,35 @@
-import React, { useCallback, useState } from 'react';
-// import logo from '../../assets/logo.svg';
+import React, { useState } from 'react';
 import './MeetingView.scss';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import MeetingItemListView from './MeetingItemListView';
+
+const TEST_ITEMS = [1,2,3,4,5].map(makeTestItem);
+
+function makeTestItem(index) {
+  const status = index <= 2 ? 'Completed' : index === 3 ? 'In Progress' : 'Pending';
+  return {
+    title: `${index} Agenda Group`,
+    description: '',
+    status,
+    items: [1,2,3,4].map((i, j) => makeTestSubItem(i, j, status))
+  }
+}
+
+function makeTestSubItem(parentIndex, index, status) {
+  return {
+    title: `${parentIndex}.${index} Agenda Item`,
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl euismod, tristique leo sit amet, eleifend enim.',
+    status,
+    items: []
+  }
+}
 
 function MeetingView() {
-    const [ items, setItems ] = useState(Array.from({ length: 60 }));
-    const [ hasMore, setHasMore ] = useState(true);
-
-    const fetchMoreData = useCallback(() => {
-    if (items.length >= 100) {
-      setHasMore(false)
-      return;
-    }
-    // a fake async api call like which sends
-    // 20 more records in .5 secs
-    setTimeout(() => {
-      setItems(items.concat(Array.from({ length: 20 })))
-    }, 500);
-    }, [items, setItems, setHasMore]);
+    const [ items, setItems ] = useState(TEST_ITEMS);
 
     return (
         <div className="meeting-view">
-            <InfiniteScroll
-              dataLength={items.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-            >
-            {items.map((i, index) => (
-                <MeetingItemListView key={index} />
-            ))}
-            </InfiniteScroll>
+            <div>
+
+            </div>
         </div>
     );
 }
