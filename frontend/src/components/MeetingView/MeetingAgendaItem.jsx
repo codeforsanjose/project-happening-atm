@@ -25,7 +25,8 @@ const itemLinks = [
 function MeetingAgendaItem({ item }) {
   return (
     <div className="MeetingAgendaItem">
-      <div className="item-status">{item.status}</div>
+      {item.status !== 'Pending' && <div className="item-status">{item.status}</div>}
+
       <input type="checkbox"/>
       <h4>{item.title}</h4>
       <p>{item.description}</p>

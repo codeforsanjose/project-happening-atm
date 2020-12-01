@@ -2,6 +2,7 @@
 
 .meeting-view {
   margin: 0 1.25em;
+  background-color: $blueSky;
 
   @media only screen
   and (min-device-width: 812px) {
@@ -16,5 +17,9 @@
     p {
       margin: 0 0.5em;
     }
+  }
+
+  .agenda {
+    margin: 1.5em 0;
   }
 }

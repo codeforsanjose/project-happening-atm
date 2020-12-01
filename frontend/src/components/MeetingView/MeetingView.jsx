@@ -42,7 +42,7 @@ function MeetingView() {
         <p>Show Completed Items</p>
       </div>
 
-      <Accordion allowZeroExpanded allowMultipleExpanded>
+      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
         {items.map((agendaGroup,i) => (
             <MeetingAgendaGroup key={i} agendaGroup={agendaGroup} />
         ))}
