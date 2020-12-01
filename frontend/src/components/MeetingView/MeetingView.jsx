@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import {
+  Accordion
+} from 'react-accessible-accordion';
 import './MeetingView.scss';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
+import MeetingAgendaGroup from './MeetingAgendaGroup';
 
 const TEST_ITEMS = [1,2,3,4,5].map(makeTestItem);
 
@@ -11,7 +15,7 @@ function makeTestItem(index) {
     title: `${index} Agenda Group`,
     description: '',
     status,
-    items: [1,2,3,4].map((i, j) => makeTestSubItem(i, j, status))
+    items: [1,2,3,4].map((i) => makeTestSubItem(index, i, status))
   }
 }
 
@@ -25,22 +29,26 @@ function makeTestSubItem(parentIndex, index, status) {
 }
 
 function MeetingView() {
-    const [ items, setItems ] = useState(TEST_ITEMS);
-    const [ showCompleted, setShowCompleted ] = useState(false);
+  const [ items, setItems ] = useState(TEST_ITEMS);
+  const [ showCompleted, setShowCompleted ] = useState(false);
 
-    return (
-        <div className="meeting-view">
-            <div
-              className="complete-toggle"
-              onClick={() => setShowCompleted(completed => !completed)}
-            >
-              {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-              <p>Show Completed Items</p>
-            </div>
+  return (
+    <div className="meeting-view">
+      <div
+        className="complete-toggle"
+        onClick={() => setShowCompleted(completed => !completed)}
+      >
+        {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
+        <p>Show Completed Items</p>
+      </div>
 
-
-        </div>
-    );
+      <Accordion allowZeroExpanded allowMultipleExpanded>
+        {items.map((item,i) => (
+            <MeetingAgendaGroup key={i} item={item} />
+        ))}
+      </Accordion>
+    </div>
+  );
 }
 
 export default MeetingView;
