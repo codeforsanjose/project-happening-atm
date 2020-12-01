@@ -9,7 +9,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetings();
     } catch (e) {
-      logger.error(`getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`);
+      logger.error(
+        `getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`
+      );
       throw e;
     }
     return res.rows;
@@ -31,7 +33,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetingItems();
     } catch (e) {
-      logger.error(`getAllMeetingItems resolver error - dbClient.getAllMeetingItems: ${e}`);
+      logger.error(
+        `getAllMeetingItems resolver error - dbClient.getAllMeetingItems: ${e}`
+      );
       throw e;
     }
     return res.rows;
@@ -42,7 +46,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItem(id);
     } catch (e) {
-      logger.error(`getMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
+      logger.error(
+        `getMeetingItem resolver error - dbClient.getMeetingItem: ${e}`
+      );
       throw e;
     }
     return res.rows[0];
@@ -61,7 +67,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItemsByMeetingID(id);
     } catch (e) {
-      logger.error(`getMeetingWithItems resolver error - dbClient.getMeetingItemsByMeetingID: ${e}`);
+      logger.error(
+        `getMeetingWithItems resolver error - dbClient.getMeetingItemsByMeetingID: ${e}`
+      );
       throw e;
     }
     const associatedItems = res.rows;
@@ -77,7 +85,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetingIDs();
     } catch (e) {
-      logger.error(`getAllMeetingsWithItems resolver error - dbClient.getAllMeetingIDs: ${e}`);
+      logger.error(
+        `getAllMeetingsWithItems resolver error - dbClient.getAllMeetingIDs: ${e}`
+      );
       throw e;
     }
 
@@ -95,7 +105,9 @@ module.exports = (logger) => {
         allMeetingsWithItems.push(meetingWithItems);
       }
     } catch (e) {
-      logger.error(`getAllMeetingsWithItems resolver error - getMeetingWithItems: ${e}`);
+      logger.error(
+        `getAllMeetingsWithItems resolver error - getMeetingWithItems: ${e}`
+      );
       throw e;
     }
 
@@ -107,7 +119,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscription(id);
     } catch (e) {
-      logger.error(`getSubscription resolver error - dbClient.getSubscription: ${e}`);
+      logger.error(
+        `getSubscription resolver error - dbClient.getSubscription: ${e}`
+      );
       throw e;
     }
     return res.rows[0];
@@ -118,7 +132,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllSubscriptions();
     } catch (e) {
-      logger.error(`getAllSubscriptions resolver error - dbClient.getAllSubscriptions: ${e}`);
+      logger.error(
+        `getAllSubscriptions resolver error - dbClient.getAllSubscriptions: ${e}`
+      );
       throw e;
     }
     return res.rows;

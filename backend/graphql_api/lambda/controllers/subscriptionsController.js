@@ -1,10 +1,14 @@
-const getTwilioClient = require('../twilio/twilioClient');
+const getTwilioClient = require("../twilio/twilioClient");
 
 module.exports = (logger) => {
   const module = {};
   const twilioClient = getTwilioClient(logger);
 
-  const notifySubscribers = async (dbClient, messageBody, subscriptionQueryResponse) => {
+  const notifySubscribers = async (
+    dbClient,
+    messageBody,
+    subscriptionQueryResponse
+  ) => {
     // Here we'll populate phone number and email maps to store subscription data.
     // Users can be subscribed to multiple items that have identical "order numbers".
     // This means that users can be subscribed to items that are scheduled at the same time.
@@ -17,7 +21,7 @@ module.exports = (logger) => {
     subscriptions.forEach((sub) => {
       const phoneNumber = sub.phone_number;
       const email = sub.phone_number.email_address;
-      if (phoneNumber !== '') {
+      if (phoneNumber !== "") {
         if (phoneNumberMap.has(phoneNumber)) {
           if (!phoneNumberMap.get(phoneNumber).includes(sub)) {
             phoneNumberMap.get(phoneNumber).push(sub);
@@ -26,7 +30,7 @@ module.exports = (logger) => {
           phoneNumberMap.set(phoneNumber, [sub]);
         }
       }
-      if (email !== '') {
+      if (email !== "") {
         if (emailMap.has(email)) {
           if (!emailMap.get(email).includes(sub)) {
             emailMap.get(email).push(sub);
@@ -47,7 +51,9 @@ module.exports = (logger) => {
             // eslint-disable-next-line no-await-in-loop
             res = await dbClient.getMeetingItem(sub.meeting_item_id);
           } catch (e) {
-            logger.error(`notifySubscribers controller error - dbClient.getMeetingItem: ${e}`);
+            logger.error(
+              `notifySubscribers controller error - dbClient.getMeetingItem: ${e}`
+            );
             throw e;
           }
           const item = res.rows[0];
@@ -58,7 +64,9 @@ module.exports = (logger) => {
             // eslint-disable-next-line no-await-in-loop
             res = await dbClient.getMeeting(sub.meeting_id);
           } catch (e) {
-            logger.error(`notifySubscribers controller error - dbClient.getMeeting: ${e}`);
+            logger.error(
+              `notifySubscribers controller error - dbClient.getMeeting: ${e}`
+            );
             throw e;
           }
           const meeting = res.rows[0];
@@ -78,7 +86,9 @@ module.exports = (logger) => {
         // eslint-disable-next-line no-await-in-loop
         titles = await getTitlesArray(associatedSubscriptionArray);
       } catch (e) {
-        logger.error(`notifySubscribers controller error - getTitlesArray: ${e}`);
+        logger.error(
+          `notifySubscribers controller error - getTitlesArray: ${e}`
+        );
         throw e;
       }
       const updateMessageBody = messageBody + titles;
@@ -89,43 +99,55 @@ module.exports = (logger) => {
   };
 
   module.notifyItemSubscribers = async (dbClient, id, messageBody) => {
-    logger.info('Notifying item subscribers');
+    logger.info("Notifying item subscribers");
     let res;
     try {
       res = await dbClient.getSubscriptionsByMeetingItemID(id);
     } catch (e) {
-      logger.error(`notifyItemSubscribers controller error - getTidbClient.getSubscriptionsByMeetingItemID: ${e}`);
+      logger.error(
+        `notifyItemSubscribers controller error - getTidbClient.getSubscriptionsByMeetingItemID: ${e}`
+      );
       throw e;
     }
 
     try {
       await notifySubscribers(dbClient, messageBody, res);
     } catch (e) {
-      logger.error(`notifyItemSubscribers controller error - notifySubscribers: ${e}`);
+      logger.error(
+        `notifyItemSubscribers controller error - notifySubscribers: ${e}`
+      );
       throw e;
     }
   };
 
   module.notifyMeetingSubscribers = async (dbClient, id, messageBody) => {
-    logger.info('Notifying meeting subscribers');
+    logger.info("Notifying meeting subscribers");
     let res;
     try {
       res = await dbClient.getSubscriptionsByMeetingID(id);
     } catch (e) {
-      logger.error(`notifyMeetingSubscribers controller error - dbClient.getSubscriptionsByMeetingID: ${e}`);
+      logger.error(
+        `notifyMeetingSubscribers controller error - dbClient.getSubscriptionsByMeetingID: ${e}`
+      );
       throw e;
     }
 
     try {
       await notifySubscribers(dbClient, messageBody, res);
     } catch (e) {
-      logger.error(`notifyMeetingSubscribers controller error - notifySubscribers: ${e}`);
+      logger.error(
+        `notifyMeetingSubscribers controller error - notifySubscribers: ${e}`
+      );
       throw e;
     }
   };
 
-  module.notifyNextItemSubscribers = async (dbClient, meetingItem, messageBody) => {
-    logger.info('Notifying next item subscribers');
+  module.notifyNextItemSubscribers = async (
+    dbClient,
+    meetingItem,
+    messageBody
+  ) => {
+    logger.info("Notifying next item subscribers");
     const meetingID = meetingItem.meeting_id;
     const currentOrderNumber = meetingItem.order_number;
 
@@ -133,7 +155,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItemsByMeetingID(meetingID);
     } catch (e) {
-      logger.error(`notifyNextItemSubscribers controller error - dbClient.getMeetingItemsByMeetingID: ${e}`);
+      logger.error(
+        `notifyNextItemSubscribers controller error - dbClient.getMeetingItemsByMeetingID: ${e}`
+      );
       throw e;
     }
     const meetingItems = res.rows;
@@ -147,16 +171,22 @@ module.exports = (logger) => {
 
     let subscriptionsRes;
     try {
-      subscriptionsRes = await dbClient.getSubscriptionsByMeetingIDList(nextItemsids);
+      subscriptionsRes = await dbClient.getSubscriptionsByMeetingIDList(
+        nextItemsids
+      );
     } catch (e) {
-      logger.error(`notifyNextItemSubscribers controller error - dbClient.getSubscriptionsByMeetingIDList: ${e}`);
+      logger.error(
+        `notifyNextItemSubscribers controller error - dbClient.getSubscriptionsByMeetingIDList: ${e}`
+      );
       throw e;
     }
 
     try {
       await notifySubscribers(dbClient, messageBody, subscriptionsRes);
     } catch (e) {
-      logger.error(`notifyNextItemSubscribers controller error - notifySubscribers: ${e}`);
+      logger.error(
+        `notifyNextItemSubscribers controller error - notifySubscribers: ${e}`
+      );
       throw e;
     }
   };

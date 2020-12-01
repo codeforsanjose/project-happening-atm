@@ -2,11 +2,13 @@
 
 // This environment variable is only set in AWS. Local development shouldn't have it.
 const isLambda = process.env.IS_LAMBDA;
-const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
+const { ApolloServer, gql } = isLambda
+  ? require("apollo-server-lambda")
+  : require("apollo-server");
 
-const getMutationResolver = require('./resolvers/mutation');
-const getQueryResolver = require('./resolvers/query');
-const getDBClient = require('../db/dbClient');
+const getMutationResolver = require("./resolvers/mutation");
+const getQueryResolver = require("./resolvers/query");
+const getDBClient = require("../db/dbClient");
 
 module.exports = (logger) => {
   const mutationResolver = getMutationResolver(logger);
@@ -14,70 +16,105 @@ module.exports = (logger) => {
 
   const typeDefs = gql`
     type Query {
-        getMeeting(id: Int!): meeting
-        getAllMeetings: [meeting]
+      getMeeting(id: Int!): meeting
+      getAllMeetings: [meeting]
 
-        getMeetingItem(id: Int!): meeting_item
-        getAllMeetingItems: [meeting_item]
+      getMeetingItem(id: Int!): meeting_item
+      getAllMeetingItems: [meeting_item]
 
-        getMeetingWithItems(id: Int!): meeting_with_items
-        getAllMeetingsWithItems: [meeting_with_items]
+      getMeetingWithItems(id: Int!): meeting_with_items
+      getAllMeetingsWithItems: [meeting_with_items]
 
-        getSubscription(id: Int!): subscription
-        getAllSubscriptions: [subscription]
+      getSubscription(id: Int!): subscription
+      getAllSubscriptions: [subscription]
     }
 
     type Mutation {
-        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String): meeting
-        updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String): meeting
-        
-        createMeetingItem(meeting_id: Int!, order_number: Int, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String, description_loc_key: String, title_loc_key: String): meeting_item
-        updateMeetingItem(id: Int, order_number: Int, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String, description_loc_key: String, title_loc_key: String): meeting_item
+      createMeeting(
+        meeting_start_timestamp: String!
+        meeting_type: String
+        status: String
+        virtual_meeting_url: String
+      ): meeting
+      updateMeeting(
+        id: Int!
+        status: String
+        meeting_type: String
+        virtual_meeting_url: String
+        meeting_start_timestamp: String
+        meeting_end_timestamp: String
+      ): meeting
 
-        createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
-    }
-
-    type subscription {
+      createMeetingItem(
+        meeting_id: Int!
+        order_number: Int
+        item_start_timestamp: String
+        item_end_timestamp: String
+        status: String
+        content_categories: String
+        description_loc_key: String
+        title_loc_key: String
+      ): meeting_item
+      updateMeetingItem(
         id: Int
+        order_number: Int
+        status: String
+        item_start_timestamp: String
+        item_end_timestamp: String
+        content_categories: String
+        description_loc_key: String
+        title_loc_key: String
+      ): meeting_item
+
+      createSubscription(
         phone_number: String
         email_address: String
         meeting_item_id: Int
         meeting_id: Int
-        created_timestamp: String
-        updated_timestamp: String
+      ): subscription
+    }
+
+    type subscription {
+      id: Int
+      phone_number: String
+      email_address: String
+      meeting_item_id: Int
+      meeting_id: Int
+      created_timestamp: String
+      updated_timestamp: String
     }
 
     type meeting_with_items {
-        meeting: meeting
-        items: [meeting_item]
+      meeting: meeting
+      items: [meeting_item]
     }
 
     type meeting {
-        id: Int
-        status: String
-        meeting_type: String
-        created_timestamp: String
-        updated_timestamp: String
-        meeting_start_timestamp: String
-        meeting_end_timestamp: String
-        virtual_meeting_url: String
+      id: Int
+      status: String
+      meeting_type: String
+      created_timestamp: String
+      updated_timestamp: String
+      meeting_start_timestamp: String
+      meeting_end_timestamp: String
+      virtual_meeting_url: String
     }
 
     type meeting_item {
-        id: Int
-        meeting_id: Int
-        parent_meeting_item_id: Int
-        order_number: Int
-        status: String
-        created_timestamp: String
-        updated_timestamp: String
-        meeting_start_timestamp: String
-        meeting_end_timestamp: String
-        content_categories: String
-        description_loc_key: String
-        title_loc_key: String
+      id: Int
+      meeting_id: Int
+      parent_meeting_item_id: Int
+      order_number: Int
+      status: String
+      created_timestamp: String
+      updated_timestamp: String
+      meeting_start_timestamp: String
+      meeting_end_timestamp: String
+      content_categories: String
+      description_loc_key: String
+      title_loc_key: String
     }
-    `;
+  `;
 
   // We are handling the lifecycle of the DB client here rather than inside individual resolver functions because
   // some resolver functions are nested within eachother. (Ex: getAllMeetingsWithItems, getMeetingWithItems and getMeeting)
@@ -95,7 +132,7 @@ module.exports = (logger) => {
       throw err;
     } finally {
       try {
-        logger.info('Ending DB connection');
+        logger.info("Ending DB connection");
         await dbClient.end();
       } catch (err) {
         logger.error(`Error ending DB connection: ${err.stack}`);
@@ -106,57 +143,57 @@ module.exports = (logger) => {
   const resolvers = {
     Query: {
       getAllMeetings: async () => {
-        logger.info('Initiating GetAllMeetings Query resolver');
+        logger.info("Initiating GetAllMeetings Query resolver");
         return resolverHandler(queryResolver.getAllMeetings);
       },
       getMeeting: async (_parent, args) => {
-        logger.info('Initiating GetMeeting Query resolver');
+        logger.info("Initiating GetMeeting Query resolver");
         return resolverHandler(queryResolver.getMeeting, args.id);
       },
       getMeetingItem: async (_parent, args) => {
-        logger.info('Initiating GetMeetingItem Query resolver');
+        logger.info("Initiating GetMeetingItem Query resolver");
         return resolverHandler(queryResolver.getMeetingItem, args.id);
       },
       getAllMeetingItems: async () => {
-        logger.info('Initiating GetAllMeetingItems Query resolver');
+        logger.info("Initiating GetAllMeetingItems Query resolver");
         return resolverHandler(queryResolver.getAllMeetingItems);
       },
       getMeetingWithItems: async (_parent, args) => {
-        logger.info('Initiating GetMeetingWithItems Query resolver');
+        logger.info("Initiating GetMeetingWithItems Query resolver");
         return resolverHandler(queryResolver.getMeetingWithItems, args.id);
       },
       getAllMeetingsWithItems: async () => {
-        logger.info('Initiating GetAllMeetingsWithItems Query resolver');
+        logger.info("Initiating GetAllMeetingsWithItems Query resolver");
         return resolverHandler(queryResolver.getAllMeetingsWithItems);
       },
       getSubscription: async (_parent, args) => {
-        logger.info('Initiating GetSubscription Query resolver');
+        logger.info("Initiating GetSubscription Query resolver");
         return resolverHandler(queryResolver.getSubscription, args.id);
       },
       getAllSubscriptions: async () => {
-        logger.info('Initiating GetAllSubscriptions Query resolver');
+        logger.info("Initiating GetAllSubscriptions Query resolver");
         return resolverHandler(queryResolver.getAllSubscriptions);
       },
     },
     Mutation: {
       createMeeting: async (_parent, args, context) => {
-        logger.info('Initiating CreateMeeting Mutation resolver');
+        logger.info("Initiating CreateMeeting Mutation resolver");
         return resolverHandler(mutationResolver.createMeeting, args);
       },
       updateMeeting: async (_parent, args, context) => {
-        logger.info('Initiating UpdateMeeting Mutation resolver');
+        logger.info("Initiating UpdateMeeting Mutation resolver");
         return resolverHandler(mutationResolver.updateMeeting, args);
       },
       createMeetingItem: async (_parent, args, context) => {
-        logger.info('Initiating CreateMeetingItem Mutation resolver');
+        logger.info("Initiating CreateMeetingItem Mutation resolver");
         return resolverHandler(mutationResolver.createMeetingItem, args);
       },
       updateMeetingItem: async (_parent, args, context) => {
-        logger.info('Initiating UpdateMeetingItem Mutation resolver');
+        logger.info("Initiating UpdateMeetingItem Mutation resolver");
         return resolverHandler(mutationResolver.updateMeetingItem, args);
       },
       createSubscription: async (_parent, args) => {
-        logger.info('Initiating CreateSubscription Mutation resolver');
+        logger.info("Initiating CreateSubscription Mutation resolver");
         return resolverHandler(mutationResolver.createSubscription, args);
       },
     },
@@ -167,7 +204,7 @@ module.exports = (logger) => {
     typeDefs,
     resolvers,
     playground: {
-      endpoint: '/dev/graphql',
+      endpoint: "/dev/graphql",
     },
     // Empty implementation for local and deployed dev use:
     // TODO: Auth needs to be refactored for AWS

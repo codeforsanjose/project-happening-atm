@@ -1,4 +1,4 @@
-const { Client } = require('pg')
+const { Client } = require("pg");
 
 module.exports = async (logger) => {
   const module = {};
@@ -11,9 +11,9 @@ module.exports = async (logger) => {
     password: process.env.PGPASSWORD,
   });
 
-  client.on('error', err => {
-    logger.error(`Error with DB: ${err.stack}`)
-  })
+  client.on("error", (err) => {
+    logger.error(`Error with DB: ${err.stack}`);
+  });
 
   const query = async (queryString) => {
     logger.debug(queryString);
@@ -29,7 +29,7 @@ module.exports = async (logger) => {
   module.init = async () => {
     try {
       await client.connect();
-      logger.info('DB connected');
+      logger.info("DB connected");
     } catch (e) {
       logger.error(`DB connection error: ${e.stack}`);
       throw e;
@@ -40,8 +40,13 @@ module.exports = async (logger) => {
     await client.end();
   };
 
-  module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
-    logger.info('dbClient: createMeeting');
+  module.createMeeting = async (
+    meetingType,
+    meetingStartTimestamp,
+    virtualMeetingUrl,
+    status
+  ) => {
+    logger.info("dbClient: createMeeting");
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -53,18 +58,26 @@ module.exports = async (logger) => {
   };
 
   module.getAllMeetings = async () => {
-    logger.info('dbClient: getAllMeetings');
-    return query('SELECT * FROM meeting');
+    logger.info("dbClient: getAllMeetings");
+    return query("SELECT * FROM meeting");
   };
 
   module.getMeeting = async (id) => {
-    logger.info('dbClient: getMeeting');
+    logger.info("dbClient: getMeeting");
     return query(`SELECT * FROM meeting WHERE id = ${id}`);
   };
 
-  module.createMeetingItem = async (meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
-    status, contentCategories, descriptionLocKey, titleLocKey) => {
-    logger.info('dbClient: createMeetingItem');
+  module.createMeetingItem = async (
+    meetingId,
+    orderNumber,
+    itemStartTimestamp,
+    itemEndTimestamp,
+    status,
+    contentCategories,
+    descriptionLocKey,
+    titleLocKey
+  ) => {
+    logger.info("dbClient: createMeetingItem");
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -76,27 +89,32 @@ module.exports = async (logger) => {
   };
 
   module.getAllMeetingItems = async () => {
-    logger.info('dbClient: getAllMeetingItems');
-    return query('SELECT * FROM meeting_item');
+    logger.info("dbClient: getAllMeetingItems");
+    return query("SELECT * FROM meeting_item");
   };
 
   module.getMeetingItem = async (id) => {
-    logger.info('dbClient: getMeetingItem');
+    logger.info("dbClient: getMeetingItem");
     return query(`SELECT * FROM meeting_item WHERE id = ${id}`);
   };
 
   module.getMeetingItemsByMeetingID = async (meetingId) => {
-    logger.info('dbClient: getMeetingItemsByMeetingID');
+    logger.info("dbClient: getMeetingItemsByMeetingID");
     return query(`SELECT * FROM meeting_item WHERE meeting_id = ${meetingId}`);
   };
 
   module.getAllMeetingIDs = async () => {
-    logger.info('dbClient: getAllMeetingIDs');
-    return query('SELECT id FROM meeting');
+    logger.info("dbClient: getAllMeetingIDs");
+    return query("SELECT id FROM meeting");
   };
 
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
-    logger.info('dbClient: createSubscription');
+  module.createSubscription = async (
+    phoneNumber,
+    emailAddress,
+    meetingItemId,
+    meetingId
+  ) => {
+    logger.info("dbClient: createSubscription");
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -108,28 +126,36 @@ module.exports = async (logger) => {
   };
 
   module.getSubscription = async (id) => {
-    logger.info('dbClient: getSubscription');
+    logger.info("dbClient: getSubscription");
     return query(`SELECT * FROM subscription WHERE id = ${id}`);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
-    logger.info('dbClient: getSubscriptionsByMeetingID');
+    logger.info("dbClient: getSubscriptionsByMeetingID");
     return query(`SELECT * FROM subscription WHERE meeting_id = ${id}`);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
-    logger.info('dbClient: getSubscriptionsByMeetingItemID');
+    logger.info("dbClient: getSubscriptionsByMeetingItemID");
     return query(`SELECT * FROM subscription WHERE meeting_item_id = ${id}`);
   };
 
   module.getAllSubscriptions = async () => {
-    logger.info('dbClient: getAllSubscriptions');
-    return query('SELECT * FROM subscription');
+    logger.info("dbClient: getAllSubscriptions");
+    return query("SELECT * FROM subscription");
   };
 
-  module.updateMeetingItem = async (id, orderNumber, status, itemStartTimestamp,
-    itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey) => {
-    logger.info('dbClient: updateMeetingItem');
+  module.updateMeetingItem = async (
+    id,
+    orderNumber,
+    status,
+    itemStartTimestamp,
+    itemEndTimestamp,
+    contentCategories,
+    descriptionLocKey,
+    titleLocKey
+  ) => {
+    logger.info("dbClient: updateMeetingItem");
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting_item
@@ -146,9 +172,15 @@ module.exports = async (logger) => {
     return query(queryString);
   };
 
-  module.updateMeeting = async (id, status, meetingType, virtualMeetingUrl,
-    meetingStartTimestamp, meetingEndTimestamp) => {
-    logger.info('dbClient: updateMeeting');
+  module.updateMeeting = async (
+    id,
+    status,
+    meetingType,
+    virtualMeetingUrl,
+    meetingStartTimestamp,
+    meetingEndTimestamp
+  ) => {
+    logger.info("dbClient: updateMeeting");
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting
@@ -164,21 +196,23 @@ module.exports = async (logger) => {
   };
 
   module.getSubscriptionsByMeetingIDList = async (idList) => {
-    logger.info('dbClient: getSubscriptionsByMeetingIDList');
-    let idListString = '';
+    logger.info("dbClient: getSubscriptionsByMeetingIDList");
+    let idListString = "";
     idList.forEach((id) => {
-      if (idListString === '') {
-        idListString += `(${id}`
+      if (idListString === "") {
+        idListString += `(${id}`;
       } else {
-        idListString += `, ${id}`
+        idListString += `, ${id}`;
       }
     });
-    idListString += ')';
-    return query(`SELECT * FROM subscription WHERE meeting_item_id in ${idListString}`);
+    idListString += ")";
+    return query(
+      `SELECT * FROM subscription WHERE meeting_item_id in ${idListString}`
+    );
   };
 
   module.getAdminByEmail = async (email) => {
-    logger.info('dbClient: getAdminByEmail');
+    logger.info("dbClient: getAdminByEmail");
     return query(`SELECT * FROM admin WHERE email_address = '${email}'`);
   };
 
