@@ -30,7 +30,11 @@ function makeTestSubItem(parentIndex, index, status) {
 
 function MeetingView() {
   const [ items, setItems ] = useState(TEST_ITEMS);
-  const [ showCompleted, setShowCompleted ] = useState(false);
+  const [ showCompleted, setShowCompleted ] = useState(true);
+
+  const renderedItems = showCompleted ?
+    items :
+    items.filter(item => item.status !== 'Completed');
 
   return (
     <div className="meeting-view">
@@ -43,7 +47,7 @@ function MeetingView() {
       </div>
 
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {items.map((agendaGroup,i) => (
+        {renderedItems.map((agendaGroup,i) => (
             <MeetingAgendaGroup key={i} agendaGroup={agendaGroup} />
         ))}
       </Accordion>
