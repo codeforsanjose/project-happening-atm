@@ -22,7 +22,7 @@ function MeetingAgendaGroup({ agendaGroup }) {
           </div>
         </AccordionItemButton>
       </AccordionItemHeading>
-      <AccordionItemPanel>
+      <AccordionItemPanel className="group-items">
         {agendaGroup.items.map((item,i) => <MeetingAgendaItem key={i} item={item} />)}
       </AccordionItemPanel>
     </AccordionItem>
