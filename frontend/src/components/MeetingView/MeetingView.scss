@@ -1,8 +1,9 @@
 @import "../../utils/colors";
 
 .meeting-view {
-  margin: 0 1.25em;
+  padding: 0 1.25em;
   background-color: $blueSky;
+  font-family: 'Poppins', sans-serif;
 
   @media only screen
   and (min-device-width: 812px) {
@@ -21,5 +22,16 @@
 
   .agenda {
     margin: 1.5em 0;
+  }
+
+  h3 {
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 1em;
+    padding-bottom: 0.4em;
+    padding-right: 3em;
+    border-bottom: 2px solid $cityBronze;
+    color: $black;
+    font-weight: 600;
   }
 }

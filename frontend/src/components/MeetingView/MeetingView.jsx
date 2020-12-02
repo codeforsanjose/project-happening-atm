@@ -38,6 +38,10 @@ function MeetingView() {
 
   return (
     <div className="meeting-view">
+      <div>
+        <h3>Agenda</h3>
+      </div>
+
       <div
         className="complete-toggle"
         onClick={() => setShowCompleted(completed => !completed)}
