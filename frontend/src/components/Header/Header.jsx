@@ -12,14 +12,14 @@ function Header() {
 
   return (
     <header>
-      <nav className='no-select'>
-        <div className='nav-bar'>
-          <a href='#' rel='noopener noreferrer'>
+      <nav className="no-select">
+        <div className="nav-bar">
+          <a href="#" rel="noopener noreferrer">
             My City's Agenda
           </a>
           <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
-        <NavLinks toggled={toggled} className='nav-links' />
+        <NavLinks toggled={toggled} className="nav-links" />
       </nav>
     </header>
   );
