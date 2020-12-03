@@ -15,10 +15,12 @@ import './AdminHeader.scss';
  *      State setter from AdminView
  */
 
-export default function AdminHeader({ headerText, meetingIdList, meetingId, setMeetingId }) {
+export default function AdminHeader({
+  headerText, meetingIdList, meetingId, setMeetingId,
+}) {
   const handleSelect = (e) => {
     setMeetingId(e.target.value);
-  }
+  };
 
   return (
     <div className="AdminHeader">
@@ -27,7 +29,7 @@ export default function AdminHeader({ headerText, meetingIdList, meetingId, setM
           Meeting:
           <select value={meetingId} onChange={handleSelect}>
             {
-              meetingIdList.map(id => <option key={id} value={id}>{id}</option>)
+              meetingIdList.map((id) => <option key={id} value={id}>{id}</option>)
             }
           </select>
         </label>
@@ -38,5 +40,5 @@ export default function AdminHeader({ headerText, meetingIdList, meetingId, setM
         <h3>{headerText}</h3>
       </div>
     </div>
-  )
+  );
 }

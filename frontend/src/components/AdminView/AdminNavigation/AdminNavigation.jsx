@@ -13,20 +13,20 @@ const LINKS = [
     key: 'editDetails',
     icon: InfoIcon,
     linkText: 'Edit Meeting Details',
-    path: AdminPaths.EDIT_MEETING
+    path: AdminPaths.EDIT_MEETING,
   },
   {
     key: 'editAgenda',
     icon: EditIcon,
     linkText: 'Edit Agenda Items',
-    path: AdminPaths.EDIT_AGENDA
+    path: AdminPaths.EDIT_AGENDA,
   },
   {
     key: 'uploadAgenda',
     icon: PublishIcon,
     linkText: 'Upload New Agenda',
-    path: AdminPaths.UPLOAD_CSV
-  }
+    path: AdminPaths.UPLOAD_CSV,
+  },
 ];
 
 /**
@@ -35,26 +35,24 @@ const LINKS = [
 
 function AdminNavigation({ meetingId }) {
   return (
-    <div className='admin-navigation'>
-      <img className='logo' src={cityLogo} alt='logo' />
+    <div className="admin-navigation">
+      <img className="logo" src={cityLogo} alt="logo" />
 
-      <div className='links'>
+      <div className="links">
         <ul>
-          {LINKS.map(link => {
-            return (
-              <AdminNavigationLink
-                key={link.key}
-                Icon={link.icon}
-                linkText={link.linkText}
-                path={link.path + '/' + meetingId}
-              />
-            );
-          })}
+          {LINKS.map((link) => (
+            <AdminNavigationLink
+              key={link.key}
+              Icon={link.icon}
+              linkText={link.linkText}
+              path={`${link.path}/${meetingId}`}
+            />
+          ))}
         </ul>
       </div>
 
       <button
-        className='admin-publish-button'
+        className="admin-publish-button"
         onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
       >
         Publish Changes
