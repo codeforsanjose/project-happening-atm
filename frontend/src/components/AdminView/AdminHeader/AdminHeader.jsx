@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './AdminHeader.scss';
 
 /**
@@ -15,7 +16,7 @@ import './AdminHeader.scss';
  *      State setter from AdminView
  */
 
-export default function AdminHeader({
+function AdminHeader({
   headerText, meetingIdList, meetingId, setMeetingId,
 }) {
   const handleSelect = (e) => {
@@ -42,3 +43,12 @@ export default function AdminHeader({
     </div>
   );
 }
+
+AdminHeader.prototype = {
+  headerText: PropTypes.string.isRequired,
+  meetingIdList: PropTypes.array.isRequired,
+  meetingId: PropTypes.string.isRequired,
+  setMeetingId: PropTypes.func.isRequired,
+};
+
+export default AdminHeader;
