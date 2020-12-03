@@ -64,7 +64,7 @@ module.exports = (logger) => {
     // Despite its nested loops, this portion actually runs in O(N) time complexity,
     // ignoring DB interaction, where N is equal to the number of rows in the input
     // CSV file. Fun fact
-    const orderNumber = 1;
+    let orderNumber = 1;
     for (const rootItemNumber of agendaItems.keys()) {
       const rootItem = agendaItems.get(rootItemNumber);
       const title = rootItem[0];
@@ -77,6 +77,7 @@ module.exports = (logger) => {
         'PENDING', '[content, categories]', 'description', amendedTitle,
       );
       const rootMeetingItemId = res.rows[0].id;
+      orderNumber += 1;
 
       const subItems = rootItem[1];
       for (const subItemNumber of subItems.keys()) {
@@ -90,6 +91,7 @@ module.exports = (logger) => {
           meetingId, rootMeetingItemId, orderNumber, null, null,
           'PENDING', '[content, categories]', 'description', amendedTitle,
         );
+        orderNumber += 1;
       }
     }
 
