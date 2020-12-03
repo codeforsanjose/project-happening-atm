@@ -35,7 +35,7 @@ resource "aws_lambda_function" "gan_graphql_lambda" {
 
       PGUSER     = "${var.PGUSER}"
       PGPASSWORD = "${var.PGPASSWORD}"
-      PGDATABASE = "${var.PGDATABASE}"
+      PGDATABASE = "${aws_db_instance.gan_db.name}"
       PGHOST     = "${aws_db_instance.gan_db.address}"
       PGPORT     = "${aws_db_instance.gan_db.port}"
     }
@@ -74,7 +74,7 @@ resource "aws_lambda_function" "gan_agenda_upload_lambda" {
       IS_LAMBDA  = true
       PGUSER     = "${var.PGUSER}"
       PGPASSWORD = "${var.PGPASSWORD}"
-      PGDATABASE = "${var.PGDATABASE}"
+      PGDATABASE = "${aws_db_instance.gan_db.name}"
       PGHOST     = "${aws_db_instance.gan_db.address}"
       PGPORT     = "${aws_db_instance.gan_db.port}"
     }
@@ -87,7 +87,8 @@ resource "aws_cloudwatch_log_group" "gan_agenda_upload_lambda_log_group" {
 }
 
 resource "aws_db_instance" "gan_db" {
-  identifier             = "gan-db"
+  identifier             = "gan-db" # Name in AWS Console
+  name                   = "gan"    # Database name the clients connect to in this instance
   username               = "${var.PGUSER}"
   password               = "${var.PGPASSWORD}"
   engine                 = "postgres"
