@@ -26,12 +26,93 @@ module.exports = async (logger) => {
     }
   };
 
+  const initTables = async () => {
+    logger.info('Initializing DB tables if necessary');
+    try {
+      await query(`
+      CREATE TABLE IF NOT EXISTS meeting (
+        id SERIAL NOT NULL PRIMARY KEY,
+        meeting_type VARCHAR(255),
+        status VARCHAR(255),
+        created_timestamp TIMESTAMP NOT NULL,
+        updated_timestamp TIMESTAMP NOT NULL,
+        meeting_start_timestamp TIMESTAMP NOT NULL,
+        meeting_end_timestamp TIMESTAMP,
+        virtual_meeting_url VARCHAR(255)
+      );
+      `);
+    } catch (e) {
+      logger.error(`Error creating meeting table: ${e}`);
+      throw e;
+    }
+
+    try {
+      await query(`
+      CREATE TABLE IF NOT EXISTS meeting_item (
+        id SERIAL NOT NULL PRIMARY KEY,
+        meeting_id INT NOT NULL,
+        parent_meeting_item_id INT,
+        order_number INT,
+        created_timestamp TIMESTAMP NOT NULL,
+        updated_timestamp TIMESTAMP NOT NULL,
+        item_start_timestamp TIMESTAMP,
+        item_end_timestamp TIMESTAMP,
+        status VARCHAR(255),
+        content_categories VARCHAR(255),
+        description_loc_key VARCHAR(255),
+        title_loc_key VARCHAR(255),
+        CONSTRAINT fk_meeting_id
+            FOREIGN KEY(meeting_id)
+                REFERENCES meeting(id)
+      );
+      `);
+    } catch (e) {
+      logger.error(`Error creating meeting_item table: ${e}`);
+      throw e;
+    }
+
+    try {
+      await query(`
+      CREATE TABLE IF NOT EXISTS subscription (
+        id SERIAL NOT NULL PRIMARY KEY,
+        meeting_item_id INT,
+        meeting_id INT,
+        created_timestamp TIMESTAMP NOT NULL,
+        updated_timestamp TIMESTAMP NOT NULL,
+        phone_number VARCHAR(255),
+        email_address VARCHAR(255)
+      );
+      `);
+    } catch (e) {
+      logger.error(`Error creating subscription table: ${e}`);
+      throw e;
+    }
+
+    try {
+      await query(`
+      CREATE TABLE IF NOT EXISTS admin (
+        id SERIAL NOT NULL PRIMARY KEY,
+        email_address VARCHAR(255)
+      );
+      `);
+    } catch (e) {
+      logger.error(`Error creating admin table: ${e}`);
+      throw e;
+    }
+  };
+
   module.init = async () => {
     try {
       await client.connect();
       logger.info('DB connected');
     } catch (e) {
       logger.error(`DB connection error: ${e.stack}`);
+      throw e;
+    }
+    try {
+      await initTables();
+    } catch (e) {
+      logger.error(`Error initializing tables: ${e}`);
       throw e;
     }
   };
