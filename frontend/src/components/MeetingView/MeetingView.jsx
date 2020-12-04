@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import './MeetingView.scss';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MeetingItemListView from './MeetingItemListView';
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
 
 function MeetingView() {
@@ -23,6 +24,7 @@ function MeetingView() {
 
   return (
     <div className='meeting-view'>
+      <NavBarHeader />
       <Header />
       <InfiniteScroll
         dataLength={items.length}

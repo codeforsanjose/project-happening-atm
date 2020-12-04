@@ -19,12 +19,11 @@ header {
   background-color: $cityBlue;
   // height: 8vh;
   padding: 0.5em 2.5vw;
-  z-index: 999;
+  z-index: 9999;
   position: fixed;
   top: 0;
   left: 0;
   box-sizing: border-box;
-  // margin: inherit;
 
   nav {
     max-width: 1020px;

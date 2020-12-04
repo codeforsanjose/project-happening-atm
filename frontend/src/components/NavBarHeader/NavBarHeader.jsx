@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import HamburgerIcon from './HamburgerIcon';
 import NavLinks from './NavLinks';
-import './Header.scss';
+import './NavBarHeader.scss';
 
 function Header() {
   const [toggled, setToggled] = useState(false);
