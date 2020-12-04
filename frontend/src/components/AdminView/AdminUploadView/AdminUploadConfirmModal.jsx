@@ -3,15 +3,15 @@ import './AdminUploadConfirmModal.scss';
 
 function AdminUploadConfirmModal({ fileName, closeModal, confirmModal }) {
   return (
-    <div className="AdminUploadConfirmModal" onClick={closeModal}>
+    <div className="AdminUploadConfirmModal" role="dialog">
       <div className="inner">
         <p>
-          Upload '
+          Upload &#39
           {fileName}
-          '?
+          &#39?
         </p>
-        <button onClick={closeModal}>Cancel</button>
-        <button onClick={confirmModal}>Upload</button>
+        <button type="button" onClick={closeModal}>Cancel</button>
+        <button type="button" onClick={confirmModal}>Upload</button>
       </div>
     </div>
   );

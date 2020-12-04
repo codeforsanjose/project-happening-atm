@@ -18,20 +18,24 @@ function Subscribe() {
 
         <div className="form">
           <div className="input-group">
-            <label htmlFor="phone">Text Notification</label>
-            <input
-              type="tel"
-              placeholder="Enter your phone number"
-            />
+            <label htmlFor="phone">
+              Text Notification
+              <input
+                type="tel"
+                placeholder="Enter your phone number"
+              />
+            </label>
           </div>
           <div className="input-group">
-            <label htmlFor="email">Email Notification</label>
-            <input
-              type="text"
-              placeholder="Enter your email address"
-            />
+            <label htmlFor="email">
+              Email Notification
+              <input
+                type="text"
+                placeholder="Enter your email address"
+              />
+            </label>
           </div>
-          <button>Subscribe</button>
+          <button type="button">Subscribe</button>
         </div>
       </div>
     </div>

@@ -34,7 +34,8 @@ function MeetingView() {
               )}
       >
         {items.map((i, index) => (
-          <MeetingItemListView key={index} />
+          // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/82
+          <MeetingItemListView key={`MeetingItemListView-${index.toString}`} />
         ))}
       </InfiniteScroll>
     </div>

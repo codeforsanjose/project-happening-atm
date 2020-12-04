@@ -6,7 +6,7 @@ import Search from './Search';
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
 
-function Header({ toggleMenu, shouldHide }) {
+function Header({ shouldHide }) {
   return (
     <div className={classnames('header', {
       hide: shouldHide,

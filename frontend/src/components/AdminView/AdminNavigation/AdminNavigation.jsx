@@ -52,8 +52,9 @@ function AdminNavigation({ meetingId }) {
       </div>
 
       <button
+        type="button"
         className="admin-publish-button"
-        onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
+        // onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
       >
         Publish Changes
       </button>

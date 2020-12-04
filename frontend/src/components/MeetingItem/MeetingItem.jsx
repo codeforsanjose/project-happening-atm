@@ -3,7 +3,7 @@ import './MeetingItem.scss';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import MeetingItemStates from '../../constants/MeetingItemStates';
-import { useMeetingItemIcon } from '../../hooks/useMeetingItemIcon';
+import useMeetingItemIcon from '../../hooks/useMeetingItemIcon';
 
 function MeetingItem({
   title = '2.1 Approval of Unemployment Insurance Appropriation Ordinance Adjustments to Increase Payment of Claims and Access to Reserves',
@@ -27,11 +27,15 @@ function MeetingItem({
       <br />
       <h1>Recommendation</h1>
       <p className="recommendation">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra maecenas accumsan lacus vel facilisis volutpat est velit. In dictum non consectetur a erat. Phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Viverra maecenas accumsan lacus vel facilisis volutpat est velit.
+        In dictum non consectetur a erat.
+        Phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis.
       </p>
       <div className="button-row">
-        <button className="button">Resource Link</button>
-        <button className="button">Resource Link</button>
+        <button type="button" className="button">Resource Link</button>
+        <button type="button" className="button">Resource Link</button>
       </div>
     </div>
   );

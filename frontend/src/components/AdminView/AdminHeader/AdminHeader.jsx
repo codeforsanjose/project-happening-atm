@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './AdminHeader.scss';
 
 /**
@@ -26,15 +25,15 @@ function AdminHeader({
   return (
     <div className="AdminHeader">
       <div className="top-nav">
-        <label>
+        <label htmlFor="admin-meetings-select">
           Meeting:
-          <select value={meetingId} onChange={handleSelect}>
+          <select value={meetingId} onChange={handleSelect} id="admin-meetings-select">
             {
               meetingIdList.map((id) => <option key={id} value={id}>{id}</option>)
             }
           </select>
         </label>
-        <button>Sign Out</button>
+        <button type="button">Sign Out</button>
       </div>
 
       <div className="header-text">
@@ -43,12 +42,5 @@ function AdminHeader({
     </div>
   );
 }
-
-AdminHeader.prototype = {
-  headerText: PropTypes.string.isRequired,
-  meetingIdList: PropTypes.array.isRequired,
-  meetingId: PropTypes.string.isRequired,
-  setMeetingId: PropTypes.func.isRequired,
-};
 
 export default AdminHeader;

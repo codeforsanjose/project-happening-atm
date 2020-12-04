@@ -3,7 +3,7 @@ import './MeetingItemListView.scss';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import MeetingItemStates from '../../constants/MeetingItemStates';
-import { useMeetingItemIcon } from '../../hooks/useMeetingItemIcon';
+import useMeetingItemIcon from '../../hooks/useMeetingItemIcon';
 
 function MeetingItemListView({
   title = '2.1 Approval of Unemployment Insurance Appropriation Ordinance Adjustments to Increase Payment of Claims and Access to Reserves',
@@ -29,11 +29,11 @@ function MeetingItemListView({
           <i className="fas fa-bell fa-lg" />
           <span>Subscribe</span>
         </Link>
-        <button className="button">
+        <button type="button" className="button">
           <i className="fas fa-share-alt fa-lg" />
           <span>Share</span>
         </button>
-        <button className="button">
+        <button type="button" className="button">
           <i className="fas fa-info-circle fa-lg" />
           <span>View Details</span>
         </button>

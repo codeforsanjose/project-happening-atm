@@ -6,22 +6,25 @@ import {
   Route,
 } from 'react-router-dom';
 import {
-  ApolloClient, InMemoryCache, ApolloProvider, useQuery,
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  // useQuery,
 } from '@apollo/client';
-import * as serviceWorker from './serviceWorker';
 
 import './index.scss';
 
+import classnames from 'classnames';
 import MeetingView from './components/MeetingView/MeetingView';
 import Header from './components/Header/Header';
-import classnames from 'classnames';
-import NavigationMenu from './components/Header/NavigationMenu';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
 
-import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
+import * as serviceWorker from './serviceWorker';
+
+// import GET_ALL_MEETINGS_WITH_ITEMS from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
 
 const client = new ApolloClient({
@@ -30,12 +33,12 @@ const client = new ApolloClient({
 });
 
 function SampleQuery() {
-  const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
+  // const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
-  if (loading) console.log('THE Loading: ', loading);
-  if (error) console.log('THE Error: ', error);
+  // if (loading) console.log('THE Loading: ', loading);
+  // if (error) console.log('THE Error: ', error);
 
-  console.log(data);
+  // console.log(data);
 
   return null;
 }
@@ -94,7 +97,6 @@ function App() {
                 />
               </Route>
             </Switch>
-            <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu} />
           </Router>
           <SampleQuery />
         </div>
