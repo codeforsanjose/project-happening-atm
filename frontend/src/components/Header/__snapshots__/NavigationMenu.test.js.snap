@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavigationMenu renders correctly 1`] = `
+<div
+  className="navigation-menu responsive-padding hide"
+>
+  <span
+    className="hamburger-menu"
+    style={
+      Object {
+        "color": "white",
+      }
+    }
+  >
+    <i
+      className="fas fa-bars fa-2x"
+    />
+  </span>
+  <ul>
+    <li>
+      <a
+        href="/"
+        onClick={[Function]}
+      >
+        Home
+      </a>
+    </li>
+  </ul>
+</div>
+`;

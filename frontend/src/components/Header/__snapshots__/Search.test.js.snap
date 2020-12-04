@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search renders correctly 1`] = `
+<div
+  className="search-container"
+>
+  <i
+    className="fas fa-search"
+  />
+  <div
+    style={
+      Object {
+        "borderRadius": "10px",
+        "display": "flex",
+      }
+    }
+  >
+    <input
+      aria-autocomplete="list"
+      aria-expanded={false}
+      autoComplete="off"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search Agenda"
+      role="combobox"
+      value=""
+    />
+  </div>
+</div>
+`;
