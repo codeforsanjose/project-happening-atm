@@ -25,7 +25,6 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.3.3",
-    "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.14.0",
