@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders correctly 1`] = `
+<div
+  className="header"
+>
+  <div
+    className="header-content"
+  >
+    <img
+      alt="logo"
+      className="logo"
+      src="SanJoseCityLogo.png"
+    />
+    <div
+      className="meeting-info"
+    >
+      <div
+        className="title"
+      >
+        San José City Council Meeting Agenda
+      </div>
+      <div
+        className="details-title"
+      >
+        Meeting Details
+      </div>
+      <div
+        className="date"
+      >
+        Tuesday, August 25, 2020
+      </div>
+      <div
+        className="time"
+      >
+        Start time: 
+        <span
+          className="no-bold"
+        >
+          11:00 AM
+        </span>
+      </div>
+      <div
+        className="status"
+      >
+        Meeting is in progress
+      </div>
+    </div>
+    <div
+      className="search-container"
+    >
+      <i
+        className="fas fa-search"
+      />
+      <div
+        style={
+          Object {
+            "borderRadius": "10px",
+            "display": "flex",
+          }
+        }
+      >
+        <input
+          aria-autocomplete="list"
+          aria-expanded={false}
+          autoComplete="off"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search Agenda"
+          role="combobox"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
