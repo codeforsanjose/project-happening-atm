@@ -2,12 +2,14 @@
 
 .meeting-view {
   padding: 0 1.25em;
+  padding-bottom: 2em;
   background-color: $blueSky;
   font-family: 'Poppins', sans-serif;
 
   @media only screen
   and (min-device-width: 812px) {
     margin: 0 200px 0;
+    padding-bottom: 3em;
   }
 
   .complete-toggle {
