@@ -1,28 +1,44 @@
-import React, { useState } from 'react';
-import HamburgerIcon from './HamburgerIcon';
-import NavLinks from './NavLinks';
+import React from 'react';
 import './Header.scss';
+import classnames from 'classnames';
+import Search from './Search';
 
-function Header() {
-  const [toggled, setToggled] = useState(false);
+// Asset imports
+import cityLogo from './../../assets/SanJoseCityLogo.png';
 
-  function handleToggle() {
-    setToggled(!toggled);
-  }
+function Header({ toggleMenu, shouldHide }) {
+    return (
+        <div className={classnames('header', {
+            'hide': shouldHide,
+        })}>
+            <div className={classnames('header-content')}>
+                <img className="logo" src={cityLogo} alt="logo" />
+                <div className="meeting-info">
+                    <div className="title">
+                        San José City Council Meeting Agenda
+                    </div>
 
-  return (
-    <header>
-      <nav className="no-select">
-        <div className="nav-bar">
-          <a href="#" rel="noopener noreferrer">
-            My City's Agenda
-          </a>
-          <HamburgerIcon onClick={handleToggle} toggled={toggled} />
+                    <div className="details-title">
+                        Meeting Details
+                    </div>
+
+                    <div className="date">
+                        Tuesday, August 25, 2020
+                    </div>
+
+                    <div className="time">
+                        Start time: <span className="no-bold">11:00 AM</span>
+                    </div>
+
+                    <div className="status">
+                        Meeting is in progress
+                    </div>
+                </div>
+
+                <Search />
+            </div>
         </div>
-        <NavLinks toggled={toggled} className="nav-links" />
-      </nav>
-    </header>
-  );
+    );
 }
 
 export default Header;
