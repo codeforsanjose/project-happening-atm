@@ -1,0 +1,45 @@
+@import '../../utils/colors';
+
+.search-container {
+  color: $darkTeal;
+  border-radius: 10px;
+  border-width: 10px;
+  border-style: solid;
+  margin: 20px 20px 20px;
+  border-color: $mustardYellow;
+  background: $mustardYellow;
+
+  input[role='combobox'] {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: $offWhite;
+    padding-left: 45px;
+    font-size: 18px;
+
+    &::placeholder {
+      color: $darkTeal;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1.2px;
+    }
+
+    @media only screen and (min-device-width: 812px) {
+      padding-left: 45px;
+      font-size: 18px;
+    }
+  }
+
+  .fa-search {
+    position: absolute;
+    color: $darkTeal;
+    z-index: 1001;
+    top: 260px;
+    left: 40px;
+
+    @media only screen and (min-device-width: 812px) {
+      top: 333px;
+      left: 270px;
+    }
+  }
+}

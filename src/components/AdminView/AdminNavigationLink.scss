@@ -1,0 +1,55 @@
+@import '../../utils/_colors.scss';
+@import './margin';
+
+.admin-nav-link {
+  list-style-type: none;
+
+  button {
+    width: 100%;
+    padding: 0.8em 0;
+    padding-left: $navMargin;
+    border: none;
+    background: transparent;
+    color: $black;
+    cursor: pointer;
+    border-left: 8px solid transparent;
+
+    .button-group {
+      display: flex;
+
+      .button-group-inner {
+        padding: 0 2em;
+      }
+    }
+
+    &:hover {
+      background: $cityBlue5;
+    }
+  }
+
+  .button-icon {
+    vertical-align: middle;
+    fill: $black;
+  }
+
+  .button-text {
+    margin-left: 1em;
+    font-size: 18px;
+    vertical-align: middle;
+    font-weight: 600;
+  }
+
+  .button-active {
+    border-left: 8px solid $cityBlue;
+    background: $cityBlue10;
+    color: $cityBlue;
+
+    .button-icon {
+      fill: $cityBlue;
+    }
+
+    &:hover {
+      background: $cityBlue10;
+    }
+  }
+}
