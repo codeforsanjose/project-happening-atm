@@ -35,7 +35,9 @@ const client = new ApolloClient({
 function SampleQuery() {
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
+  // eslint-disable-next-line no-console
   if (loading) console.log('THE Loading: ', loading);
+  // eslint-disable-next-line no-console
   if (error) console.log('THE Error: ', error);
 
   // eslint-disable-next-line no-console

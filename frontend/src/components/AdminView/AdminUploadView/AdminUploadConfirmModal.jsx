@@ -6,9 +6,9 @@ function AdminUploadConfirmModal({ fileName, closeModal, confirmModal }) {
     <div className="AdminUploadConfirmModal" role="dialog">
       <div className="inner">
         <p>
-          Upload &#39
+          Upload &#39;
           {fileName}
-          &#39?
+          &#39;?
         </p>
         <button type="button" onClick={closeModal}>Cancel</button>
         <button type="button" onClick={confirmModal}>Upload</button>
