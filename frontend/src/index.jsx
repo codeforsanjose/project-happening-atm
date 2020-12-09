@@ -9,7 +9,7 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  // useQuery,
+  useQuery,
 } from '@apollo/client';
 
 import './index.scss';
@@ -24,7 +24,7 @@ import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadV
 
 import * as serviceWorker from './serviceWorker';
 
-// import GET_ALL_MEETINGS_WITH_ITEMS from './graphql/graphql';
+import GET_ALL_MEETINGS_WITH_ITEMS from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
 
 const client = new ApolloClient({
@@ -33,12 +33,13 @@ const client = new ApolloClient({
 });
 
 function SampleQuery() {
-  // const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
+  const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
-  // if (loading) console.log('THE Loading: ', loading);
-  // if (error) console.log('THE Error: ', error);
+  if (loading) console.log('THE Loading: ', loading);
+  if (error) console.log('THE Error: ', error);
 
-  // console.log(data);
+  // eslint-disable-next-line no-console
+  console.log(data);
 
   return null;
 }

@@ -40,7 +40,8 @@ function AdminUploadView() {
 
   /** Send CSV file to back end */
   function uploadCSV() {
-    // console.log('Uploading: ', selectedFile);
+    // eslint-disable-next-line no-console
+    console.log('Uploading: ', selectedFile);
     // TODO: Implement upload:
     // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
   }

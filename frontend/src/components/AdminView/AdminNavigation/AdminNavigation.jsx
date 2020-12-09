@@ -54,7 +54,8 @@ function AdminNavigation({ meetingId }) {
       <button
         type="button"
         className="admin-publish-button"
-        // onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
+        // eslint-disable-next-line no-console
+        onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
       >
         Publish Changes
       </button>
