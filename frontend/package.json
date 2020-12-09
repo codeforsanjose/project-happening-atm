@@ -30,12 +30,12 @@
     "react-dom": "^16.14.0",
     "react-infinite-scroll-component": "^5.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.1",
+    "react-scripts": "^3.4.3",
     "twilio": "^3.50.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^7.14.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
