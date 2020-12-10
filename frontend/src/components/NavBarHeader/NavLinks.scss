@@ -23,7 +23,6 @@
     padding: 0;
 
     li {
-      line-height: 0.1em;
       text-indent: -2.6em;
       padding-left: 2.6em;
 
@@ -46,8 +45,7 @@
           padding-right: 0.6em;
         }
         &.nav-link-chevron {
-          height: 2.5em;
-          top: 0.9em;
+          top: 0.45em;
           transition: 0.2s;
         }
       }
