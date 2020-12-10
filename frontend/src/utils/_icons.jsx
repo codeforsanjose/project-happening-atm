@@ -9,6 +9,8 @@ import { ReactComponent as CheckedCheckboxWithInnerShadowIcon } from '../assets/
 import { ReactComponent as UncheckedCheckboxWithInnerShadowIcon } from '../assets/icons/check-boxes-24px.svg';
 import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron_left-24px.svg';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron_right-24px.svg';
+// Check the next icon: do we need it?
+// import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron-left.svg';
 import { ReactComponent as CloseIcon } from '../assets/icons/close-24px.svg';
 import { ReactComponent as DeleteIcon } from '../assets/icons/delete-24px.svg';
 import { ReactComponent as DoneOutlineIcon } from '../assets/icons/done_outline-24px.svg';
@@ -75,5 +77,5 @@ export {
   SearchIcon,
   ShareIcon,
   ViewAgendaIcon,
-  VoiceChatIcon
+  VoiceChatIcon,
 };
