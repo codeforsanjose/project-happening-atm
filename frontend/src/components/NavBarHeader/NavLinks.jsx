@@ -48,22 +48,24 @@ function NavLinks({ toggled }) {
   return (
     <div className={toggled ? 'nav-links nav-links-active' : 'nav-links'}>
       <div className="nav-links-title">Menu</div>
-      <ul className="nav-links-list">
-        {LINKS.map((link, index) => (
-          <>
-            <li key={link.key}>
-              <a href="#" rel="noopener noreferrer">
-                <link.icon className="nav-link-icon" />
-                <span className="nav-link-text">{link.text}</span>
-                <ChevronRightIcon className="nav-link-chevron" />
-              </a>
-            </li>
-            {index < LINKS.length - 1 ? (
-              <div className="nav-link-separator" />
-            ) : null}
-          </>
-        ))}
-      </ul>
+      <div className="nav-links-scroll">
+        <ul className="nav-links-list">
+          {LINKS.map((link, index) => (
+            <>
+              <li key={link.key}>
+                <a href="#" rel="noopener noreferrer">
+                  <link.icon className="nav-link-icon" />
+                  <span className="nav-link-text">{link.text}</span>
+                  <ChevronRightIcon className="nav-link-chevron" />
+                </a>
+              </li>
+              {index < LINKS.length - 1 ? (
+                <div className="nav-link-separator" />
+              ) : null}
+            </>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
