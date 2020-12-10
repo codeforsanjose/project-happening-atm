@@ -18,10 +18,10 @@
     max-height: 70vh;
     overflow-y: scroll;
     
-    @media screen and (max-height: 750px) {
+    @media screen and (max-height: 630px) {
       max-height: 60vh !important;
     }
-    @media screen and (max-height: 500px) {
+    @media screen and (max-height: 430px) {
       max-height: 50vh !important;
     }
   }
