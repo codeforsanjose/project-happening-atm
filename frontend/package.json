@@ -50,9 +50,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codeforsanjose/gov-agenda-notifier.git"
