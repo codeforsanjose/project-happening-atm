@@ -56,6 +56,7 @@ function AdminNavigation({ meetingId }) {
         className="admin-publish-button"
         // eslint-disable-next-line no-console
         onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
+        // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/84
       >
         Publish Changes
       </button>

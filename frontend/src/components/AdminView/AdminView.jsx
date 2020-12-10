@@ -45,6 +45,7 @@ function AdminView({ headerText, component: ComponentToRender }) {
    */
   useEffect(() => {
     async function getMeetingIds() {
+      // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/85
       setTimeout(() => setMeetingIdList(TEST_MEETING_IDS), 1000); // MOCK API CALL
     }
     getMeetingIds();
@@ -58,6 +59,7 @@ function AdminView({ headerText, component: ComponentToRender }) {
     history.replace(updatedPath);
 
     async function getMeeting() {
+      // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/85
       setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 2000); // MOCK API CALL
     }
     getMeeting();
