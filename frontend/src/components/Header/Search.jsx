@@ -44,6 +44,7 @@ function Search() {
                     paddingTop: '2px',
                     fontSize: '0.9em',
                     overflow: 'auto',
+                    zIndex: 2,
                 }}
             />
         </div>
