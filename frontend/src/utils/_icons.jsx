@@ -53,5 +53,5 @@ export {
   ScheduleIcon,
   SearchIcon,
   ShareIcon,
-  VoiceChatIcon
+  VoiceChatIcon,
 };
