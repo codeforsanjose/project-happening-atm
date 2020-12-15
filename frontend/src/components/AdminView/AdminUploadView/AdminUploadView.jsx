@@ -38,18 +38,19 @@ function AdminUploadView() {
     resetUpload();
   }
 
+  /** Send CSV file to back end */
+  function uploadCSV() {
+    // eslint-disable-next-line no-console
+    console.log('Uploading: ', selectedFile);
+    // TODO: Implement upload:
+    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
+  }
+
   function confirmModal() {
     uploadCSV(selectedFile);
     // TODO: Display success/confirmation, handle errors:
     // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     resetUpload();
-  }
-
-  /** Send CSV file to back end */
-  function uploadCSV(selectedFile) {
-    console.log('Uploading: ', selectedFile);
-    // TODO: Implement upload:
-    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
   }
 
   return (
@@ -60,29 +61,30 @@ function AdminUploadView() {
           <p>Drag and Drop CSV File</p>
           <label htmlFor="csv">
             Or Upload from your Computer
+            <input
+              className="visually-hidden"
+              type="file"
+              name="csv"
+              id="csv"
+              accept=".csv"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
           </label>
-          <input
-            className="visually-hidden"
-            type="file"
-            name="csv"
-            id="csv"
-            accept=".csv"
-            onChange={handleFileChange}
-            ref={fileInputRef}
-          />
         </div>
       </DragAndDrop>
 
-      {showConfirmModal &&
-        selectedFile &&
+      {showConfirmModal
+        && selectedFile
+        && (
         <AdminUploadConfirmModal
           fileName={selectedFile.name}
           closeModal={closeModal}
           confirmModal={confirmModal}
         />
-      }
+        )}
     </div>
-  )
+  );
 }
 
 export default AdminUploadView;
