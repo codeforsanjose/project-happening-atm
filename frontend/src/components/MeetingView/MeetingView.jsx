@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Accordion,
 } from 'react-accessible-accordion';
@@ -32,8 +32,16 @@ function makeTestItem(index) {
 const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
 
 function MeetingView() {
-  const [items] = useState(TEST_ITEMS);
+  const [items, setItems] = useState([]);
   const [showCompleted, setShowCompleted] = useState(true);
+
+  useEffect(() => {
+    async function fetchAgendaItems() {
+      // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/88
+      setTimeout(() => setItems(TEST_ITEMS), 2000); // MOCK API CALL
+    }
+    fetchAgendaItems();
+  }, [items]);
 
   const renderedItems = showCompleted
     ? items
