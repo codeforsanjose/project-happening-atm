@@ -3,11 +3,26 @@ import {
   AccordionItem,
   AccordionItemHeading,
   AccordionItemButton,
-  AccordionItemPanel
+  AccordionItemPanel,
 } from 'react-accessible-accordion';
 import './MeetingAgendaGroup.scss';
 
 import MeetingAgendaItem from './MeetingAgendaItem';
+
+/**
+ * A group of agenda items in a collapsible accordion.
+ *
+ * props:
+ *    agendaGroup
+ *      Object that represents an agenda group.
+ *      {
+ *        id: Number id of group
+ *        title:  String title of group
+ *        description:  String description of group
+ *        status: String status of group
+ *        items: An array of agenda group's sub items
+ *      }
+ */
 
 function MeetingAgendaGroup({ agendaGroup }) {
   return (
@@ -23,10 +38,10 @@ function MeetingAgendaGroup({ agendaGroup }) {
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className="group-items">
-        {agendaGroup.items.map((item,i) => <MeetingAgendaItem key={i} item={item} />)}
+        {agendaGroup.items.map((item) => <MeetingAgendaItem key={item.id} item={item} />)}
       </AccordionItemPanel>
     </AccordionItem>
-  )
+  );
 }
 
 export default MeetingAgendaGroup;

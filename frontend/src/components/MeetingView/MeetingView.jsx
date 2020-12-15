@@ -31,6 +31,17 @@ function makeTestItem(index) {
 
 const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
 
+/**
+ * Component that displays a list of a meeting's agenda items.
+ * Utilizes react-accessible-accordion to display groups of items.
+ *
+ * state:
+ *    items
+ *      An array of the current meeting's agenda items
+ *    showCompleted
+ *      Boolean state to toggle if completed agenda items are shown
+ */
+
 function MeetingView() {
   const [items, setItems] = useState([]);
   const [showCompleted, setShowCompleted] = useState(true);

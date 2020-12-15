@@ -8,43 +8,57 @@ const itemLinks = [
   {
     path: '/',
     Icon: NotificationsIcon,
-    text: 'Subscribe'
+    text: 'Subscribe',
   },
   {
     path: '/',
     Icon: ShareIcon,
-    text: 'Share'
+    text: 'Share',
   },
   {
     path: '/',
     Icon: AddIcon,
-    text: 'More Info'
-  }
-]
+    text: 'More Info',
+  },
+];
+
+/**
+ * An agenda group and accordion sub item
+ *
+ * props:
+ *    item
+ *      Object that represents an agenda item.
+ *      {
+ *        id: Number id of item
+ *        title:  String title of item
+ *        description:  String description of item
+ *        status: String status of item
+ *      }
+ */
 
 function MeetingAgendaItem({ item }) {
   return (
     <div className="MeetingAgendaItem">
       {item.status !== 'Pending' && <div className="item-status">{item.status}</div>}
 
-      <input type="checkbox"/>
+      <input type="checkbox" />
       <h4>{item.title}</h4>
       <p>{item.description}</p>
 
       <div className="item-links">
-        {itemLinks.map(link => {
-          return (
+        {
+          itemLinks.map((link) => (
             <Link to={link.path}>
               <div className="link">
                 <link.Icon />
                 <p>{link.text}</p>
               </div>
             </Link>
-          )
-        })}
+          ))
+        }
       </div>
     </div>
-  )
+  );
 }
 
 export default MeetingAgendaItem;
