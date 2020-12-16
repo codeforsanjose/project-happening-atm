@@ -13,10 +13,12 @@
   }
 
   .complete-toggle {
+    padding: 0;
     display: inline-flex;
     align-items: center;
     border: none;
     font-size: 1em;
+    background-color: transparent;
     cursor: pointer;
 
     p {
