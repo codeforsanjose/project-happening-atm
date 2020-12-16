@@ -52,7 +52,7 @@ function MeetingView() {
       setTimeout(() => setItems(TEST_ITEMS), 2000); // MOCK API CALL
     }
     fetchAgendaItems();
-  }, [items]);
+  }, []);
 
   const renderedItems = showCompleted
     ? items
