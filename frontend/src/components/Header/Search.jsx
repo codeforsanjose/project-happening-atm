@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import ReactAutocomplete from 'react-autocomplete';
-import "./Search.scss";
+import './Search.scss';
 
 function Search() {
-    const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
     return (
         <div className={classnames('search-container')}>

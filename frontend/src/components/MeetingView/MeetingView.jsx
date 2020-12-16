@@ -31,14 +31,15 @@ function MeetingView() {
         next={fetchMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        endMessage={
+        endMessage={(
           <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
-        }
+              )}
       >
         {items.map((i, index) => (
-          <MeetingItemListView key={index} />
+          // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/82
+          <MeetingItemListView key={`MeetingItemListView-${index.toString}`} />
         ))}
       </InfiniteScroll>
     </div>
