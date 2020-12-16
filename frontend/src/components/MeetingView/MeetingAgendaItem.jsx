@@ -48,7 +48,7 @@ function MeetingAgendaItem({ item }) {
       <div className="item-links">
         {
           itemLinks.map((link) => (
-            <Link to={link.path}>
+            <Link to={link.path} key={link.text}>
               <div className="link">
                 <link.Icon />
                 <p>{link.text}</p>
