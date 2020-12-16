@@ -28,7 +28,6 @@
 
   .text {
     margin: 1em 0;
-    /*text-align: center;*/
 
     h3 {
       width: 200px;
@@ -45,33 +44,11 @@
   }
 
   .form {
-    /*$form-font-size: 18px;*/
     margin-top: 1.5em;
 
     .input-group {
       label {
-        /*font-size: $form-font-size;*/
         margin-left: 9px;
-      }
-
-      input:not([type="checkbox"]) {
-        box-sizing: border-box;
-        display: block;
-        width: 100%;
-        padding: 1em 1.25em;
-        margin: 0.5em 0 1em;
-        /*border-radius: 18px;
-        border: 1px solid #000;*/
-        font-size: 1em;/*$form-font-size;*/
-        border: none;
-      }
-
-      input:not([type="checkbox"]):hover {
-        box-shadow: 0px 1px 3px #00000029;
-      }
-
-      input:not([type="checkbox"]):focus {
-        outline-style: none;
       }
 
       .checkbox-group {
@@ -103,6 +80,10 @@
           cursor: text;
         }
       }
+    }
+
+    .form-error {
+      color: $red;
     }
   }
 }

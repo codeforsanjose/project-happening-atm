@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import './Subscribe.scss';
 import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
 import BackNavigation from '../BackNavigation/BackNavigation';
 import Spinner from '../Spinner/Spinner';
 import CustomCheckbox from '../CustomCheckbox/CustomCheckbox';
+import CustomInput from '../CustomInput/CustomInput';
 
 function Subscribe({
   createSubscription,
@@ -16,12 +17,9 @@ function Subscribe({
   const formEl = useRef(null);
   const [isPhoneChecked, setPhoneChecked] = useState(false);
   const [isEmailChecked, setEmailChecked] = useState(false);
+  const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-
-  useEffect(() => {
-    // Just rerender.
-  }, [isLoading, error, isSubscribed]);
 
   const handlePhoneChecked = () => {
     setPhoneChecked(!isPhoneChecked);
@@ -48,6 +46,7 @@ function Subscribe({
   };
 
   const handleSubmit = (e) => {
+    setFormSubmitted(true);
     if (!phone || !email || !formEl.current.checkValidity()) {
       return;
     }
@@ -58,7 +57,9 @@ function Subscribe({
         phone_number: phone,
         email_address: email,
         meeting_id: parseInt(meetingId, 10),
-        meeting_item_id: 1, // TODO handle only one of meeting_id or meeting_item_id?
+        // TODO handle only one of meeting_id or meeting_item_id?
+        // TODO add meeting_item_id to route params.
+        meeting_item_id: 1,
       },
     });
   };
@@ -73,56 +74,64 @@ function Subscribe({
             Subscribe to receive a notification when this item is up next
             for discussion and when discussions for this item begin.
           </p>
-        </div>
-
-        <form className="form" ref={formEl}>
-          <div className="input-group">
-            <div className="checkbox-group">
-              <CustomCheckbox
-                checked={isPhoneChecked}
-                onClick={handlePhoneChecked}
+          <form className="form" ref={formEl}>
+            <div className="input-group">
+              <div className="checkbox-group">
+                <CustomCheckbox
+                  checked={isPhoneChecked}
+                  onClick={handlePhoneChecked}
+                />
+                <label htmlFor="phoneChbox" onClick={handlePhoneChecked}>
+                  Subscribe to text notifications
+                </label>
+              </div>
+              <CustomInput
+                type="tel"
+                placeholder="Enter phone number"
+                isRequired={isPhoneChecked}
+                isSubmitted={isFormSubmitted}
+                value={phone}
+                onChange={handlePhoneChanged}
               />
-              <label htmlFor="phoneChbox" onClick={handlePhoneChecked}>Subscribe to text notifications</label>
             </div>
-            <input
-              type="tel"
-              placeholder="Enter phone number"
-              required={isPhoneChecked}
-              value={phone}
-              onChange={handlePhoneChanged}
-            />
-          </div>
-          <div className="input-group">
-            <div className="checkbox-group">
-              <CustomCheckbox
-                checked={isEmailChecked}
-                onClick={handleEmailChecked}
+            <div className="input-group">
+              <div className="checkbox-group">
+                <CustomCheckbox
+                  checked={isEmailChecked}
+                  onClick={handleEmailChecked}
+                />
+                <label htmlFor="emailChbox" onClick={handleEmailChecked}>
+                  Subscribe to email notifications
+                </label>
+              </div>
+              <CustomInput
+                type="email"
+                placeholder="Enter email address"
+                isRequired={isEmailChecked}
+                isSubmitted={isFormSubmitted}
+                value={email}
+                onChange={handleEmailChanged}
               />
-              <label htmlFor="emailChbox" onClick={handleEmailChecked}>Subscribe to email notifications</label>
             </div>
-            <input
-              type="email"
-              placeholder="Enter email address"
-              required={isEmailChecked}
-              value={email}
-              onChange={handleEmailChanged}
-            />
-          </div>
-          <div className="row">
-            { !isLoading
+            { error
               && (
-                <button
-                  type="submit"
-                  disabled={!isPhoneChecked || !isEmailChecked || !phone || !email}
-                  onClick={handleSubmit}
-                >
-                  { `Subscribe${isSubscribed ? 'd!' : ''}` }
-                </button>
+                <div className="form-error">{ error.message }</div>
               )}
-            { isLoading && <Spinner /> }
-          </div>
-          { error && <div>{ error.message }</div> }
-        </form>
+            <div className="row">
+              { !isLoading
+                && (
+                  <button
+                    type="submit"
+                    disabled={!isPhoneChecked || !isEmailChecked || !phone || !email}
+                    onClick={handleSubmit}
+                  >
+                    { `Subscribe${isSubscribed ? 'd!' : ''}` }
+                  </button>
+                )}
+              { isLoading && <Spinner /> }
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
