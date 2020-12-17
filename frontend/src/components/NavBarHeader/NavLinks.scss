@@ -16,8 +16,13 @@
 
   .nav-links-scroll {
     max-height: 70vh;
-    overflow-y: scroll;
-    
+
+    @media screen and (max-width: 430px) {
+      overflow-y: scroll;
+    }
+    @media screen and (max-height: 830px) {
+      overflow-y: scroll;
+    }
     @media screen and (max-height: 630px) {
       max-height: 60vh !important;
     }
