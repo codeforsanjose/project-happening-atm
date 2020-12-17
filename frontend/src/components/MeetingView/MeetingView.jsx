@@ -9,6 +9,11 @@ import Header from '../Header/Header';
 function MeetingView() {
   const [items, setItems] = useState(Array.from({ length: 60 }));
   const [hasMore, setHasMore] = useState(true);
+  const [toggled, setToggled] = useState(false);
+
+  function handleToggle() {
+    setToggled(!toggled);
+  }
 
   const fetchMoreData = useCallback(() => {
     if (items.length >= 100) {
@@ -24,9 +29,10 @@ function MeetingView() {
 
   return (
     <div className='meeting-view'>
-      <NavBarHeader />
+      <NavBarHeader toggled={toggled} handleToggle={handleToggle}/>
       <Header />
       <InfiniteScroll
+        style={toggled ? {"position": "fixed"} : null}
         dataLength={items.length}
         next={fetchMoreData}
         hasMore={hasMore}

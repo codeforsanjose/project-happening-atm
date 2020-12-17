@@ -3,13 +3,7 @@ import HamburgerIcon from './HamburgerIcon';
 import NavLinks from './NavLinks';
 import './NavBarHeader.scss';
 
-function Header() {
-  const [toggled, setToggled] = useState(false);
-
-  function handleToggle() {
-    setToggled(!toggled);
-  }
-
+function Header({toggled, handleToggle}) {
   return (
     <header>
       <nav className="no-select">
