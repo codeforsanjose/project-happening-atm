@@ -26,4 +26,4 @@ function AdminNavigationLink({ Icon, linkText, handleClick, active }) {
   )
 }
 
-export default AdminNavigationLink
+export default AdminNavigationLink;

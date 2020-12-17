@@ -1,58 +1,53 @@
-import React, { useState } from 'react'
-import classnames from 'classnames'
-import ReactAutocomplete from 'react-autocomplete'
-import './Search.scss'
+import React, { useState } from 'react';
+import classnames from 'classnames';
+import ReactAutocomplete from 'react-autocomplete';
+import './Search.scss';
 
 function Search() {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState('');
 
   return (
     <div className={classnames('search-container')}>
-      <i className="fas fa-search fa-lg" />
+      <i className="fas fa-search" />
       <ReactAutocomplete
         items={[
           { id: 'baz', label: 'Call to Order and Roll Call' },
-          {
-            id: 'foo',
-            label:
-              'Approval of Unemployment Insurance Appropriation Ordinance Adjustments to Increase Payment of Claims and Access Reserves',
-          },
-          {
-            id: 'bar',
-            label:
-              'Retroactive Approval of City Hall Lightning Display Sponsored by Council District 1',
-          },
+          { id: 'foo', label: 'Approval of Unemployment Insurance Appropriation Ordinance Adjustments to Increase Payment of Claims and Access Reserves' },
+          { id: 'bar', label: 'Retroactive Approval of City Hall Lightning Display Sponsored by Council District 1' },
         ]}
-        shouldItemRender={(item, val) =>
-          item.label.toLowerCase().indexOf(val.toLowerCase()) > -1
-        }
-        getItemValue={item => item.label}
-        renderItem={(item, highlighted) => (
+        shouldItemRender={(item, val) => item.label.toLowerCase().indexOf(val.toLowerCase()) > -1}
+        getItemValue={(item) => item.label}
+        renderItem={(item) => (
           <div
             key={item.id}
-            style={{
-              color: '#153948',
-              padding: '10px 0 10px 10px',
-              borderBlockEnd: 'solid #153948',
-              borderWidth: '2px',
-            }}
+            className="menu-item"
           >
             {item.label}
           </div>
         )}
         value={value}
-        onChange={e => setValue(e.target.value)}
-        onSelect={val => setValue(val)}
+        onChange={(e) => setValue(e.target.value)}
+        onSelect={(val) => setValue(val)}
         wrapperStyle={{
           display: 'flex',
           borderRadius: '10px',
         }}
         inputProps={{
-          placeholder: 'Search Agenda Items',
+          placeholder: 'Search Agenda',
+        }}
+        menuStyle={{
+          position: 'absolute',
+          top: '45px',
+          left: '0',
+          background: 'rgba(255, 255, 255, 0.9)',
+          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+          paddingTop: '2px',
+          fontSize: '0.9em',
+          overflow: 'auto',
         }}
       />
     </div>
-  )
+  );
 }
 
 export default Search

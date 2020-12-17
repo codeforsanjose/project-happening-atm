@@ -1,63 +1,74 @@
-import React, { useCallback, useState } from 'react'
-import ReactDOM from 'react-dom'
-import * as serviceWorker from './serviceWorker'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
-import './index.scss'
-
-import MeetingView from './components/MeetingView/MeetingView'
-import classnames from 'classnames'
-import NavigationMenu from './components/Header/NavigationMenu'
-import Subscribe from './components/Subscribe/Subscribe'
-import MeetingItem from './components/MeetingItem/MeetingItem'
-import AdminView from './components/AdminView/AdminView'
-
+import React, { useCallback, useState } from 'react';
+import ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   useQuery,
-} from '@apollo/client'
-import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql'
+} from '@apollo/client';
+
+import './index.scss'
+
+import classnames from 'classnames';
+import MeetingView from './components/MeetingView/MeetingView';
+import Header from './components/Header/Header';
+import Subscribe from './components/Subscribe/Subscribe';
+import MeetingItem from './components/MeetingItem/MeetingItem';
+import AdminView from './components/AdminView/AdminView';
+import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
+import AgendaTable from './components/AgendaTable/AgendaTable'
+
+import * as serviceWorker from './serviceWorker';
+
+import GET_ALL_MEETINGS_WITH_ITEMS from './graphql/graphql';
+import AdminPaths from './constants/AdminPaths';
 
 const client = new ApolloClient({
-  // uri: 'http://localhost:3000/graphql',
+  uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
-})
+});
 
 function SampleQuery() {
-  const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS)
+  const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
-  if (loading) console.log('THE Loading: ', loading)
-  if (error) console.log('THE Error: ', error)
+  // eslint-disable-next-line no-console
+  if (loading) console.log('THE Loading: ', loading);
+  // eslint-disable-next-line no-console
+  if (error) console.log('THE Error: ', error);
 
-  console.log(data)
+  // eslint-disable-next-line no-console
+  console.log(data);
 
-  return null
+  return null;
 }
 
 function App() {
-  const [showMenu, setShowMenu] = useState(false)
+  const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = useCallback(() => {
-    setShowMenu(!showMenu)
-  }, [showMenu, setShowMenu])
+    setShowMenu(!showMenu);
+  }, [showMenu, setShowMenu]);
+
   return (
-    /* One of the libraries in the table produces quite a few errors
-     in the console on Strict Mode:
-     https://github.com/bvaughn/react-virtualized/issues/1353 */
     <React.StrictMode>
       <ApolloProvider client={client}>
         <div className={classnames('app-root')}>
           <Router>
-            {/* <div className="ribbon" />
-                  <Header toggleMenu={toggleMenu} shouldHide={showMenu}/>
-                <div className="fade-box" /> */}
-            {/* A <Switch> looks through all its children <Route>
-              elements and renders the first one whose path
-              matches the current URL. Use a <Switch> any time
-              you have multiple routes, but you want only one
-              of them to render at a time */}
+            <div className="ribbon" />
+            <Header toggleMenu={toggleMenu} shouldHide={showMenu} />
+            {/* TODO do we need it if the header is not sticky? <div className="fade-box" /> */}
+            {/*
+                        A <Switch> looks through all its children <Route>
+                        elements and renders the first one whose path
+                        matches the current URL. Use a <Switch> any time
+                        you have multiple routes, but you want only one
+                        of them to render at a time
+                        */}
             <Switch>
               <Route exact path="/">
                 <MeetingView />
@@ -68,20 +79,40 @@ function App() {
               <Route path="/meeting-item/:id">
                 <MeetingItem />
               </Route>
-              <Route exact path="/admin">
-                <AdminView />
+
+              <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
+                <AdminView
+                  headerText="Edit Meeting Details"
+                  component={() => <div>Placeholder for Edit Meeting</div>}
+                />
+              </Route>
+
+              <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
+                <AdminView
+                  headerText="Edit Agenda Items"
+                  component={AgendaTable}
+                />
+              </Route>
+
+              <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
+                <AdminView
+                  headerText="Upload New Agenda"
+                  component={AdminUploadView}
+                />
               </Route>
             </Switch>
-            <NavigationMenu toggleMenu={toggleMenu} showMenu={showMenu} />
           </Router>
           <SampleQuery />
         </div>
       </ApolloProvider>
     </React.StrictMode>
-  )
+  );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(
+  <App />,
+  document.getElementById('root'),
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -42,11 +42,13 @@ The City of San Jose is interested in this service, but this is a project that c
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Install [Node.js and npm](https://www.npmjs.com/get-npm)
 3.  Install project dependencies:
-    1. Navigate to the `/frontend` directory
-    2. Run command:
+    1. Please disable any linting or formatting solutions you have running globally. We enforce the Airbnb style guide with ESLint.
+    2. Navigate to the `/frontend` directory
+    3. Run command:
         ```bash
         npm install
         ```
+    4. ESLint should be running as soon as you open a file with VS Code.
 4. Make modifications to the codebase to address the issue your working on
 5. See your changes:
     1.  Navigate to the `/frontend` directory

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
+const GET_ALL_MEETINGS_WITH_ITEMS = gql`
   query {
     getAllMeetingsWithItems {
       meeting {
@@ -15,4 +15,6 @@ export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
       }
     }
   }
-`
+`;
+
+export default GET_ALL_MEETINGS_WITH_ITEMS;

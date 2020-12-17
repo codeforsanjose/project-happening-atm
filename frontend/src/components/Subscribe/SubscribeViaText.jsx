@@ -4,10 +4,9 @@ import classnames from 'classnames'
 
 function SubscribeViaText({ showTextForm, setShowTextForm }) {
   return (
-    <div
-      className={classnames('subscribe-via-text-view', {
-        hide: !showTextForm,
-      })}
+    <div className={classnames('subscribe-via-text-view', {
+      hide: !showTextForm,
+    })}
     >
       <button onClick={() => setShowTextForm(false)}>Back</button>
       <h1>Enter Phone Number</h1>
@@ -15,7 +14,7 @@ function SubscribeViaText({ showTextForm, setShowTextForm }) {
       <input type="tel" />
       <button>Subscribe</button>
     </div>
-  )
+  );
 }
 
-export default SubscribeViaText
+export default SubscribeViaText;

@@ -33,7 +33,7 @@
     "react-scripts": "^3.4.3",
     "react-sortable-hoc": "^1.11.0",
     "react-virtualized": "^9.22.2",
-    "twilio": "^3.51.0",
+    "twilio": "^3.50.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -43,7 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.5"
   },
   "scripts": {
     "dev": "nodemon server/app.js",
@@ -51,9 +51,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "repository": {
     "type": "git",
