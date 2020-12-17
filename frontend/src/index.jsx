@@ -60,7 +60,6 @@ function App() {
         <div className={classnames('app-root')}>
           <Router>
             <div className="ribbon" />
-            <Header toggleMenu={toggleMenu} shouldHide={showMenu} />
             {/* TODO do we need it if the header is not sticky? <div className="fade-box" /> */}
             {/*
                         A <Switch> looks through all its children <Route>

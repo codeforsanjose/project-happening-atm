@@ -1,6 +1,6 @@
-import React from 'react'
-import './SubscribeViaText.scss'
-import classnames from 'classnames'
+import React from 'react';
+import './SubscribeViaText.scss';
+import classnames from 'classnames';
 
 function SubscribeViaText({ showTextForm, setShowTextForm }) {
   return (

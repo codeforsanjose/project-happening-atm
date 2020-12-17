@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react';
 // import logo from '../../assets/logo.svg';
-import './MeetingView.scss'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import MeetingItemListView from './MeetingItemListView'
+import './MeetingView.scss';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import MeetingItemListView from './MeetingItemListView';
 
 function MeetingView() {
   const [items, setItems] = useState(Array.from({ length: 60 }));
@@ -42,4 +42,4 @@ function MeetingView() {
   );
 }
 
-export default MeetingView
+export default MeetingView;

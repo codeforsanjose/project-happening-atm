@@ -44,4 +44,4 @@ function Header({ shouldHide }) {
   );
 }
 
-export default Header
+export default Header;

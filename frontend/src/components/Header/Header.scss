@@ -1,65 +1,70 @@
-@import '../../utils/_colors.scss';
+@import "../../utils/_colors.scss";
 
 .header {
-  background: $offWhite;
+  background: $blueSky;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
   width: 100%;
   z-index: 100;
-  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1.1px;
 
   .header-content {
-    background: $darkTeal;
-    color: $offWhite;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+    padding: 1em 1.25em;
+    color: $black;
 
-    @media only screen and (min-device-width: 812px) {
-      padding: 30px 30px 200px;
+    @media only screen
+    and (min-device-width: 812px) {
       margin: 0 200px;
     }
 
-    .header-buttons {
-      padding: 0 20px;
-      justify-content: space-between;
-
-      .admin-login-button {
-        margin-right: 20px;
-      }
+    .logo {
+      width: 77px;  
     }
 
     .meeting-info {
-      margin-top: 20px;
-      margin-right: 20px;
-    }
+      font-weight: 600;
+      font-size: 1em;
+      margin-top: 0.7em;
 
-    .title,
-    .date {
-      text-align: right;
-
-      @media only screen and (min-device-width: 812px) {
-        padding-right: 40px; // TODO
+      @media only screen
+      and (min-device-width: 812px) {
+        padding-top: 4em;
       }
     }
 
     .title {
-      font-size: 20px;
-      padding-bottom: 10px;
+      font-size: 1.5em;
+      line-height: 1.5em;
+      margin-bottom: 1.7em;
+    }
 
-      @media only screen and (min-device-width: 812px) {
-        font-size: 40px;
+    .details-title, .status {
+      font-size: 1.15em;
+    }
+
+    .details-title {
+      width: 200px;
+      padding-bottom: 0.3em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px $cityBronze solid;
+    }
+
+    .date, .time {
+      margin-bottom: 0.3em;
+    }
+
+    .time {
+      margin-bottom: 0.5em;
+
+      .no-bold {
+        font-weight: 400;
       }
     }
 
-    .date {
-      font-size: 16px;
-      padding-bottom: 40px;
-
-      @media only screen and (min-device-width: 812px) {
-        font-size: 26px;
-      }
+    .status {
+      color: $lightBlue;
+      margin-bottom: 2.5em;
     }
 
     .hide {

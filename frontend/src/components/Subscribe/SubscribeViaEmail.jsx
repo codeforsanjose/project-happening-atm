@@ -1,6 +1,6 @@
-import React from 'react'
-import './SubscribeViaEmail.scss'
-import classnames from 'classnames'
+import React from 'react';
+import './SubscribeViaEmail.scss';
+import classnames from 'classnames';
 
 function SubscribeViaEmail({ showEmailForm, setShowEmailForm }) {
   return (

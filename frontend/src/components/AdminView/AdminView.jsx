@@ -82,4 +82,4 @@ function AdminView({ headerText, component: ComponentToRender }) {
   );
 }
 
-export default AdminView
+export default AdminView;

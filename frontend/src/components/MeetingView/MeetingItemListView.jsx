@@ -42,4 +42,4 @@ function MeetingItemListView({
   );
 }
 
-export default MeetingItemListView
+export default MeetingItemListView;

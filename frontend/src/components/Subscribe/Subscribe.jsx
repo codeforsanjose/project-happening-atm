@@ -1,7 +1,7 @@
-import React from 'react'
-import './Subscribe.scss'
-import classnames from 'classnames'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import './Subscribe.scss';
+import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 function Subscribe() {
   return (
