@@ -50,7 +50,7 @@ function NavLinks({ toggled }) {
       <div className="nav-links-title">Menu</div>
       <div className="nav-links-scroll">
         <ul className="nav-links-list">
-          {LINKS.map((link, index) => (
+          {LINKS.map(link => (
             <>
               <li key={link.key}>
                 <a href="#" rel="noopener noreferrer">
@@ -58,10 +58,8 @@ function NavLinks({ toggled }) {
                   <span className="nav-link-text">{link.text}</span>
                   <ChevronRightIcon className="nav-link-chevron" />
                 </a>
-              </li>
-              {index < LINKS.length - 1 ? (
                 <div className="nav-link-separator" />
-              ) : null}
+              </li>
             </>
           ))}
         </ul>

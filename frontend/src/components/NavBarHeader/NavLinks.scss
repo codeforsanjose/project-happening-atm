@@ -42,7 +42,13 @@
     li {
       text-indent: -2.6em;
       padding-left: 2.6em;
-
+      max-width: 90%;
+      &:last-child { 
+        .nav-link-separator{
+          display: none;
+        }
+      }
+      
       a {
         opacity: 0.8;
         &:hover {
@@ -69,10 +75,13 @@
     }
 
     .nav-link-separator {
+      position: relative;
+      left: -2.6em;
       border-bottom: 1px solid $lightGray;
       opacity: 0.3;
       width: 87vw;
       margin: 1.8em auto 1em;
     }
+
   }
 }
