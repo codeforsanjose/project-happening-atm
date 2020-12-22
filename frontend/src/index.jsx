@@ -21,6 +21,7 @@ import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
+import ParticipateView from './components/ParticipateView/ParticipateView';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -58,7 +59,6 @@ function App() {
       <ApolloProvider client={client}>
         <div className={classnames('app-root')}>
           <Router>
-            <div className="ribbon" />
             <Header toggleMenu={toggleMenu} shouldHide={showMenu} />
             {/* TODO do we need it if the header is not sticky? <div className="fade-box" /> */}
             {/*
@@ -77,6 +77,9 @@ function App() {
               </Route>
               <Route path="/meeting-item/:id">
                 <MeetingItem />
+              </Route>
+              <Route path="/participate">
+                <ParticipateView />
               </Route>
 
               <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
