@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import HamburgerIcon from './HamburgerIcon';
 import NavLinks from './NavLinks';
 import './NavBarHeader.scss';
