@@ -52,13 +52,13 @@ function App() {
         <div className={classnames('app-root')}>
           <Router>
             <Switch>
-              <Route exact path='/'>
+              <Route exact path="/">
                 <MeetingView />
               </Route>
-              <Route path='/subscribe/:id'>
+              <Route path="/subscribe/:id">
                 <Subscribe />
               </Route>
-              <Route path='/meeting-item/:id'>
+              <Route path="/meeting-item/:id">
                 <MeetingItem />
               </Route>
 
