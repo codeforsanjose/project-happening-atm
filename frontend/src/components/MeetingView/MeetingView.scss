@@ -1,10 +1,9 @@
-@import "../../utils/colors";
+@import '../../utils/colors';
 
 .meeting-view {
   margin: 0 0 0;
 
-  @media only screen
-  and (min-device-width: 812px) {
+  @media only screen and (min-device-width: 812px) {
     margin: 0 200px 0;
   }
 }

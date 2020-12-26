@@ -1,0 +1,25 @@
+@import '../../utils/_colors.scss';
+
+.burger {
+  display: flex;
+  flex-direction: column;
+  div {
+    width: 30px;
+    height: 3px;
+    background-color: $offWhite;
+    margin: 3px;
+    transition: 0.2s;
+  }
+}
+
+.burger-active {
+  .line-1 {
+    transform: rotate(-45deg) translate(-7px, 6px);
+  }
+  .line-2 {
+    opacity: 0;
+  }
+  .line-3 {
+    transform: rotate(45deg) translate(-7px, -6px);
+  }
+}
