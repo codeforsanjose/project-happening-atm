@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+<svg id="menu-24px" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <path id="Path_508" data-name="Path 508" d="M0,0H24V24H0Z" fill="none"/>
+  <path id="Path_509" data-name="Path 509" d="M3,18H21V16H3Zm0-5H21V11H3ZM3,6V8H21V6Z"/>
+</svg>

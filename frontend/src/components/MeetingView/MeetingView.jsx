@@ -6,6 +6,8 @@ import './MeetingView.scss';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
 import MeetingAgendaGroup from './MeetingAgendaGroup';
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import Header from '../Header/Header';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
@@ -45,6 +47,11 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
 function MeetingView() {
   const [items, setItems] = useState([]);
   const [showCompleted, setShowCompleted] = useState(true);
+  const [toggled, setToggled] = useState(false);
+
+  function handleToggle() {
+    setToggled(!toggled);
+  }
 
   useEffect(() => {
     async function fetchAgendaItems() {
@@ -60,6 +67,9 @@ function MeetingView() {
 
   return (
     <div className="meeting-view">
+      <NavBarHeader toggled={toggled} handleToggle={handleToggle} />
+      <Header />
+
       <div>
         <h3>Agenda</h3>
       </div>
