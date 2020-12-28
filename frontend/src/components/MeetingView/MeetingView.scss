@@ -1,7 +1,7 @@
 @import '../../utils/colors';
 
 .meeting-view {
-  padding: 0 1.25em;
+  padding: 0;
   padding-bottom: 2em;
   background-color: $blueSky;
   font-family: 'Poppins', sans-serif;
@@ -11,14 +11,41 @@
     padding-bottom: 3em;
   }
 
-  h3 {
-    display: inline-block;
-    margin: 0;
-    margin-bottom: 1em;
-    padding-bottom: 0.4em;
-    padding-right: 3em;
-    border-bottom: 2px solid $cityBronze;
-    color: $black;
-    font-weight: 600;
+  .view-toggle {
+    display: flex;
+    background-color: #fff;
+
+    div {
+      width: 50%;
+      text-align: center;
+
+      button {
+        width: 80%;
+        margin: 1em auto;
+        padding: 0.5em;
+        border: none;
+        border-radius: 6px;
+        background-color: $lightBronze;
+        color: $black;
+        font-size: 18px;
+        font-weight: 900;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $cityBronze;
+        }
+
+        @media only screen and (min-device-width: 812px) {
+          max-width: 200px;
+        }
+      }
+    }
+
+    .view-active {
+      background-color: $blueSky;
+      button {
+        background-color: $cityBronze;
+      }
+    }
   }
 }

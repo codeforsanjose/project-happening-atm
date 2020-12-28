@@ -64,12 +64,22 @@ function MeetingView() {
       <Header />
 
       <div className="view-toggle">
-        <button type="button" onClick={() => setShowAgendaView(true)}>Agenda</button>
-        <button type="button" onClick={() => setShowAgendaView(false)}>Participate</button>
-      </div>
-
-      <div>
-        <h3>Agenda</h3>
+        <div className={showAgendaView ? 'view-active' : ''}>
+          <button
+            type="button"
+            onClick={() => setShowAgendaView(true)}
+          >
+            Agenda
+          </button>
+        </div>
+        <div className={showAgendaView ? '' : 'view-active'}>
+          <button
+            type="button"
+            onClick={() => setShowAgendaView(false)}
+          >
+            Participate
+          </button>
+        </div>
       </div>
 
       {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
