@@ -4,7 +4,7 @@ import './ParticipateView.scss';
 import ParticipateLink from './ParticipateLink';
 import {
   VoiceChatIcon, OnDemandVideoIcon, EmailIcon, NewReleasesIcon,
-} from '../../utils/_icons';
+} from '../../../utils/_icons';
 
 const LINKS = [
   {
@@ -36,19 +36,16 @@ const LINKS = [
 function ParticipateView() {
   return (
     <div className="ParticipateView">
-      <div className="links">
-        <ul>
-          {LINKS.map((link) => (
-            <ParticipateLink
-              key={link.key}
-              Icon={link.icon}
-              linkText={link.linkText}
-              path={link.path}
-            />
-          ))}
-        </ul>
-      </div>
-
+      <ul>
+        {LINKS.map((link) => (
+          <ParticipateLink
+            key={link.key}
+            Icon={link.icon}
+            linkText={link.linkText}
+            path={link.path}
+          />
+        ))}
+      </ul>
     </div>
   );
 }

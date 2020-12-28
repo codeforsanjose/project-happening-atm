@@ -3,7 +3,7 @@ import './MeetingView.scss';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
-import ParticipateView from '../ParticipateView/ParticipateView';
+import ParticipateView from './ParticipateView/ParticipateView';
 import AgendaView from './AgendaView/AgendaView';
 
 function makeTestSubItem(parentIndex, index, status) {

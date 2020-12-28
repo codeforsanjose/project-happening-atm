@@ -5,7 +5,7 @@ import './ParticipateLink.scss';
 function ParticipateLink({ Icon, linkText, path }) {
   return (
     <div className="ParticipateLink">
-      <Link activeClassName="button-active" to={path}>
+      <Link to={path}>
         <div className="button-group">
           <div className="button-group-inner">
             <Icon className="button-icon" />

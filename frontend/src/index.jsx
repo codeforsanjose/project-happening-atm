@@ -20,7 +20,6 @@ import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
-import ParticipateView from './components/ParticipateView/ParticipateView';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -61,9 +60,6 @@ function App() {
               </Route>
               <Route path="/meeting-item/:id">
                 <MeetingItem />
-              </Route>
-              <Route path="/participate">
-                <ParticipateView />
               </Route>
 
               <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
