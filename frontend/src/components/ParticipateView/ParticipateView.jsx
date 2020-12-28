@@ -36,7 +36,6 @@ const LINKS = [
 function ParticipateView() {
   return (
     <div className="ParticipateView">
-
       <div className="links">
         <ul>
           {LINKS.map((link) => (

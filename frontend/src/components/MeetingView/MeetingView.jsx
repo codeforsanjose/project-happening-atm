@@ -8,6 +8,7 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
 import MeetingAgendaGroup from './MeetingAgendaGroup';
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
+import ParticipateView from '../ParticipateView/ParticipateView';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
@@ -47,10 +48,11 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
 function MeetingView() {
   const [items, setItems] = useState([]);
   const [showCompleted, setShowCompleted] = useState(true);
-  const [toggled, setToggled] = useState(false);
+  const [showAgendaView, setShowAgendaView] = useState(true);
+  const [navToggled, setNavToggled] = useState(false);
 
   function handleToggle() {
-    setToggled(!toggled);
+    setNavToggled(!navToggled);
   }
 
   useEffect(() => {
@@ -67,27 +69,37 @@ function MeetingView() {
 
   return (
     <div className="meeting-view">
-      <NavBarHeader toggled={toggled} handleToggle={handleToggle} />
+      <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
       <Header />
+
+      <div className="view-toggle">
+        <button type="button" onClick={() => setShowAgendaView(true)}>Agenda</button>
+        <button type="button" onClick={() => setShowAgendaView(false)}>Participate</button>
+      </div>
 
       <div>
         <h3>Agenda</h3>
       </div>
 
-      <button
-        type="button"
-        className="complete-toggle"
-        onClick={() => setShowCompleted((completed) => !completed)}
-      >
-        {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-        <p>Show Completed Items</p>
-      </button>
+      {showAgendaView
+        ? (
+          <>
+            <button
+              type="button"
+              className="complete-toggle"
+              onClick={() => setShowCompleted((completed) => !completed)}
+            >
+              {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
+              <p>Show Completed Items</p>
+            </button>
 
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {renderedItems.map((agendaGroup) => (
-          <MeetingAgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
-        ))}
-      </Accordion>
+            <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+              {renderedItems.map((agendaGroup) => (
+                <MeetingAgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
+              ))}
+            </Accordion>
+          </>
+        ) : <ParticipateView />}
     </div>
   );
 }
