@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -16,7 +16,6 @@ import './index.scss';
 
 import classnames from 'classnames';
 import MeetingView from './components/MeetingView/MeetingView';
-import Header from './components/Header/Header';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
@@ -48,26 +47,11 @@ function SampleQuery() {
 }
 
 function App() {
-  const [showMenu, setShowMenu] = useState(false);
-
-  const toggleMenu = useCallback(() => {
-    setShowMenu(!showMenu);
-  }, [showMenu, setShowMenu]);
-
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
         <div className={classnames('app-root')}>
           <Router>
-            <Header toggleMenu={toggleMenu} shouldHide={showMenu} />
-            {/* TODO do we need it if the header is not sticky? <div className="fade-box" /> */}
-            {/*
-                        A <Switch> looks through all its children <Route>
-                        elements and renders the first one whose path
-                        matches the current URL. Use a <Switch> any time
-                        you have multiple routes, but you want only one
-                        of them to render at a time
-                        */}
             <Switch>
               <Route exact path="/">
                 <MeetingView />

@@ -1,43 +1,93 @@
-import React, { useCallback, useState } from 'react';
-// import logo from '../../assets/logo.svg';
+import React, { useState, useEffect } from 'react';
+import {
+  Accordion,
+} from 'react-accessible-accordion';
 import './MeetingView.scss';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import MeetingItemListView from './MeetingItemListView';
+
+import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
+import MeetingAgendaGroup from './MeetingAgendaGroup';
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import Header from '../Header/Header';
+
+function makeTestSubItem(parentIndex, index, status) {
+  return {
+    id: `${parentIndex}-${index}`,
+    title: `${parentIndex}.${index} Agenda Item`,
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl euismod, tristique leo sit amet, eleifend enim.',
+    status,
+    items: [],
+  };
+}
+
+function makeTestItem(index) {
+  // eslint-disable-next-line no-nested-ternary
+  const status = index <= 2 ? 'Completed' : index === 3 ? 'In Progress' : 'Pending';
+  return {
+    id: index,
+    title: `${index} Agenda Group`,
+    description: '',
+    status,
+    items: [1, 2, 3, 4].map((i) => makeTestSubItem(index, i, status)),
+  };
+}
+
+const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
+
+/**
+ * Component that displays a list of a meeting's agenda items.
+ * Utilizes react-accessible-accordion to display groups of items.
+ *
+ * state:
+ *    items
+ *      An array of the current meeting's agenda items
+ *    showCompleted
+ *      Boolean state to toggle if completed agenda items are shown
+ */
 
 function MeetingView() {
-  const [items, setItems] = useState(Array.from({ length: 60 }));
-  const [hasMore, setHasMore] = useState(true);
+  const [items, setItems] = useState([]);
+  const [showCompleted, setShowCompleted] = useState(true);
+  const [toggled, setToggled] = useState(false);
 
-  const fetchMoreData = useCallback(() => {
-    if (items.length >= 100) {
-      setHasMore(false);
-      return;
+  function handleToggle() {
+    setToggled(!toggled);
+  }
+
+  useEffect(() => {
+    async function fetchAgendaItems() {
+      // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/88
+      setTimeout(() => setItems(TEST_ITEMS), 2000); // MOCK API CALL
     }
-    // a fake async api call like which sends
-    // 20 more records in .5 secs
-    setTimeout(() => {
-      setItems(items.concat(Array.from({ length: 20 })));
-    }, 500);
-  }, [items, setItems, setHasMore]);
+    fetchAgendaItems();
+  }, []);
+
+  const renderedItems = showCompleted
+    ? items
+    : items.filter((item) => item.status !== 'Completed');
 
   return (
     <div className="meeting-view">
-      <InfiniteScroll
-        dataLength={items.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
-        endMessage={(
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-              )}
+      <NavBarHeader toggled={toggled} handleToggle={handleToggle} />
+      <Header />
+
+      <div>
+        <h3>Agenda</h3>
+      </div>
+
+      <button
+        type="button"
+        className="complete-toggle"
+        onClick={() => setShowCompleted((completed) => !completed)}
       >
-        {items.map((i, index) => (
-          // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/82
-          <MeetingItemListView key={`MeetingItemListView-${index.toString}`} />
+        {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
+        <p>Show Completed Items</p>
+      </button>
+
+      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+        {renderedItems.map((agendaGroup) => (
+          <MeetingAgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
         ))}
-      </InfiniteScroll>
+      </Accordion>
     </div>
   );
 }
