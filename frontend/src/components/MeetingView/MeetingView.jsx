@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Accordion,
-} from 'react-accessible-accordion';
 import './MeetingView.scss';
 
-import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
-import MeetingAgendaGroup from './MeetingAgendaGroup';
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
 import ParticipateView from '../ParticipateView/ParticipateView';
+import AgendaView from './AgendaView/AgendaView';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
@@ -46,8 +42,7 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
  */
 
 function MeetingView() {
-  const [items, setItems] = useState([]);
-  const [showCompleted, setShowCompleted] = useState(true);
+  const [agendaItems, setAgendaItems] = useState([]);
   const [showAgendaView, setShowAgendaView] = useState(true);
   const [navToggled, setNavToggled] = useState(false);
 
@@ -58,14 +53,10 @@ function MeetingView() {
   useEffect(() => {
     async function fetchAgendaItems() {
       // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/88
-      setTimeout(() => setItems(TEST_ITEMS), 2000); // MOCK API CALL
+      setTimeout(() => setAgendaItems(TEST_ITEMS), 2000); // MOCK API CALL
     }
     fetchAgendaItems();
   }, []);
-
-  const renderedItems = showCompleted
-    ? items
-    : items.filter((item) => item.status !== 'Completed');
 
   return (
     <div className="meeting-view">
@@ -81,25 +72,7 @@ function MeetingView() {
         <h3>Agenda</h3>
       </div>
 
-      {showAgendaView
-        ? (
-          <>
-            <button
-              type="button"
-              className="complete-toggle"
-              onClick={() => setShowCompleted((completed) => !completed)}
-            >
-              {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-              <p>Show Completed Items</p>
-            </button>
-
-            <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-              {renderedItems.map((agendaGroup) => (
-                <MeetingAgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
-              ))}
-            </Accordion>
-          </>
-        ) : <ParticipateView />}
+      {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
     </div>
   );
 }

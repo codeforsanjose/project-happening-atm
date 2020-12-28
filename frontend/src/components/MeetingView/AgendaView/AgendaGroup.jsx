@@ -5,9 +5,9 @@ import {
   AccordionItemButton,
   AccordionItemPanel,
 } from 'react-accessible-accordion';
-import './MeetingAgendaGroup.scss';
+import './AgendaGroup.scss';
 
-import MeetingAgendaItem from './MeetingAgendaItem';
+import AgendaItem from './AgendaItem';
 
 /**
  * A group of agenda items in a collapsible accordion.
@@ -24,9 +24,9 @@ import MeetingAgendaItem from './MeetingAgendaItem';
  *      }
  */
 
-function MeetingAgendaGroup({ agendaGroup }) {
+function AgendaGroup({ agendaGroup }) {
   return (
-    <AccordionItem className="MeetingAgendaGroup">
+    <AccordionItem className="AgendaGroup">
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button">
           <div className="button-text">
@@ -38,10 +38,10 @@ function MeetingAgendaGroup({ agendaGroup }) {
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className="group-items">
-        {agendaGroup.items.map((item) => <MeetingAgendaItem key={item.id} item={item} />)}
+        {agendaGroup.items.map((item) => <AgendaItem key={item.id} item={item} />)}
       </AccordionItemPanel>
     </AccordionItem>
   );
 }
 
-export default MeetingAgendaGroup;
+export default AgendaGroup;

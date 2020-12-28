@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './MeetingAgendaItem.scss';
+import './AgendaItem.scss';
 
-import { NotificationsIcon, ShareIcon, AddIcon } from '../../utils/_icons';
+import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
 
 const itemLinks = [
   {
@@ -36,9 +36,9 @@ const itemLinks = [
  *      }
  */
 
-function MeetingAgendaItem({ item }) {
+function AgendaItem({ item }) {
   return (
-    <div className="MeetingAgendaItem">
+    <div className="AgendaItem">
       {item.status !== 'Pending' && <div className="item-status">{item.status}</div>}
 
       <input type="checkbox" />
@@ -61,4 +61,4 @@ function MeetingAgendaItem({ item }) {
   );
 }
 
-export default MeetingAgendaItem;
+export default AgendaItem;
