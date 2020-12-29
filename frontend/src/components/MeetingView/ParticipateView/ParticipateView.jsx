@@ -35,18 +35,16 @@ const LINKS = [
 
 function ParticipateView() {
   return (
-    <div className="ParticipateView">
-      <ul>
-        {LINKS.map((link) => (
-          <ParticipateLink
-            key={link.key}
-            Icon={link.icon}
-            linkText={link.linkText}
-            path={link.path}
-          />
-        ))}
-      </ul>
-    </div>
+    <ul className="ParticipateView">
+      {LINKS.map((link) => (
+        <ParticipateLink
+          key={link.key}
+          Icon={link.icon}
+          linkText={link.linkText}
+          path={link.path}
+        />
+      ))}
+    </ul>
   );
 }
 
