@@ -20,6 +20,10 @@ import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
+import ParticipateJoin from './components/ParticipatePages/ParticipateJoin';
+import ParticipateWatch from './components/ParticipatePages/ParticipateWatch';
+import ParticipateComment from './components/ParticipatePages/ParticipateComment';
+import ParticipateRequest from './components/ParticipatePages/ParticipateRequest';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -60,6 +64,19 @@ function App() {
               </Route>
               <Route path="/meeting-item/:id">
                 <MeetingItem />
+              </Route>
+
+              <Route exact path="/participate/join">
+                <ParticipateJoin />
+              </Route>
+              <Route exact path="/participate/watch">
+                <ParticipateWatch />
+              </Route>
+              <Route exact path="/participate/comment">
+                <ParticipateComment />
+              </Route>
+              <Route exact path="/participate/request">
+                <ParticipateRequest />
               </Route>
 
               <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>

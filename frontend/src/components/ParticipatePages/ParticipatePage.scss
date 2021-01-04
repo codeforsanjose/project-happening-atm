@@ -1,0 +1,79 @@
+@import '../../utils/colors';
+@import '../../utils/_fonts.scss';
+
+.ParticipatePage {
+  box-sizing: border-box;
+  background-color: $blueSky;
+  color: $black;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px;
+
+  .ParticipateNav {
+    width: 100%;
+
+    padding: 0.5em 1em;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    background-color: $cityBlue;
+    color: #fff;
+    fill: #fff;
+  }
+
+  .ParticipateHeader {
+    display: inline-block;
+    margin: 0;
+    padding-bottom: 0.4em;
+    padding-right: 2em;
+    border-bottom: 2px solid $cityBronze;
+    color: $black;
+  }
+
+  .ParticipateContent {
+    margin-top: 5em;
+    padding: 1em;
+
+    .info {
+      color: $cityBlue;
+    }
+
+    .bold {
+      font-weight: 900;
+    }
+
+    ol {
+      padding-left: 1em;
+      font-size: 20px;
+      font-weight: 900;
+
+      p {
+        padding-left: 0.5em;
+        font-size: initial;
+        font-weight: initial;
+      }
+    }
+
+    button {
+      margin: 0.5em 0;
+      padding: 0.5em 1.8em;
+      border: none;
+      border-radius: 8px;
+      background-color: $lightBronze;
+      color: $black;
+      font-size: 1em;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $cityBronze;
+      }
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+}
