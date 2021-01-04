@@ -42,7 +42,9 @@ function ParticipateJoin() {
           </li>
           <li>
             <p>Join from your computer or smart device here*</p>
-            <button type="button">Join Zoom Meeting</button>
+            <Link to="/">
+              <button type="button">Join Zoom Meeting</button>
+            </Link>
             <p className="info bold">*Zoom Web Browser Requirements</p>
             <p className="info">
               Must have the application installed. Use a current,
