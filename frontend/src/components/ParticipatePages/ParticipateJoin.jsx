@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './ParticipatePage.scss';
 
 import { ChevronLeftIcon } from '../../utils/_icons';
@@ -8,8 +9,10 @@ function ParticipateJoin() {
   return (
     <div className="ParticipatePage">
       <div className="ParticipateNav">
-        <ChevronLeftIcon />
-        <p>Back</p>
+        <Link to="/" className="back">
+          <ChevronLeftIcon />
+          <p>Back</p>
+        </Link>
       </div>
 
       <div className="ParticipateContent">

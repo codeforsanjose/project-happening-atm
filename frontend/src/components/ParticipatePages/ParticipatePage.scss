@@ -10,18 +10,28 @@
 
   .ParticipateNav {
     width: 100%;
-
-    padding: 0.5em 1em;
-    z-index: 2;
+    padding: 1em;
     position: fixed;
     top: 0;
     left: 0;
-
-    display: flex;
-    align-items: center;
     background-color: $cityBlue;
-    color: #fff;
-    fill: #fff;
+    z-index: 2;
+
+    .back {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      fill: #fff;
+      text-decoration: none;
+
+      p {
+        margin: 0;
+      }
+      svg {
+        width: 34px;
+        height: 34px;
+      }
+    }
   }
 
   .ParticipateHeader {
