@@ -40,8 +40,15 @@
     margin-bottom: 0.5em;
     padding-bottom: 0.4em;
     padding-right: 2em;
-    border-bottom: 2px solid $cityBronze;
     color: $black;
+
+    &::after {
+      display: block;
+      content: '';
+      margin-top: 0.5em;
+      width: 60%;
+      border-bottom: 2px solid $cityBronze;
+    }
   }
 
   .ParticipateContent {
