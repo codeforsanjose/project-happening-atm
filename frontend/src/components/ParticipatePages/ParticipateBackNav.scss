@@ -1,0 +1,27 @@
+@import '../../utils/colors';
+
+.ParticipateBackNav {
+  width: 100%;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $cityBlue;
+  z-index: 2;
+
+  .back {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    fill: #fff;
+    text-decoration: none;
+
+    p {
+      margin: 0;
+    }
+    svg {
+      width: 34px;
+      height: 34px;
+    }
+  }
+}

@@ -2,17 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './ParticipatePage.scss';
 
-import { ChevronLeftIcon } from '../../utils/_icons';
+import ParticipateBackNav from './ParticipateBackNav';
 
 function ParticipateWatch() {
   return (
     <div className="ParticipatePage">
-      <div className="ParticipateNav">
-        <Link to="/" className="back">
-          <ChevronLeftIcon />
-          <p>Back</p>
-        </Link>
-      </div>
+      <ParticipateBackNav />
 
       <div className="ParticipateContent">
         <h2 className="ParticipateHeader">Watch Meeting Broadcast</h2>
