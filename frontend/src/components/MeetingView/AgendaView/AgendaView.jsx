@@ -4,6 +4,7 @@ import './AgendaView.scss';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 import AgendaGroup from './AgendaGroup';
+import Search from '../../Header/Search';
 
 function AgendaView({ agendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
@@ -14,6 +15,8 @@ function AgendaView({ agendaItems }) {
 
   return (
     <div className="AgendaView">
+      <Search />
+
       <button
         type="button"
         className="complete-toggle"
