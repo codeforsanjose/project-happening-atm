@@ -6,7 +6,7 @@ import ParticipateBackNav from './ParticipateBackNav';
 
 function ParticipateWatch() {
   return (
-    <div className="ParticipatePage">
+    <div className="ParticipatePage responsive-padding">
       <ParticipateBackNav />
 
       <div className="ParticipateContent">
