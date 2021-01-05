@@ -32,7 +32,7 @@ function ParticipateRequest() {
             <p>
               Email
               {' '}
-              <a href="#">city.clerk@sanjoseca.gov</a>
+              <a href="mailto:city.clerk@sanjoseca.gov">city.clerk@sanjoseca.gov</a>
               {' '}
               by 10:00 a.m. the day of the meeting.
             </p>
