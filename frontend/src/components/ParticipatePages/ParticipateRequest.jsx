@@ -10,9 +10,9 @@ function ParticipateRequest() {
       <ParticipateBackNav />
 
       <div className="ParticipateContent">
-        <h2 className="ParticipateHeader">
+        <h3 className="ParticipateHeader">
           Request Separate Consideration of a Consent Calendar Item
-        </h2>
+        </h3>
 
         <p>
           There will be no separate discussion of Consent Calendar items as

@@ -10,7 +10,7 @@ function ParticipateWatch() {
       <ParticipateBackNav />
 
       <div className="ParticipateContent">
-        <h2 className="ParticipateHeader">Watch Meeting Broadcast</h2>
+        <h3 className="ParticipateHeader">Watch Meeting Broadcast</h3>
 
         <p>
           You have 3 options to watch the live meeting broadcast:

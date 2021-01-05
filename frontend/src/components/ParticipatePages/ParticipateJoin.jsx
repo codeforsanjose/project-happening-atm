@@ -11,7 +11,7 @@ function ParticipateJoin() {
       <ParticipateBackNav />
 
       <div className="ParticipateContent">
-        <h2 className="ParticipateHeader">Join the Virtual Meeting</h2>
+        <h3 className="ParticipateHeader">Join the Virtual Meeting</h3>
 
         <p>
           To help stop the spread of COVID-19 and keep our

@@ -11,7 +11,7 @@ function ParticipateComment() {
       <ParticipateBackNav />
 
       <div className="ParticipateContent">
-        <h2 className="ParticipateHeader">Submit Written Public Comment</h2>
+        <h3 className="ParticipateHeader">Submit Written Public Comment</h3>
 
         <p className="bold">Before the Meeting</p>
 
