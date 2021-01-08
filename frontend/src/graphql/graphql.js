@@ -27,12 +27,6 @@ export const CREATE_SUBSCRIPTION = gql`
     createSubscription(phone_number: $phone_number, email_address: $email_address,
     meeting_id: $meeting_id, meeting_item_id: $meeting_item_id) {
       id
-      meeting_id
-      meeting_item_id
-      phone_number
-      email_address
-      created_timestamp
-      updated_timestamp
     }
   }
 `;
