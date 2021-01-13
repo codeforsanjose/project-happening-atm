@@ -54,7 +54,6 @@ function SubscriptionPage() {
       createSubscription={createSubscription}
       isLoading={loading}
       error={error}
-      isSubscribed={data && data.createSubscription && data.createSubscription.id}
     />
   );
 }

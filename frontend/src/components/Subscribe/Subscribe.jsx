@@ -24,8 +24,6 @@ import {
  *      A boolean values that indicates whether the communication with the server is in progress
  *    error
  *      An error object returned from the server if there is any error
- *    isSubscribed
- *      A boolean value that indicates whether the subscription has been created successfully
  *
  *
  * state:
@@ -49,7 +47,6 @@ function Subscribe({
   createSubscription,
   isLoading,
   error,
-  isSubscribed,
 }) {
   const { meetingId, itemId } = useParams();
   const [isPhoneChecked, setPhoneChecked] = useState(false);
@@ -86,6 +83,8 @@ function Subscribe({
 
   const handleSubmit = (e) => {
     setFormSubmitted(true);
+    setPhoneError(null);
+    setEmailError(null);
     const phoneValidationError = validatePhone(phone);
     const emailValidationError = validateEmail(email);
     if (phoneValidationError !== null || emailValidationError !== null) {
