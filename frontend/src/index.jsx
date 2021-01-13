@@ -69,7 +69,7 @@ function App() {
               <Route exact path="/">
                 <MeetingView />
               </Route>
-              <Route path="/subscribe/:id">
+              <Route path="/subscribe/:meetingId/:itemId">
                 <SubscriptionPage />
               </Route>
               <Route path="/meeting-item/:id">

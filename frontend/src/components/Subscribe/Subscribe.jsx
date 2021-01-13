@@ -51,7 +51,7 @@ function Subscribe({
   error,
   isSubscribed,
 }) {
-  const { id: meetingId } = useParams();
+  const { meetingId, itemId } = useParams();
   const [isPhoneChecked, setPhoneChecked] = useState(false);
   const [isEmailChecked, setEmailChecked] = useState(false);
   const [isFormSubmitted, setFormSubmitted] = useState(false);
@@ -105,9 +105,7 @@ function Subscribe({
         phone_number: phone,
         email_address: email,
         meeting_id: parseInt(meetingId, 10),
-        // TODO handle only one of meeting_id or meeting_item_id?
-        // TODO add meeting_item_id to route params.
-        meeting_item_id: 1,
+        meeting_item_id: parseInt(itemId, 10),
       },
     });
   };
