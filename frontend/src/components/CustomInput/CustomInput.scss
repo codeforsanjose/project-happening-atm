@@ -19,7 +19,7 @@
       outline-style: none;
     }
 
-    &.submitted:invalid {
+    &.submitted.error {
       border: 2px solid $red;
     }
   }
