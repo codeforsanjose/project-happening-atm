@@ -25,7 +25,3 @@ variable "PGUSER" {
 variable "PGPASSWORD" {
   default = "testtest"
 }
-
-variable "PGDATABASE" {
-  default = "test"
-}
