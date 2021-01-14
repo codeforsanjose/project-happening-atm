@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import './AdminView.scss';
 
@@ -34,7 +34,8 @@ const TEST_MEETINGS = {
 function AdminView({ headerText, component: ComponentToRender }) {
   const { id } = useParams();
   const history = useHistory();
-  const location = useLocation();
+  const { pathname } = useLocation();
+  const currentPathname = useRef(pathname);
 
   const [meetingId, setMeetingId] = useState(id);
   const [currentMeeting, setCurrentMeeting] = useState({});
@@ -55,15 +56,15 @@ function AdminView({ headerText, component: ComponentToRender }) {
    * Fetch meeting when meetingId is changed
    */
   useEffect(() => {
-    const updatedPath = location.pathname.replace(/\w+$/, meetingId);
-    history.replace(updatedPath);
+    currentPathname.current = currentPathname.current.replace(/\w+$/, meetingId);
+    history.replace(currentPathname.current);
 
     async function getMeeting() {
       // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/85
       setTimeout(() => setCurrentMeeting(TEST_MEETINGS[meetingId]), 2000); // MOCK API CALL
     }
     getMeeting();
-  }, [meetingId, setMeetingId]);
+  }, [meetingId, setMeetingId, history]);
 
   return (
     <div className="admin-view">

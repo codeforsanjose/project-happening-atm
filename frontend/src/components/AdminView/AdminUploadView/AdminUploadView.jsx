@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import './AdminUploadView.scss';
 
 import { PublishIcon } from '../../../utils/_icons';
@@ -19,13 +19,13 @@ function AdminUploadView() {
     setShowConfirmModal(true);
   }
 
-  function handleFileDrop(files) {
+  const handleFileDrop = useCallback((files) => {
     if (files.length === 0) return;
     // TODO: Validate dropped files:
     // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     setSelectedFile(files[0]);
     setShowConfirmModal(true);
-  }
+  }, []);
 
   function resetUpload() {
     fileInputRef.current.value = '';
