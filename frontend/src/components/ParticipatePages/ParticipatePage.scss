@@ -50,6 +50,15 @@
       width: 200px;
       border-bottom: 2px solid $cityBronze;
     }
+
+    @media only screen and (min-device-width: 812px) {
+      margin-top: 0.5em;
+      font-size: 36px;
+
+      &::after {
+        margin-top: 0.2em;
+      }
+    }
   }
 
   .ParticipateContent {
