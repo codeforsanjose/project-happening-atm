@@ -22,6 +22,8 @@ function ParticipateJoin() {
 
       <ol>
         <li>
+          {/* TODO: Add phone number, zoom meeting id, and link to join zoom meeting
+          https://github.com/codeforsanjose/gov-agenda-notifier/issues/103 */}
           <p>Call ###-###-####</p>
           <p className="info">
             Enter Meeting ID ### #### ####

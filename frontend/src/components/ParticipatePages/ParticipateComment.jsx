@@ -31,6 +31,8 @@ function ParticipateComment() {
           <p className="info">
             eComments are directly sent to Council and Committee staff.
           </p>
+          {/* TODO: Add link to eComment site for meeting
+          https://github.com/codeforsanjose/gov-agenda-notifier/issues/104 */}
           <Link to="/">
             <button type="button">Send eComment</button>
           </Link>
