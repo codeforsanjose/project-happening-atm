@@ -15,6 +15,7 @@ import {
 import './index.scss';
 
 import classnames from 'classnames';
+import MeetingList from './components/MeetingList/MeetingList';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
@@ -58,10 +59,13 @@ function App() {
           <Router>
             <Switch>
               <Route exact path="/">
-                <MeetingView />
+                <MeetingList />
               </Route>
               <Route path="/subscribe/:id">
                 <Subscribe />
+              </Route>
+              <Route path="/meeting/:id">
+                <MeetingView />
               </Route>
               <Route path="/meeting-item/:id">
                 <MeetingItem />
