@@ -42,14 +42,26 @@ function ParticipateJoin() {
             may be disabled in older browsers including Internet
             Explorer. Learn more at
             {' '}
-            <a href="#">zoom.us</a>
+            <a
+              href="https://zoom.us/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              zoom.us
+            </a>
             .
           </p>
 
           <p className="info">
             For more information on how to join a meeting,
             {' '}
-            <a href="#">click here</a>
+            <a
+              href="https://support.zoom.us/hc/en-us/articles/201362193-Joining-a-meeting"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              click here
+            </a>
             .
           </p>
         </li>
