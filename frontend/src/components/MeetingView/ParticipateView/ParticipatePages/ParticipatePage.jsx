@@ -1,7 +1,7 @@
 import React from 'react';
 import './ParticipatePage.scss';
 
-import BackNavigation from '../BackNavigation/BackNavigation';
+import BackNavigation from '../../../BackNavigation/BackNavigation';
 
 /**
  * A wrapper component for all pages in the Participate section.

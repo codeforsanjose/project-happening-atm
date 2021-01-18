@@ -21,11 +21,11 @@ import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
-import ParticipatePage from './components/ParticipatePages/ParticipatePage';
-import ParticipateJoin from './components/ParticipatePages/ParticipateJoin';
-import ParticipateWatch from './components/ParticipatePages/ParticipateWatch';
-import ParticipateComment from './components/ParticipatePages/ParticipateComment';
-import ParticipateRequest from './components/ParticipatePages/ParticipateRequest';
+import ParticipatePage from './components/MeetingView/ParticipateView/ParticipatePages/ParticipatePage';
+import ParticipateJoin from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateJoin';
+import ParticipateWatch from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateWatch';
+import ParticipateComment from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateComment';
+import ParticipateRequest from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateRequest';
 
 import * as serviceWorker from './serviceWorker';
 
