@@ -33,6 +33,11 @@ const LINKS = [
   },
 ];
 
+/**
+ * Displays a list of links to the "Participate" pages.
+ * Used in the MeetingView component.
+ */
+
 function ParticipateView() {
   return (
     <ul className="ParticipateView">

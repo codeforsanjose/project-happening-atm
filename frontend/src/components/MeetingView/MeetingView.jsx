@@ -35,10 +35,12 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
  * Utilizes react-accessible-accordion to display groups of items.
  *
  * state:
- *    items
+ *    agendaItems
  *      An array of the current meeting's agenda items
- *    showCompleted
- *      Boolean state to toggle if completed agenda items are shown
+ *    showAgendaView
+ *      A boolean value indicating if the Agenda or Participate View is shown
+ *    navToggled
+ *      A boolean value indicating if the header nav component is open
  */
 
 function MeetingView() {

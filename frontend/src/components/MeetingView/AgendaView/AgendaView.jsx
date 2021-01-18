@@ -6,6 +6,19 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 import AgendaGroup from './AgendaGroup';
 import Search from '../../Header/Search';
 
+/**
+ * Used to display a list of a meeting's agenda items and controls to
+ * search and filter the items; Used in the MeetingView.
+ *
+ * props:
+ *    agendaItems
+ *      An array of the current meeting's agenda items
+ *
+ * state:
+ *    showCompleted
+ *      Boolean state to toggle if completed agenda items are shown
+ */
+
 function AgendaView({ agendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
 
