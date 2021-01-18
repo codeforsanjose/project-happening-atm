@@ -38,7 +38,6 @@
   .ParticipateHeader {
     display: inline-block;
     margin: 0;
-    margin-bottom: 0.5em;
     padding-bottom: 0.4em;
     padding-right: 2em;
     color: $black;
@@ -46,24 +45,29 @@
     &::after {
       display: block;
       content: '';
-      margin-top: 0.5em;
+      margin-top: 0.1em;
       width: 200px;
       border-bottom: 2px solid $cityBronze;
     }
 
     @media only screen and (min-device-width: 812px) {
-      margin-top: 0.5em;
       font-size: 36px;
 
       &::after {
-        margin-top: 0.2em;
+        width: 50%;
       }
     }
   }
 
   .ParticipateContent {
-    margin-top: 4em;
+    box-sizing: border-box;
+    margin-top: 0.5em;
     padding: 1em 1.5em;
+
+    @media only screen and (min-device-width: 812px) {
+      max-width: 812px;
+      margin: 0 auto;
+    }
 
     .info {
       color: $cityBlue;

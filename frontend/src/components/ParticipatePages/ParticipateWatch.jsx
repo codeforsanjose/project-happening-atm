@@ -1,14 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './ParticipatePage.scss';
-
-import ParticipateBackNav from './ParticipateBackNav';
 
 function ParticipateWatch() {
   return (
-    <div className="ParticipatePage responsive-padding">
-      <ParticipateBackNav />
-
+    <div className="ParticipatePage">
       <div className="ParticipateContent">
         <h3 className="ParticipateHeader">Watch Meeting Broadcast</h3>
 

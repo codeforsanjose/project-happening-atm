@@ -1,14 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import './ParticipatePage.scss';
-
-import ParticipateBackNav from './ParticipateBackNav';
 
 function ParticipateRequest() {
   return (
-    <div className="ParticipatePage responsive-padding">
-      <ParticipateBackNav />
-
+    <div className="ParticipatePage">
       <div className="ParticipateContent">
         <h3 className="ParticipateHeader">
           Request Separate Consideration of a Consent Calendar Item

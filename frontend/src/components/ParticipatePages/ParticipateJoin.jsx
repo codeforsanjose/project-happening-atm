@@ -1,15 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './ParticipatePage.scss';
-
-import ParticipateBackNav from './ParticipateBackNav';
 
 function ParticipateJoin() {
   return (
-    <div className="ParticipatePage responsive-padding">
-      <ParticipateBackNav />
-
+    <div className="ParticipatePage">
       <div className="ParticipateContent">
         <h3 className="ParticipateHeader">Join the Virtual Meeting</h3>
 
