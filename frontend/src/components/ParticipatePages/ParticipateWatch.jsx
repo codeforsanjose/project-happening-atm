@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 function ParticipateWatch() {
   return (
@@ -21,9 +20,13 @@ function ParticipateWatch() {
           </li>
           <li>
             <p>City&apos;s YouTube Channel</p>
-            <Link to="/">
+            <a
+              href="https://www.youtube.com/CityOfSanJoseCalifornia"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <button type="button">Go to YouTube</button>
-            </Link>
+            </a>
           </li>
           <li>
             <p>City&apos;s Website</p>
@@ -31,9 +34,13 @@ function ParticipateWatch() {
               Find the meeting and click on &quot;In Progress&quot; or
               &quot;Currently in Session&quot; to watch.
             </p>
-            <Link to="/">
+            <a
+              href="https://www.sanjoseca.gov/news-stories/watch-a-meeting"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <button type="button">Go to the City&apos;s Website</button>
-            </Link>
+            </a>
           </li>
         </ol>
       </div>

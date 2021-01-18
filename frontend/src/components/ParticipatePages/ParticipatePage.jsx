@@ -9,7 +9,7 @@ function ParticipatePage({ Component }) {
       <BackNavigation />
       <Component />
     </div>
-  )
+  );
 }
 
 export default ParticipatePage;
