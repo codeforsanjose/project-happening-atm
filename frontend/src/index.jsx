@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -16,7 +16,6 @@ import './index.scss'
 
 import classnames from 'classnames';
 import MeetingView from './components/MeetingView/MeetingView';
-import Header from './components/Header/Header';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
@@ -48,12 +47,6 @@ function SampleQuery() {
 }
 
 function App() {
-  const [showMenu, setShowMenu] = useState(false);
-
-  const toggleMenu = useCallback(() => {
-    setShowMenu(!showMenu);
-  }, [showMenu, setShowMenu]);
-
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>

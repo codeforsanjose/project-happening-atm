@@ -1,12 +1,12 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .admin-view {
   display: flex;
   height: 100%;
   width: 100%;
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   background: $offWhite;
   font-family: 'Poppins', sans-serif;
 

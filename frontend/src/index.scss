@@ -10,32 +10,8 @@ body {
 .app-root {
   display: flex;
   flex-direction: column;
-  background: $offWhite;
+  background: $blueSky;
   width: 100%;
-  // height: 100vh;
-}
-
-// TODO can refactor as a div between meeting items
-.ribbon {
-  background: $mustardYellow;
-  height: 100%;
-  width: 15px;
-  position: fixed;
-  margin: 225px 7.5% 0;
-
-  @media only screen and (min-device-width: 812px) {
-    margin: 500px 225px 0;
-    width: 25px;
-  }
-}
-
-.fade-box {
-  height: 100px;
-  width: 100%;
-  background: linear-gradient(to bottom, #ffffff, rgba(#ffffff, 0));
-  margin-top: 250px;
-  position: fixed;
-  z-index: 90;
 }
 
 // Common Classes
@@ -71,4 +47,12 @@ body {
   text-decoration: none;
   font-family: 'Montserrat', sans-serif;
   letter-spacing: 1.2px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
 }

@@ -26,6 +26,7 @@
     "passport-jwt": "^4.0.0",
     "pg": "^8.5.0",
     "react": "^16.14.0",
+    "react-accessible-accordion": "^3.3.3",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.14.0",
     "react-infinite-scroll-component": "^5.1.0",

@@ -1,10 +1,42 @@
-@import "../../utils/colors";
+@import '../../utils/colors';
 
 .meeting-view {
-  margin: 0 0 0;
+  padding: 0 1.25em;
+  padding-bottom: 2em;
+  background-color: $blueSky;
+  font-family: 'Poppins', sans-serif;
 
-  @media only screen
-  and (min-device-width: 812px) {
+  @media only screen and (min-device-width: 812px) {
     margin: 0 200px 0;
+    padding-bottom: 3em;
+  }
+
+  .complete-toggle {
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    font-size: 1em;
+    background-color: transparent;
+    cursor: pointer;
+
+    p {
+      margin: 0 0.5em;
+    }
+  }
+
+  .agenda {
+    margin: 1.5em 0;
+  }
+
+  h3 {
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 1em;
+    padding-bottom: 0.4em;
+    padding-right: 3em;
+    border-bottom: 2px solid $cityBronze;
+    color: $black;
+    font-weight: 600;
   }
 }

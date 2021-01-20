@@ -1,32 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import './DragAndDrop.scss';
 
 function DragAndDrop({ dropHandler, children }) {
   const dropRef = useRef();
+  const dragCounter = useRef(0);
   const [dragging, setDragging] = useState(false);
-  let dragCounter = 0;
 
-  function handleDragIn(e) {
+  const handleDragIn = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
-    dragCounter += 1;
+    dragCounter.current += 1;
 
     if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
       setDragging(true);
     }
-  }
-  function handleDragOut(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    dragCounter -= 1;
+  }, []);
 
-    if (dragCounter === 0) setDragging(false);
-  }
-  function handleDrag(e) {
+  const handleDragOut = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
-  }
-  function handleDrop(e) {
+    dragCounter.current -= 1;
+
+    if (dragCounter.current === 0) setDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragging(false);
@@ -35,7 +38,12 @@ function DragAndDrop({ dropHandler, children }) {
       dropHandler(e.dataTransfer.files);
     }
 
-    dragCounter = 0;
+    dragCounter.current = 0;
+  }, [dropHandler]);
+
+  function handleDrag(e) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   useEffect(() => {
@@ -51,7 +59,7 @@ function DragAndDrop({ dropHandler, children }) {
       dropArea.removeEventListener('dragover', handleDrag);
       dropArea.removeEventListener('drop', handleDrop);
     };
-  }, []);
+  }, [handleDragIn, handleDragOut, handleDrop]);
 
   return (
     <div className="DragAndDrop" ref={dropRef}>
