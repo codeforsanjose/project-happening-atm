@@ -2,17 +2,17 @@
 
 .back-navigation {
   background: $cityBlue;
-  height: 50px;
+  padding: 1em;
+  position: fixed;
+  width: 100%;
 
-  .wrapper {
+  .back-wrapper {
     height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-
     font-size: 1em;
-    margin: 0 20px;
 
     @media screen
     and (min-width: 812px) {
@@ -34,8 +34,9 @@
 
       svg {
         fill: white;
+        width: 34px;
+        height: 34px;
       }
     }
   }
-
 }

@@ -13,7 +13,7 @@ export default function BackNavigation() {
 
   return (
     <div className={classnames('back-navigation')}>
-      <div className="wrapper">
+      <div className="back-wrapper">
         <button
           type="button"
           onClick={goBack}
