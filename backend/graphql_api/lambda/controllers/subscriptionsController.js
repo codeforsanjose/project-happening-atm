@@ -1,8 +1,10 @@
 const getTwilioClient = require('../twilio/twilioClient');
+const getSesClient = require('../ses/sesClient');
 
 module.exports = (logger) => {
   const module = {};
   const twilioClient = getTwilioClient(logger);
+  const sesClient = getSesClient(logger);
 
   const notifySubscribers = async (dbClient, messageBody, subscriptionQueryResponse) => {
     // Here we'll populate phone number and email maps to store subscription data.
@@ -16,7 +18,7 @@ module.exports = (logger) => {
     const subscriptions = subscriptionQueryResponse.rows;
     subscriptions.forEach((sub) => {
       const phoneNumber = sub.phone_number;
-      const email = sub.phone_number.email_address;
+      const email = sub.email_address;
       if (phoneNumber !== '') {
         if (phoneNumberMap.has(phoneNumber)) {
           if (!phoneNumberMap.get(phoneNumber).includes(sub)) {
@@ -32,7 +34,7 @@ module.exports = (logger) => {
             emailMap.get(email).push(sub);
           }
         } else {
-          emailMap.set(sub.email, [sub]);
+          emailMap.set(email, [sub]);
         }
       }
     });
@@ -68,23 +70,38 @@ module.exports = (logger) => {
       return titles;
     };
 
-    // Gather each phone number's subscription data for their text message notification
-    const phoneNumbers = [...phoneNumberMap.keys()];
-    for (let i = 0; i < phoneNumbers.length; i += 1) {
-      const number = phoneNumbers[i];
-      const associatedSubscriptionArray = phoneNumberMap.get(number);
-      let titles;
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        titles = await getTitlesArray(associatedSubscriptionArray);
-      } catch (e) {
-        logger.error(`notifySubscribers controller error - getTitlesArray: ${e}`);
-        throw e;
+    // Helper function to abstract plucking emails or phone numbers from a map
+    // and call the sendFn.
+    const sendMessages = async (map, sendFn) => {
+      const entries = [...map.keys()];
+
+      for (let i = 0; i < entries.length; i += 1) {
+        const number = entries[i];
+        const associatedSubscriptionArray = map.get(number);
+        let titles;
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          titles = await getTitlesArray(associatedSubscriptionArray);
+        } catch (e) {
+          logger.error(`notifySubscribers controller error - getTitlesArray: ${e}`);
+          throw e;
+        }
+        const updateMessageBody = messageBody + titles;
+
+        sendFn(number, updateMessageBody);
       }
-      const updateMessageBody = messageBody + titles;
-      twilioClient.sendTextMessage(number, updateMessageBody);
-      // TODO: To avoid API rate limit issues, it might be a good idea to
-      // implement some kind of sleep logic here
+    }
+
+    try {
+      await sendMessages(phoneNumberMap, twilioClient.sendTextMessage)
+    } catch (e) {
+      logger.error(`Error sending texts: ${e}`);
+    }
+
+    try {
+      await sendMessages(emailMap, sesClient.sendEmail)
+    } catch (e) {
+      logger.error(`Error sending emails: ${e}`);
     }
   };
 
@@ -160,6 +177,5 @@ module.exports = (logger) => {
       throw e;
     }
   };
-
   return module;
 };
