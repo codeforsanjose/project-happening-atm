@@ -1,7 +1,6 @@
 import React from 'react';
 import './Header.scss';
 import classnames from 'classnames';
-import Search from './Search';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
@@ -37,8 +36,6 @@ function Header({ shouldHide }) {
             Meeting is in progress
           </div>
         </div>
-
-        <Search />
       </div>
     </div>
   );

@@ -1,0 +1,85 @@
+@import '../../../../utils/colors';
+@import '../../../../utils/_fonts.scss';
+
+.ParticipatePage {
+  box-sizing: border-box;
+  background-color: $blueSky;
+  color: $black;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px;
+  min-height: 100vh;
+
+  .ParticipateHeader {
+    display: inline-block;
+    margin: 0;
+    padding-bottom: 0.4em;
+    padding-right: 2em;
+    color: $black;
+
+    &::after {
+      display: block;
+      content: '';
+      margin-top: 0.1em;
+      width: 200px;
+      border-bottom: 2px solid $cityBronze;
+    }
+
+    @media only screen and (min-device-width: 812px) {
+      font-size: 36px;
+
+      &::after {
+        width: 50%;
+      }
+    }
+  }
+
+  .ParticipateContent {
+    box-sizing: border-box;
+    margin-top: 4.5em;
+    padding: 1em 1.5em;
+
+    @media only screen and (min-device-width: 812px) {
+      max-width: 812px;
+      margin: 0 auto;
+    }
+
+    .info {
+      color: $cityBlue;
+    }
+
+    .bold {
+      font-weight: 900;
+    }
+
+    ol {
+      padding-left: 1.5em;
+      font-size: 20px;
+      font-weight: 900;
+
+      p {
+        padding-left: 0.5em;
+        font-size: initial;
+        font-weight: initial;
+      }
+    }
+
+    button {
+      margin: 0.5em 0;
+      padding: 0.5em 1.8em;
+      border: none;
+      border-radius: 8px;
+      background-color: $lightBronze;
+      color: $black;
+      font-size: 1em;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $cityBronze;
+      }
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+}

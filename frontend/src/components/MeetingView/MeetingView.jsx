@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Accordion,
-} from 'react-accessible-accordion';
 import './MeetingView.scss';
 
-import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
-import MeetingAgendaGroup from './MeetingAgendaGroup';
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
+import ParticipateView from './ParticipateView/ParticipateView';
+import AgendaView from './AgendaView/AgendaView';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
@@ -39,56 +36,56 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
  * Utilizes react-accessible-accordion to display groups of items.
  *
  * state:
- *    items
+ *    agendaItems
  *      An array of the current meeting's agenda items
- *    showCompleted
- *      Boolean state to toggle if completed agenda items are shown
+ *    showAgendaView
+ *      A boolean value indicating if the Agenda or Participate View is shown
+ *    navToggled
+ *      A boolean value indicating if the header nav component is open
  */
 
 function MeetingView() {
-  const [items, setItems] = useState([]);
-  const [showCompleted, setShowCompleted] = useState(true);
-  const [toggled, setToggled] = useState(false);
+  const [agendaItems, setAgendaItems] = useState([]);
+  const [showAgendaView, setShowAgendaView] = useState(true);
+  const [navToggled, setNavToggled] = useState(false);
 
   function handleToggle() {
-    setToggled(!toggled);
+    setNavToggled(!navToggled);
   }
 
   useEffect(() => {
     async function fetchAgendaItems() {
       // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/88
-      setTimeout(() => setItems(TEST_ITEMS), 2000); // MOCK API CALL
+      setTimeout(() => setAgendaItems(TEST_ITEMS), 2000); // MOCK API CALL
     }
     fetchAgendaItems();
   }, []);
 
-  const renderedItems = showCompleted
-    ? items
-    : items.filter((item) => item.status !== 'Completed');
-
   return (
     <div className="meeting-view">
-      <NavBarHeader toggled={toggled} handleToggle={handleToggle} />
+      <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
       <Header />
 
-      <div>
-        <h3>Agenda</h3>
+      <div className="view-toggle">
+        <div className={showAgendaView ? 'view-active' : ''}>
+          <button
+            type="button"
+            onClick={() => setShowAgendaView(true)}
+          >
+            Agenda
+          </button>
+        </div>
+        <div className={showAgendaView ? '' : 'view-active'}>
+          <button
+            type="button"
+            onClick={() => setShowAgendaView(false)}
+          >
+            Participate
+          </button>
+        </div>
       </div>
 
-      <button
-        type="button"
-        className="complete-toggle"
-        onClick={() => setShowCompleted((completed) => !completed)}
-      >
-        {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-        <p>Show Completed Items</p>
-      </button>
-
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {renderedItems.map((agendaGroup) => (
-          <MeetingAgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
-        ))}
-      </Accordion>
+      {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
     </div>
   );
 }

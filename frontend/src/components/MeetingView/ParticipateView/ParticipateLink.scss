@@ -1,0 +1,46 @@
+@import "../../../utils/_colors.scss";
+
+.ParticipateLink {
+  margin-bottom: 0.8em;
+  border-radius: 4px;
+  background-color: $cityBlue;
+
+  a {
+    color: #fff;
+    fill: #fff;
+    text-decoration: none;
+
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+      .nav-link-chevron {
+        transform: translateX(0.8em);
+      }
+    }
+  }
+
+  .button-group {
+    padding: 1em;
+    opacity: 0.8;
+    transition: ease-in 0.2s;
+
+    &:hover {
+      opacity: 1;
+
+      svg:last-child {
+        transform: translateX(0.8em);
+      }
+    }
+
+    .button-text {
+      margin: 0 0.5em;
+    }
+
+    svg {
+      min-width: 24px;
+      min-height: 24px;
+      vertical-align: middle;
+      transition: ease-in 0.2s;
+    }
+  }
+}
