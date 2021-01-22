@@ -59,6 +59,13 @@ When running with docker-compose, a separate persistent volume is created for Po
    TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
    TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
    TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
+   SEND_TEXT=false
+
+   AWS_ACCESS_KEY_ID=
+   AWS_SECRET_ACCESS_KEY=
+   AWS_DEFAULT_REGION=
+   FROM_ADDRESS=
+   SEND_EMAIL=false
    ```
 
    - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
@@ -133,6 +140,13 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
             TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
             TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
             TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
+            SEND_TEXT=false
+
+            AWS_ACCESS_KEY_ID=
+            AWS_SECRET_ACCESS_KEY=
+            AWS_DEFAULT_REGION=
+            FROM_ADDRESS=
+            SEND_EMAIL=false
             ```
             *   This file is NOT to be included in version control. We don't want secret keys publicly accessible.
             *   Message Trace Ohrt on Slack if you need secret keys
