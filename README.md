@@ -34,7 +34,57 @@ The City of San Jose is interested in this service, but this is a project that c
 *   [List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
 # Local Development
-## To Begin Work on the Frontend / Serve Frontend
+
+There are two ways to setup for local developemnt, with docker-compose (option 1) or directly (option 2).
+
+## Option 1
+
+When running with docker-compose, a separate persistent volume is created for PostgreSQL. Also, changes made from your local text editor is synced to the respective containers for auto restart.
+
+1. Go to the issues page to find something to work on:
+   - https://github.com/codeforsanjose/gov-agenda-notifier/issues
+1. Install Docker: https://www.docker.com/products/docker-desktop
+1. Create a `.env` file in the `/backend/graphql_api/lambda` directory
+1. Make sure the file includes these keys:
+
+   ```
+   NODE_ENV=development
+
+   PGHOST=gov-agenda-notifier_backend_pg_1
+   PGUSER=docker
+   PGPASSWORD=docker
+   PGDATABASE=devdb
+   PGPORT=5432
+
+   TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
+   TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
+   TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
+   SEND_TEXT=false
+
+   AWS_ACCESS_KEY_ID=
+   AWS_SECRET_ACCESS_KEY=
+   AWS_DEFAULT_REGION=
+   FROM_ADDRESS=
+   SEND_EMAIL=false
+   ```
+
+   - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
+   - Message Trace Ohrt on Slack if you need secret keys
+
+1. Run docker-compose command to bring up the apps:
+   ```bash
+   docker-compose -p gov-agenda-notifier up --build
+   ```
+1. View the GraphQL API playground at http://localhost:3000/graphql
+1. View the app at http://localhost:3001
+1. Run command to remove (most) of build artifacts:
+   ```bash
+   docker-compose -p govt-agenda-notifier down --remove-orphans
+   ```
+
+## Option 2
+
+### To Begin Work on the Frontend / Serve Frontend
 1. Go to the issues page to find something to work on:
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Install [Node.js and npm](https://www.npmjs.com/get-npm)
@@ -59,13 +109,13 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
 1. Visit the issues page to find something to work on:
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Initialize the local DB
-    *   This step requires the `make` utility. 
+    *   This step requires the `make` utility.
         *   Additional configuration for this is required on [Windows](https://vispud.blogspot.com/2019/02/how-to-run-makefile-in-windows.html)
     1.  Install [Docker](https://www.docker.com/products/docker-desktop)
     2.  Create the Docker image for the local DB
         * This only needs to be done once unless modifcations have been made to `/backend/docker_for_local_dev_db/init.sql`. See notes below.
         1.  Navigate to `/backend/docker_for_local_dev_db`
-        2.  Run command: 
+        2.  Run command:
             ```bash
             make image
             ```
@@ -81,15 +131,22 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
             ```
             NODE_ENV=development
 
-            PGHOST=127.0.0.1 
-            PGUSER=docker 
-            PGPASSWORD=docker 
-            PGDATABASE=devdb 
-            PGPORT=8888 
+            PGHOST=127.0.0.1
+            PGUSER=docker
+            PGPASSWORD=docker
+            PGDATABASE=devdb
+            PGPORT=8888
 
             TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
             TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
             TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
+            SEND_TEXT=false
+
+            AWS_ACCESS_KEY_ID=
+            AWS_SECRET_ACCESS_KEY=
+            AWS_DEFAULT_REGION=
+            FROM_ADDRESS=
+            SEND_EMAIL=false
             ```
             *   This file is NOT to be included in version control. We don't want secret keys publicly accessible.
             *   Message Trace Ohrt on Slack if you need secret keys
@@ -101,7 +158,7 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
             ```
     3. Start server:
         1. Navigate to the `/backend/graphql_api/lambda` directory
-        2. Run command: 
+        2. Run command:
             ```bash
             npm start
             ```

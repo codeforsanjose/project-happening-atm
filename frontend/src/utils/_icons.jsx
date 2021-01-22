@@ -7,6 +7,7 @@ import { ReactComponent as UncheckedCheckboxIcon } from '../assets/icons/check_b
 import { ReactComponent as CheckedCheckboxIcon } from '../assets/icons/check_box-24px.svg';
 import { ReactComponent as CheckedCheckboxWithInnerShadowIcon } from '../assets/icons/check-boxes-1.svg';
 import { ReactComponent as UncheckedCheckboxWithInnerShadowIcon } from '../assets/icons/check-boxes-24px.svg';
+import { ReactComponent as UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon } from '../assets/icons/check-boxes-bronze-24px.svg';
 import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron_left-24px.svg';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron_right-24px.svg';
 import { ReactComponent as CloseIcon } from '../assets/icons/close-24px.svg';
@@ -48,6 +49,7 @@ export {
   CheckedCheckboxIcon,
   CheckedCheckboxWithInnerShadowIcon,
   UncheckedCheckboxWithInnerShadowIcon,
+  UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,
@@ -75,5 +77,5 @@ export {
   SearchIcon,
   ShareIcon,
   ViewAgendaIcon,
-  VoiceChatIcon
+  VoiceChatIcon,
 };

@@ -6,17 +6,17 @@ import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
 
 const itemLinks = [
   {
-    path: '/',
+    getPath: (item) => `/subscribe/${item.meetingId}/${item.id}`,
     Icon: NotificationsIcon,
     text: 'Subscribe',
   },
   {
-    path: '/',
+    getPath: (item) => '/',
     Icon: ShareIcon,
     text: 'Share',
   },
   {
-    path: '/',
+    getPath: (item) => '/',
     Icon: AddIcon,
     text: 'More Info',
   },
@@ -30,6 +30,7 @@ const itemLinks = [
  *      Object that represents an agenda item.
  *      {
  *        id: Number id of item
+ *        meetingId: Number id of the corresponding meeting
  *        title:  String title of item
  *        description:  String description of item
  *        status: String status of item
@@ -48,7 +49,7 @@ function AgendaItem({ item }) {
       <div className="item-links">
         {
           itemLinks.map((link) => (
-            <Link to={link.path} key={link.text}>
+            <Link to={link.getPath(item)} key={link.text}>
               <div className="link">
                 <link.Icon />
                 <p>{link.text}</p>

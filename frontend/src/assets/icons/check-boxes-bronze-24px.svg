@@ -1,0 +1,15 @@
+<svg id="check-boxes-24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.543" cy="0.5" r="1.152" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.243"/>
+      <stop offset="0.329" stop-color="#ddd" stop-opacity="0.447"/>
+      <stop offset="1" stop-color="gray"/>
+    </radialGradient>
+  </defs>
+  <g id="box">
+    <path id="Path_498" data-name="Path 498" d="M0,0H24V24H0Z" fill="none"/>
+    <path id="Path_499" data-name="Path 499" d="M19,5V19H5V5H19m0-2H5A2.006,2.006,0,0,0,3,5V19a2.006,2.006,0,0,0,2,2H19a2.006,2.006,0,0,0,2-2V5A2.006,2.006,0,0,0,19,3Z" transform="translate(0 0)"
+    fill="#CC9966"/>
+    <rect id="Rectangle_2176" data-name="Rectangle 2176" width="14" height="14" transform="translate(5 5)" fill="url(#radial-gradient)"/>
+  </g>
+</svg>
