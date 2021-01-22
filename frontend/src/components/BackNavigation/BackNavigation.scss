@@ -1,0 +1,41 @@
+@import "../../utils/_colors.scss";
+
+.back-navigation {
+  background: $cityBlue;
+  height: 50px;
+
+  .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    font-size: 1em;
+    margin: 0 20px;
+
+    @media screen
+    and (min-width: 812px) {
+      max-width: 812px;
+      margin: 0 auto;
+    }
+
+    button {
+      background-color: $cityBlue;
+      border: none;
+      outline: none;
+      color: #FFFFFF;
+      font-size: 1em;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      cursor: pointer;
+
+      svg {
+        fill: white;
+      }
+    }
+  }
+
+}

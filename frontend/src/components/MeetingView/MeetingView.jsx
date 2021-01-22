@@ -11,7 +11,8 @@ import Header from '../Header/Header';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
-    id: `${parentIndex}-${index}`,
+    id: `${index}`,
+    meetingId: `${parentIndex}`,
     title: `${parentIndex}.${index} Agenda Item`,
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl euismod, tristique leo sit amet, eleifend enim.',
     status,

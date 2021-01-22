@@ -10,6 +10,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
+  useMutation,
 } from '@apollo/client';
 
 import './index.scss';
@@ -23,7 +24,7 @@ import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadV
 
 import * as serviceWorker from './serviceWorker';
 
-import GET_ALL_MEETINGS_WITH_ITEMS from './graphql/graphql';
+import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTION } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
 
 const client = new ApolloClient({
@@ -45,6 +46,18 @@ function SampleQuery() {
   return null;
 }
 
+function SubscriptionPage() {
+  const [createSubscription, { loading, error, data }] = useMutation(CREATE_SUBSCRIPTION);
+
+  return (
+    <Subscribe
+      createSubscription={createSubscription}
+      isLoading={loading}
+      error={error}
+    />
+  );
+}
+
 function App() {
   return (
     <React.StrictMode>
@@ -55,8 +68,8 @@ function App() {
               <Route exact path="/">
                 <MeetingView />
               </Route>
-              <Route path="/subscribe/:id">
-                <Subscribe />
+              <Route path="/subscribe/:meetingId/:itemId">
+                <SubscriptionPage />
               </Route>
               <Route path="/meeting-item/:id">
                 <MeetingItem />
