@@ -16,7 +16,7 @@ import {
 import './index.scss';
 
 import classnames from 'classnames';
-import MeetingList from './components/MeetingList/MeetingList';
+import MeetingListView from './components/MeetingListView/MeetingListView';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
@@ -72,7 +72,7 @@ function App() {
           <Router>
             <Switch>
               <Route exact path="/">
-                <MeetingList />
+                <MeetingListView />
               </Route>
               <Route path="/subscribe/:meetingId/:itemId">
                 <SubscriptionPage />

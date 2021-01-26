@@ -1,0 +1,22 @@
+@import '../../utils/colors';
+
+.MeetingListView {
+  margin-top: 5em;
+  font-family: 'Poppins', sans-serif;
+
+  .meeting-list-header {
+    padding: 0.75em;
+
+    .logo {
+      width: 77px;
+    }
+
+    h2 {
+      margin: 0.5em 0;
+    }
+  }
+
+  .meeting-list-content {
+    background-color: $blueSky;
+  }
+}
