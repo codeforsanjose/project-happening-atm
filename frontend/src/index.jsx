@@ -54,6 +54,7 @@ function SubscriptionPage() {
       createSubscription={createSubscription}
       isLoading={loading}
       error={error}
+      subscription={data && data.createSubscription}
     />
   );
 }

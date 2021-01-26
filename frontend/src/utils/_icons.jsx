@@ -11,6 +11,7 @@ import { ReactComponent as UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon }
 import { ReactComponent as ChevronLeftIcon } from '../assets/icons/chevron_left-24px.svg';
 import { ReactComponent as ChevronRightIcon } from '../assets/icons/chevron_right-24px.svg';
 import { ReactComponent as CloseIcon } from '../assets/icons/close-24px.svg';
+import { ReactComponent as ConfirmationIcon } from '../assets/icons/confirmation.svg';
 import { ReactComponent as DeleteIcon } from '../assets/icons/delete-24px.svg';
 import { ReactComponent as DoneOutlineIcon } from '../assets/icons/done_outline-24px.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit-24px.svg';
@@ -53,6 +54,7 @@ export {
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,
+  ConfirmationIcon,
   DeleteIcon,
   DoneOutlineIcon,
   EditIcon,

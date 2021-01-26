@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './Subscribe.scss';
 import classnames from 'classnames';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import BackNavigation from '../BackNavigation/BackNavigation';
 import Spinner from '../Spinner/Spinner';
 import CustomInput from '../CustomInput/CustomInput';
+import SubscribeConfirmation from './SubscribeConfirmation';
 import {
   validatePhone,
   validateEmail,
@@ -20,6 +21,8 @@ import {
  *      A boolean values that indicates whether the communication with the server is in progress
  *    error
  *      An error object returned from the server if there is any error
+ *    subscription
+ *      A newly created subscription (response from the server)
  *
  *
  * state:
@@ -39,7 +42,9 @@ function Subscribe({
   createSubscription,
   isLoading,
   error,
+  subscription,
 }) {
+  const history = useHistory();
   const { meetingId, itemId } = useParams();
   const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [phone, setPhone] = useState('');
@@ -83,6 +88,10 @@ function Subscribe({
     });
   };
 
+  const closeConfirmation = () => {
+    history.goBack();
+  };
+
   return (
     <div className={classnames('subscribe-view')}>
       <BackNavigation />
@@ -99,7 +108,7 @@ function Subscribe({
               <CustomInput
                 type="tel"
                 placeholder="Enter phone number"
-                isRequired={true}
+                isRequired
                 isSubmitted={isFormSubmitted}
                 value={phone}
                 onChange={handlePhoneChanged}
@@ -111,13 +120,19 @@ function Subscribe({
               <CustomInput
                 type="email"
                 placeholder="Enter email address"
-                isRequired={true}
+                isRequired
                 isSubmitted={isFormSubmitted}
                 value={email}
                 onChange={handleEmailChanged}
                 errorMessage={emailError}
               />
             </div>
+            { subscription && subscription.id
+              && (
+                <SubscribeConfirmation
+                  onClose={closeConfirmation}
+                />
+              )}
             { error
               && (
                 <div className="form-error">{ error.message }</div>
