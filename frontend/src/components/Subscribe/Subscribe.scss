@@ -7,63 +7,97 @@
   position: absolute;
   top:0;
   left:0;
-  background: $offWhite;
+  background: $blueSky;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  line-height: 25px;
+  font-size: 16px;
+  color: $black;
+  letter-spacing: 0.0016px;
 
   .wrapper {
     box-sizing: border-box;
-    margin: 3.5em 1.8em;
+    margin: 0 1.25em;
+    margin-top: 5em;
 
     @media screen
     and (min-width: 812px) {
       max-width: 812px;
-      margin: 3.5em auto;
+      margin: 0 auto;
     }
   }
 
   .text {
     margin: 1em 0;
-    text-align: center;
 
-    h1 {
+    h3 {
+      width: 200px;
+      font-weight: 600;
+      padding-bottom: 0.3em;
+      border-bottom: 2px solid $cityBronze;
       margin-top: 1em;
       margin-bottom: 0;
     }
   }
 
-  a {
-    color: #000;
-  }
-
   .form {
-    $form-font-size: 18px;
-    margin-top: 2.5em;
+    margin-top: 1.5em;
 
     .input-group {
-      label {
-        font-size: $form-font-size;
-      }
+      .checkbox {
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        font-size: 1em;
+        line-height: 25px;
+        letter-spacing: 0.0016px;
+        font-family: 'Poppins', sans-serif;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
 
-      input {
-        box-sizing: border-box;
-        display: block;
-        width: 100%;
-        padding: 1em;
-        margin: 0.5em 0 1em;
-        border-radius: 18px;
-        border: 1px solid #000;
-        font-size: $form-font-size;
+        span {
+          margin-left: 9px;
+        }
       }
     }
 
-    button {
-      width: 100%;
-      margin: 1em 0;
-      padding: 1em;
-      border-radius: 32px;
-      background-color: #000;
-      color: #fff;
-      font-size: $form-font-size;
-      cursor: pointer;
+    .row {
+      justify-content: center;
+      align-items: center;
+
+      button {
+        border-radius: 0.5em;
+        padding: 0.25em 1.4em;
+        cursor: pointer;
+        background-color: $cityBronze;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        line-height: 25px;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        &:disabled {
+          color: $cloudy;
+          border: 3px solid $cloudy;
+          background-color: transparent;
+          cursor: text;
+        }
+
+        .spinner {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .form-error {
+      color: $red;
+      font-size: 0.8em;
     }
   }
 }

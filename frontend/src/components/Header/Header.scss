@@ -1,7 +1,7 @@
 @import "../../utils/_colors.scss";
 
 .header {
-  background: $blueSky;
+  background: #fff;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -15,7 +15,7 @@
     color: $black;
 
     .logo {
-      width: 77px;  
+      width: 77px;
     }
 
     .meeting-info {

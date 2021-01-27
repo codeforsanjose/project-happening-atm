@@ -1,0 +1,9 @@
+.ParticipateView {
+  margin: 0;
+  padding: 0 1.25em;
+  padding-top: 1.5em;
+
+  @media only screen and (min-device-width: 812px) {
+    padding: 1.5em 3em;
+  }
+}

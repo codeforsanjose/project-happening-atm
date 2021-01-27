@@ -30,6 +30,7 @@
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.14.0",
     "react-infinite-scroll-component": "^5.1.0",
+    "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-sortable-hoc": "^1.11.0",
