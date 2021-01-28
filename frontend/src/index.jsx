@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -32,6 +32,8 @@ import * as serviceWorker from './serviceWorker';
 
 import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTION } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
+
+import './i18n';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -69,59 +71,61 @@ function App() {
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <div className={classnames('app-root')}>
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <MeetingList />
-              </Route>
-              <Route path="/subscribe/:meetingId/:itemId">
-                <SubscriptionPage />
-              </Route>
-              <Route path="/meeting/:id">
-                <MeetingView />
-              </Route>
-              <Route path="/meeting-item/:id">
-                <MeetingItem />
-              </Route>
+        <Suspense fallback={<div>Loading translation files...</div>}>
+          <div className={classnames('app-root')}>
+            <Router>
+              <Switch>
+                <Route exact path="/">
+                  <MeetingList />
+                </Route>
+                <Route path="/subscribe/:meetingId/:itemId">
+                  <SubscriptionPage />
+                </Route>
+                <Route path="/meeting/:id">
+                  <MeetingView />
+                </Route>
+                <Route path="/meeting-item/:id">
+                  <MeetingItem />
+                </Route>
 
-              <Route exact path="/participate/join">
-                <ParticipatePage Component={ParticipateJoin} />
-              </Route>
-              <Route exact path="/participate/watch">
-                <ParticipatePage Component={ParticipateWatch} />
-              </Route>
-              <Route exact path="/participate/comment">
-                <ParticipatePage Component={ParticipateComment} />
-              </Route>
-              <Route exact path="/participate/request">
-                <ParticipatePage Component={ParticipateRequest} />
-              </Route>
+                <Route exact path="/participate/join">
+                  <ParticipatePage Component={ParticipateJoin} />
+                </Route>
+                <Route exact path="/participate/watch">
+                  <ParticipatePage Component={ParticipateWatch} />
+                </Route>
+                <Route exact path="/participate/comment">
+                  <ParticipatePage Component={ParticipateComment} />
+                </Route>
+                <Route exact path="/participate/request">
+                  <ParticipatePage Component={ParticipateRequest} />
+                </Route>
 
-              <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
-                <AdminView
-                  headerText="Edit Meeting Details"
-                  component={() => <div>Placeholder for Edit Meeting</div>}
-                />
-              </Route>
+                <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
+                  <AdminView
+                    headerText="Edit Meeting Details"
+                    component={() => <div>Placeholder for Edit Meeting</div>}
+                  />
+                </Route>
 
-              <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
-                <AdminView
-                  headerText="Edit Agenda Items"
-                  component={() => <div>Placeholder for Edit Agenda</div>}
-                />
-              </Route>
+                <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
+                  <AdminView
+                    headerText="Edit Agenda Items"
+                    component={() => <div>Placeholder for Edit Agenda</div>}
+                  />
+                </Route>
 
-              <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
-                <AdminView
-                  headerText="Upload New Agenda"
-                  component={AdminUploadView}
-                />
-              </Route>
-            </Switch>
-          </Router>
-          <SampleQuery />
-        </div>
+                <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
+                  <AdminView
+                    headerText="Upload New Agenda"
+                    component={AdminUploadView}
+                  />
+                </Route>
+              </Switch>
+            </Router>
+            <SampleQuery />
+          </div>
+        </Suspense>
       </ApolloProvider>
     </React.StrictMode>
   );
