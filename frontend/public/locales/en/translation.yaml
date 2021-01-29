@@ -1,0 +1,186 @@
+navbar:
+  menu: Menu
+  browse-meetings: Browse Meetings
+  about: About
+  faq: FAQ
+  submit-feedback: Submit Feedback
+  admin:
+    sign-in: Sign In
+    sign-out: Sign Out
+
+header:
+  my-city-agenda: My City's Agenda
+  city-council-meetings: City Council Meetings
+  city-council-meeting-agenda: City Council Meeting Agenda
+
+all-meetings:
+  show-past-meetings: Show Past Meetings
+  community:
+    calendar-export:
+      button: Export to Calendar
+      modal:
+        title: Add to Calendar
+        options:
+          apple: Apple Calendar
+          google: Google Calendar
+          Outlook: Outlook Calendar
+    agenda:
+      button: Agenda
+    minutes:
+      button: Minutes
+    recording:
+      button: Recording
+  admin:
+    new-meeting:
+      button: Create New Meeting
+      modal:
+        title: Create New Meeting
+        subtitle: Add meeting date and time
+        inputs:
+          date: Date
+          time: Time
+        # buttons:
+        #   create-meeting: Create New Meeting
+        #   creating-meeting: Creating New Meeting
+    upload-agenda:
+      button: Upload New Agenda
+      modal:
+        title: Upload New Agenda
+        input:
+          help: Drag and Drop CSV File
+          alt: Or Upload from Your Computer
+        # buttons:
+        #   upload: Upload and Publish
+        #   uploading: Uploading and Publishing
+    delete-meeting:
+      button: Delete Meeting
+      modal:
+        title: Are you sure you want to delete this meeting?
+        # buttons:
+        #   delete: Delete
+        #   deleting: Deleting
+        #   cancel: Cancel
+
+a-meeting:
+  start-time: Start Time
+  community:
+    status:
+      in-progress: Meeting is in progress
+      closed: Meeting is closed
+      removed: Meeting is removed for separate consideration
+      deferred: Meeting is deferred
+  admin:
+
+agenda:
+  community:
+  admin:
+    status:
+    button: Update Status
+    modal:
+      title: Update Agenda Item Status
+      subtitle: Select status
+    options:
+      in-progress: In Progress
+      closed: Closed
+      removed: Removed for Separate Consideration
+      deferred: Deferred
+
+footer:
+
+errors:
+
+standard:
+  numbers:
+    one: one
+    two: two
+    three: three
+    four: four
+    five: five
+    six: six
+    seven: seven
+    eight: eight
+    nine: nine
+    ten: ten
+  buttons:
+    go-to-top: Go to Top
+    watch: Watch
+    add: Add
+    adding: Adding
+    remove: Remove
+    removing: Removing
+    create: Create
+    creating: Creating
+    delete: Delete
+    deleting: Deleting
+    publish: Publish
+    publishing: Publishing
+    upload: Upload
+    uploading: Uploading
+    download: Download
+    downloading: Downloading
+    cancel: Cancel
+    canceling: Canceling
+    close: Close
+    closing: Closing
+    exit: Exit
+    exiting: Exiting
+    abort: Abort
+    aborting: Aborting
+    search: Search
+    searching: Searching
+    subscribe: Subscribe
+    subscribing: Subscribing
+    share: Share
+    sharing: Sharing
+    join: Join
+    joining: Joining
+    leave: Leave
+    leaving: Leaving
+  words:
+    and: and
+    button: button
+    buttons: buttons
+    city: city
+    cities: cities
+    council: council
+    meeting: meeting
+    meetings: meetings
+    agenda: agenda
+    status: status
+    warning: warning
+    error: error
+    alert: alert
+    notification: notification
+    notifications: notifications
+    time: time
+    date: date
+    day: day
+    days: days
+    week: week
+    weeks: weeks
+    month: month
+    months: months
+    year: year
+    years: years
+    calendar: calendar
+    top: top
+    left: left
+    right: right
+    bottom: bottom
+    center: center
+    middle: middle
+    new: new
+    sunday: Sunday
+    monday: Monday
+    tuesday: Tuesday
+    wednesday: Wednesday
+    thursday: Thursday
+    friday: Friday
+    saturday: Saturday
+    start: start
+    end: end
+    select: select
+    selected: selected
+    search: search
+    result: result
+    results: results
