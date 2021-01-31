@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import './Subscribe.scss';
 import classnames from 'classnames';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import BackNavigation from '../BackNavigation/BackNavigation';
 import Spinner from '../Spinner/Spinner';
 import CustomInput from '../CustomInput/CustomInput';
-import {
-  UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon,
-  CheckedCheckboxWithInnerShadowIcon,
-} from '../../utils/_icons';
+import SubscribeConfirmation from './SubscribeConfirmation';
 import {
   validatePhone,
   validateEmail,
@@ -24,13 +21,11 @@ import {
  *      A boolean values that indicates whether the communication with the server is in progress
  *    error
  *      An error object returned from the server if there is any error
+ *    subscription
+ *      A newly created subscription (response from the server)
  *
  *
  * state:
- *    isPhoneChecked
- *      A boolean value that indicates whether a checkbox associated with phone field is checked
- *    isEmailChecked
- *      A boolean value that indicates whether a checkbox associated with email field is checked
  *    isFormSubmitted
  *      A boolean value that indicates whether the form has been submitted
  *    phone
@@ -47,38 +42,22 @@ function Subscribe({
   createSubscription,
   isLoading,
   error,
+  subscription,
 }) {
+  const history = useHistory();
   const { meetingId, itemId } = useParams();
-  const [isPhoneChecked, setPhoneChecked] = useState(false);
-  const [isEmailChecked, setEmailChecked] = useState(false);
   const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [phoneError, setPhoneError] = useState(null);
   const [emailError, setEmailError] = useState(null);
 
-  const handlePhoneChecked = () => {
-    setPhoneChecked(!isPhoneChecked);
-  };
-
-  const handleEmailChecked = () => {
-    setEmailChecked(!isEmailChecked);
-  };
-
   const handlePhoneChanged = (e) => {
     setPhone(e.target.value);
-    if (e.target.value) {
-      // Check phone checkbox by default if the phone is entered (not empty).
-      setPhoneChecked(true);
-    }
   };
 
   const handleEmailChanged = (e) => {
     setEmail(e.target.value);
-    if (e.target.value) {
-      // Check email checkbox by default if the email is entered (not empty).
-      setEmailChecked(true);
-    }
   };
 
   const handleSubmit = (e) => {
@@ -109,6 +88,10 @@ function Subscribe({
     });
   };
 
+  const closeConfirmation = () => {
+    history.goBack();
+  };
+
   return (
     <div className={classnames('subscribe-view')}>
       <BackNavigation />
@@ -121,20 +104,11 @@ function Subscribe({
           </p>
           <form className="form">
             <div className="input-group">
-              <button
-                type="button"
-                className="checkbox"
-                onClick={handlePhoneChecked}
-              >
-                {isPhoneChecked
-                  ? <CheckedCheckboxWithInnerShadowIcon />
-                  : <UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon />}
-                <span>Subscribe to text notifications</span>
-              </button>
+              <span>Subscribe to text notifications</span>
               <CustomInput
                 type="tel"
                 placeholder="Enter phone number"
-                isRequired={isPhoneChecked}
+                isRequired
                 isSubmitted={isFormSubmitted}
                 value={phone}
                 onChange={handlePhoneChanged}
@@ -142,26 +116,23 @@ function Subscribe({
               />
             </div>
             <div className="input-group">
-              <button
-                type="button"
-                className="checkbox"
-                onClick={handleEmailChecked}
-              >
-                {isEmailChecked
-                  ? <CheckedCheckboxWithInnerShadowIcon />
-                  : <UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon />}
-                <span>Subscribe to email notifications</span>
-              </button>
+              <span>Subscribe to email notifications</span>
               <CustomInput
                 type="email"
                 placeholder="Enter email address"
-                isRequired={isEmailChecked}
+                isRequired
                 isSubmitted={isFormSubmitted}
                 value={email}
                 onChange={handleEmailChanged}
                 errorMessage={emailError}
               />
             </div>
+            { subscription && subscription.id
+              && (
+                <SubscribeConfirmation
+                  onClose={closeConfirmation}
+                />
+              )}
             { error
               && (
                 <div className="form-error">{ error.message }</div>
@@ -169,7 +140,7 @@ function Subscribe({
             <div className="row">
               <button
                 type="button"
-                disabled={!isPhoneChecked || !isEmailChecked || !phone || !email}
+                disabled={!phone || !email}
                 onClick={handleSubmit}
               >
                 {isLoading && <Spinner />}
