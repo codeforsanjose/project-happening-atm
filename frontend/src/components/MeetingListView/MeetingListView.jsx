@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Accordion } from 'react-accessible-accordion';
 import './MeetingListView.scss';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import MeetingListGroup from './MeetingListGroup';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
+
+const TEST_MEETINGS = [
+  {
+    id: 1,
+    date: new Date(),
+    startTime: new Date(),
+  },
+];
 
 function MeetingListView() {
   const [navToggled, setNavToggled] = useState(false);
@@ -27,6 +37,13 @@ function MeetingListView() {
         <Link to="/meeting/1">
           Temp link to Meeting View
         </Link>
+        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+          <MeetingListGroup
+            month="Test"
+            year="2020"
+            meetings={TEST_MEETINGS}
+          />
+        </Accordion>
       </div>
     </div>
   );

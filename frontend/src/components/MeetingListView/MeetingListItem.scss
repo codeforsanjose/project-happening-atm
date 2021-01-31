@@ -1,0 +1,71 @@
+@import "../../utils/_colors.scss";
+
+.MeetingListItem {
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  padding: 1em;
+  border: 2px solid $cloudy;
+  border-radius: 5px;
+  background-color: #fff;
+
+  @media only screen
+  and (min-device-width: 812px) {
+    padding: 1.4em;
+  }
+
+  .item-status {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  h4 {
+    margin: 0;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 1em;
+    transform: scale(1.4);
+  }
+
+  p {
+    margin: 2em 0;
+  }
+
+  .item-links {
+    display: flex;
+    justify-content: space-evenly;
+
+    a {
+      color: $lightBlue;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      .link {
+        display: flex;
+        align-items: center;
+        fill: $lightBlue;
+        font-size: 0.9em;
+
+        p {
+          margin: 0;
+          margin-left: 0.2em;
+
+          @media only screen
+          and (min-device-width: 812px) {
+            margin: 0.5em;
+            font-size: 1em;
+          }
+        }
+      }
+    }
+  }
+}
+
+.active-item {
+  border: 3px solid $cityBronze;
+}
