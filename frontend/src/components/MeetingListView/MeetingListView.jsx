@@ -12,8 +12,8 @@ import cityLogo from '../../assets/SanJoseCityLogo.png';
 const TEST_MEETINGS = [
   {
     id: 1,
-    date: new Date(),
-    startTime: new Date(),
+    startTime: new Date('2020-12-25 10:30'),
+    status: 'In Progress',
   },
 ];
 
@@ -34,9 +34,6 @@ function MeetingListView() {
       </div>
 
       <div className="meeting-list-content">
-        <Link to="/meeting/1">
-          Temp link to Meeting View
-        </Link>
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
           <MeetingListGroup
             month="Test"

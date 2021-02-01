@@ -4,6 +4,9 @@
   box-sizing: border-box;
   margin-bottom: 1em;
   padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5em;
   border: 2px solid $cloudy;
   border-radius: 5px;
   background-color: #fff;
@@ -11,31 +14,34 @@
   @media only screen
   and (min-device-width: 812px) {
     padding: 1.4em;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+
+    .meeting-time {
+      text-align: right;
+      align-self: center;
+      grid-row-start: span 2;
+      font-size: 1.5em;
+    }
+
+    .meeting-links {
+      justify-self: left;
+
+      .link {
+        margin-right: 3em;
+      }
+    }
   }
 
-  .item-status {
-    text-align: right;
+  .meeting-date {
+    margin: 0;
+    display: inline-block;
     font-weight: 600;
   }
 
-  h4 {
-    margin: 0;
-    display: inline-block;
-    font-weight: 500;
-  }
-
-  input[type="checkbox"] {
-    margin-right: 1em;
-    transform: scale(1.4);
-  }
-
-  p {
-    margin: 2em 0;
-  }
-
-  .item-links {
+  .meeting-links {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 
     a {
       color: $lightBlue;
@@ -53,19 +59,22 @@
 
         p {
           margin: 0;
-          margin-left: 0.2em;
-
-          @media only screen
-          and (min-device-width: 812px) {
-            margin: 0.5em;
-            font-size: 1em;
-          }
+          margin-left: 0.4em;
         }
+      }
+    }
+
+    .disabled-link {
+      color: gray;
+      pointer-events: none;
+
+      svg {
+        fill: gray;
       }
     }
   }
 }
 
-.active-item {
+.in-progress {
   border: 3px solid $cityBronze;
 }

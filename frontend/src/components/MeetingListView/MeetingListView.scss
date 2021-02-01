@@ -5,7 +5,7 @@
   font-family: 'Poppins', sans-serif;
 
   .meeting-list-header {
-    padding: 0.75em;
+    padding: 0.5em 1.25em;
 
     .logo {
       width: 77px;
@@ -17,6 +17,7 @@
   }
 
   .meeting-list-content {
+    padding: 1.25em;
     background-color: $blueSky;
   }
 }
