@@ -36,7 +36,10 @@ export function toTimeString(timestamp) {
  */
 
 export function groupMeetingsByDate(meetings) {
-  const months = dayjs.months();
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December',
+  ];
   const groups = {};
 
   // Fill hash table with meetings organized by year and month
@@ -45,10 +48,12 @@ export function groupMeetingsByDate(meetings) {
     const date = dayjs(unixTime);
     const month = date.month();
     const year = date.year();
+    const meetingObj = { ...meeting };
+    meetingObj.meeting_start_timestamp = unixTime;
 
     if (groups[year] === undefined) groups[year] = [];
     if (groups[year][month] === undefined) groups[year][month] = [];
-    groups[year][month].push(meeting);
+    groups[year][month].push(meetingObj);
   });
 
   // Iterate through all years and push an object for each month
@@ -61,10 +66,13 @@ export function groupMeetingsByDate(meetings) {
 
     for (let i = 0; i < 12; i += 1) {
       if (yearMeetings[i] !== undefined) {
+        const sortedMeetings = yearMeetings[i]
+          .sort((a, b) => a.meeting_start_timestamp - b.meeting_start_timestamp);
+
         const monthObj = {
           year,
           month: months[i],
-          meetings: yearMeetings[i],
+          meetings: sortedMeetings,
         };
         result.push(monthObj);
       }
