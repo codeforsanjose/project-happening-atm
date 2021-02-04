@@ -10,7 +10,6 @@ import './MeetingListGroup.scss';
 import MeetingListItem from './MeetingListItem';
 
 function MeetingListGroup({ month, year, meetings }) {
-
   return (
     <div className="MeetingListGroup">
       <AccordionItem className="AgendaGroup">
