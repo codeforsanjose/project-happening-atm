@@ -8,6 +8,11 @@ export function toTimeString(timestamp) {
   return dayjs(timestamp).format('h:mm A');
 }
 
+export function isFutureTimestamp(timestamp) {
+  const unixTime = parseInt(timestamp, 10) / 1000;
+  return dayjs().isBefore(unixTime);
+}
+
 /**
  * Takes an array of meeting objects and groups them by month/year after
  * converting their timestamps.

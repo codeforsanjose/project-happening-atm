@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { Accordion } from 'react-accessible-accordion';
-import { groupMeetingsByDate } from '../../utils/timestampHelper';
+import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHelper';
 import './MeetingListView.scss';
 
 import { GET_ALL_MEETINGS } from '../../graphql/graphql';
@@ -10,11 +10,13 @@ import MeetingListGroup from './MeetingListGroup';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
+import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
 
 function MeetingListView() {
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS);
   const [navToggled, setNavToggled] = useState(false);
   const [meetings, setMeetings] = useState([]);
+  const [showPastMeetings, setShowPastMeetings] = useState(false);
 
   function handleToggle() {
     setNavToggled(!navToggled);
@@ -30,7 +32,10 @@ function MeetingListView() {
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const meetingGroups = groupMeetingsByDate(meetings);
+  const meetingsToDisplay = showPastMeetings
+    ? meetings
+    : meetings.filter((m) => m.status === 'IN PROGRESS' || isFutureTimestamp(m.meeting_start_timestamp));
+  const meetingGroups = groupMeetingsByDate(meetingsToDisplay);
 
   return (
     <div className="MeetingListView">
@@ -42,6 +47,15 @@ function MeetingListView() {
       </div>
 
       <div className="meeting-list-content">
+        <button
+          type="button"
+          className="complete-toggle"
+          onClick={() => setShowPastMeetings((completed) => !completed)}
+        >
+          {showPastMeetings ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
+          <p>Show Past Meetings</p>
+        </button>
+
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
           {meetingGroups.map((m) => <MeetingListGroup key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
         </Accordion>

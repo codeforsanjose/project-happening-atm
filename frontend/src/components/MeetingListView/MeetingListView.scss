@@ -19,5 +19,20 @@
   .meeting-list-content {
     padding: 1.25em;
     background-color: $blueSky;
+
+    .complete-toggle {
+      padding: 0;
+      padding-bottom: 1.25em;
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      font-size: 1em;
+      background-color: transparent;
+      cursor: pointer;
+
+      p {
+        margin: 0 0.5em;
+      }
+    }
   }
 }
