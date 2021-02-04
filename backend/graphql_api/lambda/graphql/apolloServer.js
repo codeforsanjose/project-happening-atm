@@ -150,9 +150,9 @@ module.exports = (logger) => {
         logger.info('Initiating GetSubscription Query resolver');
         return resolverHandler(queryResolver.getSubscription, args.id);
       },
-      getAllSubscriptions: async (_parent, args, context) => {
+      getAllSubscriptions: async () => {
         logger.info('Initiating GetAllSubscriptions Query resolver');
-        return resolverHandler(queryResolver.getAllSubscriptions, context);
+        return resolverHandler(queryResolver.getAllSubscriptions);
       },
       authGoogle: async (_parent, args, context) => {
         logger.info('Authenticating Google Id Token with authGoogle Query Resolver');
