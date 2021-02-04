@@ -1,89 +1,88 @@
 @import "../../utils/_colors.scss";
 
 .MeetingListItem {
-  text-decoration: none;
-  color: inherit;
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5em;
+  border: 2px solid $cloudy;
+  border-radius: 5px;
+  background-color: #fff;
 
-  .wrapper {
-    box-sizing: border-box;
-    margin-bottom: 1em;
-    padding: 1em;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 0.5em;
-    border: 2px solid $cloudy;
-    border-radius: 5px;
-    background-color: #fff;
+  @media only screen
+  and (min-device-width: 812px) {
+    padding: 1.4em;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 1em;
 
-    @media only screen
-    and (min-device-width: 812px) {
-      padding: 1.4em;
-      grid-template-columns: 2fr 1fr;
-      grid-gap: 1em;
+    .meeting-time {
+      text-align: right;
+      align-self: center;
+      grid-row-start: span 2;
+      font-size: 1.5em;
+    }
 
-      .meeting-time {
-        text-align: right;
-        align-self: center;
-        grid-row-start: span 2;
-        font-size: 1.5em;
-      }
+    .meeting-links {
+      justify-self: left;
 
-      .meeting-links {
-        justify-self: left;
-
-        .link {
-          margin-right: 3em;
-        }
+      .link {
+        margin-right: 3em;
       }
     }
+  }
+
+  a {
+    color: inherit;
 
     .meeting-date {
       margin: 0;
       display: inline-block;
       font-weight: 600;
     }
+  }
 
-    .meeting-links {
-      display: flex;
-      justify-content: space-between;
+  .meeting-links {
+    display: flex;
+    justify-content: space-between;
 
-      a {
-        color: $lightBlue;
-        text-decoration: none;
+    a {
+      color: $lightBlue;
+      text-decoration: none;
 
-        .link {
-          display: flex;
-          align-items: center;
-          fill: $lightBlue;
-          font-size: 0.9em;
+      .link {
+        display: flex;
+        align-items: center;
+        fill: $lightBlue;
+        font-size: 0.9em;
 
-          p {
-            margin: 0;
-            margin-left: 0.4em;
-          }
-
-          &:hover {
-            text-decoration: underline;
-          }
+        p {
+          margin: 0;
+          margin-left: 0.4em;
         }
-      }
 
-      .disabled-link {
-        color: gray;
-        pointer-events: none;
-
-        svg {
-          fill: gray;
+        &:hover {
+          text-decoration: underline;
         }
       }
     }
 
-    &:hover {
-      border: 2px solid $lightBlue;
+    .disabled-link {
+      color: gray;
+      pointer-events: none;
+
+      svg {
+        fill: gray;
+      }
     }
   }
 
-  .in-progress {
-    border: 3px solid $cityBronze;
+  &:hover {
+    border: 2px solid $lightBlue;
   }
+}
+
+.in-progress {
+  border: 3px solid $cityBronze;
 }

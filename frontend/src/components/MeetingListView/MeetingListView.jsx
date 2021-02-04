@@ -54,7 +54,7 @@ const test = [
   {
     id: 9,
     meeting_start_timestamp: '1612204200000000',
-    status: 'PENDING',
+    status: 'IN PROGRESS',
   },
   {
     id: 10,
