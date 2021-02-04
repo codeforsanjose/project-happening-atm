@@ -18,7 +18,7 @@
     @media only screen
     and (min-device-width: 812px) {
       padding: 1.4em;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
       grid-gap: 1em;
 
       .meeting-time {
@@ -51,10 +51,6 @@
         color: $lightBlue;
         text-decoration: none;
 
-        &:hover {
-          text-decoration: underline;
-        }
-
         .link {
           display: flex;
           align-items: center;
@@ -64,6 +60,10 @@
           p {
             margin: 0;
             margin-left: 0.4em;
+          }
+
+          &:hover {
+            text-decoration: underline;
           }
         }
       }
