@@ -28,7 +28,7 @@ module.exports = (logger) => {
             }
             // Verify admin rights
             // Note: might want to change this to a role once we implement user signup
-            const dbResponse = await dbClient.getAdminByEmail(email);
+            const dbResponse = await dbclient.getAdminByEmail(email);
             admin = dbResponse.rows.length > 0;
             // Throwing error if user is not admin
             if (!admin) {
@@ -41,7 +41,7 @@ module.exports = (logger) => {
                 email: email,
                 authorizer: "google",
                 authorizerId: sub,
-                admin: false,
+                admin: admin,
             }
             // Creating Token
             token = jwt.sign({

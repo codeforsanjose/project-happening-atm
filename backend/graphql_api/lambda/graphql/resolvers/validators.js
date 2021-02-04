@@ -127,7 +127,6 @@ module.exports = (logger) => {
 
   module.validateAuthorization = (context) => {
     user = jwt.verify(context.token, process.env.JWT_SECRET);
-    console.log(user);
     isAdmin = user.data.admin
     if (!isAdmin) {
       logger.debug(`${user.name} ${user.email}: Attempted without admin credentials`);
