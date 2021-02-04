@@ -36,10 +36,6 @@ The City of San Jose is interested in this service, but this is a project that c
 *   [List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
 # Local Development
-<<<<<<< HEAD
-## To Begin Work on the Frontend / Serve Frontend
-
-=======
 
 There are two ways to setup for local developemnt, with docker-compose (option 1) or directly (option 2).
 
@@ -91,7 +87,6 @@ When running with docker-compose, a separate persistent volume is created for Po
 ## Option 2
 
 ### To Begin Work on the Frontend / Serve Frontend
->>>>>>> master
 1. Go to the issues page to find something to work on:
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Install [Node.js and npm](https://www.npmjs.com/get-npm)

@@ -13,24 +13,21 @@ import {
   useMutation,
 } from '@apollo/client';
 
-import './index.scss'
+import './index.scss';
 
 import classnames from 'classnames';
+import AgendaTable from './components/AgendaTable/AgendaTable';
 import MeetingList from './components/MeetingList/MeetingList';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
-<<<<<<< HEAD
-import AgendaTable from './components/AgendaTable/AgendaTable'
-=======
-import ParticipatePage from './components/MeetingView/ParticipateView/ParticipatePages/ParticipatePage';
-import ParticipateJoin from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateJoin';
-import ParticipateWatch from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateWatch';
-import ParticipateComment from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateComment';
-import ParticipateRequest from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateRequest';
->>>>>>> master
+// import  from './components/MeetingView/ParticipateView/ParticipatePages/ParticipatePage';
+// import ParticipateJoin from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateJoin';
+// import ParticipateWatch from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateWatch';
+// import ParticipateComment from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateComment';
+// import ParticipateRequest from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateRequest';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -89,7 +86,7 @@ function App() {
                 <MeetingItem />
               </Route>
 
-              <Route exact path="/participate/join">
+              {/* <Route exact path="/participate/join">
                 <ParticipatePage Component={ParticipateJoin} />
               </Route>
               <Route exact path="/participate/watch">
@@ -100,7 +97,7 @@ function App() {
               </Route>
               <Route exact path="/participate/request">
                 <ParticipatePage Component={ParticipateRequest} />
-              </Route>
+              </Route> */}
 
               <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                 <AdminView
@@ -139,4 +136,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister()
+serviceWorker.unregister();
