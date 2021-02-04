@@ -179,6 +179,18 @@ make rm-image
 
 After deleting the image with that command, follow steps "2.  Initialize the local DB" again for your local DB to be back up and running.
 
+### Migrations
+
+`postgres-migrations` library is used to manage migrations. `backend/graphql_api/lambda/migrations/` contains all the migrations with the exception of creating the database which still exists in `backend/docker_for_local_dev_db/init.sql`.
+
+Migrations are run on each request in `backend/graphql_api/lambda/db/dbClient.js`.
+
+To create a new migration:
+
+1. Create a new file in `backend/graphql_api/lambda/migrations/` with incrementing integer prefix and few words describing the change, for example `002-add-link-to-meeting.sql`.
+2. Add your migration in that file.
+3. Migrations will be automatically run on next request to the backend.
+
 # Infrastructure
 Ideally, deployments are automatically handled by the CI/CD pipeline. This section of documentation facilitates manual infrastructure management, if required.
 
