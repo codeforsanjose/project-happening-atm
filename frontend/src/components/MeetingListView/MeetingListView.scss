@@ -4,10 +4,6 @@
   margin-top: 5em;
   font-family: 'Poppins', sans-serif;
 
-  @media only screen and (min-device-width: 812px) {
-    margin: 5em 200px 0;
-  }
-
   .meeting-list-header {
     padding: 0.5em 1.25em;
 
@@ -35,6 +31,8 @@
     }
 
     @media only screen and (min-device-width: 812px) {
+      margin: 0 8em;
+
       .logo {
         display: none;
       }
@@ -67,6 +65,10 @@
       p {
         margin: 0 0.5em;
       }
+    }
+
+    @media only screen and (min-device-width: 812px) {
+      padding: 1.25em 200px;
     }
   }
 }

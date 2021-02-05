@@ -12,7 +12,7 @@ import MeetingListItem from './MeetingListItem';
 function MeetingListGroup({ month, year, meetings }) {
   return (
     <div className="MeetingListGroup">
-      <AccordionItem className="AgendaGroup">
+      <AccordionItem>
         <AccordionItemHeading className="group-header">
           <AccordionItemButton className="group-button">
             <div className="button-text">
