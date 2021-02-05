@@ -4,86 +4,164 @@ navbar:
   about: About
   faq: FAQ
   submit-feedback: Submit Feedback
-  admin:
-    sign-in: Sign In
-    sign-out: Sign Out
+  sign-in: Sign In
+  sign-out: Sign Out
 
 header:
   my-city-agenda: My City's Agenda
   city-council-meetings: City Council Meetings
   city-council-meeting-agenda: City Council Meeting Agenda
 
-all-meetings:
-  show-past-meetings: Show Past Meetings
-  community:
-    calendar-export:
-      button: Export to Calendar
-      modal:
-        title: Add to Calendar
-        options:
-          apple: Apple Calendar
-          google: Google Calendar
-          Outlook: Outlook Calendar
-    agenda:
-      button: Agenda
-    minutes:
-      button: Minutes
-    recording:
-      button: Recording
-  admin:
-    new-meeting:
-      button: Create New Meeting
-      modal:
-        title: Create New Meeting
-        subtitle: Add meeting date and time
-        inputs:
-          date: Date
-          time: Time
-        # buttons:
-        #   create-meeting: Create New Meeting
-        #   creating-meeting: Creating New Meeting
-    upload-agenda:
-      button: Upload New Agenda
-      modal:
-        title: Upload New Agenda
-        input:
-          help: Drag and Drop CSV File
-          alt: Or Upload from Your Computer
-        # buttons:
-        #   upload: Upload and Publish
-        #   uploading: Uploading and Publishing
-    delete-meeting:
-      button: Delete Meeting
-      modal:
-        title: Are you sure you want to delete this meeting?
-        # buttons:
-        #   delete: Delete
-        #   deleting: Deleting
-        #   cancel: Cancel
+meetings-list:
+  show-past: Show Past Meetings
+  calendar-export:
+    button: Export to Calendar
+    modal:
+      title: Add to Calendar
+      options:
+        apple: Apple Calendar
+        google: Google Calendar
+        Outlook: Outlook Calendar
+  agenda:
+    button: Agenda
+  minutes:
+    button: Minutes
+  recording:
+    button: Recording
+  new-meeting:
+    button: Create New Meeting
+    modal:
+      title: Create New Meeting
+      subtitle: Add meeting date and time
+      inputs:
+        date: Date
+        time: Time
+      buttons:
+        create-meeting: Create New Meeting
+        creating-meeting: Creating New Meeting
+  delete-meeting:
+    button: Delete Meeting
+    modal:
+      title: Are you sure you want to delete this meeting?
+      buttons:
+        delete: Delete
+        deleting: Deleting
+        cancel: Cancel
 
-a-meeting:
+meeting:
   start-time: Start Time
-  community:
-    status:
+  actions:
+    join:
+      zoom: Join Zoom Meeting
+    watch: Watch Meeting Broadcast
+  status:
+    label: Meeting Status
+    short:
+      default-option: Update Status
+      in-progress: In Progress
+      in-recess: In Recess
+      ended: Ended
+      cancelled: Cancelled
+    long:
       in-progress: Meeting is in progress
-      closed: Meeting is closed
-      removed: Meeting is removed for separate consideration
-      deferred: Meeting is deferred
-  admin:
+      in-recess: Meeting is in recess
+      ended: Meeting is ended
+      cancelled: Meeting is cancelled
+    relative:
+      short:
+        in-progress: In Progress
+        in-1-week: Starts in a Week
+        in-6-days: Starts in 6 Days
+        in-5-days: Starts in 5 Days
+        in-4-days: Starts in 4 Days
+        in-3-days: Starts in 3 Days
+        in-2-days: Starts in 2 Days
+        in-1-day: Starts in a Day
+        in-0-day: Starts in a Few Hours
+      long:
+        in-progress: Meeting is in progress
+        in-1-week: Meeting starts in a week
+        in-6-days: Meeting starts in 6 days
+        in-5-days: Meeting starts in 5 days
+        in-4-days: Meeting starts in 4 days
+        in-3-days: Meeting starts in 3 days
+        in-2-days: Meeting starts in 2 days
+        in-1-day: Meeting starts in a day
+        in-0-day: Meeting starts in a few hours
+  tabs:
+    agenda: Agenda
+    participate: Participate
+
+agenda-list:
+  show-closed: Show Closed Items
+  search:
+    placeholder: Search Agenda
+  n-selected: Selected
+  cancel: Cancel
+  subscribe:
+    button:
+      do: Subscribe
+      doing: Subscribing...
+      done: Subscribed
+    page:
+      title: Subscribe to Item
+      description: Subscribe to receive a notification when this item is up next for discussion and when discussions for this item begin.
+      inputs:
+        text:
+          label: Subscribe to text notificcations
+          placeholder: Enter phone number
+        email:
+          label: Subscribe to email notifications
+          placeholder: Enter email address
+    confirmation:
+      title: You have subscribed to #TODO meetings!
+      description: Thank you for signing up. To verify your identity, please check your email and confirm your subscriptions.
+      butotn: OK
+  share:
+    button: Share
+  more-info:
+    button: More Info
 
 agenda:
-  community:
-  admin:
-    status:
+  status:
     button: Update Status
     modal:
       title: Update Agenda Item Status
       subtitle: Select status
     options:
+      completed: Completed
       in-progress: In Progress
       closed: Closed
       removed: Removed for Separate Consideration
       deferred: Deferred
+  upload-new:
+    button: Upload New Agenda
+    modal:
+      title: Upload New Agenda
+      input:
+        help: Drag and Drop CSV File
+        alt: Or Upload from Your Computer
+      buttons:
+        upload: Upload and Publish
+        uploading: Uploading and Publishing
+  details:
+    recommendation: Recommendation
+    attatchments: Attatchments
+    presentation: Presentation
+
+participate:
+  join:
+    title: Join the Virtual Meeting
+    description: #TODO
+  watch:
+    title: Watch Meeting Broadcast
+    description: #TODO
+  comment:
+    title: Submit Written Public Comment
+    description: #TODO
+  consideration:
+    title: Request Separate Consideration of a Consent Calendar Item
+    description: #TODO
 
 footer:
 
@@ -136,6 +214,7 @@ standard:
     joining: Joining
     leave: Leave
     leaving: Leaving
+    ok: OK
   words:
     and: and
     button: button

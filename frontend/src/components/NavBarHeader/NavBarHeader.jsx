@@ -8,6 +8,7 @@ function Header({toggled, handleToggle}) {
     <header>
       <nav className="no-select">
         <div className="nav-bar">
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a href="#" rel="noopener noreferrer">
             My City's Agenda
           </a>
