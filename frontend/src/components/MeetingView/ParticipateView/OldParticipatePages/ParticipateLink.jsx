@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './ParticipateLink.scss';
 
-import { ChevronRightIcon } from '../../../utils/_icons';
+import { ChevronRightIcon } from '../../../../utils/_icons';
 
 /**
  * This is a link component that directs the user to a "Participate"
