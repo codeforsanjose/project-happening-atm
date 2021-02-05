@@ -43,6 +43,7 @@ function MeetingListView() {
 
       <div className="meeting-list-header">
         <img className="logo" src={cityLogo} alt="logo" />
+        <p className="sub-header">My City&apos;s Agenda</p>
         <h2>City Council Meetings</h2>
       </div>
 

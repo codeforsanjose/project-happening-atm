@@ -4,6 +4,10 @@
   margin-top: 5em;
   font-family: 'Poppins', sans-serif;
 
+  @media only screen and (min-device-width: 812px) {
+    margin: 5em 200px 0;
+  }
+
   .meeting-list-header {
     padding: 0.5em 1.25em;
 
@@ -13,7 +17,37 @@
 
     h2 {
       margin: 0.5em 0;
+
+      &::after {
+        display: block;
+        content: '';
+        margin-top: 0.2em;
+        height: 2px;
+        width: 8em;
+        background-color: $cityBronze;
+      }
     }
+
+    .sub-header {
+      display: none;
+      margin: 0;
+      font-size: 1.2em;
+    }
+
+    @media only screen and (min-device-width: 812px) {
+      .logo {
+        display: none;
+      }
+
+      .sub-header {
+        display: block;
+      }
+
+      h2 {
+        font-size: 2em;
+      }
+    }
+
   }
 
   .meeting-list-content {
@@ -22,7 +56,7 @@
 
     .complete-toggle {
       padding: 0;
-      padding-bottom: 1.25em;
+      margin-bottom: 1.25em;
       display: inline-flex;
       align-items: center;
       border: none;
