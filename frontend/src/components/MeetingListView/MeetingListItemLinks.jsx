@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import {
@@ -48,16 +49,16 @@ function PastMeetingItemLinks() {
   );
 }
 
-function PendingMeetingItemLinks() {
+function PendingMeetingItemLinks({ meetingId, isInProgress }) {
   return (
     <div className="meeting-links">
-      <Link to="#">
+      <Link to="#" className={classnames({ 'disabled-link': isInProgress })}>
         <div className="link">
           <CalendarTodayIcon />
           <p>Export to Calendar</p>
         </div>
       </Link>
-      <Link to="#">
+      <Link to={`meeting/${meetingId}`}>
         <div className="link">
           <ViewAgendaIcon />
           <p>Agenda</p>

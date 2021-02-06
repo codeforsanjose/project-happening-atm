@@ -18,7 +18,7 @@ function MeetingListItem({ item }) {
   const isInProgress = status === 'IN PROGRESS';
 
   // Determine which set of controls to use for item based on meeting status
-  const MeetingItemLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  const MeetingItemLinks = status === 'COMPLETED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
 
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
@@ -28,8 +28,10 @@ function MeetingListItem({ item }) {
           {isInProgress && ' - In Progress'}
         </h3>
       </Link>
-      <div className="meeting-time">{time}</div>
-      <MeetingItemLinks />
+      <Link to={`meeting/${id}`} className="meeting-time">
+        <div>{time}</div>
+      </Link>
+      <MeetingItemLinks meetingId={id} isInProgress={isInProgress} />
     </div>
   );
 }
