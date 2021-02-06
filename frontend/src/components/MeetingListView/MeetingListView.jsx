@@ -57,9 +57,16 @@ function MeetingListView() {
           <p>Show Past Meetings</p>
         </button>
 
-        <Accordion allowZeroExpanded allowMultipleExpanded>
-          {meetingGroups.map((m) => <MeetingListGroup key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
-        </Accordion>
+        {
+          meetingGroups.length > 0
+            ? (
+              <Accordion allowZeroExpanded allowMultipleExpanded>
+                {meetingGroups.map((m) => <MeetingListGroup key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
+              </Accordion>
+            ) : (
+              <div>No meetings found!</div>
+            )
+        }
       </div>
     </div>
   );
