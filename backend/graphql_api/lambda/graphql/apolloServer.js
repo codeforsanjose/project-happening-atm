@@ -6,11 +6,13 @@ const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : requi
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
+const getLoginResolver = require('./resolvers/login');
 const getDBClient = require('../db/dbClient');
 
 module.exports = (logger) => {
   const mutationResolver = getMutationResolver(logger);
   const queryResolver = getQueryResolver(logger);
+  const loginResolver = getLoginResolver(logger);
 
   const typeDefs = gql`
     type Query {
@@ -25,6 +27,12 @@ module.exports = (logger) => {
 
         getSubscription(id: Int!): subscription
         getAllSubscriptions: [subscription]
+
+        authGoogle: auth_data
+        # Add line below when implementing Microsoft login strategy
+        # authMicrosoft(token: String!): auth_data
+        # Add line below when implementing Local login strategy
+        # authLocal(email: String!, password:String!): auth_data
     }
 
     type Mutation {
@@ -76,6 +84,15 @@ module.exports = (logger) => {
         content_categories: String
         description_loc_key: String
         title_loc_key: String
+    }
+
+    type auth_data {
+      token: String!
+      name: String
+      email: String
+      authorizer: String
+      authorizerId: String
+      admin: Boolean
     }
     `;
 
@@ -137,6 +154,20 @@ module.exports = (logger) => {
         logger.info('Initiating GetAllSubscriptions Query resolver');
         return resolverHandler(queryResolver.getAllSubscriptions);
       },
+      authGoogle: async (_parent, args, context) => {
+        logger.info('Authenticating Google Id Token with authGoogle Query Resolver');
+        return resolverHandler(loginResolver.authGoogle, context);
+      },
+      // Add when implementing Microsoft login strategy
+      // authMicrosoft: async (args) => {
+      //   logger.info('Authenticating Microsoft Token with authMicrosoft Query Resolver');
+      //   return resolverHandler(loginResolver.authMicrosoft, args);
+      // },
+      // Add when implementing Local login strategy
+      // authLocal: async (args) => {
+      //   logger.info('Authenticating email and password with authLocal Query Resolver');
+      //   return resolverHandler(loginResolver.authLocal, args);
+      // }
     },
     Mutation: {
       createMeeting: async (_parent, args, context) => {
@@ -171,6 +202,13 @@ module.exports = (logger) => {
     },
     // Empty implementation for local and deployed dev use:
     // TODO: Auth needs to be refactored for AWS
-    context: {},
+    context: ({ req }) => {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1];
+        return {
+          token: token
+        }
+      }
+    },
   });
 };
