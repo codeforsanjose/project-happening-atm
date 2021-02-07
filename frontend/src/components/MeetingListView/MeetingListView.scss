@@ -2,6 +2,9 @@
 
 .MeetingListView {
   margin-top: 5em;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   font-family: 'Poppins', sans-serif;
 
   .meeting-list-header {
@@ -50,6 +53,7 @@
 
   .meeting-list-content {
     padding: 1.25em;
+    flex-grow: 1;
     background-color: $blueSky;
 
     .complete-toggle {
@@ -70,5 +74,12 @@
     @media only screen and (min-device-width: 812px) {
       padding: 1.25em 200px;
     }
+  }
+
+  .loader {
+    margin: 10em auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

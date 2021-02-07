@@ -7,6 +7,7 @@ import './MeetingListView.scss';
 import { GET_ALL_MEETINGS } from '../../graphql/graphql';
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import MeetingListGroup from './MeetingListGroup';
+import Spinner from '../Spinner/Spinner';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
@@ -29,7 +30,6 @@ function MeetingListView() {
   }, [data]);
 
   // TODO: Create loading and error states
-  if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
   const meetingsToDisplay = showPastMeetings
@@ -57,15 +57,17 @@ function MeetingListView() {
           <p>Show Past Meetings</p>
         </button>
 
+        {loading && (<div className="loader"><Spinner /></div>)}
+
         {
-          meetingGroups.length > 0
+          !loading && (meetingGroups.length > 0
             ? (
               <Accordion allowZeroExpanded allowMultipleExpanded>
                 {meetingGroups.map((m) => <MeetingListGroup key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
               </Accordion>
             ) : (
               <div>No meetings found!</div>
-            )
+            ))
         }
       </div>
     </div>
