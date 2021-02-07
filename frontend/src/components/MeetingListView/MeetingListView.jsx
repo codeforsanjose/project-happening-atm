@@ -65,10 +65,8 @@ function MeetingListView() {
             ))
         }
 
-        <div className="loader">
-          {loading && <Spinner />}
-          {error && `Error! ${error.message}`}
-        </div>
+        {loading && <div className="loader"><Spinner /></div>}
+        {error && <div className="loader">{`Error! ${error.message}`}</div>}
       </div>
     </div>
   );
