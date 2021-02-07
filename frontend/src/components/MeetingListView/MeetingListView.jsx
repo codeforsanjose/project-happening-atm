@@ -23,7 +23,7 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
  *    meetings
  *      Array of all meetings returned from the getAllMeetings query
  *    showPastMeetings
- *      Boolean state to toggle if completed agenda items are shown
+ *      Boolean state toggle indicating if past meetings are shown
  */
 
 function MeetingListView() {

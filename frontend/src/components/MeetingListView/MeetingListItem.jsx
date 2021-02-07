@@ -15,7 +15,7 @@ import {
  *
  * props:
  *    item
- *      Object that represents an meeting item.
+ *      Object that represents a meeting item.
  *      {
  *        id: Number id of item
  *        meeting_start_timestamp: String starting timestamp (Unix time)
