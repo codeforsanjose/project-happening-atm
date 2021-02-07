@@ -57,8 +57,8 @@ function MeetingListView() {
         {
           !(loading || error) && (meetingGroups.length > 0
             ? (
-              <Accordion allowZeroExpanded allowMultipleExpanded>
-                {meetingGroups.map((m) => <MeetingListGroup key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
+              <Accordion allowZeroExpanded allowMultipleExpanded preExpanded={[0]}>
+                {meetingGroups.map((m, i) => <MeetingListGroup uuid={i} key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
               </Accordion>
             ) : (
               <div>No meetings found!</div>
