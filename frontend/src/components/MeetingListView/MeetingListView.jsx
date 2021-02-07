@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { Accordion } from 'react-accessible-accordion';
 import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHelper';
+import { GET_ALL_MEETINGS } from '../../graphql/graphql';
 import './MeetingListView.scss';
 
-import { GET_ALL_MEETINGS } from '../../graphql/graphql';
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import MeetingListGroup from './MeetingListGroup';
 import Spinner from '../Spinner/Spinner';
@@ -28,9 +28,6 @@ function MeetingListView() {
       setMeetings(data.getAllMeetings);
     }
   }, [data]);
-
-  // TODO: Create loading and error states
-  if (error) return `Error! ${error.message}`;
 
   const meetingsToDisplay = showPastMeetings
     ? meetings
@@ -57,10 +54,8 @@ function MeetingListView() {
           <p>Show Past Meetings</p>
         </button>
 
-        {loading && (<div className="loader"><Spinner /></div>)}
-
         {
-          !loading && (meetingGroups.length > 0
+          !(loading || error) && (meetingGroups.length > 0
             ? (
               <Accordion allowZeroExpanded allowMultipleExpanded>
                 {meetingGroups.map((m) => <MeetingListGroup key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
@@ -69,6 +64,11 @@ function MeetingListView() {
               <div>No meetings found!</div>
             ))
         }
+
+        <div className="loader">
+          {loading && <Spinner />}
+          {error && `Error! ${error.message}`}
+        </div>
       </div>
     </div>
   );
