@@ -22,8 +22,8 @@ function MeetingListItem({ item }) {
 
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
-      <Link to={`meeting/${id}`}>
-        <h3 className="meeting-date">
+      <Link to={`meeting/${id}`} className="meeting-date">
+        <h3>
           {date}
           {isInProgress && ' - In Progress'}
         </h3>
