@@ -19,7 +19,6 @@ import classnames from 'classnames';
 import MeetingListView from './components/MeetingListView/MeetingListView';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
-import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
 import ParticipatePage from './components/MeetingView/ParticipateView/ParticipatePages/ParticipatePage';
@@ -80,9 +79,6 @@ function App() {
               </Route>
               <Route path="/meeting/:id">
                 <MeetingView />
-              </Route>
-              <Route path="/meeting-item/:id">
-                <MeetingItem />
               </Route>
 
               <Route exact path="/participate/join">
