@@ -7,7 +7,22 @@ import {
 } from 'react-accessible-accordion';
 import './MeetingListGroup.scss';
 
+// Component imports
 import MeetingListItem from './MeetingListItem';
+
+/**
+ * A group of meeting items grouped by date in a collapsible accordion.
+ *
+ * props:
+ *    month
+ *      String month displayed on group accordion button
+ *    year
+ *      String year displayed on group acordion button
+ *    meetings
+ *      Array of meeting items belonging to the group
+ *    uuid
+ *      Number used to determine which group is pre-expanded
+ */
 
 function MeetingListGroup({ month, year, meetings, uuid }) {
   return (

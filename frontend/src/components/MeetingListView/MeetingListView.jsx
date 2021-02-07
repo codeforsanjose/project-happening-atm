@@ -5,6 +5,7 @@ import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHel
 import { GET_ALL_MEETINGS } from '../../graphql/graphql';
 import './MeetingListView.scss';
 
+// Component imports
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import MeetingListGroup from './MeetingListGroup';
 import Spinner from '../Spinner/Spinner';
@@ -12,6 +13,18 @@ import Spinner from '../Spinner/Spinner';
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
+
+/**
+ * Main view component to display a list of upcoming/past meetings.
+ *
+ * state:
+ *    navToggled
+ *      Boolean value indicating if the header nav component is open
+ *    meetings
+ *      Array of all meetings returned from the getAllMeetings query
+ *    showPastMeetings
+ *      Boolean state to toggle if completed agenda items are shown
+ */
 
 function MeetingListView() {
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS);
