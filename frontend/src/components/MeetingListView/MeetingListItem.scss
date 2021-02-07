@@ -14,11 +14,12 @@
   @media only screen
   and (min-device-width: 812px) {
     grid-template-columns: 1.4em 2fr 1fr 1.4em;
-    grid-template-rows: 1.4em 1fr 1em 1fr 1.4em;
+    grid-template-rows: 1.4em 1fr 1.4em 1fr 1.4em;
     grid-gap: 0;
     padding: 0;
 
     h3 {
+      padding-top: 1.4em;
       padding-left: 1.4em;
     }
 
