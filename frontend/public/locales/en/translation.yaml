@@ -291,16 +291,38 @@ standard:
     something-went-wrong: Something went wrong
     try-again: Try again
   numbers:
-    one: one
-    two: two
-    three: three
-    four: four
-    five: five
-    six: six
-    seven: seven
-    eight: eight
-    nine: nine
-    ten: ten
+    - zero
+    - one
+    - two
+    - three
+    - four
+    - five
+    - six
+    - seven
+    - eight
+    - nine
+    - ten
+  weekdays:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+  months: 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
   buttons:
     go-to-top: Go to Top
     back: Back
@@ -372,13 +394,6 @@ standard:
     center: center
     middle: middle
     new: new
-    sunday: Sunday
-    monday: Monday
-    tuesday: Tuesday
-    wednesday: Wednesday
-    thursday: Thursday
-    friday: Friday
-    saturday: Saturday
     start: start
     end: end
     select: select
@@ -386,15 +401,3 @@ standard:
     search: search
     result: result
     results: results
-    january: January
-    february: February
-    march: March
-    april: April
-    may: May
-    june: June
-    july: July
-    august: August
-    september: September
-    october: October
-    november: November
-    december: December
