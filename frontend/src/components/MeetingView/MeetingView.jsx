@@ -76,7 +76,7 @@ function MeetingView() {
             type="button"
             onClick={() => setShowAgendaView(true)}
           >
-            {t('meeting.tabs.agenda')}
+            {t('meeting.tabs.agenda.label')}
           </button>
         </div>
         <div className={showAgendaView ? '' : 'view-active'}>
@@ -84,7 +84,7 @@ function MeetingView() {
             type="button"
             onClick={() => setShowAgendaView(false)}
           >
-            {t('meeting.tabs.participate')}
+            {t('meeting.tabs.participate.label')}
           </button>
         </div>
       </div>

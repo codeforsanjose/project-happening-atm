@@ -183,7 +183,7 @@ meeting:
         attatchments: Attatchments
         presentation: Presentation
     participate:
-      label: Participate
+      label: Participa
       section:
         join:
           title: Join the Virtual Meeting
