@@ -30,10 +30,14 @@ footer {
       cursor: pointer;
       color: $offWhite;
       font-size: 1em;
-      background-color: rgba(0,0,0,0);
-      border-color: rgba(0,0,0,0);
+      background-color: rgba(0, 0, 0, 0);
+      border-color: rgba(0, 0, 0, 0);
+      outline: none;
       &:hover {
         border-bottom: 2px solid $offWhite;
+      }
+      &.current-language {
+        border-bottom: 2px solid $cityBronze;
       }
     }
   }
