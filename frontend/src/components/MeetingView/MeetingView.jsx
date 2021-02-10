@@ -6,7 +6,6 @@ import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
 import ParticipateView from './ParticipateView/ParticipateView';
 import AgendaView from './AgendaView/AgendaView';
-import Footer from '../Footer/Footer';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
@@ -90,7 +89,6 @@ function MeetingView() {
       </div>
 
       {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
-      <Footer />
     </div>
   );
 }
