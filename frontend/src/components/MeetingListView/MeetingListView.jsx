@@ -57,7 +57,7 @@ function MeetingListView() {
       <div className="meeting-list-header">
         <img className="logo" src={cityLogo} alt="logo" />
         <p className="sub-header">{t('header.my-city-agenda')}</p>
-        <h2>{t('city-council-meetings')}</h2>
+        <h2>{t('header.city-council-meetings')}</h2>
       </div>
 
       <div className="meeting-list-content">

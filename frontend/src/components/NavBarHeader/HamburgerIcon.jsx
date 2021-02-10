@@ -4,9 +4,9 @@ import './HamburgerIcon.scss';
 function HamburgerIcon({ onClick, toggled }) {
   return (
     <div
-      onClick={onClick}
       className={toggled ? 'burger burger-active' : 'burger'}
-      onKeyDown={toggled ? 'burger burger-active' : 'burger'}
+      onClick={onClick}
+      onKeyDown={onClick}
       role="button"
       tabIndex="0"
     >
