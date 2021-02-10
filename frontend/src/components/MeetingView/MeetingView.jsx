@@ -6,6 +6,7 @@ import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
 import ParticipateView from './ParticipateView/ParticipateView';
 import AgendaView from './AgendaView/AgendaView';
+import Footer from '../Footer/Footer';
 
 function makeTestSubItem(parentIndex, index, status) {
   return {
@@ -46,7 +47,7 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
  */
 
 function MeetingView() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [agendaItems, setAgendaItems] = useState([]);
   const [showAgendaView, setShowAgendaView] = useState(true);
@@ -69,11 +70,6 @@ function MeetingView() {
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
       <Header />
 
-      <div>
-        <button onClick={() => i18n.changeLanguage('en')} type="button">EN</button>
-        <button onClick={() => i18n.changeLanguage('es')} type="button">ES</button>
-      </div>
-
       <div className="view-toggle">
         <div className={showAgendaView ? 'view-active' : ''}>
           <button
@@ -94,6 +90,7 @@ function MeetingView() {
       </div>
 
       {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
+      <Footer />
     </div>
   );
 }

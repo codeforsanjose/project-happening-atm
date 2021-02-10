@@ -1,0 +1,41 @@
+@import '../../utils/_colors.scss';
+@import '../../utils/_fonts.scss';
+
+.no-select {
+  /* prevent blue highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  /* prevent text selection */
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* for chrome on android */
+  -webkit-tap-highlight-color: transparent;
+}
+
+footer {
+  z-index: 9999;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding: 3em 2.5vw 3em;
+  margin: 3em 0 0;
+  background-color: $cityBlue;
+  .languages {
+    display: flex;
+    justify-content: center;
+    button {
+      padding: 0.2em 0.3em;
+      margin: 0 0.3em;
+      cursor: pointer;
+      color: $offWhite;
+      font-size: 1em;
+      background-color: rgba(0,0,0,0);
+      border-color: rgba(0,0,0,0);
+      &:hover {
+        border-bottom: 2px solid $offWhite;
+      }
+    }
+  }
+}
