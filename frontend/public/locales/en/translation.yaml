@@ -66,6 +66,7 @@ meeting:
         in-0-day: Meeting starts in a few hours
   list:
     show-past: Show Past Meetings
+    no-meeting: No meetings found!
     calendar-export:
       button: Export to Calendar
       modal:
@@ -129,6 +130,7 @@ meeting:
             uploading: Uploading and Publishing
       list:
         show-closed: Show Closed Items
+        no-agenda: No agenda items found!
         search:
           placeholder: Search Agenda
         n-selected: Selected
@@ -156,7 +158,7 @@ meeting:
                 label: Subscribe to email notifications
                 placeholder: Enter email address
           confirmation:
-            title: You have subscribed to the meeting!
+            title: You have subscribed to the agenda item(s)!
             description: Thank you for signing up. To verify your identity, please check your email and confirm your subscriptions.
             butotn: OK
         share:
@@ -384,3 +386,15 @@ standard:
     search: search
     result: result
     results: results
+    january: January
+    february: February
+    march: March
+    april: April
+    may: May
+    june: June
+    july: July
+    august: August
+    september: September
+    october: October
+    november: November
+    december: December

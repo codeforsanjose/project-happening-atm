@@ -15,11 +15,8 @@
 
 footer {
   z-index: 9000;
-  position: absolute;
-  left: 0;
   width: 100%;
   padding: 3em 2.5vw 3em;
-  margin: 3em 0 0;
   background-color: $cityBlue;
   .languages {
     display: flex;

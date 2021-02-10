@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -13,18 +14,20 @@ import {
 } from '../../utils/_icons';
 
 function AdminMeetingItemLinks() {
+  const { t } = useTranslation();
+
   return (
     <div className="meeting-links">
       <Link to="#">
         <div className="link">
           <ViewAgendaIcon />
-          <p>Upload New Agenda</p>
+          <p>{t('meeting.actions.upload-new-agenda')}</p>
         </div>
       </Link>
       <Link to="#">
         <div className="link">
           <DeleteIcon />
-          <p>Delete Meeting</p>
+          <p>{t('meeting.list.delete-meeting.button')}</p>
         </div>
       </Link>
     </div>
@@ -32,18 +35,20 @@ function AdminMeetingItemLinks() {
 }
 
 function PastMeetingItemLinks() {
+  const { t } = useTranslation();
+
   return (
     <div className="meeting-links">
       <Link to="#">
         <div className="link">
           <FormatListNumberedIcon />
-          <p>Minutes</p>
+          <p>{t('meeting.list.minutes.button')}</p>
         </div>
       </Link>
       <Link to="#">
         <div className="link">
           <PlayWithCircleOutlineIcon />
-          <p>Recording</p>
+          <p>{t('meeting.list.recording.button')}</p>
         </div>
       </Link>
     </div>
@@ -51,18 +56,20 @@ function PastMeetingItemLinks() {
 }
 
 function PendingMeetingItemLinks({ meetingId, isInProgress }) {
+  const { t } = useTranslation();
+
   return (
     <div className="meeting-links">
       <Link to="#" className={classnames({ 'disabled-link': isInProgress })}>
         <div className="link">
           <CalendarTodayIcon />
-          <p>Export to Calendar</p>
+          <p>{t('meeting.list.calendar-export.button')}</p>
         </div>
       </Link>
       <Link to={`meeting/${meetingId}`}>
         <div className="link">
           <ViewAgendaIcon />
-          <p>Agenda</p>
+          <p>{t('meeting.list.agenda.button')}</p>
         </div>
       </Link>
     </div>

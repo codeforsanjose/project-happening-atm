@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
@@ -24,6 +25,7 @@ import {
  */
 
 function MeetingListItem({ item }) {
+  const { t } = useTranslation();
   // eslint-disable-next-line camelcase
   const { id, meeting_start_timestamp, status } = item;
   const date = toDateString(meeting_start_timestamp);
@@ -39,7 +41,7 @@ function MeetingListItem({ item }) {
       <Link to={`meeting/${id}`} className="meeting-date">
         <h3>
           {date}
-          {isInProgress && ' - In Progress'}
+          {isInProgress && ` - ${t('meeting.status.short.in-progress')}`}
         </h3>
       </Link>
       <Link to={`meeting/${id}`} className="meeting-time">
