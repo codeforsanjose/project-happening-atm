@@ -16,11 +16,11 @@ import {
 import './index.scss';
 
 import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
+import MeetingListView from './components/MeetingListView/MeetingListView';
 import AgendaTable from './components/AgendaTable/AgendaTable';
-import MeetingList from './components/MeetingList/MeetingList';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
-import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
 
@@ -64,6 +64,8 @@ function SubscriptionPage() {
 }
 
 function App() {
+  const { t } = useTranslation();
+
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
@@ -72,16 +74,13 @@ function App() {
             <Router>
               <Switch>
                 <Route exact path="/">
-                  <MeetingList />
+                  <MeetingListView />
                 </Route>
                 <Route path="/subscribe/:meetingId/:itemId">
                   <SubscriptionPage />
                 </Route>
                 <Route path="/meeting/:id">
                   <MeetingView />
-                </Route>
-                <Route path="/meeting-item/:id">
-                  <MeetingItem />
                 </Route>
 
                 {/* <Route exact path="/participate/join">
@@ -99,7 +98,7 @@ function App() {
 
                 <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                   <AdminView
-                    headerText="Edit Meeting Details"
+                    headerText={t('meeting.actions.edit-info.label')}
                     component={() => <div>Placeholder for Edit Meeting</div>}
                   />
                 </Route>
@@ -113,7 +112,7 @@ function App() {
 
                 <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
                   <AdminView
-                    headerText="Upload New Agenda"
+                    headerText={t('meeting.actions.upload-new-agenda')}
                     component={AdminUploadView}
                   />
                 </Route>

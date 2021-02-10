@@ -1,0 +1,85 @@
+@import '../../utils/colors';
+
+.MeetingListView {
+  margin-top: 5em;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  font-family: 'Poppins', sans-serif;
+
+  .meeting-list-header {
+    padding: 0.5em 1.25em;
+
+    .logo {
+      width: 77px;
+    }
+
+    h2 {
+      margin: 0.5em 0;
+
+      &::after {
+        display: block;
+        content: '';
+        margin-top: 0.2em;
+        height: 2px;
+        width: 8em;
+        background-color: $cityBronze;
+      }
+    }
+
+    .sub-header {
+      display: none;
+      margin: 0;
+      font-size: 1.2em;
+    }
+
+    @media only screen and (min-device-width: 812px) {
+      margin: 0 8em;
+
+      .logo {
+        display: none;
+      }
+
+      .sub-header {
+        display: block;
+      }
+
+      h2 {
+        font-size: 2em;
+      }
+    }
+
+  }
+
+  .meeting-list-content {
+    padding: 1.25em;
+    flex-grow: 1;
+    background-color: $blueSky;
+
+    .complete-toggle {
+      padding: 0;
+      margin-bottom: 1.25em;
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      font-size: 1em;
+      background-color: transparent;
+      cursor: pointer;
+
+      p {
+        margin: 0 0.5em;
+      }
+    }
+
+    @media only screen and (min-device-width: 812px) {
+      padding: 1.25em 200px;
+    }
+  }
+
+  .loader {
+    margin: 10em auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

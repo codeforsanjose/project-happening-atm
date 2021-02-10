@@ -1,5 +1,15 @@
 import { gql } from '@apollo/client'
 
+export const GET_ALL_MEETINGS = gql`
+  query {
+    getAllMeetings {
+      id,
+      meeting_start_timestamp,
+      status
+    }
+  }
+`;
+
 export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
   query {
     getAllMeetingsWithItems {
