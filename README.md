@@ -1,5 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 # gov-agenda-notifier
+
 It's common for city council, planning and commision meetings to only list one start time. The agenda items aren't scheduled for specific times because they do not know how long it will take to discuss each item. This leaves attendees wondering when they'll be able to comment on the agenda item they're interested in.
 
 This problem has become a growing issue in the era of COVID-19 since virtual meetings are becoming more common. This web app allows meeting participants to "subscribe" to meeting items for notifications via text or email. Participants will benefit greatly from a notification system rather than be on stand-by for an undetermined length of time.
@@ -106,6 +108,7 @@ When running with docker-compose, a separate persistent volume is created for Po
 
 ## To Begin Work on the Backend / Serve Backend
 Frontend specific development doesn't require these steps. Setting up the DB is only necessary if you'll be wanting to interact with the entire web app, including the backend API.
+
 1. Visit the issues page to find something to work on:
     * https://github.com/codeforsanjose/gov-agenda-notifier/issues
 2.  Initialize the local DB
@@ -169,11 +172,24 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
 If changes are made to `/backend/docker_for_local_dev_db/init.sql`, the old docker image must be deleted, regenerated and containerized for the changes to take place.
 
 The command for deleting the previous image is:
+
 ```bash
 make rm-image
 ```
 
 After deleting the image with that command, follow steps "2.  Initialize the local DB" again for your local DB to be back up and running.
+
+### Migrations
+
+`postgres-migrations` library is used to manage migrations. `backend/graphql_api/lambda/migrations/` contains all the migrations with the exception of creating the database which still exists in `backend/docker_for_local_dev_db/init.sql`.
+
+Migrations are run on each request in `backend/graphql_api/lambda/db/dbClient.js`.
+
+To create a new migration:
+
+1. Create a new file in `backend/graphql_api/lambda/migrations/` with incrementing integer prefix and few words describing the change, for example `002-add-link-to-meeting.sql`.
+2. Add your migration in that file.
+3. Migrations will be automatically run on next request to the backend.
 
 # Infrastructure
 Ideally, deployments are automatically handled by the CI/CD pipeline. This section of documentation facilitates manual infrastructure management, if required.

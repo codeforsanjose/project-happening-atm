@@ -16,17 +16,13 @@ import {
 import './index.scss';
 
 import classnames from 'classnames';
+import AgendaTable from './components/AgendaTable/AgendaTable';
 import MeetingList from './components/MeetingList/MeetingList';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
-import ParticipatePage from './components/MeetingView/ParticipateView/ParticipatePages/ParticipatePage';
-import ParticipateJoin from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateJoin';
-import ParticipateWatch from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateWatch';
-import ParticipateComment from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateComment';
-import ParticipateRequest from './components/MeetingView/ParticipateView/ParticipatePages/ParticipateRequest';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -88,7 +84,7 @@ function App() {
                   <MeetingItem />
                 </Route>
 
-                <Route exact path="/participate/join">
+                {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
                 </Route>
                 <Route exact path="/participate/watch">
@@ -99,7 +95,7 @@ function App() {
                 </Route>
                 <Route exact path="/participate/request">
                   <ParticipatePage Component={ParticipateRequest} />
-                </Route>
+                </Route> */}
 
                 <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                   <AdminView
@@ -111,7 +107,7 @@ function App() {
                 <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
                   <AdminView
                     headerText="Edit Agenda Items"
-                    component={() => <div>Placeholder for Edit Agenda</div>}
+                    component={AgendaTable}
                   />
                 </Route>
 

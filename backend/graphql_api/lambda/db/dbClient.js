@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+const { migrate } = require('postgres-migrations');
 
 module.exports = async (logger) => {
   const module = {};
@@ -30,6 +31,9 @@ module.exports = async (logger) => {
     try {
       await client.connect();
       logger.info('DB connected');
+
+      await migrate({ client }, './migrations');
+      logger.info('Migrations completed successfully.');
     } catch (e) {
       logger.error(`DB connection error: ${e.stack}`);
       throw e;

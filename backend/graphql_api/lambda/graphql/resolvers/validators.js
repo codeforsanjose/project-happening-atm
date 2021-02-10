@@ -6,6 +6,9 @@
 const isLambda = process.env.IS_LAMBDA;
 const { UserInputError, ForbiddenError } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
 
+// Used to verify jwt token
+const jwt = require('jsonwebtoken');
+
 // TODO: We might want to have these set up in a config file for easy modification
 const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];
 const possibleTypes = ['test'];
@@ -122,9 +125,11 @@ module.exports = (logger) => {
 
   const module = {};
 
-  module.validateAuthorization = (isAdmin, context) => {
+  module.validateAuthorization = (context) => {
+    user = jwt.verify(context.token, process.env.JWT_SECRET);
+    isAdmin = user.data.admin
     if (!isAdmin) {
-      logger.debug(`${context}: Attempted without admin credentials`);
+      logger.debug(`${user.name} ${user.email}: Attempted without admin credentials`);
       throw new ForbiddenError('No admin credentials provisioned. Log in.');
     }
   };
