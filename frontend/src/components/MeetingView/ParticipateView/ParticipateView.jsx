@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './ParticipateView.scss';
 import {
@@ -9,12 +10,15 @@ import {
 } from '../../../utils/_icons';
 
 function JoinTheVirtualMeetingPanel() {
+  const { t } = useTranslation();
+
   return (
     <>
       <ol>
         <li>
           {/* TODO: Add phone number, zoom meeting id, and link to join zoom meeting
           https://github.com/codeforsanjose/gov-agenda-notifier/issues/103 */}
+          {/* TODO #127: Figure out how we're going to translate interactive texts */}
           <p>Call ###-###-####</p>
           <p className="info">
             Enter Meeting ID ### #### ####
@@ -23,12 +27,15 @@ function JoinTheVirtualMeetingPanel() {
           </p>
         </li>
         <li>
-          <p>Join from your computer or smart device here*</p>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          <p>{t('meeting.tabs.participate.section.join.description.number-2.title')}*</p>
           <Link to="/">
-            <button type="button">Join Zoom Meeting</button>
+            <button type="button">{t('meeting.tabs.participate.section.join.description.number-2.button')}</button>
           </Link>
-          <p className="info bold">*Zoom Web Browser Requirements</p>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          <p className="info bold">*{t('meeting.tabs.participate.section.join.description.post-script.title')}</p>
           <p className="info">
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Must have the application installed. Use a current,
             up-to-date browser: Chrome 30+, Firefox 27+,
             Microsoft Edge 12+, Safari 7+. Certain functionality
@@ -46,6 +53,7 @@ function JoinTheVirtualMeetingPanel() {
           </p>
 
           <p className="info">
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             For more information on how to join a meeting,
             {' '}
             <a
@@ -63,42 +71,43 @@ function JoinTheVirtualMeetingPanel() {
   );
 }
 function WatchMeetingBroadcastPanel() {
+  const { t } = useTranslation();
+
   return (
     <>
       <p>
-        You have 3 options to watch the live meeting broadcast:
+        {t('meeting.tabs.participate.section.watch.description.preface')}
       </p>
 
       <p className="info">
-        Closed Captioning is available for all
+        {t('meeting.tabs.participate.section.watch.description.closed-caption')}
       </p>
 
       <ol>
         <li>
-          <p>Comcast Cable Channel 26</p>
+          <p>{t('meeting.tabs.participate.section.watch.description.number-1.title')}</p>
         </li>
         <li>
-          <p>City&apos;s YouTube Channel</p>
+          <p>{t('meeting.tabs.participate.section.watch.description.number-2.title')}</p>
           <a
             href="https://www.youtube.com/CityOfSanJoseCalifornia"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button type="button">Go to YouTube</button>
+            <button type="button">{t('meeting.tabs.participate.section.watch.description.number-2.button')}</button>
           </a>
         </li>
         <li>
-          <p>City&apos;s Website</p>
+          <p>{t('meeting.tabs.participate.section.watch.description.number-3.title')}</p>
           <p className="info">
-            Find the meeting and click on &quot;In Progress&quot; or
-            &quot;Currently in Session&quot; to watch.
+            {t('meeting.tabs.participate.section.watch.description.number-3.subtitle')}
           </p>
           <a
             href="https://www.sanjoseca.gov/news-stories/watch-a-meeting"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button type="button">Go to the City&apos;s Website</button>
+            <button type="button">{t('meeting.tabs.participate.section.watch.description.number-3.button')}</button>
           </a>
         </li>
       </ol>
@@ -106,13 +115,16 @@ function WatchMeetingBroadcastPanel() {
   );
 }
 function SubmitWrittenPublicCommentPanel() {
+  const { t } = useTranslation();
+
   return (
     <>
-      <p className="bold">Before the Meeting</p>
+      <p className="bold">{t('meeting.tabs.participate.section.comment.description.before-meeting.title')}</p>
 
       <ol>
         <li>
           <p>
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Email
             {' '}
             <a href="mailto:city.clerk@sanjoseca.gov">city.clerk@sanjoseca.gov</a>
@@ -120,31 +132,28 @@ function SubmitWrittenPublicCommentPanel() {
             by 10:00 a.m. the day of the meeting.
           </p>
           <p className="info">
-            Please identify the Agenda Item Number in the subject line of
-            your email.
-            Emails will be attached to the Council Item under &quot;Letters
-            from the Public,&quot; but will not be read aloud during the
-            meeting.
+            {t('meeting.tabs.participate.section.comment.description.before-meeting.number-1.subtitle')}
           </p>
         </li>
         <li>
-          <p>Via eComment link</p>
+          <p>{t('meeting.tabs.participate.section.comment.description.before-meeting.number-2.title')}</p>
           <p className="info">
-            eComments are directly sent to Council and Committee staff.
+            {t('meeting.tabs.participate.section.comment.description.before-meeting.number-2.subtitle')}
           </p>
           {/* TODO: Add link to eComment site for meeting
     https://github.com/codeforsanjose/gov-agenda-notifier/issues/104 */}
           <Link to="/">
-            <button type="button">Send eComment</button>
+            <button type="button">{t('meeting.tabs.participate.section.comment.description.before-meeting.number-2.button')}</button>
           </Link>
         </li>
       </ol>
 
-      <p className="bold">During the Meeting</p>
+      <p className="bold">{t('meeting.tabs.participate.section.comment.description.during-meeting.title')}</p>
 
       <ol>
         <li>
           <p>
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Email
             {' '}
             <a href="mailto:councilmeeting@sanjoseca.gov">councilmeeting@sanjoseca.gov</a>
@@ -152,10 +161,7 @@ function SubmitWrittenPublicCommentPanel() {
             during the meeting.
           </p>
           <p className="info">
-            Please identify the Agenda Item Number in the subject line of
-            your email.
-            Comments received will be included as a part of the meeting
-            record but will not be read aloud during the meeting.
+            {t('meeting.tabs.participate.section.comment.description.during-meeting.number-1.subtitle')}
           </p>
         </li>
       </ol>
@@ -163,24 +169,18 @@ function SubmitWrittenPublicCommentPanel() {
   );
 }
 function RequestSeparateConsiderationOfAConsentCalendarItemPanel() {
+  const { t } = useTranslation();
+
   return (
     <>
       <p>
-        There will be no separate discussion of Consent Calendar items as
-        they are considered to be routine by the City Council and will be
-        adopted by one motion. If a member of the City Council, staff, or
-        public requests discussion on a particular item, that item may be
-        removed from the Consent Calendar and considered separately.
-      </p>
-
-      <p>
-        If you wish to request separate discussion on a particular item
-        of the consent calendar:
+        {t('meeting.tabs.participate.section.consideration.description.preface')}
       </p>
 
       <ol>
         <li>
           <p>
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Email
             {' '}
             <a href="mailto:city.clerk@sanjoseca.gov">city.clerk@sanjoseca.gov</a>
@@ -188,8 +188,7 @@ function RequestSeparateConsiderationOfAConsentCalendarItemPanel() {
             by 10:00 a.m. the day of the meeting.
           </p>
           <p className="info">
-            Please identify the Consent Calendar Agenda Item Number in the
-            subject line of your email.
+            {t('meeting.tabs.participate.section.consideration.description.number-1.subtitle')}
           </p>
         </li>
       </ol>
@@ -199,7 +198,7 @@ function RequestSeparateConsiderationOfAConsentCalendarItemPanel() {
 const CHOICES = [
   {
     id: 1,
-    title: 'Join the Virtual Meeting',
+    title: 'meeting.tabs.participate.section.join.title',
     description: '',
     items: [],
     icon: <VoiceChatIcon />,
@@ -207,7 +206,7 @@ const CHOICES = [
   },
   {
     id: 2,
-    title: 'Watch Meeting Broadcast',
+    title: 'meeting.tabs.participate.section.watch.title',
     description: '',
     items: [],
     icon: <OnDemandVideoIcon />,
@@ -215,7 +214,7 @@ const CHOICES = [
   },
   {
     id: 3,
-    title: 'Submit Written Public Comment',
+    title: 'meeting.tabs.participate.section.comment.title',
     description: '',
     items: [],
     icon: <EmailIcon />,
@@ -223,7 +222,7 @@ const CHOICES = [
   },
   {
     id: 4,
-    title: 'Request Separate Consideration of a Consent Calendar Item',
+    title: 'meeting.tabs.participate.section.consideration.title',
     description: '',
     items: [],
     icon: <NewReleasesIcon />,
@@ -232,13 +231,15 @@ const CHOICES = [
 ];
 
 function ParticipateAccordion({ choice }) {
+  const { t } = useTranslation();
+
   return (
     <AccordionItem className="ParticipateView">
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button" style={{ paddingBottom: '1.5em' }}>
           <div className="button-text" />
           <div className="group-title">
-            {choice.title}
+            {t(choice.title)}
             {' '}
             {choice.icon}
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Subscribe.scss';
 import classnames from 'classnames';
 import { useParams, useHistory } from 'react-router-dom';
@@ -44,6 +45,8 @@ function Subscribe({
   error,
   subscription,
 }) {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const { meetingId, itemId } = useParams();
   const [isFormSubmitted, setFormSubmitted] = useState(false);
@@ -97,17 +100,16 @@ function Subscribe({
       <BackNavigation />
       <div className="wrapper">
         <div className="text">
-          <h3>Subscribe to item</h3>
+          <h3>{t('meeting.tabs.agenda.list.subscribe.page.title')}</h3>
           <p>
-            Subscribe to receive a notification when this item is up next
-            for discussion and when discussions for this item begin.
+            {t('meeting.tabs.agenda.list.subscribe.page.description')}
           </p>
           <form className="form">
             <div className="input-group">
-              <span>Subscribe to text notifications</span>
+              <span>{t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.label')}</span>
               <CustomInput
                 type="tel"
-                placeholder="Enter phone number"
+                placeholder={t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.placeholder')}
                 isRequired
                 isSubmitted={isFormSubmitted}
                 value={phone}
@@ -116,10 +118,10 @@ function Subscribe({
               />
             </div>
             <div className="input-group">
-              <span>Subscribe to email notifications</span>
+              <span>{t('meeting.tabs.agenda.list.subscribe.page.inputs.email.label')}</span>
               <CustomInput
                 type="email"
-                placeholder="Enter email address"
+                placeholder={t('meeting.tabs.agenda.list.subscribe.page.inputs.email.placeholder')}
                 isRequired
                 isSubmitted={isFormSubmitted}
                 value={email}

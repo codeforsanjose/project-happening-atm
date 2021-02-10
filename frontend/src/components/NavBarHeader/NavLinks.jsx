@@ -52,9 +52,7 @@ function NavLinks({ toggled }) {
         <ul className="nav-links-list">
           {LINKS.map((link) => (
             <li key={link.key}>
-              {/* TODO: #121 Please fix these problems raise by ESLint. Thank you. */}
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a href="#" rel="noopener noreferrer">
+              <a href="/" rel="noopener noreferrer">
                 <link.icon className="nav-link-icon" />
                 <span className="nav-link-text">{link.text}</span>
                 <ChevronRightIcon className="nav-link-chevron" />

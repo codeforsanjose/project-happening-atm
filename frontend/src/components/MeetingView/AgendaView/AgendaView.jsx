@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
 
@@ -20,6 +21,7 @@ import Search from '../../Header/Search';
  */
 
 function AgendaView({ agendaItems }) {
+  const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
 
   const renderedItems = showCompleted
@@ -36,7 +38,7 @@ function AgendaView({ agendaItems }) {
         onClick={() => setShowCompleted((completed) => !completed)}
       >
         {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-        <p>Show Completed Items</p>
+        <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
 
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">

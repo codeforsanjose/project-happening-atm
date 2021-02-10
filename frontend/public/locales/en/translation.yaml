@@ -149,14 +149,14 @@ meeting:
             title: Subscribe to Item
             description: Subscribe to receive a notification when this item is up next for discussion and when discussions for this item begin.
             inputs:
-              text:
+              sms:
                 label: Subscribe to text notificcations
                 placeholder: Enter phone number
               email:
                 label: Subscribe to email notifications
                 placeholder: Enter email address
           confirmation:
-            title: You have subscribed to
+            title: You have subscribed to the meeting!
             description: Thank you for signing up. To verify your identity, please check your email and confirm your subscriptions.
             butotn: OK
         share:
@@ -262,7 +262,8 @@ meeting:
                 title: Via eComment link
                 subtitle: eComments are directly sent to Council and Committee staff.
                 button: Send eComment
-            after-meeting:
+            during-meeting:
+              title: During the Meeting
               number-1:
                 title: Email city.clerk@sanjoseca.gov during the meeting
                 subtitle: Please identify the Agenda Item Number in the subject line of your email. Comments received will be included as a part of the meeting record but will not be read aloud during the meeting.
@@ -300,6 +301,7 @@ standard:
     ten: ten
   buttons:
     go-to-top: Go to Top
+    back: Back
     watch: Watch
     add: Add
     adding: Adding

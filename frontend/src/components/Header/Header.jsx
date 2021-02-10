@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './Header.scss';
 import classnames from 'classnames';
 
@@ -6,6 +7,8 @@ import classnames from 'classnames';
 import cityLogo from '../../assets/SanJoseCityLogo.png';
 
 function Header({ shouldHide }) {
+  const { t } = useTranslation();
+
   return (
     <div className={classnames('header', {
       hide: shouldHide,
@@ -15,7 +18,7 @@ function Header({ shouldHide }) {
         <img className="logo" src={cityLogo} alt="logo" />
         <div className="meeting-info">
           <div className="title">
-            San José City Council Meeting Agenda
+            {t('header.city-council-meeting-agenda')}
           </div>
 
           <div className="details-title">
@@ -27,13 +30,14 @@ function Header({ shouldHide }) {
           </div>
 
           <div className="time">
-            Start time:
+            {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+            {t('meeting.start-time')}:
             {' '}
             <span className="no-bold">11:00 AM</span>
           </div>
 
           <div className="status">
-            Meeting is in progress
+            {t('meeting.status.relative.in-progress')}
           </div>
         </div>
       </div>
