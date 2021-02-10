@@ -1,0 +1,109 @@
+@import "../../utils/_colors.scss";
+
+.MeetingListItem {
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5em;
+  border: 2px solid $cloudy;
+  border-radius: 5px;
+  background-color: #fff;
+
+  @media only screen
+  and (min-device-width: 812px) {
+    grid-template-columns: 1.4em 2fr 1fr 1.4em;
+    grid-template-rows: 1.4em 1fr 1.4em 1fr 1.4em;
+    grid-gap: 0;
+    padding: 0;
+
+    h3 {
+      padding-top: 1.4em;
+      padding-left: 1.4em;
+    }
+
+    .meeting-date {
+      grid-row: 1 / -1;
+      grid-column: 1 / -1;
+    }
+
+    .meeting-time {
+      grid-row: 2 / 5;
+      grid-column: 3 / 4;
+      font-size: 1.5em;
+
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .meeting-links {
+      grid-row: 4 / 5;
+      grid-column: 2 / 3;
+      justify-self: left;
+
+      a {
+        margin-right: 3em;
+      }
+    }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    .meeting-date {
+      margin: 0;
+      display: inline-block;
+      font-weight: 600;
+    }
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .meeting-links {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: $lightBlue;
+      text-decoration: none;
+
+      .link {
+        display: flex;
+        align-items: center;
+        fill: $lightBlue;
+        font-size: 0.9em;
+
+        p {
+          margin: 0;
+          margin-left: 0.4em;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .disabled-link {
+      color: gray;
+      pointer-events: none;
+
+      svg {
+        fill: gray;
+      }
+    }
+  }
+
+  &:hover {
+    border: 2px solid $lightBlue;
+  }
+}
+
+.in-progress {
+  border: 2px solid $cityBronze;
+}
