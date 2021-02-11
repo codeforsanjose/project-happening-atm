@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
 import { Accordion } from 'react-accessible-accordion';
 import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHelper';
@@ -27,6 +28,8 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
  */
 
 function MeetingListView() {
+  const { t } = useTranslation();
+
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS);
   const [navToggled, setNavToggled] = useState(false);
   const [meetings, setMeetings] = useState([]);
@@ -53,8 +56,8 @@ function MeetingListView() {
 
       <div className="meeting-list-header">
         <img className="logo" src={cityLogo} alt="logo" />
-        <p className="sub-header">My City&apos;s Agenda</p>
-        <h2>City Council Meetings</h2>
+        <p className="sub-header">{t('header.my-city-agenda')}</p>
+        <h2>{t('header.city-council-meetings')}</h2>
       </div>
 
       <div className="meeting-list-content">
@@ -64,19 +67,19 @@ function MeetingListView() {
           onClick={() => setShowPastMeetings((completed) => !completed)}
         >
           {showPastMeetings ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-          <p>Show Past Meetings</p>
+          <p>{t('meeting.list.show-past')}</p>
         </button>
 
         {
-          !(loading || error) && (meetingGroups.length > 0
-            ? (
-              <Accordion allowZeroExpanded allowMultipleExpanded preExpanded={[0]}>
-                {meetingGroups.map((m, i) => <MeetingListGroup uuid={i} key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
-              </Accordion>
-            ) : (
-              <div>No meetings found!</div>
-            ))
-        }
+            !(loading || error) && (meetingGroups.length > 0
+              ? (
+                <Accordion allowZeroExpanded allowMultipleExpanded preExpanded={[0]}>
+                  {meetingGroups.map((m, i) => <MeetingListGroup uuid={i} key={`${m.month}${m.year}`} month={m.month} year={m.year} meetings={m.meetings} />)}
+                </Accordion>
+              ) : (
+                <div>{t('meeting.list.no-meeting')}</div>
+              ))
+          }
 
         {loading && <div className="loader"><Spinner /></div>}
         {error && <div className="loader">{`Error! ${error.message}`}</div>}

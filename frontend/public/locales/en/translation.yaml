@@ -1,0 +1,403 @@
+navbar:
+  menu: Menu
+  browse-meetings: Browse Meetings
+  about: About
+  faq: FAQ
+  submit-feedback: Submit Feedback
+  sign-in: Sign In
+  sign-out: Sign Out
+
+header:
+  my-city-agenda: My City's Agenda
+  city-council-meetings: City Council Meetings
+  city-council-meeting-agenda: City Council Meeting Agenda
+
+meeting:
+  start-time: Start Time
+  actions:
+    edit-info:
+      label: Edit Meeting Info
+      modal:
+        title: Edit Basic Information
+        button:
+          do: Publish Changes
+          doing: Publishing Changes
+          did: Published Changes
+        inputs:
+          date: Date
+          time: Time
+    upload-new-agenda: Upload New Agenda
+    join:
+      zoom: Join Zoom Meeting
+    watch: Watch Meeting Broadcast
+  status:
+    label: Meeting Status
+    short:
+      default-option: Update Status
+      in-progress: In Progress
+      in-recess: In Recess
+      ended: Ended
+      cancelled: Cancelled
+    long:
+      in-progress: Meeting is in progress
+      in-recess: Meeting is in recess
+      ended: Meeting is ended
+      cancelled: Meeting is cancelled
+    relative:
+      short:
+        in-progress: In Progress
+        in-1-week: Starts in a Week
+        in-6-days: Starts in 6 Days
+        in-5-days: Starts in 5 Days
+        in-4-days: Starts in 4 Days
+        in-3-days: Starts in 3 Days
+        in-2-days: Starts in 2 Days
+        in-1-day: Starts in a Day
+        in-0-day: Starts in a Few Hours
+      long:
+        in-progress: Meeting is in progress
+        in-1-week: Meeting starts in a week
+        in-6-days: Meeting starts in 6 days
+        in-5-days: Meeting starts in 5 days
+        in-4-days: Meeting starts in 4 days
+        in-3-days: Meeting starts in 3 days
+        in-2-days: Meeting starts in 2 days
+        in-1-day: Meeting starts in a day
+        in-0-day: Meeting starts in a few hours
+  list:
+    show-past: Show Past Meetings
+    no-meeting: No meetings found!
+    calendar-export:
+      button: Export to Calendar
+      modal:
+        title: Add to Calendar
+        options:
+          apple: Apple Calendar
+          google: Google Calendar
+          Outlook: Outlook Calendar
+    agenda:
+      button: Agenda
+    minutes:
+      button: Minutes
+    recording:
+      button: Recording
+    new-meeting:
+      button: Create New Meeting
+      modal:
+        title: Create New Meeting
+        subtitle: Add meeting date and time
+        inputs:
+          date: Date
+          time: Time
+        buttons:
+          create-meeting: Create New Meeting
+          creating-meeting: Creating New Meeting
+    delete-meeting:
+      button: Delete Meeting
+      modal:
+        title: Are you sure you want to delete this meeting?
+        buttons:
+          delete: Delete
+          deleting: Deleting
+          cancel: Cancel
+  tabs:
+    agenda:
+      label: Agenda
+      status:
+        button: Update Status
+        modal:
+          title: Update Agenda Item Status
+          subtitle: Select status
+          button:
+            do: Save and Publish Changes
+            doing: Saving and Publishing
+            done: Saved and Published
+        options:
+          completed: Completed
+          in-progress: In Progress
+          closed: Closed
+          removed: Removed for Separate Consideration
+          deferred: Deferred
+      upload-new:
+        button: Upload New Agenda
+        modal:
+          title: Upload New Agenda
+          input:
+            help: Drag and Drop CSV File
+            alt: Or Upload from Your Computer
+          buttons:
+            upload: Upload and Publish
+            uploading: Uploading and Publishing
+      list:
+        show-closed: Show Closed Items
+        no-agenda: No agenda items found!
+        search:
+          placeholder: Search Agenda
+        n-selected: Selected
+        cancel: Cancel
+        rearrange-modal:
+          title: Save and Publish Changes
+          text: Looks like you rearranged one or more agenda items. Would you like to save and publish changes?
+          button:
+            do: Yes, Save and Publish Changes
+            doing: Saving and Publishing
+            did: Saved and Published
+        subscribe:
+          button:
+            do: Subscribe
+            doing: Subscribing...
+            done: Subscribed
+          page:
+            title: Subscribe to Item
+            description: Subscribe to receive a notification when this item is up next for discussion and when discussions for this item begin.
+            inputs:
+              sms:
+                label: Subscribe to text notificcations
+                placeholder: Enter phone number
+              email:
+                label: Subscribe to email notifications
+                placeholder: Enter email address
+          confirmation:
+            title: You have subscribed to the agenda item(s)!
+            description: Thank you for signing up. To verify your identity, please check your email and confirm your subscriptions.
+            butotn: OK
+        share:
+          button: Share
+        more-info:
+          button: More Info
+          modal:
+            title: More Information
+            subtitle: Edit Item Information
+            button:
+              do: Save and Publish Changes
+              doing: Saving and Publishing
+              done: Saved and Published
+            inputs:
+              agenda-item:
+                label: Agenda Item
+              description:
+                label: Description
+              attachments:
+                label: Attachments
+                upload-new: Upload New
+      details:
+        recommendation: Recommendation
+        attatchments: Attatchments
+        presentation: Presentation
+    participate:
+      label: Participate
+      section:
+        join:
+          title: Join the Virtual Meeting
+          edit:
+            button: Edit
+            modal:
+              title: Edit Virtual Meeting Information
+              button:
+                do: Publish Changes
+                doing: Publishing Changes
+                did: Published Changes
+              inputs:
+                meeting-link: Virtual Meeting Link
+                meeting-id: Virtual Meeting ID
+                call-in-info: Call-in Information
+          description:
+            preface: 'To help stop the spread of COVID-19 and keep our community safe, the City of San José is currently conducting City Council meetings virtually using Zoom. You have 2 options to join and provide spoken comment in the virtual meeting:'
+            number-1:
+              title: Call
+              subtitle: Enter Meeting ID
+            number-2:
+              title: Join from your computer or smart device here
+              button: Join Zoom Meeting
+            post-script:
+              title: Zoom Web Browser Requirements
+              text: 'Must have the application installed. Use a current, up-to-date browser: Chrome 30+, Firefox 27+, Microsoft Edge 12+, Safari 7+. Certain functionality may be disabled in older browsers including Internet Explorer. Learn more at zoom.us.'
+              link:
+                one: For more information on how to join a meeting, click here.
+                two: To learn more about Zoom controls, click here.
+        watch:
+          title: Watch Meeting Broadcast
+          edit:
+            button: Edit
+            modal:
+              title: Edit Meeting Broadcast Information
+              button:
+                do: Publish Changes
+                doing: Publishing Changes
+                did: Published Changes
+              inputs:
+                city-website: City of San José Link
+                city-youtube: YouTube Link
+          description:
+            preface: 'You have 3 options to watch the live meeting broadcast:'
+            closed-caption: Closed Captioning is available for all
+            number-1:
+              title: Comcast Cable Channel 26
+            number-2:
+              title: City’s YouTube Channel
+              button: Go to YouTube
+            number-3:
+              title: City’s Website
+              subtitle: Find the meeting and click on “In Progress” or “Currently in Session” to watch.
+              button: Go to the City's Website
+        comment:
+          title: Submit Written Public Comment
+          edit:
+            button: Edit
+            modal:
+              title: Edit Public Comment Information
+              button:
+                do: Publish Changes
+                doing: Publishing Changes
+                did: Published Changes
+              inputs:
+                email-before-meeting: Email - Before Meeting
+                email-after-meeting: Email - After Meeting
+                e-comment: eComment
+          description:
+            before-meeting:
+              title: Before the Meeting
+              number-1:
+                title: Email city.clerk@sanjoseca.gov by 10:00 a.m. the day of the meeting
+                subtitle: Please identify the Agenda Item Number in the subject line of your email. Emails will be attached to the Council Item under “Letters from the Public,” but will not be read aloud during the meeting.
+              number-2:
+                title: Via eComment link
+                subtitle: eComments are directly sent to Council and Committee staff.
+                button: Send eComment
+            during-meeting:
+              title: During the Meeting
+              number-1:
+                title: Email city.clerk@sanjoseca.gov during the meeting
+                subtitle: Please identify the Agenda Item Number in the subject line of your email. Comments received will be included as a part of the meeting record but will not be read aloud during the meeting.
+        consideration:
+          title: Request Separate Consideration of a Consent Calendar Item
+          description:
+            preface: 'There will be no separate discussion of Consent Calendar items as they are considered to be routine by the City Council and will be adopted by one motion. If a member of the City Council, staff, or public requests discussion on a particular item, that item may be removed from the Consent Calendar and considered separately. If you wish to request separate discussion on a particular item of the consent calendar:'
+            number-1:
+              title: Email city.clerk@sanjoseca.gov by 10:00 a.m. the day of the meeting.
+              subtitle: Please identify the Consent Calendar Agenda Item Number in the subject line of your email.
+
+footer:
+  language:
+    change:
+      title: Select a language
+      button:
+        do: Change Language
+        doing: Changing Language
+        did: Changed Language
+
+standard:
+  errors:
+    something-went-wrong: Something went wrong
+    try-again: Try again
+  numbers:
+    - zero
+    - one
+    - two
+    - three
+    - four
+    - five
+    - six
+    - seven
+    - eight
+    - nine
+    - ten
+  weekdays:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+  months: 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+  buttons:
+    go-to-top: Go to Top
+    back: Back
+    watch: Watch
+    add: Add
+    adding: Adding
+    remove: Remove
+    removing: Removing
+    create: Create
+    creating: Creating
+    delete: Delete
+    deleting: Deleting
+    publish: Publish
+    publishing: Publishing
+    upload: Upload
+    uploading: Uploading
+    download: Download
+    downloading: Downloading
+    cancel: Cancel
+    canceling: Canceling
+    close: Close
+    closing: Closing
+    exit: Exit
+    exiting: Exiting
+    abort: Abort
+    aborting: Aborting
+    search: Search
+    searching: Searching
+    subscribe: Subscribe
+    subscribing: Subscribing
+    share: Share
+    sharing: Sharing
+    join: Join
+    joining: Joining
+    leave: Leave
+    leaving: Leaving
+    ok: OK
+  words:
+    and: and
+    button: button
+    buttons: buttons
+    city: city
+    cities: cities
+    council: council
+    meeting: meeting
+    meetings: meetings
+    agenda: agenda
+    status: status
+    warning: warning
+    error: error
+    alert: alert
+    notification: notification
+    notifications: notifications
+    time: time
+    date: date
+    day: day
+    days: days
+    week: week
+    weeks: weeks
+    month: month
+    months: months
+    year: year
+    years: years
+    calendar: calendar
+    top: top
+    left: left
+    right: right
+    bottom: bottom
+    center: center
+    middle: middle
+    new: new
+    start: start
+    end: end
+    select: select
+    selected: selected
+    search: search
+    result: result
+    results: results

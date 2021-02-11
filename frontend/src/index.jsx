@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -16,17 +16,21 @@ import {
 import './index.scss';
 
 import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import MeetingListView from './components/MeetingListView/MeetingListView';
 import AgendaTable from './components/AgendaTable/AgendaTable';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
+import Footer from './components/Footer/Footer';
 
 import * as serviceWorker from './serviceWorker';
 
 import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTION } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
+
+import './i18n';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -61,6 +65,8 @@ function SubscriptionPage() {
 }
 
 function App() {
+  const { t } = useTranslation();
+
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
@@ -78,21 +84,21 @@ function App() {
               </Route>
 
               {/* <Route exact path="/participate/join">
-                <ParticipatePage Component={ParticipateJoin} />
-              </Route>
-              <Route exact path="/participate/watch">
-                <ParticipatePage Component={ParticipateWatch} />
-              </Route>
-              <Route exact path="/participate/comment">
-                <ParticipatePage Component={ParticipateComment} />
-              </Route>
-              <Route exact path="/participate/request">
-                <ParticipatePage Component={ParticipateRequest} />
-              </Route> */}
+                  <ParticipatePage Component={ParticipateJoin} />
+                </Route>
+                <Route exact path="/participate/watch">
+                  <ParticipatePage Component={ParticipateWatch} />
+                </Route>
+                <Route exact path="/participate/comment">
+                  <ParticipatePage Component={ParticipateComment} />
+                </Route>
+                <Route exact path="/participate/request">
+                  <ParticipatePage Component={ParticipateRequest} />
+                </Route> */}
 
               <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                 <AdminView
-                  headerText="Edit Meeting Details"
+                  headerText={t('meeting.actions.edit-info.label')}
                   component={() => <div>Placeholder for Edit Meeting</div>}
                 />
               </Route>
@@ -106,12 +112,13 @@ function App() {
 
               <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
                 <AdminView
-                  headerText="Upload New Agenda"
+                  headerText={t('meeting.actions.upload-new-agenda')}
                   component={AdminUploadView}
                 />
               </Route>
             </Switch>
           </Router>
+          <Footer />
           <SampleQuery />
         </div>
       </ApolloProvider>
@@ -120,7 +127,9 @@ function App() {
 }
 
 ReactDOM.render(
-  <App />,
+  <Suspense fallback={<div>Loading translation files...</div>}>
+    <App />
+  </Suspense>,
   document.getElementById('root'),
 );
 

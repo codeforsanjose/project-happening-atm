@@ -1,44 +1,46 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 function ParticipateWatch() {
+  const { t } = useTranslation();
+
   return (
     <div className="ParticipateContent">
-      <h3 className="ParticipateHeader">Watch Meeting Broadcast</h3>
+      <h3 className="ParticipateHeader">{t('meeting.tabs.participate.section.watch.title')}</h3>
 
       <p>
-        You have 3 options to watch the live meeting broadcast:
+        {t('meeting.tabs.participate.section.watch.description.preface')}
       </p>
 
       <p className="info">
-        Closed Captioning is available for all
+        {t('meeting.tabs.paricipate.section.watch.description.closed-caption')}
       </p>
 
       <ol>
         <li>
-          <p>Comcast Cable Channel 26</p>
+          <p>{t('meeting.tabs.participate.section.watch.description.number-1.title')}</p>
         </li>
         <li>
-          <p>City&apos;s YouTube Channel</p>
+          <p>{t('meeting.tabs.participate.section.watch.description.number-2.title')}</p>
           <a
             href="https://www.youtube.com/CityOfSanJoseCalifornia"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button type="button">Go to YouTube</button>
+            <button type="button">{t('meeting.tabs.participate.section.watch.description.number-2.button')}</button>
           </a>
         </li>
         <li>
-          <p>City&apos;s Website</p>
+          <p>{t('meeting.tabs.participate.section.watch.description.number-3.title')}</p>
           <p className="info">
-            Find the meeting and click on &quot;In Progress&quot; or
-            &quot;Currently in Session&quot; to watch.
+            {t('meeting.tabs.participate.section.watch.description.number-3.subtitle')}
           </p>
           <a
             href="https://www.sanjoseca.gov/news-stories/watch-a-meeting"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button type="button">Go to the City&apos;s Website</button>
+            <button type="button">{t('meeting.tabs.participate.section.watch.description.number-3.button')}</button>
           </a>
         </li>
       </ol>

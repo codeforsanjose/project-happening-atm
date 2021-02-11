@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './SubscribeConfirmation.scss';
 import classnames from 'classnames';
 import Modal from 'react-modal';
@@ -15,6 +16,8 @@ import { ConfirmationIcon } from '../../utils/_icons';
 function SubscribeConfirmation({
   onClose,
 }) {
+  const { t } = useTranslation();
+
   Modal.setAppElement('#root');
   return (
     <Modal
@@ -36,17 +39,16 @@ function SubscribeConfirmation({
           TODO adjust for multiple subscriptions
           https://github.com/codeforsanjose/gov-agenda-notifier/issues/101
         */}
-        <h4>You have subscribed to the meeting!</h4>
+        <h4>{t('meeting.tabs.agenda.list.subscribe.confirmation.title')}</h4>
         <p>
-          Thank you for signing up. To verify your identity, please check your email
-          and confirm your subscriptions.
+          {t('meeting.tabs.agenda.list.subscribe.confirmation.description')}
         </p>
         <div className="row">
           <button
             type="button"
             onClick={onClose}
           >
-            OK
+            {t('meeting.tabs.agenda.list.subscribe.confirmation.button')}
           </button>
         </div>
       </div>

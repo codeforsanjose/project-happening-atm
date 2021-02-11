@@ -24,7 +24,9 @@ import MeetingListItem from './MeetingListItem';
  *      Number used to determine which group is pre-expanded
  */
 
-function MeetingListGroup({ month, year, meetings, uuid }) {
+function MeetingListGroup({
+  month, year, meetings, uuid,
+}) {
   return (
     <AccordionItem className="MeetingListGroup" uuid={uuid}>
       <AccordionItemHeading className="group-header">

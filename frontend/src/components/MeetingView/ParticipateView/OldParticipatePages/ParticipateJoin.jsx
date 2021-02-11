@@ -1,13 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 function ParticipateJoin() {
+  const { t } = useTranslation();
+
   return (
     <div className="ParticipateContent">
-      <h3 className="ParticipateHeader">Join the Virtual Meeting</h3>
+      <h3 className="ParticipateHeader">{t('meeting.tabs.participate.section.join.title')}</h3>
 
       <p>
+        {/* TODO #127: Figure out how we're going to translate interactive texts */}
         To help stop the spread of COVID-19 and keep our
         community safe, the City of San José is currently
         conducting City Council meetings virtually using
@@ -26,18 +30,23 @@ function ParticipateJoin() {
           https://github.com/codeforsanjose/gov-agenda-notifier/issues/103 */}
           <p>Call ###-###-####</p>
           <p className="info">
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Enter Meeting ID ### #### ####
             Select *9 to &#34;Raise Hand&#34; to speak.
             Select *6 to unmute when your name is called.
           </p>
         </li>
         <li>
-          <p>Join from your computer or smart device here*</p>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          <p>{t('meeting.tabs.participate.section.join.description.number-2.title')}*</p>
           <Link to="/">
-            <button type="button">Join Zoom Meeting</button>
+            <button type="button">{t('meeting.tabs.participate.section.join.description.number-2.button')}</button>
           </Link>
-          <p className="info bold">*Zoom Web Browser Requirements</p>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          <p className="info bold">*{t('meeting.tabs.participate.section.join.description.post-script.title')}</p>
           <p className="info">
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
+            /Users/Sepehr/Documents/CodingProjects/code-for-san-jose/gov-agenda-notifier/frontend/src/components/MeetingView/ParticipateView/OldParticipatePages/ParticipateJoin.jsx
             Must have the application installed. Use a current,
             up-to-date browser: Chrome 30+, Firefox 27+,
             Microsoft Edge 12+, Safari 7+. Certain functionality
@@ -55,6 +64,7 @@ function ParticipateJoin() {
           </p>
 
           <p className="info">
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             For more information on how to join a meeting,
             {' '}
             <a

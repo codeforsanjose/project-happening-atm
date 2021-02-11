@@ -1,10 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './BackNavigation.scss';
 import classnames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { ChevronLeftIcon } from '../../utils/_icons';
 
 export default function BackNavigation() {
+  const { t } = useTranslation();
+
   const history = useHistory();
 
   const goBack = () => {
@@ -19,7 +22,7 @@ export default function BackNavigation() {
           onClick={goBack}
         >
           <ChevronLeftIcon />
-          Back
+          {t('standard.buttons.back')}
         </button>
       </div>
     </div>

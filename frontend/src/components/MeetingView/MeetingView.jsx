@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './MeetingView.scss';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
@@ -45,6 +46,8 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
  */
 
 function MeetingView() {
+  const { t } = useTranslation();
+
   const [agendaItems, setAgendaItems] = useState([]);
   const [showAgendaView, setShowAgendaView] = useState(true);
   const [navToggled, setNavToggled] = useState(false);
@@ -72,7 +75,7 @@ function MeetingView() {
             type="button"
             onClick={() => setShowAgendaView(true)}
           >
-            Agenda
+            {t('meeting.tabs.agenda.label')}
           </button>
         </div>
         <div className={showAgendaView ? '' : 'view-active'}>
@@ -80,7 +83,7 @@ function MeetingView() {
             type="button"
             onClick={() => setShowAgendaView(false)}
           >
-            Participate
+            {t('meeting.tabs.participate.label')}
           </button>
         </div>
       </div>
