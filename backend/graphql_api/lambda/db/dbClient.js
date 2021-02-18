@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const { migrate } = require('postgres-migrations');
+const format = require('pg-format');
 
 module.exports = async (logger) => {
   const module = {};
@@ -111,9 +112,31 @@ module.exports = async (logger) => {
     return query(queryString);
   };
 
-  module.getSubscription = async (id) => {
+  module.createSubscriptions = async (phoneNumber, emailAddress, meetings) => {
+    logger.info('dbClient: createSubscriptions');
+    const values = [];
+
+    // Aggregate meetings into an array so we can INSERT in a single query.
+    meetings.forEach((meeting) => {
+      values.push([phoneNumber,
+        emailAddress,
+        meeting.meeting_item_id,
+        meeting.meeting_id,
+      ]);
+    });
+
+    const queryString = format(`
+      INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id)
+      VALUES %L
+      RETURNING id;`,
+    values);
+
+    return query(queryString);
+  };
+
+  module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
-    return query(`SELECT * FROM subscription WHERE id = ${id}`);
+    return query(`SELECT * FROM subscription WHERE id IN (${ids})`);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
@@ -137,7 +160,7 @@ module.exports = async (logger) => {
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting_item
-        SET 
+        SET
             order_number = '${orderNumber}',
             status = '${status}',
             item_start_timestamp = to_timestamp(${itemStartTimestamp}),
@@ -156,7 +179,7 @@ module.exports = async (logger) => {
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting
-        SET 
+        SET
             status = '${status}',
             meeting_type = '${meetingType}',
             virtual_meeting_url = '${virtualMeetingUrl}',
