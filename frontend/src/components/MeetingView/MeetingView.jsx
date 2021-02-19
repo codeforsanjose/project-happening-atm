@@ -60,7 +60,7 @@ function MeetingView() {
     }
     fetchAgendaItems();
   }, []);
-
+  console.log(agendaItems);
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -85,7 +85,7 @@ function MeetingView() {
         </div>
       </div>
 
-      {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
+      {showAgendaView ? <AgendaView setAgendaItems={setAgendaItems} agendaItems={agendaItems} /> : <ParticipateView />}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import {
   AccordionItemButton,
   AccordionItemPanel,
 } from 'react-accessible-accordion';
+import { SortableElement } from 'react-sortable-hoc';
 import './AgendaGroup.scss';
 
 import AgendaItem from './AgendaItem';
@@ -24,7 +25,11 @@ import AgendaItem from './AgendaItem';
  *      }
  */
 
-function AgendaGroup({ agendaGroup }) {
+const SortableItem = SortableElement(
+  ({ item }) => <AgendaItem key={item.id} item={item} />,
+);
+
+function AgendaGroup({ index, agendaGroup }) {
   return (
     <AccordionItem className="AgendaGroup">
       <AccordionItemHeading className="group-header">
@@ -38,7 +43,7 @@ function AgendaGroup({ agendaGroup }) {
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className="group-items">
-        {agendaGroup.items.map((item) => <AgendaItem key={item.id} item={item} />)}
+        {agendaGroup.items.map((item, i) => <SortableItem index={i} collection={index} key={item} item={item} />)}
       </AccordionItemPanel>
     </AccordionItem>
   );

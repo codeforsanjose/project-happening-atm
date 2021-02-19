@@ -79,20 +79,6 @@ function App() {
               <Route path="/meeting-item/:id">
                 <MeetingItem />
               </Route>
-
-              {/* <Route exact path="/participate/join">
-                <ParticipatePage Component={ParticipateJoin} />
-              </Route>
-              <Route exact path="/participate/watch">
-                <ParticipatePage Component={ParticipateWatch} />
-              </Route>
-              <Route exact path="/participate/comment">
-                <ParticipatePage Component={ParticipateComment} />
-              </Route>
-              <Route exact path="/participate/request">
-                <ParticipatePage Component={ParticipateRequest} />
-              </Route> */}
-
               <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
                 <AdminView
                   headerText="Edit Meeting Details"

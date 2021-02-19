@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Accordion } from 'react-accessible-accordion';
+import { arrayMove, SortableContainer } from 'react-sortable-hoc';
 import './AgendaView.scss';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
@@ -18,13 +19,28 @@ import Search from '../../Header/Search';
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
  */
-
-function AgendaView({ agendaItems }) {
+const SortableList = SortableContainer(
+  ({ children }) => (
+    <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+      {children}
+    </Accordion>
+  ),
+);
+function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
-
   const renderedItems = showCompleted
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
+
+  const onSortEnd = ({ oldIndex, newIndex, collection }) => {
+    const newCollections = [...agendaItems];
+    newCollections[collection].items = arrayMove(
+      agendaItems[collection].items,
+      oldIndex,
+      newIndex,
+    );
+    setAgendaItems(newCollections);
+  };
 
   return (
     <div className="AgendaView">
@@ -39,11 +55,11 @@ function AgendaView({ agendaItems }) {
         <p>Show Completed Items</p>
       </button>
 
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {renderedItems.map((agendaGroup) => (
-          <AgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
+      <SortableList onSortEnd={onSortEnd}>
+        {renderedItems.map((agendaGroup, index) => (
+          <AgendaGroup key={index} index={index} agendaGroup={agendaGroup} />
         ))}
-      </Accordion>
+      </SortableList>
     </div>
   );
 }

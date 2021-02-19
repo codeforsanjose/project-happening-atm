@@ -20,7 +20,7 @@ function CustomizedTable(props) {
   /* One of the features of this library is the ability
   to window the table and scroll within it.
   For now this feature has to be foregone so I can set an
-  overflow CSS propertu to make the dropdown box work.
+  overflow CSS property to make the dropdown box work.
   And so, I set the height of this to fit all the rows.
 
   Also, I think this component's height is being calculated
@@ -139,7 +139,7 @@ class SortableCustomizedTable extends Component {
           agendaStatus: 'closed',
           height: 89,
         },
-        { 
+        {
           id: 4,
           parent_meeting_item_id: null,
           checkbox: false,
