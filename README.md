@@ -9,9 +9,7 @@ This problem has become a growing issue in the era of COVID-19 since virtual mee
 The City of San Jose is interested in this service, but this is a project that can scale to other cities as well.
 
 # Tech Stack
-* Currently hosted for free on Heroku:
-    * https://gov-agenda-notifier.herokuapp.com/
-        *   This is just the frontend at the moment since DB hosting is more costly
+* Currently migrating deployed version to AWS
 * Frontend
     * React.js + hooks
     * SASS
