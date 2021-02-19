@@ -1,0 +1,80 @@
+@import "../../utils/_colors.scss";
+
+.MeetingListItem {
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5em;
+  border: 2px solid $cloudy;
+  border-radius: 5px;
+  background-color: #fff;
+
+  @media only screen
+  and (min-device-width: 812px) {
+    padding: 1.4em;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+
+    .meeting-time {
+      text-align: right;
+      align-self: center;
+      grid-row-start: span 2;
+      font-size: 1.5em;
+    }
+
+    .meeting-links {
+      justify-self: left;
+
+      .link {
+        margin-right: 3em;
+      }
+    }
+  }
+
+  .meeting-date {
+    margin: 0;
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  .meeting-links {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: $lightBlue;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      .link {
+        display: flex;
+        align-items: center;
+        fill: $lightBlue;
+        font-size: 0.9em;
+
+        p {
+          margin: 0;
+          margin-left: 0.4em;
+        }
+      }
+    }
+
+    .disabled-link {
+      color: gray;
+      pointer-events: none;
+
+      svg {
+        fill: gray;
+      }
+    }
+  }
+}
+
+.in-progress {
+  border: 3px solid $cityBronze;
+}
