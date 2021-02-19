@@ -16,12 +16,7 @@ import {
 import './index.scss';
 
 import classnames from 'classnames';
-<<<<<<< HEAD
-import AgendaTable from './components/AgendaTable/AgendaTable';
-import MeetingList from './components/MeetingList/MeetingList';
-=======
 import MeetingListView from './components/MeetingListView/MeetingListView';
->>>>>>> tc/meeting-list-view
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import MeetingItem from './components/MeetingItem/MeetingItem';
@@ -105,12 +100,12 @@ function App() {
                 />
               </Route>
 
-              <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
+              {/* <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
                 <AdminView
                   headerText="Edit Agenda Items"
                   component={AgendaTable}
                 />
-              </Route>
+              </Route> */}
 
               <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
                 <AdminView
