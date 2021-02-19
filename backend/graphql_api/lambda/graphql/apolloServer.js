@@ -43,6 +43,7 @@ module.exports = (logger) => {
         updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
 
         createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
+        createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
     }
 
     type subscription {
@@ -53,6 +54,11 @@ module.exports = (logger) => {
         meeting_id: Int
         created_timestamp: String
         updated_timestamp: String
+    }
+
+    input meetingInput {
+        meeting_item_id: Int
+        meeting_id: Int
     }
 
     type meeting_with_items {
@@ -189,6 +195,10 @@ module.exports = (logger) => {
       createSubscription: async (_parent, args) => {
         logger.info('Initiating CreateSubscription Mutation resolver');
         return resolverHandler(mutationResolver.createSubscription, args);
+      },
+      createSubscriptions: async (_parent, args) => {
+        logger.info('Initiating CreateSubscriptions Mutation resolver');
+        return resolverHandler(mutationResolver.createSubscriptions, args);
       },
     },
   };

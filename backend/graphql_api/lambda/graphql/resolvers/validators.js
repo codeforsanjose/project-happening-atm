@@ -199,6 +199,7 @@ module.exports = (logger) => {
     validateStatus(status, 'status', context);
   };
 
+  // TODO: remove once frontend starts using createSubscriptions.
   module.validateCreateSubscription = (args) => {
     const context = 'createSubscription';
 
@@ -209,6 +210,21 @@ module.exports = (logger) => {
     const {
       phone_number, email_address,
       // meeting_item_id, meeting_id,
+    } = args;
+
+    validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+    validateEmail(email_address, 'email_address', context);
+  };
+
+  module.validateCreateSubscriptions = (args) => {
+    const context = 'createSubscriptions';
+
+    // TODO: Handle meeting_item_id, meeting_id validation
+    // I'd like to enforce these records only having one of these
+    // values, but I need to verify requirements
+
+    const {
+      phone_number, email_address,
     } = args;
 
     validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
