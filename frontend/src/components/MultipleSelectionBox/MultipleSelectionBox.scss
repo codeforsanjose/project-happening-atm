@@ -6,7 +6,7 @@
   text-transform: capitalize;
 
   position: fixed;
-  top: 60px; /* TODO */
+  top: 60px;
   width: 100vw;
   left: 0;
   
@@ -35,22 +35,14 @@
   }
 
   button {
-    //border-radius: 0.5em;
-    //padding: 0.25em 1.4em;
     cursor: pointer;
     background-color: $cityBronze;
-    //opacity: 0.8;
     border: none;
     outline: none;
     font-size: 1em;
-    //line-height: 25px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     text-transform: uppercase;
-
-    //&:hover {
-    //  opacity: 1;
-    //}
   }
 
   .action.row {
