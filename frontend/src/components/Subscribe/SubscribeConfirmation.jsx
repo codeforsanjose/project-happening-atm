@@ -9,11 +9,14 @@ import { ConfirmationIcon } from '../../utils/_icons';
  * This is the component for subscribe confirmation modal window.
  *
  * props:
+ *    numberOfSubscriptions
+ *      A number of successful subscriptions
  *    onClose
  *      A function/callback which is called when the window is being closed
  */
 
 function SubscribeConfirmation({
+  numberOfSubscriptions,
   onClose,
 }) {
   const { t } = useTranslation();
@@ -35,11 +38,12 @@ function SubscribeConfirmation({
         <ConfirmationIcon />
       </div>
       <div className="modal-body">
-        {/*
-          TODO adjust for multiple subscriptions
-          https://github.com/codeforsanjose/gov-agenda-notifier/issues/101
-        */}
-        <h4>{t('meeting.tabs.agenda.list.subscribe.confirmation.title')}</h4>
+        <h4>
+          {t(
+            'meeting.tabs.agenda.list.subscribe.confirmation.title',
+            { count: numberOfSubscriptions },
+          )}
+        </h4>
         <p>
           {t('meeting.tabs.agenda.list.subscribe.confirmation.description')}
         </p>

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 export const GET_ALL_MEETINGS = gql`
   query {
@@ -27,15 +27,13 @@ export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
   }
 `;
 
-export const CREATE_SUBSCRIPTION = gql`
-  mutation CreateSubscription(
-      $phone_number: String,
-      $email_address: String,
-      $meeting_item_id: Int,
-      $meeting_id: Int
+export const CREATE_SUBSCRIPTIONS = gql`
+  mutation CreateSubscriptions(
+    $phone_number: String,
+    $email_address: String,
+    $meetings: [meetingInput]
   ) {
-    createSubscription(phone_number: $phone_number, email_address: $email_address,
-    meeting_id: $meeting_id, meeting_item_id: $meeting_item_id) {
+    createSubscriptions(phone_number: $phone_number, email_address: $email_address, meetings: $meetings) {
       id
     }
   }

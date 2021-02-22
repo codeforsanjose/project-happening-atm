@@ -1,0 +1,73 @@
+@import "../../utils/_colors.scss";
+
+.multiple-selection-box {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  text-transform: capitalize;
+
+  position: fixed;
+  top: 60px; /* TODO */
+  width: 100vw;
+  left: 0;
+  
+  background-color: $cityBronze;
+  padding: 14px 16px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  @media only screen and (min-device-width: 400px) {
+    width: auto;
+    left: auto;
+    right: 10vw;
+    font-size: 16px;
+
+    & > span {
+      margin-right: 3em;
+    }
+  }
+
+  .bold {
+    font-weight: 600;
+  }
+
+  button {
+    //border-radius: 0.5em;
+    //padding: 0.25em 1.4em;
+    cursor: pointer;
+    background-color: $cityBronze;
+    //opacity: 0.8;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    //line-height: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    //&:hover {
+    //  opacity: 1;
+    //}
+  }
+
+  .action.row {
+    font-family: 'Poppins', sans-serif;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    button {
+      text-transform: capitalize;
+      font-weight: 400;
+    }
+
+    @media only screen and (min-device-width: 400px) {
+      svg {
+        margin-right: 8px;
+      }
+    }
+  }
+}
