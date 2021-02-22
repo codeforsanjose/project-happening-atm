@@ -152,15 +152,15 @@ meeting:
             description: Subscribe to receive a notification when this item is up next for discussion and when discussions for this item begin.
             inputs:
               sms:
-                label: Subscribe to text notificcations
+                label: Subscribe to text notifications
                 placeholder: Enter phone number
               email:
                 label: Subscribe to email notifications
                 placeholder: Enter email address
           confirmation:
-            title: You have subscribed to the agenda item(s)!
+            title: You have subscribed to {{count}} agenda item(s)!
             description: Thank you for signing up. To verify your identity, please check your email and confirm your subscriptions.
-            butotn: OK
+            button: OK
         share:
           button: Share
         more-info:
