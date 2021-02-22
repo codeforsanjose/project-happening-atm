@@ -1,0 +1,13 @@
+@import "../../utils/_colors.scss";
+
+.DragAndDrop {
+  position: relative;
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 2px dashed $black;
+    border-radius: 10px;
+  }
+}
