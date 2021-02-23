@@ -21,18 +21,75 @@
     }
 
     .upload-area {
-      margin: 2em 0;
+      box-sizing: border-box;
+      height: 24em;
+      margin: 4em 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
       border-radius: 6px;
+
+      p {
+        margin: 0.5em 0;
+      }
+
+      label {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
 
-    .close-modal {
+    .cancel-button {
       position: absolute;
-      right: -2em;
-      top: -1em;
       padding: 0;
       border: none;
       background-color: transparent;
       cursor: pointer;
+    }
+
+    .close-modal {
+      right: -2em;
+      top: -1em;
+    }
+
+
+
+    .file-preview {
+      position: relative;
+      padding: 1.4em;
+      margin-bottom: 2em;
+      width: 10em;
+      background-color: $black;
+      color: #fff;
+      border-radius: 4px;
+
+      .cancel-file {
+        right: 0;
+        top: 0;
+        fill: #fff;
+        transform: scale(0.6);
+      }
+
+      .csv-icon {
+        height: 4em;
+        width: 5em;
+        margin: 0 auto;
+        padding: 1em;
+        background-color: #fff;
+        border-radius: 2px;
+        color: $black;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+      }
+
+      p {
+        margin: 1em 0 0;
+        overflow-wrap: break-word;
+        text-align: center;
+      }
     }
 
     .upload-button {
