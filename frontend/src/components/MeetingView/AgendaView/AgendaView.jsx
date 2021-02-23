@@ -50,8 +50,8 @@ function AgendaView({ agendaItems, setAgendaItems }) {
   };
   const onAgendaSubItemSortEnd = ({ oldIndex, newIndex, collection }) => {
     const newAgendaItems = [...agendaItems];
-    newAgendaItems[collection].items = arrayMove(
-      agendaItems[collection].items,
+    newAgendaItems[collection].subItems = arrayMove(
+      agendaItems[collection].subItems,
       oldIndex,
       newIndex,
     );
