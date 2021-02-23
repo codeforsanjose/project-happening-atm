@@ -85,6 +85,7 @@ function CSVUploadModal({ isOpen, closeModal }) {
           type="button"
           className="upload-button"
           onClick={() => console.log('hi')}
+          disabled={!selectedFile}
         >
           Upload and Publish
         </button>
