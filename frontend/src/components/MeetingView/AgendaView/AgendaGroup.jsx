@@ -26,7 +26,7 @@ import AgendaItem from './AgendaItem';
  */
 
 const SortableItem = SortableElement(
-  ({ item }) => <AgendaItem key={item.id} item={item} />,
+  ({ item }) => <AgendaItem item={item} />,
 );
 
 function AgendaGroup({ index, agendaGroup }) {
