@@ -25,7 +25,7 @@ import AgendaItem from './AgendaItem';
  *      }
  */
 
-const SortableItem = SortableElement(
+const SortableSubItem = SortableElement(
   ({ item }) => <AgendaItem item={item} />,
 );
 
@@ -43,7 +43,7 @@ function AgendaGroup({ index, agendaGroup }) {
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className="group-items">
-        {agendaGroup.items.map((item, i) => <SortableItem index={i} collection={index} key={item} item={item} />)}
+        {agendaGroup.items.map((item, i) => <SortableSubItem index={i} collection={index} key={item} item={item} />)}
       </AccordionItemPanel>
     </AccordionItem>
   );

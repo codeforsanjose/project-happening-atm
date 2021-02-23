@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Accordion } from 'react-accessible-accordion';
-import { arrayMove, SortableContainer } from 'react-sortable-hoc';
+import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc';
 import './AgendaView.scss';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
@@ -19,7 +19,19 @@ import Search from '../../Header/Search';
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
  */
-const SortableList = SortableContainer(
+const SortableAgendaGroupElement = SortableElement(
+  ({ agendaGroup, index }) => <AgendaGroup key={index} index={index} agendaGroup={agendaGroup} />,
+);
+const SortableAgendaGroupContainer = SortableContainer(
+  ({ renderedItems, onSubItemSortEnd }) => (
+    <SortableSubItemContainer onSortEnd={onSubItemSortEnd}>
+      {renderedItems.map((agendaGroup, index) => (
+        <SortableAgendaGroupElement agendaGroup={agendaGroup} index={index} />
+      ))}
+    </SortableSubItemContainer>
+  ),
+);
+const SortableSubItemContainer = SortableContainer(
   ({ children }) => (
     <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
       {children}
@@ -32,7 +44,10 @@ function AgendaView({ agendaItems, setAgendaItems }) {
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
 
-  const onSortEnd = ({ oldIndex, newIndex, collection }) => {
+  const onAgendaGroupSortEnd = ({ oldIndex, newIndex }) => {
+    setAgendaItems(({ items }) => arrayMove(items, oldIndex, newIndex));
+  };
+  const onSubItemSortEnd = ({ oldIndex, newIndex, collection }) => {
     const newCollections = [...agendaItems];
     newCollections[collection].items = arrayMove(
       agendaItems[collection].items,
@@ -55,11 +70,11 @@ function AgendaView({ agendaItems, setAgendaItems }) {
         <p>Show Completed Items</p>
       </button>
 
-      <SortableList onSortEnd={onSortEnd}>
-        {renderedItems.map((agendaGroup, index) => (
-          <AgendaGroup key={index} index={index} agendaGroup={agendaGroup} />
-        ))}
-      </SortableList>
+      <SortableAgendaGroupContainer
+        renderedItems={renderedItems}
+        onSortEnd={onAgendaGroupSortEnd}
+        onSubItemSortEnd={onSubItemSortEnd}
+      />
     </div>
   );
 }
