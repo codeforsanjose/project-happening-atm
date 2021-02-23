@@ -1,65 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {
+  AccordionItem,
+  AccordionItemHeading,
+  AccordionItemButton,
+  AccordionItemPanel,
+} from 'react-accessible-accordion';
+import { SortableElement } from 'react-sortable-hoc';
 import './AgendaItem.scss';
 
-import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
-
-const itemLinks = [
-  {
-    getPath: (item) => `/subscribe/${item.meetingId}/${item.id}`,
-    Icon: NotificationsIcon,
-    text: 'Subscribe',
-  },
-  {
-    getPath: (item) => '/',
-    Icon: ShareIcon,
-    text: 'Share',
-  },
-  {
-    getPath: (item) => '/',
-    Icon: AddIcon,
-    text: 'More Info',
-  },
-];
+import AgendaSubItem from './AgendaSubItem';
 
 /**
- * An agenda group and accordion sub item
+ * A group of agenda items in a collapsible accordion.
  *
  * props:
- *    item
- *      Object that represents an agenda item.
+ *    agendaGroup
+ *      Object that represents an agenda group.
  *      {
- *        id: Number id of item
- *        meetingId: Number id of the corresponding meeting
- *        title:  String title of item
- *        description:  String description of item
- *        status: String status of item
+ *        id: Number id of group
+ *        title:  String title of group
+ *        description:  String description of group
+ *        status: String status of group
+ *        items: An array of agenda group's sub items
  *      }
  */
 
-function AgendaItem({ item }) {
+const SortableAgendaSubItem = SortableElement(
+  ({ renderedAgendaSubItem }) => <AgendaSubItem renderedAgendaSubItem={renderedAgendaSubItem} />,
+);
+
+export default function AgendaItem({ index, renderedAgendaItem }) {
   return (
-    <div className="AgendaItem">
-      {item.status !== 'Pending' && <div className="item-status">{item.status}</div>}
+    <AccordionItem className="AgendaGroup">
+      <AccordionItemHeading className="group-header">
+        <AccordionItemButton className="group-button">
+          <div className="button-text">
+            <div className="group-title">{renderedAgendaItem.title}</div>
+            <div className="group-status">
+              {renderedAgendaItem.status === 'Pending' ? '' : renderedAgendaItem.status}
+            </div>
+          </div>
+        </AccordionItemButton>
+      </AccordionItemHeading>
+      <AccordionItemPanel className="group-items">
+        {renderedAgendaItem.subItems.map((renderedAgendaSubItem, i) => (
+          <SortableAgendaSubItem
+            index={i}
+            collection={index}
+            key={renderedAgendaSubItem}
+            renderedAgendaSubItem={renderedAgendaSubItem}
+          />
+        ))}
 
-      <input type="checkbox" />
-      <h4>{item.title}</h4>
-      <p>{item.description}</p>
-
-      <div className="item-links">
-        {
-          itemLinks.map((link) => (
-            <Link to={link.getPath(item)} key={link.text}>
-              <div className="link">
-                <link.Icon />
-                <p>{link.text}</p>
-              </div>
-            </Link>
-          ))
-        }
-      </div>
-    </div>
+      </AccordionItemPanel>
+    </AccordionItem>
   );
 }
-
-export default AgendaItem;

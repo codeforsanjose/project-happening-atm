@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Accordion } from 'react-accessible-accordion';
-import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 import './AgendaView.scss';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
-import AgendaGroup from './AgendaGroup';
+import AgendaItem from './AgendaItem';
 import Search from '../../Header/Search';
 
 /**
@@ -19,19 +20,19 @@ import Search from '../../Header/Search';
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
  */
-const SortableAgendaGroupElement = SortableElement(
-  ({ agendaGroup, index }) => <AgendaGroup key={index} index={index} agendaGroup={agendaGroup} />,
+const SortableAgendaItemElement = SortableElement(
+  ({ renderedAgendaItem, index }) => <AgendaItem key={index} index={index} renderedAgendaItem={renderedAgendaItem} />,
 );
-const SortableAgendaGroupContainer = SortableContainer(
-  ({ renderedItems, onSubItemSortEnd }) => (
-    <SortableSubItemContainer onSortEnd={onSubItemSortEnd}>
-      {renderedItems.map((agendaGroup, index) => (
-        <SortableAgendaGroupElement agendaGroup={agendaGroup} index={index} />
+const SortableAgendaItemContainer = SortableContainer(
+  ({ renderedAgendaItems, onAgendaSubItemSortEnd }) => (
+    <SortableAgendaSubItemContainer onSortEnd={onAgendaSubItemSortEnd}>
+      {renderedAgendaItems.map((renderedAgendaItem, index) => (
+        <SortableAgendaItemElement renderedAgendaItem={renderedAgendaItem} index={index} />
       ))}
-    </SortableSubItemContainer>
+    </SortableAgendaSubItemContainer>
   ),
 );
-const SortableSubItemContainer = SortableContainer(
+const SortableAgendaSubItemContainer = SortableContainer(
   ({ children }) => (
     <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
       {children}
@@ -40,21 +41,21 @@ const SortableSubItemContainer = SortableContainer(
 );
 function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
-  const renderedItems = showCompleted
+  const renderedAgendaItems = showCompleted
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
 
-  const onAgendaGroupSortEnd = ({ oldIndex, newIndex }) => {
+  const onAgendaItemSortEnd = ({ oldIndex, newIndex }) => {
     setAgendaItems(({ items }) => arrayMove(items, oldIndex, newIndex));
   };
-  const onSubItemSortEnd = ({ oldIndex, newIndex, collection }) => {
-    const newCollections = [...agendaItems];
-    newCollections[collection].items = arrayMove(
+  const onAgendaSubItemSortEnd = ({ oldIndex, newIndex, collection }) => {
+    const newAgendaItems = [...agendaItems];
+    newAgendaItems[collection].items = arrayMove(
       agendaItems[collection].items,
       oldIndex,
       newIndex,
     );
-    setAgendaItems(newCollections);
+    setAgendaItems(newAgendaItems);
   };
 
   return (
@@ -70,10 +71,10 @@ function AgendaView({ agendaItems, setAgendaItems }) {
         <p>Show Completed Items</p>
       </button>
 
-      <SortableAgendaGroupContainer
-        renderedItems={renderedItems}
-        onSortEnd={onAgendaGroupSortEnd}
-        onSubItemSortEnd={onSubItemSortEnd}
+      <SortableAgendaItemContainer
+        renderedAgendaItems={renderedAgendaItems}
+        onSortEnd={onAgendaItemSortEnd}
+        onAgendaSubItemSortEnd={onAgendaSubItemSortEnd}
       />
     </div>
   );

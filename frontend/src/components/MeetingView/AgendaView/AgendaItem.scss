@@ -1,71 +1,59 @@
 @import "../../../utils/_colors.scss";
 
-.AgendaItem {
-  box-sizing: border-box;
-  margin-bottom: 1em;
-  padding: 1em;
-  border: 2px solid $cloudy;
-  border-radius: 5px;
-  background-color: #fff;
+.AgendaGroup {
+  .group-header {
+    margin-bottom: 0.8em;
 
-  @media only screen
-  and (min-device-width: 812px) {
-    padding: 1.4em;
-  }
-
-  .item-status {
-    text-align: right;
-    font-weight: 600;
-  }
-
-  h4 {
-    margin: 0;
-    display: inline-block;
-    font-weight: 500;
-  }
-
-  input[type="checkbox"] {
-    margin-right: 1em;
-    transform: scale(1.4);
-  }
-
-  p {
-    margin: 2em 0;
-  }
-
-  .item-links {
-    display: flex;
-    justify-content: space-evenly;
-
-    a {
-      color: $lightBlue;
-      text-decoration: none;
+    .group-button {
+      padding: 1em;
+      border-radius: 4px;
+      background-color: $cityBlue;
+      color: #fff;
+      cursor: pointer;
 
       &:hover {
-        text-decoration: underline;
+        background-color: $lightBlue;
       }
 
-      .link {
+      .group-title:before {
+        display: inline-block;
+        content: '';
+        height: 0;
+        width: 0;
+        margin-right: 1em;
+        border-top: 0.5em solid transparent;
+        border-bottom: 0.5em solid transparent;
+        border-left: 0.5em solid currentColor;
+        transition: 0.1s ease-in transform;
+      }
+
+      &[aria-expanded='true'] .group-title::before,
+      &[aria-selected='true'] .group-title::before {
+          transform: rotate(90deg);
+      }
+
+      .button-text {
         display: flex;
-        align-items: center;
-        fill: $lightBlue;
-        font-size: 0.9em;
+        justify-content: space-between;
 
-        p {
-          margin: 0;
-          margin-left: 0.2em;
-
-          @media only screen
-          and (min-device-width: 812px) {
-            margin: 0.5em;
-            font-size: 1em;
-          }
+        .group-status {
+          font-weight: 600;
         }
       }
     }
   }
-}
 
-.active-item {
-  border: 3px solid $cityBronze;
+  .group-items {
+    animation: fadein 0.3s ease-in;
+
+    @keyframes fadein {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+  }
 }

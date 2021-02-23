@@ -6,7 +6,7 @@ import Header from '../Header/Header';
 import ParticipateView from './ParticipateView/ParticipateView';
 import AgendaView from './AgendaView/AgendaView';
 
-function makeTestSubItem(parentIndex, index, status) {
+function makeAgendaSubItem(parentIndex, index, status) {
   return {
     id: `${index}`,
     meetingId: `${parentIndex}`,
@@ -17,7 +17,7 @@ function makeTestSubItem(parentIndex, index, status) {
   };
 }
 
-function makeTestItem(index) {
+function makeAgendaItem(index) {
   // eslint-disable-next-line no-nested-ternary
   const status = index <= 2 ? 'Completed' : index === 3 ? 'In Progress' : 'Pending';
   return {
@@ -25,11 +25,11 @@ function makeTestItem(index) {
     title: `${index} Agenda Group`,
     description: '',
     status,
-    items: [1, 2, 3, 4].map((i) => makeTestSubItem(index, i, status)),
+    subItems: [1, 2, 3, 4].map((i) => makeAgendaSubItem(index, i, status)),
   };
 }
 
-const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
+const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeAgendaItem);
 
 /**
  * Component that displays a list of a meeting's agenda items.
