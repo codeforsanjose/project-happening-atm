@@ -47,7 +47,7 @@ export default function AgendaItem({ index, renderedAgendaItem }) {
           <SortableAgendaSubItem
             index={i}
             collection={index}
-            key={renderedAgendaSubItem}
+            key={renderedAgendaSubItem+i}
             renderedAgendaSubItem={renderedAgendaSubItem}
           />
         ))}

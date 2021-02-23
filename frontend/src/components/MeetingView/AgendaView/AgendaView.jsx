@@ -20,6 +20,15 @@ import Search from '../../Header/Search';
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
  */
+
+const SortableAgendaSubItemContainer = SortableContainer(
+  ({ children }) => (
+    <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+      {children}
+    </Accordion>
+  ),
+);
+
 const SortableAgendaItemElement = SortableElement(
   ({ renderedAgendaItem, index }) => <AgendaItem key={index} index={index} renderedAgendaItem={renderedAgendaItem} />,
 );
@@ -32,22 +41,13 @@ const SortableAgendaItemContainer = SortableContainer(
     </SortableAgendaSubItemContainer>
   ),
 );
-const SortableAgendaSubItemContainer = SortableContainer(
-  ({ children }) => (
-    <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-      {children}
-    </Accordion>
-  ),
-);
+
 function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
   const renderedAgendaItems = showCompleted
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
 
-  const onAgendaItemSortEnd = ({ oldIndex, newIndex }) => {
-    setAgendaItems(({ items }) => arrayMove(items, oldIndex, newIndex));
-  };
   const onAgendaSubItemSortEnd = ({ oldIndex, newIndex, collection }) => {
     const newAgendaItems = [...agendaItems];
     newAgendaItems[collection].subItems = arrayMove(
@@ -55,6 +55,10 @@ function AgendaView({ agendaItems, setAgendaItems }) {
       oldIndex,
       newIndex,
     );
+    setAgendaItems(newAgendaItems);
+  };
+  const onAgendaItemSortEnd = ({ oldIndex, newIndex }) => {
+    const newAgendaItems = arrayMove(agendaItems, oldIndex, newIndex);
     setAgendaItems(newAgendaItems);
   };
 
