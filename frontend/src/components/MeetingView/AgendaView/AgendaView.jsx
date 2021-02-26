@@ -6,6 +6,7 @@ import './AgendaView.scss';
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 import AgendaGroup from './AgendaGroup';
 import Search from '../../Header/Search';
+import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -18,11 +19,44 @@ import Search from '../../Header/Search';
  * state:
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
+ *    selectedItems
+ *      Agenda items selected by user. It is an object (has a dictionary structure) like
+ *      {
+ *        [meeting_id]: { [meeting_item_id]}
+ *      }
  */
 
 function AgendaView({ agendaItems }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
+  const [selectedItems, setSelectedItems] = useState({});
+
+  const handleSelectionCancel = () => {
+    setSelectedItems({});
+  };
+
+  const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
+    if (isChecked && !(meetingId in selectedItems)) {
+      selectedItems[meetingId] = {};
+    }
+
+    const selectedAgendaItems = selectedItems[meetingId];
+    if (isChecked) {
+      selectedAgendaItems[itemId] = isChecked;
+    } else {
+      delete selectedAgendaItems[itemId];
+    }
+    if (Object.keys(selectedAgendaItems).length === 0) {
+      // There are no more selected items with meeting id equal to `meetingId`.
+      // We delete the whole entry from `selectedItems` then.
+      const newSelectedItems = { ...selectedItems };
+      delete newSelectedItems[meetingId];
+      setSelectedItems(newSelectedItems);
+    } else {
+      const newSelectedItems = { ...selectedItems, [meetingId]: selectedAgendaItems };
+      setSelectedItems(newSelectedItems);
+    }
+  };
 
   const renderedItems = showCompleted
     ? agendaItems
@@ -43,9 +77,22 @@ function AgendaView({ agendaItems }) {
 
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
         {renderedItems.map((agendaGroup) => (
-          <AgendaGroup key={agendaGroup.id} agendaGroup={agendaGroup} />
+          <AgendaGroup
+            key={agendaGroup.id}
+            agendaGroup={agendaGroup}
+            selectedItems={selectedItems}
+            handleItemSelection={handleAgendaItemSelection}
+          />
         ))}
       </Accordion>
+
+      { Object.keys(selectedItems).length > 0
+        && (
+          <MultipleSelectionBox
+            selectedItems={selectedItems}
+            handleCancel={handleSelectionCancel}
+          />
+        )}
     </div>
   );
 }

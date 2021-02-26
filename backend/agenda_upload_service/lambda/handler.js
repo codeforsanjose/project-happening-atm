@@ -1,7 +1,7 @@
 require('dotenv').config();
 const serverless = require('serverless-http');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const logger = require('./utilities/logger');
 const app = require('./app')(logger);
 

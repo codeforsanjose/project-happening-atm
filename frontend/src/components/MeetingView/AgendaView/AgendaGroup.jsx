@@ -22,9 +22,16 @@ import AgendaItem from './AgendaItem';
  *        status: String status of group
  *        items: An array of agenda group's sub items
  *      }
+ *    selectedItems
+ *      Agenda items selected by user. It is an object (has a dictionary structure) like
+ *      {
+ *        [meeting_id]: { [meeting_item_id]}
+ *      }
+ *    handleItemSelection
+ *      A handler for agenda item selection
  */
 
-function AgendaGroup({ agendaGroup }) {
+function AgendaGroup({ agendaGroup, selectedItems, handleItemSelection }) {
   return (
     <AccordionItem className="AgendaGroup">
       <AccordionItemHeading className="group-header">
@@ -38,7 +45,15 @@ function AgendaGroup({ agendaGroup }) {
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className="group-items">
-        {agendaGroup.items.map((item) => <AgendaItem key={item.id} item={item} />)}
+        {agendaGroup.items.map((item) => (
+          <AgendaItem
+            key={item.id}
+            item={item}
+            isSelected={selectedItems[agendaGroup.id] !== undefined
+              && selectedItems[agendaGroup.id][item.id] !== undefined}
+            handleSelection={handleItemSelection}
+          />
+        ))}
       </AccordionItemPanel>
     </AccordionItem>
   );

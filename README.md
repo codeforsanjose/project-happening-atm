@@ -9,9 +9,7 @@ This problem has become a growing issue in the era of COVID-19 since virtual mee
 The City of San Jose is interested in this service, but this is a project that can scale to other cities as well.
 
 # Tech Stack
-* Currently hosted for free on Heroku:
-    * https://gov-agenda-notifier.herokuapp.com/
-        *   This is just the frontend at the moment since DB hosting is more costly
+* Currently migrating deployed version to AWS
 * Frontend
     * React.js + hooks
     * SASS
@@ -72,6 +70,17 @@ When running with docker-compose, a separate persistent volume is created for Po
 
    - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
    - Message Trace Ohrt on Slack if you need secret keys
+1. Create a `.env` file in the `backend/agenda_upload_service/lambda/` directory
+1. Make sure the file includes these keys:
+
+   ```
+   NODE_ENV=development
+
+   PGHOST=gov-agenda-notifier_backend_pg_1
+   PGUSER=docker
+   PGPASSWORD=docker
+   PGDATABASE=devdb
+   PGPORT=5432
 
 1. Run docker-compose command to bring up the apps:
    ```bash

@@ -67,6 +67,7 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
+  // TODO: remove once frontend starts using createSubscriptions.
   module.createSubscription = async (dbClient, args) => {
     validator.validateCreateSubscription(args);
 
@@ -88,6 +89,31 @@ module.exports = (logger) => {
       throw e;
     }
     return res.rows[0];
+  };
+
+  module.createSubscriptions = async (dbClient, args) => {
+    validator.validateCreateSubscriptions(args);
+
+    let res;
+    try {
+      res = await dbClient.createSubscriptions(
+        args.phone_number, args.email_address, args.meetings,
+      );
+    } catch (e) {
+      logger.error(`createSubscriptions resolver error - dbClient.createSubscriptions: ${e}`);
+      throw e;
+    }
+
+    const ids = [];
+    res.rows.forEach((row) => { ids.push(row.id); });
+
+    try {
+      res = await dbClient.getSubscription(ids);
+    } catch (e) {
+      logger.error(`createSubscription resolver error - dbClient.getSubscriptions: ${e}`);
+      throw e;
+    }
+    return res.rows;
   };
 
   module.updateMeetingItem = async (dbClient, args) => {

@@ -37,7 +37,7 @@ function Header({ shouldHide }) {
           </div>
 
           <div className="status">
-            {t('meeting.status.relative.in-progress')}
+            {t('meeting.status.relative.long.in-progress')}
           </div>
         </div>
       </div>
