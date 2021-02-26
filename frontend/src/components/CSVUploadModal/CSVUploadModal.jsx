@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import './CSVUploadModal.scss';
 
 import DragAndDrop from './DragAndDrop';
+import Spinner from '../Spinner/Spinner';
 import { PublishIcon, CancelIcon } from '../../utils/_icons';
 
 const overlayStyle = {
@@ -17,6 +18,7 @@ const overlayStyle = {
 function CSVUploadModal({ isOpen, closeModal }) {
   const fileInputRef = useRef();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleFileChange() {
     const fileRef = fileInputRef.current;
@@ -37,6 +39,22 @@ function CSVUploadModal({ isOpen, closeModal }) {
     fileInputRef.current.value = '';
     setSelectedFile(null);
   }
+
+  function uploadCSV() {
+    setIsLoading(true);
+
+    // await upload csv
+    setTimeout(() => {
+      setIsLoading(false);
+      clearSelectedFile();
+    }, 5000);
+
+    // loading end
+    // success notification
+  }
+
+  const publishButtonText = isLoading
+    ? 'Uploading and Publishing' : 'Upload and Publish';
 
   return (
     <Modal
@@ -84,10 +102,11 @@ function CSVUploadModal({ isOpen, closeModal }) {
         <button
           type="button"
           className="upload-button"
-          onClick={() => console.log('hi')}
+          onClick={uploadCSV}
           disabled={!selectedFile}
         >
-          Upload and Publish
+          {isLoading && <Spinner />}
+          {publishButtonText}
         </button>
       </div>
     </Modal>

@@ -96,7 +96,9 @@
       float: right;
       width: 360px;
       padding: 0.5em 0;
-      border: 4px solid $lightBronze;
+      display: flex;
+      justify-content: center;
+      border: 4px solid transparent;
       border-radius: 6px;
       background-color: $lightBronze;
       color: $black;
@@ -109,10 +111,14 @@
       }
 
       &:disabled {
-        background-color: #fff;
+        background-color: transparent;
         border: 4px solid $cloudy;
         color: $cloudy;
         cursor: not-allowed;
+      }
+
+      .spinner {
+        margin-right: 1em;
       }
     }
   }
