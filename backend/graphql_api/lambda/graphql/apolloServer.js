@@ -44,6 +44,9 @@ module.exports = (logger) => {
 
         createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
         createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
+
+        confirmEmail(token: String): Boolean
+        unconfirmEmail(token: String): Boolean
     }
 
     type subscription {
@@ -199,6 +202,14 @@ module.exports = (logger) => {
       createSubscriptions: async (_parent, args) => {
         logger.info('Initiating CreateSubscriptions Mutation resolver');
         return resolverHandler(mutationResolver.createSubscriptions, args);
+      },
+      confirmEmail: async (_parent, args) => {
+        logger.info('Initiating ConfirmEmail Mutation resolver');
+        return resolverHandler(mutationResolver.confirmEmail, args);
+      },
+      unconfirmEmail: async (_parent, args) => {
+        logger.info('Initiating UnconfirmEmail Mutation resolver');
+        return resolverHandler(mutationResolver.unconfirmEmail, args);
       },
     },
   };

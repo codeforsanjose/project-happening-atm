@@ -90,7 +90,7 @@ module.exports = (logger) => {
 
         sendFn(number, updateMessageBody);
       }
-    }
+    };
 
     try {
       await sendMessages(phoneNumberMap, twilioClient.sendTextMessage)
