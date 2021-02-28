@@ -100,18 +100,6 @@ module.exports = async (logger) => {
     return query('SELECT id FROM meeting');
   };
 
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
-    logger.info('dbClient: createSubscription');
-    const now = Date.now();
-    const createdTimestamp = now;
-    const updatedTimestamp = now;
-    const queryString = `
-        INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id, created_timestamp, updated_timestamp)
-        VALUES ('${phoneNumber}', '${emailAddress}', '${meetingItemId}', '${meetingId}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
-        RETURNING id;`;
-    return query(queryString);
-  };
-
   module.createSubscriptions = async (phoneNumber, emailAddress, meetings) => {
     logger.info('dbClient: createSubscriptions');
     const values = [];
