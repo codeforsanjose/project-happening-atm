@@ -149,17 +149,5 @@ module.exports = async (logger) => {
     return query(queryString);
   };
 
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
-    logger.info('dbClient: createSubscription');
-    const now = Date.now();
-    const createdTimestamp = now;
-    const updatedTimestamp = now;
-    const queryString = `
-        INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id, created_timestamp, updated_timestamp)
-        VALUES ('${phoneNumber}', '${emailAddress}', '${meetingItemId}', '${meetingId}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
-        RETURNING id;`;
-    return query(queryString);
-  };
-
   return module;
 };

@@ -42,7 +42,6 @@ module.exports = (logger) => {
         createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
         updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
 
-        createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
         createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
 
         confirmEmail(token: String): Boolean
@@ -194,10 +193,6 @@ module.exports = (logger) => {
       updateMeetingItem: async (_parent, args, context) => {
         logger.info('Initiating UpdateMeetingItem Mutation resolver');
         return resolverHandler(mutationResolver.updateMeetingItem, args);
-      },
-      createSubscription: async (_parent, args) => {
-        logger.info('Initiating CreateSubscription Mutation resolver');
-        return resolverHandler(mutationResolver.createSubscription, args);
       },
       createSubscriptions: async (_parent, args) => {
         logger.info('Initiating CreateSubscriptions Mutation resolver');
