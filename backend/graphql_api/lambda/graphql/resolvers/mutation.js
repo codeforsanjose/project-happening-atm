@@ -10,6 +10,28 @@ module.exports = (logger) => {
 
   const module = {};
 
+  module.confirmEmail = async (dbClient, args) => {
+    try {
+      await dbClient.toogleConfirmByToken(args.token, true);
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
+
+    return true;
+  };
+
+  module.unconfirmEmail = async (dbClient, args) => {
+    try {
+      await dbClient.toogleConfirmByToken(args.token, false);
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
+
+    return true;
+  };
+
   module.createMeeting = async (dbClient, args) => {
     validator.validateCreateMeeting(args);
 

@@ -209,5 +209,11 @@ module.exports = async (logger) => {
     return query(`SELECT * FROM admin WHERE email_address = '${email}'`);
   };
 
+  module.toogleConfirmByToken = async (token, toogleBoolean) => {
+    logger.info('dbClient: unconfirmUserByToken');
+    // TODO: change unsubscribe_token column once it's been changed in DB
+    return query(`UPDATE account SET email_address_subscribed = ${toogleBoolean} WHERE unsubscribe_token = '${token}'`);
+  };
+
   return module;
 };
