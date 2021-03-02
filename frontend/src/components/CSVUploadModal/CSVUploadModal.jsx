@@ -7,14 +7,6 @@ import DragAndDrop from './DragAndDrop';
 import Spinner from '../Spinner/Spinner';
 import { PublishIcon, CancelIcon } from '../../utils/_icons';
 
-const overlayStyle = {
-  display: 'grid',
-  placeItems: 'center',
-  zIndex: 10000,
-  backdropFilter: 'blur(2px)',
-  backgroundColor: 'rgba(0,0,0,0.2)',
-};
-
 function CSVUploadModal({ isOpen, closeModal }) {
   const fileInputRef = useRef();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -56,13 +48,14 @@ function CSVUploadModal({ isOpen, closeModal }) {
   const publishButtonText = isLoading
     ? 'Uploading and Publishing' : 'Upload and Publish';
 
+  Modal.setAppElement('#root');
   return (
     <Modal
-      style={{ overlay: overlayStyle }}
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Example Modal"
       className="CSVUploadModal"
+      overlayClassName="modal-overlay"
     >
       <div className="wrapper">
         <button type="button" onClick={closeModal} className="cancel-button close-modal">
