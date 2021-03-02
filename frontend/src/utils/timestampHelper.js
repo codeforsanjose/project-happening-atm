@@ -1,15 +1,27 @@
 import dayjs from 'dayjs';
 
-export function toDateString(timestamp) {
-  return dayjs(timestamp).format('M/D/YYYY');
+export function toDateString(timestamp, format) {
+  return dayjs(timestamp).format(format || 'M/D/YYYY');
 }
 
 export function toTimeString(timestamp) {
   return dayjs(timestamp).format('h:mm A');
 }
 
+function getTimeStampForDayJS(unixTimeString) {
+  return parseInt(unixTimeString, 10) / 1000;
+}
+
+export function unixTimeStringToDateString(unixTimeString, format) {
+  return toDateString(getTimeStampForDayJS(unixTimeString), format);
+}
+
+export function unixTimeStringToTimeString(unixTimeString) {
+  return toTimeString(getTimeStampForDayJS(unixTimeString));
+}
+
 export function isFutureTimestamp(timestamp) {
-  const unixTime = parseInt(timestamp, 10) / 1000;
+  const unixTime = getTimeStampForDayJS(timestamp);
   return dayjs().isBefore(unixTime);
 }
 
@@ -49,7 +61,7 @@ export function groupMeetingsByDate(meetings) {
 
   // Fill hash table with meetings organized by year and month
   meetings.forEach((meeting) => {
-    const unixTime = parseInt(meeting.meeting_start_timestamp, 10) / 1000;
+    const unixTime = getTimeStampForDayJS(meeting.meeting_start_timestamp);
     const date = dayjs(unixTime);
     const month = date.month();
     const year = date.year();
@@ -85,4 +97,20 @@ export function groupMeetingsByDate(meetings) {
   });
 
   return result;
+}
+
+export function getRelativeTimeLocKey(unixTimeString) {
+  // This function expects a unix time divided by 1000 (milliseconds converted to seconds).
+  // Returns a locale key for a meeting status (relative to the current time).
+  if (isFutureTimestamp(unixTimeString)) {
+    const locKeyPrefix = 'meeting.status.relative.long.';
+    const dayJSTimeStamp = dayjs(getTimeStampForDayJS(unixTimeString));
+    const now = dayjs();
+    const diffInDays = dayJSTimeStamp.diff(now, 'day');
+    if (diffInDays > 6) {
+      return `${locKeyPrefix}in-1-week`;
+    }
+    return `${locKeyPrefix}in-${diffInDays}-day${diffInDays <= 1 ? '' : 's'}`;
+  }
+  return 'meeting.status.long.ended';
 }
