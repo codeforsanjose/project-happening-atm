@@ -1,29 +1,36 @@
 @import '../../utils/colors';
 
 .CSVUploadModal {
-  padding: 2em 3em;
+  padding: 3em;
   box-shadow: rgba(0,0,0,0.8) 0 0 10px;
   background-color: $blueSky;
   border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
 
   .wrapper {
     position: relative;
-    width: 750px;
 
     h2 {
       display: inline-block;
       margin: 0;
-      padding-bottom: 0.4em;
-      padding-right: 2em;
-      border-bottom: 2px solid $cityBronze;
       color: $black;
       font-weight: 600;
+
+      &::after {
+        display: block;
+        content: '';
+        background-color: $cityBronze;
+        margin-top: 0.5em;
+        width: 300px;
+        height: 3px;
+      }
     }
 
     .upload-area {
       box-sizing: border-box;
       height: 24em;
-      margin: 4em 0;
+      width: 750px;
+      margin: 2em 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -32,13 +39,19 @@
       border-radius: 6px;
 
       p {
-        margin: 0.5em 0;
+        margin: 0.8em 0;
+        font-weight: 600;
       }
 
       label {
         text-decoration: underline;
         cursor: pointer;
+        font-weight: 600;
       }
+    }
+
+    button {
+      font-family: 'Poppins', sans-serif;
     }
 
     .cancel-button {
@@ -47,14 +60,13 @@
       border: none;
       background-color: transparent;
       cursor: pointer;
+      transform: scale(0.8);
     }
 
     .close-modal {
-      right: -2em;
-      top: -1em;
+      right: -2.5em;
+      top: -2.5em;
     }
-
-
 
     .file-preview {
       position: relative;
@@ -92,14 +104,10 @@
       }
     }
 
-    .upload-button {
-      float: right;
-      width: 360px;
-      padding: 0.5em 0;
-      display: flex;
-      justify-content: center;
-      border: 4px solid transparent;
+    .modal-button {
+      padding: 0.5em 2em;
       border-radius: 6px;
+      border: 4px solid transparent;
       background-color: $lightBronze;
       color: $black;
       font-size: 20px;
@@ -109,6 +117,14 @@
       &:hover {
         background-color: $cityBronze;
       }
+    }
+
+    .upload-button {
+      float: right;
+      width: 360px;
+      padding: 0.5em 0;
+      display: flex;
+      justify-content: center;
 
       &:disabled {
         background-color: transparent;
@@ -120,6 +136,28 @@
       .spinner {
         margin-right: 1em;
       }
+    }
+
+    .confirm-buttons {
+      display: flex;
+      justify-content: flex-end;
+
+      & > button:first-child {
+        margin-right: 1em;
+        background-color: transparent;
+        border: 4px solid $lightBronze;
+
+        &:hover {
+          background-color: $cityBronze;
+          border: 4px solid $cityBronze;
+        }
+      }
+    }
+
+    .confirm-message {
+      max-width: 600px;
+      padding: 1em 0;
+      font-size: 20px;
     }
   }
 }

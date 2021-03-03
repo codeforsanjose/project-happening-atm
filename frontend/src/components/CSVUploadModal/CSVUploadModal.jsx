@@ -11,6 +11,7 @@ function CSVUploadModal({ isOpen, closeModal }) {
   const fileInputRef = useRef();
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   function handleFileChange() {
     const fileRef = fileInputRef.current;
@@ -32,7 +33,14 @@ function CSVUploadModal({ isOpen, closeModal }) {
     setSelectedFile(null);
   }
 
+  function clearAndCloseModal() {
+    setShowConfirm(false);
+    setSelectedFile(null);
+    closeModal();
+  }
+
   function uploadCSV() {
+    setShowConfirm(false);
     setIsLoading(true);
 
     // await upload csv
@@ -52,55 +60,88 @@ function CSVUploadModal({ isOpen, closeModal }) {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={closeModal}
-      contentLabel="Example Modal"
+      onRequestClose={clearAndCloseModal}
+      contentLabel="CSV Upload Modal"
       className="CSVUploadModal"
       overlayClassName="modal-overlay"
     >
       <div className="wrapper">
-        <button type="button" onClick={closeModal} className="cancel-button close-modal">
+        <button type="button" onClick={clearAndCloseModal} className="cancel-button close-modal">
           <CancelIcon />
         </button>
-        <h2>Upload New Agenda</h2>
 
-        <DragAndDrop dropHandler={handleFileDrop}>
-          <div className="upload-area">
-            {selectedFile && (
-              <div className="file-preview">
-                <button type="button" onClick={clearSelectedFile} className="cancel-button cancel-file">
-                  <CancelIcon />
+        {
+          showConfirm
+            ? (
+              <>
+                <h2>Are you sure you want to upload a new agenda?</h2>
+
+                <p className="confirm-message">
+                  This action will overwrite the existing meeting and unsubscribe
+                  and notify all subscribed users.
+                </p>
+
+                <div className="confirm-buttons">
+                  <button
+                    type="button"
+                    className="modal-button"
+                    onClick={uploadCSV}
+                  >
+                    Upload New Agenda
+                  </button>
+                  <button
+                    type="button"
+                    className="modal-button"
+                    onClick={() => setShowConfirm(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2>Upload New Agenda</h2>
+                <DragAndDrop dropHandler={handleFileDrop}>
+                  <div className="upload-area">
+                    {selectedFile && (
+                      <div className="file-preview">
+                        <button type="button" onClick={clearSelectedFile} className="cancel-button cancel-file">
+                          <CancelIcon />
+                        </button>
+                        <div className="csv-icon">csv</div>
+                        <p>{selectedFile.name}</p>
+                      </div>
+                    )}
+
+                    <PublishIcon />
+                    <p>Drag and Drop CSV File</p>
+                    <label htmlFor="csv">
+                      Or Upload from your Computer
+                      <input
+                        className="visually-hidden"
+                        type="file"
+                        name="csv"
+                        id="csv"
+                        accept=".csv"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                      />
+                    </label>
+                  </div>
+                </DragAndDrop>
+
+                <button
+                  type="button"
+                  className="upload-button modal-button"
+                  onClick={() => setShowConfirm(true)}
+                  disabled={!selectedFile}
+                >
+                  {isLoading && <Spinner />}
+                  {publishButtonText}
                 </button>
-                <div className="csv-icon">csv</div>
-                <p>{selectedFile.name}</p>
-              </div>
-            )}
-
-            <PublishIcon />
-            <p>Drag and Drop CSV File</p>
-            <label htmlFor="csv">
-              Or Upload from your Computer
-              <input
-                className="visually-hidden"
-                type="file"
-                name="csv"
-                id="csv"
-                accept=".csv"
-                onChange={handleFileChange}
-                ref={fileInputRef}
-              />
-            </label>
-          </div>
-        </DragAndDrop>
-
-        <button
-          type="button"
-          className="upload-button"
-          onClick={uploadCSV}
-          disabled={!selectedFile}
-        >
-          {isLoading && <Spinner />}
-          {publishButtonText}
-        </button>
+              </>
+            )
+        }
       </div>
     </Modal>
   );
