@@ -23,6 +23,7 @@ import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import AdminView from './components/AdminView/AdminView';
 import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
+import EmailConfirmPage from './components/EmailConfirmPage/EmailConfirmPage';
 import Footer from './components/Footer/Footer';
 
 import * as serviceWorker from './serviceWorker';
@@ -81,6 +82,9 @@ function App() {
               </Route>
               <Route path="/meeting/:id">
                 <MeetingView />
+              </Route>
+              <Route path="/confirm/:token/:action">
+                <EmailConfirmPage />
               </Route>
 
               {/* <Route exact path="/participate/join">

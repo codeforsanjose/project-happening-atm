@@ -38,3 +38,19 @@ export const CREATE_SUBSCRIPTIONS = gql`
     }
   }
 `;
+
+export const CONFIRM_EMAIL = gql`
+  mutation confirmEmail(
+    $token: String
+  ) {
+    confirmEmail(token: $token)
+  }
+`;
+
+export const UNCONFIRM_EMAIL = gql`
+  mutation unconfirmEmail(
+    $token: String
+  ) {
+    unconfirmEmail(token: $token)
+  }
+`;
