@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
@@ -14,7 +14,15 @@ function EmailConfirmPage() {
   const currentMutation = action === 'subscribe' ? CONFIRM_EMAIL : UNCONFIRM_EMAIL;
   const [callMutation, { loading, error, data }] = useMutation(currentMutation);
 
+  useEffect(() => {
+    if (data) {
+      // TODO: perform an action after successful mutation
+    }
+  }, [data]);
+
   if (!validActions.has(action)) return <Redirect to="/" />;
+
+  // TODO: add loading and error handling
   if (loading) return 'Loading...';
   if (error) return `An error occured: ${error}`;
 
