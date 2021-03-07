@@ -4,6 +4,9 @@ import { useMutation } from '@apollo/client';
 
 import { CONFIRM_EMAIL, UNCONFIRM_EMAIL } from '../../graphql/graphql';
 
+// TODO: Add styling and replace placeholder text
+// https://github.com/codeforsanjose/gov-agenda-notifier/issues/146
+
 function EmailConfirmPage() {
   const { token, action } = useParams();
   const validActions = new Set(['subscribe', 'unsubscribe']);
