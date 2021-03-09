@@ -117,7 +117,7 @@ module.exports = async (logger) => {
       INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id)
       VALUES %L
       RETURNING id;`,
-    values);
+      values);
 
     return query(queryString);
   };
@@ -200,6 +200,28 @@ module.exports = async (logger) => {
   module.toogleConfirmByToken = async (token, toogleBoolean) => {
     logger.info('dbClient: unconfirmUserByToken');
     return query(`UPDATE account SET email_address_subscribed = ${toogleBoolean} WHERE token = '${token}'`);
+  };
+
+  module.createAccount = async (first_name, last_name, email_address, roles, auth_type, password, token) => {
+    logger.info('dbClient: createAccount');
+    const now = Date.now();
+    const createdTimestamp = now;
+    const updatedTimestamp = now;
+    const queryString = `
+    INSERT INTO account(first_name, last_name, email_address, roles, auth_type, password, token, created_timestamp, updated_timestamp)
+    VALUES ('${first_name}, ${last_name}, ${email_address}, ${roles}, ${auth_type}, ${password}, ${token}, ${createdTimestamp}, ${updatedTimestamp}')
+    RETURNING id;`;
+    return query(queryString);
+  };
+
+  module.getAccountByEmail = async (email) => {
+    logger.info('dbClient: getAccountByEmail');
+    return query(`SELECT * FROM account WHERE email_address = '${email}'`);
+  };
+
+  module.getAccountById = async (id) => {
+    logger.info('dbClient: getAccountById ');
+    return query(`SELECT * FROM account WHERE id = ${id}`);
   };
 
   return module;
