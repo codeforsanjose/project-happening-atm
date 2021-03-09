@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   AccordionItem,
   AccordionItemHeading,
@@ -34,14 +33,12 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
  */
 
 function AgendaGroup({ agendaGroup, selectedItems, handleItemSelection }) {
-  const { t } = useTranslation();
-
   return (
     <AccordionItem className="AgendaGroup">
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button">
           <div className="button-text">
-            <div className="group-title">{t(agendaGroup.title_loc_key)}</div>
+            <div className="group-title">{agendaGroup.title_loc_key}</div>
             <div className="group-status">
               {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
             </div>

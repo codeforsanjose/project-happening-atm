@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './AgendaItem.scss';
 import { buildSubscriptionQueryString } from '../../Subscribe/subscribeQueryString';
@@ -45,8 +44,6 @@ const itemLinks = [
  */
 
 function AgendaItem({ item, isSelected, handleSelection }) {
-  const { t } = useTranslation();
-
   const handleCheck = (evt) => {
     if (evt.target) {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
@@ -59,8 +56,8 @@ function AgendaItem({ item, isSelected, handleSelection }) {
         && <div className="item-status">{item.status}</div>}
 
       <input type="checkbox" checked={isSelected} onChange={handleCheck} />
-      <h4>{t(item.title_loc_key)}</h4>
-      <p>{t(item.description_loc_key)}</p>
+      <h4>{item.title_loc_key}</h4>
+      <p>{item.description_loc_key}</p>
 
       <div className="item-links">
         {

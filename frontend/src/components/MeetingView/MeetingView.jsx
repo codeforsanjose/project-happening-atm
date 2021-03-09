@@ -52,7 +52,7 @@ function MeetingView() {
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <Header meeting={meetingWithItems} />
+      <Header loading={loading} meeting={meetingWithItems} />
 
       <div className="view-toggle">
         <div className={showAgendaView ? 'view-active' : ''}>
