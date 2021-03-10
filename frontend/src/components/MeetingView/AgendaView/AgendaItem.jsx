@@ -11,16 +11,20 @@ const itemLinks = [
     getPath: (item) => `/subscribe?${buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })}`,
     Icon: NotificationsIcon,
     text: 'Subscribe',
+    isDisabled: (item) => item.status === MeetingItemStates.IN_PROGRESS
+      || item.status === MeetingItemStates.COMPLETED,
   },
   {
     getPath: () => '/',
     Icon: ShareIcon,
     text: 'Share',
+    isDisabled: () => false,
   },
   {
     getPath: () => '/',
     Icon: AddIcon,
     text: 'More Info',
+    isDisabled: () => false,
   },
 ];
 
@@ -61,16 +65,31 @@ function AgendaItem({ item, isSelected, handleSelection }) {
 
       <div className="item-links">
         {
-          itemLinks.map((link) => (
-            <Link to={link.getPath(item)} key={link.text}>
-              <div className="link">
-                <link.Icon />
-                <p>{link.text}</p>
-              </div>
-            </Link>
-          ))
+          itemLinks.map((link) => {
+            if (link.isDisabled(item)) {
+              return (
+                <div className="disabled">
+                  <AgendaItemActionLink link={link} />
+                </div>
+              );
+            }
+            return (
+              <Link to={link.getPath(item)} key={link.text}>
+                <AgendaItemActionLink link={link} />
+              </Link>
+            );
+          })
         }
       </div>
+    </div>
+  );
+}
+
+function AgendaItemActionLink({ link }) {
+  return (
+    <div className="link">
+      <link.Icon />
+      <p>{link.text}</p>
     </div>
   );
 }

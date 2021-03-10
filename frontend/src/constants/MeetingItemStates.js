@@ -1,6 +1,6 @@
 const MeetingItemStates = {
   COMPLETED: 'COMPLETED',
-  IN_PROGRESS: 'IN_PROGRESS',
+  IN_PROGRESS: 'IN PROGRESS',
   MOVED: 'MOVED',
   PENDING: 'PENDING',
 };
