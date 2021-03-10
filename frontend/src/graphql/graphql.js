@@ -27,6 +27,34 @@ export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
   }
 `;
 
+export const GET_MEETING_WITH_ITEMS = gql`
+  query GetMeetingWithItems($id: Int!) {
+    getMeetingWithItems(id: $id) {
+      meeting {
+        id,
+        status,
+        meeting_type,
+        meeting_start_timestamp,
+        meeting_end_timestamp,
+        virtual_meeting_url
+      }
+      items {
+        id,
+        meeting_id,
+        parent_meeting_item_id,
+        order_number,
+        status,
+        meeting_start_timestamp,
+        meeting_end_timestamp,
+        content_categories,
+        description_loc_key,
+        title_loc_key     
+      }
+
+    }
+  }
+`;
+
 export const CREATE_SUBSCRIPTIONS = gql`
   mutation CreateSubscriptions(
     $phone_number: String,
