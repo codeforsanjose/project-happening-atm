@@ -124,6 +124,43 @@ module.exports = (logger) => {
     return res.rows;
   };
 
+  const loginLocal = async (dbClient, email_address, password) => {
+    let token;
+    try {
+      if (password === undefined || password === null || password == "") {
+        logger.error('Unable to authenticate no password provided')
+        throw new Error('Unable to authenticate no password provided')
+      } else {
+        const user = await authentication.verifyEmailPassword(dbClient, email_address, password);
+        token = await authentication.createToken(user);
+      }
+    } catch (e) {
+      logger.error(`loginLocal resolver error: ${e}`);
+      throw e;
+    }
+    return { token: token }
+  };
+
+  const loginGoogle = async (dbClient, context) => {
+    let token;
+    try {
+      const user = await authentication.verifyGoogleToken(dbClient, context.token);
+      token = await authentication.createToken(user);
+    } catch (e) {
+      logger.error(`loginGoogle resolver error: ${e}`);
+      throw e;
+    }
+    return { token: token }
+  };
+
+  const loginMicrosoft = async (dbClient, context) => {
+    //TODO: add logic to auth with Microsoft and return user info with token
+  };
+
+  const verifyToken = async (dbClient, context) => {
+    //TODO: add logic to verify a token if sent to the server
+  }
+
   module.getAllMeetings = getAllMeetings;
   module.getMeeting = getMeeting;
   module.getAllMeetingItems = getAllMeetingItems;
@@ -132,5 +169,10 @@ module.exports = (logger) => {
   module.getAllMeetingsWithItems = getAllMeetingsWithItems;
   module.getSubscription = getSubscription;
   module.getAllSubscriptions = getAllSubscriptions;
+  module.loginLocal = loginLocal;
+  module.loginGoogle = loginGoogle;
+  module.loginMicrosoft = loginMicrosoft;
+  module.verifyToken = verifyToken;
+
   return module;
 };
