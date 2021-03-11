@@ -75,11 +75,15 @@ module.exports = (logger) => {
                 //Verify if admin email in admin whitelist
                 const isAdmin = await verifyAdmin(dbClient, email);
                 const roles = isAdmin ? '{ADMIN}' : '{USER}';
+                const token = await randomToken;
                 user = {
                     first_name: given_name,
                     last_name: family_name,
                     email_address: email,
-                    roles: roles
+                    roles: roles,
+                    password: null,
+                    auth_type: "Google",
+                    token: token
                 };
             };
         } catch (e) {
@@ -138,11 +142,15 @@ module.exports = (logger) => {
                 //Verify if admin email in admin whitelist
                 const isAdmin = await verifyAdmin(dbClient, email);
                 const roles = isAdmin ? '{ADMIN}' : '{USER}';
+                const token = await randomToken;
                 user = {
                     first_name: first_name,
                     last_name: last_name,
                     email_address: email,
-                    roles: roles
+                    roles: roles,
+                    password: null,
+                    auth_type: "Microsoft",
+                    token: token
                 };
             };
 
