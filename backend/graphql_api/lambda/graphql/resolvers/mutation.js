@@ -36,7 +36,8 @@ module.exports = (logger) => {
     return true;
   };
 
-  module.createMeeting = async (dbClient, args) => {
+  module.createMeeting = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateCreateMeeting(args);
 
     let res;
@@ -69,7 +70,8 @@ module.exports = (logger) => {
     throw Error('Internal Error');
   };
 
-  module.createMeetingItem = async (dbClient, args) => {
+  module.createMeetingItem = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateCreateMeetingItem(args);
 
     let res;
@@ -94,6 +96,7 @@ module.exports = (logger) => {
   };
 
   module.createSubscriptions = async (dbClient, args) => {
+    validator.validateUser(context);
     validator.validateCreateSubscriptions(args);
 
     let res;
@@ -118,7 +121,8 @@ module.exports = (logger) => {
     return res.rows;
   };
 
-  module.updateMeetingItem = async (dbClient, args) => {
+  module.updateMeetingItem = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateUpdateMeetingItem(args);
 
     let res;
@@ -172,7 +176,8 @@ module.exports = (logger) => {
     return meetingItem;
   };
 
-  module.updateMeeting = async (dbClient, args) => {
+  module.updateMeeting = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateUpdateMeeting(args);
 
     let res;

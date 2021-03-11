@@ -178,13 +178,13 @@ module.exports = (logger) => {
         logger.info('Initiating GetAllMeetingsWithItems Query resolver');
         return resolverHandler(queryResolver.getAllMeetingsWithItems);
       },
-      getSubscription: async (_parent, args) => {
+      getSubscription: async (_parent, args, context) => {
         logger.info('Initiating GetSubscription Query resolver');
-        return resolverHandler(queryResolver.getSubscription, args.id);
+        return resolverHandler(queryResolver.getSubscription, args.id, context);
       },
-      getAllSubscriptions: async () => {
+      getAllSubscriptions: async (_parent, args, context) => {
         logger.info('Initiating GetAllSubscriptions Query resolver');
-        return resolverHandler(queryResolver.getAllSubscriptions);
+        return resolverHandler(queryResolver.getAllSubscriptions, args, context);
       },
       loginLocal: async (_parent, args) => {
         logger.info('Initiating LoginLocal Query resolver');
@@ -202,23 +202,23 @@ module.exports = (logger) => {
     Mutation: {
       createMeeting: async (_parent, args, context) => {
         logger.info('Initiating CreateMeeting Mutation resolver');
-        return resolverHandler(mutationResolver.createMeeting, args);
+        return resolverHandler(mutationResolver.createMeeting, args, context);
       },
       updateMeeting: async (_parent, args, context) => {
         logger.info('Initiating UpdateMeeting Mutation resolver');
-        return resolverHandler(mutationResolver.updateMeeting, args);
+        return resolverHandler(mutationResolver.updateMeeting, args, context);
       },
       createMeetingItem: async (_parent, args, context) => {
         logger.info('Initiating CreateMeetingItem Mutation resolver');
-        return resolverHandler(mutationResolver.createMeetingItem, args);
+        return resolverHandler(mutationResolver.createMeetingItem, args, context);
       },
       updateMeetingItem: async (_parent, args, context) => {
         logger.info('Initiating UpdateMeetingItem Mutation resolver');
-        return resolverHandler(mutationResolver.updateMeetingItem, args);
+        return resolverHandler(mutationResolver.updateMeetingItem, args, context);
       },
       createSubscriptions: async (_parent, args, context) => {
         logger.info('Initiating CreateSubscriptions Mutation resolver');
-        return resolverHandler(mutationResolver.createSubscriptions, args);
+        return resolverHandler(mutationResolver.createSubscriptions, args, context);
       },
       confirmEmail: async (_parent, args) => {
         logger.info('Initiating ConfirmEmail Mutation resolver');

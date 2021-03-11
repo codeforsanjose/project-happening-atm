@@ -1,7 +1,13 @@
 // TODO: error handling and data validation is required here
 // ex: verify that ids exist, undefined values should be passed as empty strings, etc...
+const getAuthentication = require('./authentication');
+const getValidator = require('./validators');
 
 module.exports = (logger) => {
+
+  const authentication = getAuthentication(logger);
+  const validator = getValidator(logger);
+
   const module = {};
 
   const getAllMeetings = async (dbClient) => {
@@ -113,7 +119,8 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  const getAllSubscriptions = async (dbClient) => {
+  const getAllSubscriptions = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     let res;
     try {
       res = await dbClient.getAllSubscriptions();
@@ -150,11 +157,19 @@ module.exports = (logger) => {
       logger.error(`loginGoogle resolver error: ${e}`);
       throw e;
     }
-    return { token: token }
+    return { token: token };
   };
 
   const loginMicrosoft = async (dbClient, context) => {
-    //TODO: add logic to auth with Microsoft and return user info with token
+    let token;
+    try {
+      const user = await authentication.verifyMicrosoftToken(dbClient, context.token);
+      token = await authentication.createToken(user);
+    } catch (e) {
+      logger.error(`loginMicrosoft resolver error: ${e}`);
+      throw e;
+    }
+    return { token: token };
   };
 
   const verifyToken = async (dbClient, context) => {
