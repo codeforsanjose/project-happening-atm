@@ -1,17 +1,23 @@
 /* eslint-disable no-console */
 import React, { useState, useRef, useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import './CSVUploadModal.scss';
 
 import DragAndDrop from './DragAndDrop';
 import Spinner from '../Spinner/Spinner';
+import UploadSuccess from './UploadSuccess';
 import { PublishIcon, CancelIcon } from '../../utils/_icons';
 
-function CSVUploadModal({ isOpen, closeModal }) {
+function CSVUploadModal({ isOpen, closeModal, meetingId }) {
   const fileInputRef = useRef();
+  const history = useHistory();
+  const { pathname } = useLocation();
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [uploadSuccessful, setUploadSuccessful] = useState(false);
 
   function handleFileChange() {
     const fileRef = fileInputRef.current;
@@ -36,27 +42,43 @@ function CSVUploadModal({ isOpen, closeModal }) {
   function clearAndCloseModal() {
     setShowConfirm(false);
     setSelectedFile(null);
+    setUploadSuccessful(false);
     closeModal();
+  }
+
+  function redirectToMeeting() {
+    history.push(`/meeting/${meetingId}`);
   }
 
   function uploadCSV() {
     setShowConfirm(false);
     setIsLoading(true);
 
-    // await upload csv
+    // TEMP API
     setTimeout(() => {
       setIsLoading(false);
       clearSelectedFile();
-    }, 5000);
-
-    // loading end
-    // success notification
+      setUploadSuccessful(true);
+    }, 2000);
   }
 
+  const redirect = pathname === '/';
   const publishButtonText = isLoading
     ? 'Uploading and Publishing' : 'Upload and Publish';
 
   Modal.setAppElement('#root');
+
+  if (uploadSuccessful) {
+    return (
+      <UploadSuccess
+        isOpen={isOpen}
+        closeModal={clearAndCloseModal}
+        confirmModal={redirect ? redirectToMeeting : clearAndCloseModal}
+        confirmText={redirect ? 'Go to Meeting' : 'Close'}
+      />
+    );
+  }
+
   return (
     <Modal
       isOpen={isOpen}
