@@ -229,7 +229,7 @@ module.exports = (logger) => {
       const isAdmin = await authentication.verifyAdmin(dbClient, args.email_address.toLowerCase().trim());
       const roles = isAdmin ? '{ADMIN}' : '{USER}';
       const password = await authentication.hashPassword(args.password);
-      const token = await authentication.randomToken;
+      const token = await authentication.randomToken();
       user = {
         first_name: args.first_name,
         last_name: args.last_name,
@@ -275,7 +275,7 @@ module.exports = (logger) => {
     try {
       const dbUser = await dbClient.getAccountById(res.rows[0].id);
       res = authentication.createJWT(dbUser);
-      sesClient.module.sendConfirmEmail(user.rows[0].email_address, user.rows[0].token);
+      sesClient.sendConfirmEmail(dbUser.rows[0].email_address, dbUser.rows[0].token);
     } catch (e) {
       logger.error(`createAccount resolver error - dbClient.createAccount ${e}`);
       throw new Error(e);
