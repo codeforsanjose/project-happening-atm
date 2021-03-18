@@ -139,7 +139,7 @@ module.exports = (logger) => {
         throw new Error('Unable to authenticate no password provided')
       } else {
         const user = await authentication.verifyEmailPassword(dbClient, email_address, password);
-        validator.validateAuthType(user.auth_type, "Local");
+        validator.validateAuthType(user.rows[0].auth_type, "Local");
         token = await authentication.createJWT(user);
       }
     } catch (e) {
@@ -153,7 +153,7 @@ module.exports = (logger) => {
     let token;
     try {
       const user = await authentication.verifyGoogleToken(dbClient, context.token);
-      validator.validateAuthType(user.auth_type, "Google");
+      validator.validateAuthType(user.rows[0].auth_type, "Google");
       token = await authentication.createJWT(user);
     } catch (e) {
       logger.error(`loginGoogle resolver error: ${e}`);
@@ -166,7 +166,7 @@ module.exports = (logger) => {
     let token;
     try {
       const user = await authentication.verifyMicrosoftToken(dbClient, context.token);
-      validator.validateAuthType(user.auth_type, "Microsoft");
+      validator.validateAuthType(user.rows[0].auth_type, "Microsoft");
       token = await authentication.createJWT(user);
     } catch (e) {
       logger.error(`loginMicrosoft resolver error: ${e}`);
