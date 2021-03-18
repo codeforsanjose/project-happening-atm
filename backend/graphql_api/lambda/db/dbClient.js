@@ -208,9 +208,9 @@ module.exports = async (logger) => {
     const createdTimestamp = now;
     const updatedTimestamp = now;
     const queryString = `
-    INSERT INTO account(first_name, last_name, email_address, roles, auth_type, password, token, created_timestamp, updated_timestamp)
-    VALUES ('${first_name}, ${last_name}, ${email_address}, ${roles}, ${auth_type}, ${password}, ${token}, ${createdTimestamp}, ${updatedTimestamp}')
-    RETURNING id;`;
+        INSERT INTO account(first_name,last_name, email_address, roles, password, auth_type, token, created_timestamp, updated_timestamp)
+        VALUES ('${first_name}','${last_name}', '${email_address}', '${roles}', '${password}', '${auth_type}', '${token}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
+        RETURNING id;`;
     return query(queryString);
   };
 
