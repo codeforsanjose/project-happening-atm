@@ -231,7 +231,7 @@ module.exports = (logger) => {
     // TODO: Add any protections for bad user input 
     const { email_address } = args;
 
-    validateEmail(email_address, 'email_addresss', context);
+    validateEmail(email_address, 'email_address', context);
   };
 
   return module;
