@@ -138,6 +138,14 @@ module.exports = (logger) => {
     }
   };
 
+  module.validateAuthType = (authType, loginMethod) => {
+    const isMatch = authType === loginMethod;
+    if (!isMatch) {
+      logger.debug(`Incorrect login type: User auth type is ${authType} and tried to login with ${loginMethod} type.`);
+      throw new ForbiddenError('Incorrect authentication type')
+    }
+  };
+
   module.validateCreateMeeting = (args) => {
     const context = 'validateCreateMeeting';
     const {
