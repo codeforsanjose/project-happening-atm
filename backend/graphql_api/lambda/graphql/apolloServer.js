@@ -49,7 +49,7 @@ module.exports = (logger) => {
         confirmEmail(token: String): Boolean
         unconfirmEmail(token: String): Boolean
 
-        createAccount(first_name: String, last_name: String, email_address: String, password: String, name: String): auth_data
+        createAccount(first_name: String, last_name: String, email_address: String, password: String): auth_data
 
         # TODO: Need to add update user info mutation
     }
