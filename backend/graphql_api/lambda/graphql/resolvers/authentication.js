@@ -69,13 +69,13 @@ module.exports = (logger) => {
             };
             //Check if user in database
             const dbUser = await dbClient.getAccountByEmail(email);
-            if (dbUser !== undefined) {
+            if (dbUser.rowCount !== 0) {
                 user = dbUser;
             } else {
                 //Verify if admin email in admin whitelist
                 const isAdmin = await verifyAdmin(dbClient, email);
                 const roles = isAdmin ? '{ADMIN}' : '{USER}';
-                const token = await randomToken;
+                const token = await randomToken();
                 user = {
                     first_name: given_name,
                     last_name: family_name,
@@ -136,13 +136,13 @@ module.exports = (logger) => {
             };
             //Check if user in database
             const dbUser = await dbClient.getAccountByEmail(email);
-            if (dbUser !== undefined) {
+            if (dbUser.rowCount !== 0) {
                 user = dbUser;
             } else {
                 //Verify if admin email in admin whitelist
                 const isAdmin = await verifyAdmin(dbClient, email);
                 const roles = isAdmin ? '{ADMIN}' : '{USER}';
-                const token = await randomToken;
+                const token = await randomToken();
                 user = {
                     first_name: first_name,
                     last_name: last_name,
@@ -167,7 +167,6 @@ module.exports = (logger) => {
         try {
 
             const dbUser = await dbClient.getAccountByEmail(email_address);
-            console.log(dbUser);
             if (dbUser.rows.length === 0) {
                 logger.error('Email does not match our records please sign up');
                 throw new Error('Email does not match our records please sign up');
