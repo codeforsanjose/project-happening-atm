@@ -163,11 +163,15 @@ module.exports = (logger) => {
 
     const verifyEmailPassword = async (dbClient, email_address, password) => {
         let user;
-        email_address = email_address.toLowerCase.trim();
+        email_address = email_address.toLowerCase().trim();
         try {
 
             const dbUser = await dbClient.getAccountByEmail(email_address);
-
+            console.log(dbUser);
+            if (dbUser.rows.length === 0) {
+                logger.error('Email does not match our records please sign up');
+                throw new Error('Email does not match our records please sign up');
+            }
             const dbPassword = dbUser.rows[0].password;
             const isAuthenticated = await comparePassword(password, dbPassword);
             if (!isAuthenticated) {
