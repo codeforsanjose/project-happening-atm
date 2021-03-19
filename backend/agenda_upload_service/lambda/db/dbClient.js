@@ -170,5 +170,15 @@ module.exports = async (logger) => {
     return query(queryString);
   };
 
+  module.getMeeting = async (id) => {
+    logger.info('dbClient: getMeeting');
+    return query(`SELECT * FROM meeting WHERE id = ${id}`);
+  };
+
+  module.deleteMeetingItemsFroMeeting = async (meetingId) => {
+    logger.info('dbClient: getMeeting');
+    return query(`DELETE FROM meeting_item WHERE meeting_id = ${meetingId}`);
+  };
+
   return module;
 };
