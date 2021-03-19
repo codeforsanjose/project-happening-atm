@@ -59,8 +59,10 @@ function AgendaItem({ item, isSelected, handleSelection }) {
       {item.status !== MeetingItemStates.PENDING
         && <div className="item-status">{item.status}</div>}
 
-      <input type="checkbox" checked={isSelected} onChange={handleCheck} />
-      <h4>{item.title_loc_key}</h4>
+      <div className="row">
+        <input type="checkbox" checked={isSelected} onChange={handleCheck} />
+        <h4>{item.title_loc_key}</h4>
+      </div>
       <p>{item.description_loc_key}</p>
 
       <div className="item-links">

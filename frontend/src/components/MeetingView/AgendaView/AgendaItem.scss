@@ -18,15 +18,18 @@
     font-weight: 600;
   }
 
-  h4 {
-    margin: 0;
-    display: inline-block;
-    font-weight: 500;
-  }
+  .row {
+    margin-top: 5px;
+    h4 {
+      margin: 0;
+      display: inline-block;
+      font-weight: 500;
+    }
 
-  input[type="checkbox"] {
-    margin-right: 1em;
-    transform: scale(1.4);
+    input[type="checkbox"] {
+      margin-right: 1em;
+      transform: scale(1.4);
+    }
   }
 
   p {
@@ -55,7 +58,7 @@
       display: flex;
       align-items: center;
       fill: $lightBlue;
-      font-size: 0.9em;
+      font-size: 0.8em;
 
       p {
         margin: 0;
