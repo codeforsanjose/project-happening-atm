@@ -87,8 +87,8 @@ module.exports = (logger) => {
         status: String
         created_timestamp: String
         updated_timestamp: String
-        meeting_start_timestamp: String
-        meeting_end_timestamp: String
+        item_start_timestamp: String
+        item_end_timestamp: String
         content_categories: String
         description_loc_key: String
         title_loc_key: String
