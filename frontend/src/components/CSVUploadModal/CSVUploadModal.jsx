@@ -3,6 +3,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import './CSVUploadModal.scss';
+import uploadCSV from '../../utils/uploadHelper';
 
 import DragAndDrop from './DragAndDrop';
 import Spinner from '../Spinner/Spinner';
@@ -50,16 +51,19 @@ function CSVUploadModal({ isOpen, closeModal, meetingId }) {
     history.push(`/meeting/${meetingId}`);
   }
 
-  function uploadCSV() {
+  async function handleUpload() {
     setShowConfirm(false);
     setIsLoading(true);
 
-    // TEMP API
-    setTimeout(() => {
-      setIsLoading(false);
-      clearSelectedFile();
-      setUploadSuccessful(true);
-    }, 2000);
+    const response = await uploadCSV(selectedFile);
+    setIsLoading(false);
+    clearSelectedFile();
+
+    // if upload successful
+    // setUploadSuccessful(true)
+
+    // else
+    // display an error message
   }
 
   const redirect = pathname === '/';
@@ -107,7 +111,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId }) {
                   <button
                     type="button"
                     className="modal-button"
-                    onClick={uploadCSV}
+                    onClick={handleUpload}
                   >
                     Upload New Agenda
                   </button>
