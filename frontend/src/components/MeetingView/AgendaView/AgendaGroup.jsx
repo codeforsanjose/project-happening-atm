@@ -8,6 +8,7 @@ import {
 import './AgendaGroup.scss';
 
 import AgendaItem from './AgendaItem';
+import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 /**
  * A group of agenda items in a collapsible accordion.
@@ -37,9 +38,9 @@ function AgendaGroup({ agendaGroup, selectedItems, handleItemSelection }) {
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button">
           <div className="button-text">
-            <div className="group-title">{agendaGroup.title}</div>
+            <div className="group-title">{agendaGroup.title_loc_key}</div>
             <div className="group-status">
-              {agendaGroup.status === 'Pending' ? '' : agendaGroup.status}
+              {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
             </div>
           </div>
         </AccordionItemButton>

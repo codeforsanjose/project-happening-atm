@@ -18,15 +18,18 @@
     font-weight: 600;
   }
 
-  h4 {
-    margin: 0;
-    display: inline-block;
-    font-weight: 500;
-  }
+  .row {
+    margin-top: 5px;
+    h4 {
+      margin: 0;
+      display: inline-block;
+      font-weight: 500;
+    }
 
-  input[type="checkbox"] {
-    margin-right: 1em;
-    transform: scale(1.4);
+    input[type="checkbox"] {
+      margin-right: 1em;
+      transform: scale(1.4);
+    }
   }
 
   p {
@@ -37,6 +40,11 @@
     display: flex;
     justify-content: space-evenly;
 
+    .disabled .link {
+      fill: $cloudy;
+      color: $cloudy;
+    }
+
     a {
       color: $lightBlue;
       text-decoration: none;
@@ -44,22 +52,22 @@
       &:hover {
         text-decoration: underline;
       }
+    }
 
-      .link {
-        display: flex;
-        align-items: center;
-        fill: $lightBlue;
-        font-size: 0.9em;
+    .link {
+      display: flex;
+      align-items: center;
+      fill: $lightBlue;
+      font-size: 0.8em;
 
-        p {
-          margin: 0;
-          margin-left: 0.2em;
+      p {
+        margin: 0;
+        margin-left: 0.2em;
 
-          @media only screen
-          and (min-device-width: 812px) {
-            margin: 0.5em;
-            font-size: 1em;
-          }
+        @media only screen
+        and (min-device-width: 812px) {
+          margin: 0.5em;
+          font-size: 1em;
         }
       }
     }

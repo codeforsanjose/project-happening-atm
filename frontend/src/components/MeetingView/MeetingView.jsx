@@ -1,44 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './MeetingView.scss';
+import { useParams } from 'react-router-dom';
+
+import { useQuery } from '@apollo/client';
+import { GET_MEETING_WITH_ITEMS } from '../../graphql/graphql';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
 import ParticipateView from './ParticipateView/ParticipateView';
 import AgendaView from './AgendaView/AgendaView';
-
-function makeTestSubItem(parentIndex, index, status) {
-  return {
-    id: `${index}`,
-    meetingId: `${parentIndex}`,
-    title: `${parentIndex}.${index} Agenda Item`,
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl euismod, tristique leo sit amet, eleifend enim.',
-    status,
-    items: [],
-  };
-}
-
-function makeTestItem(index) {
-  // eslint-disable-next-line no-nested-ternary
-  const status = index <= 2 ? 'Completed' : index === 3 ? 'In Progress' : 'Pending';
-  return {
-    id: index,
-    title: `${index} Agenda Group`,
-    description: '',
-    status,
-    items: [1, 2, 3, 4].map((i) => makeTestSubItem(index, i, status)),
-  };
-}
-
-const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
+import Spinner from '../Spinner/Spinner';
 
 /**
  * Component that displays a list of a meeting's agenda items.
  * Utilizes react-accessible-accordion to display groups of items.
  *
  * state:
- *    agendaItems
- *      An array of the current meeting's agenda items
+ *    meetingWithItems
+ *      An object representing the current meeting with an array of its agenda items
  *    showAgendaView
  *      A boolean value indicating if the Agenda or Participate View is shown
  *    navToggled
@@ -47,8 +27,13 @@ const TEST_ITEMS = [1, 2, 3, 4, 5].map(makeTestItem);
 
 function MeetingView() {
   const { t } = useTranslation();
+  const { id } = useParams();
 
-  const [agendaItems, setAgendaItems] = useState([]);
+  const { loading, error, data } = useQuery(GET_MEETING_WITH_ITEMS, {
+    variables: { id: parseInt(id, 10) },
+  });
+
+  const [meetingWithItems, setMeetingWithItems] = useState({});
   const [showAgendaView, setShowAgendaView] = useState(true);
   const [navToggled, setNavToggled] = useState(false);
 
@@ -57,17 +42,17 @@ function MeetingView() {
   }
 
   useEffect(() => {
-    async function fetchAgendaItems() {
-      // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/88
-      setTimeout(() => setAgendaItems(TEST_ITEMS), 2000); // MOCK API CALL
+    if (data) {
+      const meeting = { ...data.getMeetingWithItems.meeting };
+      meeting.items = data.getMeetingWithItems.items;
+      setMeetingWithItems(meeting);
     }
-    fetchAgendaItems();
-  }, []);
+  }, [data]);
 
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <Header />
+      <Header loading={loading} meeting={meetingWithItems} />
 
       <div className="view-toggle">
         <div className={showAgendaView ? 'view-active' : ''}>
@@ -87,8 +72,14 @@ function MeetingView() {
           </button>
         </div>
       </div>
-
-      {showAgendaView ? <AgendaView agendaItems={agendaItems} /> : <ParticipateView />}
+      {loading && <Spinner />}
+      {!(loading || error) && data && 'items' in meetingWithItems
+        && (
+          showAgendaView
+            ? <AgendaView meeting={meetingWithItems} />
+            : <ParticipateView />
+        )}
+      {error && <p className="error">{ error.message }</p>}
     </div>
   );
 }

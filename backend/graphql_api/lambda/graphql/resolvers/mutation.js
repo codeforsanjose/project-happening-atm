@@ -10,6 +10,28 @@ module.exports = (logger) => {
 
   const module = {};
 
+  module.confirmEmail = async (dbClient, args) => {
+    try {
+      await dbClient.toogleConfirmByToken(args.token, true);
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
+
+    return true;
+  };
+
+  module.unconfirmEmail = async (dbClient, args) => {
+    try {
+      await dbClient.toogleConfirmByToken(args.token, false);
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
+
+    return true;
+  };
+
   module.createMeeting = async (dbClient, args) => {
     validator.validateCreateMeeting(args);
 
@@ -67,30 +89,6 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  // TODO: remove once frontend starts using createSubscriptions.
-  module.createSubscription = async (dbClient, args) => {
-    validator.validateCreateSubscription(args);
-
-    let res;
-    try {
-      res = await dbClient.createSubscription(
-        args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id,
-      );
-    } catch (e) {
-      logger.error(`createSubscription resolver error - dbClient.createSubscription: ${e}`);
-      throw e;
-    }
-    const newId = res.rows[0].id;
-
-    try {
-      res = await dbClient.getSubscription(newId);
-    } catch (e) {
-      logger.error(`createSubscription resolver error - dbClient.getSubscription: ${e}`);
-      throw e;
-    }
-    return res.rows[0];
-  };
-
   module.createSubscriptions = async (dbClient, args) => {
     validator.validateCreateSubscriptions(args);
 
@@ -110,7 +108,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscription(ids);
     } catch (e) {
-      logger.error(`createSubscription resolver error - dbClient.getSubscriptions: ${e}`);
+      logger.error(`createSubscriptions resolver error - dbClient.getSubscriptions: ${e}`);
       throw e;
     }
     return res.rows;

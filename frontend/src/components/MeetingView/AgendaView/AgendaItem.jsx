@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './AgendaItem.scss';
 import { buildSubscriptionQueryString } from '../../Subscribe/subscribeQueryString';
+import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
 
@@ -10,16 +11,20 @@ const itemLinks = [
     getPath: (item) => `/subscribe?${buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })}`,
     Icon: NotificationsIcon,
     text: 'Subscribe',
+    isDisabled: (item) => item.status === MeetingItemStates.IN_PROGRESS
+      || item.status === MeetingItemStates.COMPLETED,
   },
   {
     getPath: () => '/',
     Icon: ShareIcon,
     text: 'Share',
+    isDisabled: () => false,
   },
   {
     getPath: () => '/',
     Icon: AddIcon,
     text: 'More Info',
+    isDisabled: () => false,
   },
 ];
 
@@ -45,30 +50,48 @@ const itemLinks = [
 function AgendaItem({ item, isSelected, handleSelection }) {
   const handleCheck = (evt) => {
     if (evt.target) {
-      handleSelection(item.meetingId, item.id, evt.target.checked);
+      handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
 
   return (
     <div className="AgendaItem">
-      {item.status !== 'Pending' && <div className="item-status">{item.status}</div>}
+      {item.status !== MeetingItemStates.PENDING
+        && <div className="item-status">{item.status}</div>}
 
-      <input type="checkbox" checked={isSelected} onChange={handleCheck} />
-      <h4>{item.title}</h4>
-      <p>{item.description}</p>
+      <div className="row">
+        <input type="checkbox" checked={isSelected} onChange={handleCheck} />
+        <h4>{item.title_loc_key}</h4>
+      </div>
+      <p>{item.description_loc_key}</p>
 
       <div className="item-links">
         {
-          itemLinks.map((link) => (
-            <Link to={link.getPath(item)} key={link.text}>
-              <div className="link">
-                <link.Icon />
-                <p>{link.text}</p>
-              </div>
-            </Link>
-          ))
+          itemLinks.map((link) => {
+            if (link.isDisabled(item)) {
+              return (
+                <div className="disabled">
+                  <AgendaItemActionLink link={link} />
+                </div>
+              );
+            }
+            return (
+              <Link to={link.getPath(item)} key={link.text}>
+                <AgendaItemActionLink link={link} />
+              </Link>
+            );
+          })
         }
       </div>
+    </div>
+  );
+}
+
+function AgendaItemActionLink({ link }) {
+  return (
+    <div className="link">
+      <link.Icon />
+      <p>{link.text}</p>
     </div>
   );
 }

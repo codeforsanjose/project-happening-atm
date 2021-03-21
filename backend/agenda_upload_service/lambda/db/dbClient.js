@@ -121,6 +121,10 @@ module.exports = async (logger) => {
     await client.end();
   };
 
+  const convertMsToSeconds = (milliseconds) => {
+    return milliseconds / 1000;
+  };
+
   module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
     logger.info('dbClient: createMeeting');
     const now = Date.now();
@@ -128,8 +132,14 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
-        VALUES ('${meetingType}', to_timestamp(${meetingStartTimestamp}), '${virtualMeetingUrl}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), '${status}')
-        RETURNING id;`;
+        VALUES (
+          '${meetingType}',
+          to_timestamp(${convertMsToSeconds(meetingStartTimestamp)}),
+          '${virtualMeetingUrl}',
+          to_timestamp(${convertMsToSeconds(createdTimestamp)}),
+          to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
+          '${status}'
+        ) RETURNING id;`;
     return query(queryString);
   };
 
@@ -144,20 +154,19 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting_item(meeting_id, parent_meeting_item_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
-        VALUES ('${meetingId}', ${parentMeetingItemId}, '${orderNumber}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), to_timestamp(${itemStartTimestamp}), to_timestamp(${itemEndTimestamp}), '${status}', '${contentCategories}', '${descriptionLocKey}', '${titleLocKey}')
-        RETURNING id;`;
-    return query(queryString);
-  };
-
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
-    logger.info('dbClient: createSubscription');
-    const now = Date.now();
-    const createdTimestamp = now;
-    const updatedTimestamp = now;
-    const queryString = `
-        INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id, created_timestamp, updated_timestamp)
-        VALUES ('${phoneNumber}', '${emailAddress}', '${meetingItemId}', '${meetingId}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
-        RETURNING id;`;
+        VALUES (
+          '${meetingId}',
+          ${parentMeetingItemId},
+          '${orderNumber}',
+          to_timestamp(${convertMsToSeconds(createdTimestamp)}),
+          to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
+          to_timestamp(${convertMsToSeconds(itemStartTimestamp)}),
+          to_timestamp(${convertMsToSeconds(itemEndTimestamp)}),
+          '${status}',
+          '${contentCategories}',
+          '${descriptionLocKey}',
+          '${titleLocKey}'
+        ) RETURNING id;`;
     return query(queryString);
   };
 

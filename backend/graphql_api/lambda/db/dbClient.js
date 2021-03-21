@@ -45,6 +45,10 @@ module.exports = async (logger) => {
     await client.end();
   };
 
+  const convertMsToSeconds = (milliseconds) => {
+    return milliseconds / 1000;
+  };
+
   module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
     logger.info('dbClient: createMeeting');
     const now = Date.now();
@@ -52,8 +56,14 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
-        VALUES ('${meetingType}', to_timestamp(${meetingStartTimestamp}), '${virtualMeetingUrl}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), '${status}')
-        RETURNING id;`;
+        VALUES (
+          '${meetingType}',
+          to_timestamp(${convertMsToSeconds(meetingStartTimestamp)}),
+          '${virtualMeetingUrl}',
+          to_timestamp(${convertMsToSeconds(createdTimestamp)}),
+          to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
+          '${status}'
+        ) RETURNING id;`;
     return query(queryString);
   };
 
@@ -75,8 +85,18 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
-        VALUES ('${meetingId}', '${orderNumber}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), to_timestamp(${itemStartTimestamp}), to_timestamp(${itemEndTimestamp}), '${status}', '${contentCategories}', '${descriptionLocKey}', '${titleLocKey}')
-        RETURNING id;`;
+        VALUES (
+          '${meetingId}',
+          '${orderNumber}',
+          to_timestamp(${convertMsToSeconds(createdTimestamp)}),
+          to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
+          to_timestamp(${convertMsToSeconds(itemStartTimestamp)}),
+          to_timestamp(${convertMsToSeconds(itemEndTimestamp)}),
+          '${status}',
+          '${contentCategories}',
+          '${descriptionLocKey}',
+          '${titleLocKey}'
+        ) RETURNING id;`;
     return query(queryString);
   };
 
@@ -98,18 +118,6 @@ module.exports = async (logger) => {
   module.getAllMeetingIDs = async () => {
     logger.info('dbClient: getAllMeetingIDs');
     return query('SELECT id FROM meeting');
-  };
-
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
-    logger.info('dbClient: createSubscription');
-    const now = Date.now();
-    const createdTimestamp = now;
-    const updatedTimestamp = now;
-    const queryString = `
-        INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id, created_timestamp, updated_timestamp)
-        VALUES ('${phoneNumber}', '${emailAddress}', '${meetingItemId}', '${meetingId}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
-        RETURNING id;`;
-    return query(queryString);
   };
 
   module.createSubscriptions = async (phoneNumber, emailAddress, meetings) => {
@@ -163,9 +171,9 @@ module.exports = async (logger) => {
         SET
             order_number = '${orderNumber}',
             status = '${status}',
-            item_start_timestamp = to_timestamp(${itemStartTimestamp}),
-            item_end_timestamp = to_timestamp(${itemEndTimestamp}),
-            updated_timestamp = to_timestamp(${updatedTimestamp}),
+            item_start_timestamp = to_timestamp(${convertMsToSeconds(itemStartTimestamp)}),
+            item_end_timestamp = to_timestamp(${convertMsToSeconds(itemEndTimestamp)}),
+            updated_timestamp = to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
             content_categories = '${contentCategories}',
             description_loc_key = '${descriptionLocKey}',
             title_loc_key = '${titleLocKey}'
@@ -183,9 +191,9 @@ module.exports = async (logger) => {
             status = '${status}',
             meeting_type = '${meetingType}',
             virtual_meeting_url = '${virtualMeetingUrl}',
-            meeting_start_timestamp = to_timestamp(${meetingStartTimestamp}),
-            meeting_end_timestamp = to_timestamp(${meetingEndTimestamp}),
-            updated_timestamp = to_timestamp(${updatedTimestamp})
+            meeting_start_timestamp = to_timestamp(${convertMsToSeconds(meetingStartTimestamp)}),
+            meeting_end_timestamp = to_timestamp(${convertMsToSeconds(meetingEndTimestamp)}),
+            updated_timestamp = to_timestamp(${convertMsToSeconds(updatedTimestamp)})
         WHERE id = ${id}`;
     return query(queryString);
   };
@@ -207,6 +215,11 @@ module.exports = async (logger) => {
   module.getAdminByEmail = async (email) => {
     logger.info('dbClient: getAdminByEmail');
     return query(`SELECT * FROM admin WHERE email_address = '${email}'`);
+  };
+
+  module.toogleConfirmByToken = async (token, toogleBoolean) => {
+    logger.info('dbClient: unconfirmUserByToken');
+    return query(`UPDATE account SET email_address_subscribed = ${toogleBoolean} WHERE token = '${token}'`);
   };
 
   return module;

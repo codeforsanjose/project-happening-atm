@@ -42,8 +42,10 @@ module.exports = (logger) => {
         createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
         updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
 
-        createSubscription(phone_number: String, email_address:String, meeting_item_id: Int, meeting_id: Int): subscription
         createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
+
+        confirmEmail(token: String): Boolean
+        unconfirmEmail(token: String): Boolean
     }
 
     type subscription {
@@ -85,8 +87,8 @@ module.exports = (logger) => {
         status: String
         created_timestamp: String
         updated_timestamp: String
-        meeting_start_timestamp: String
-        meeting_end_timestamp: String
+        item_start_timestamp: String
+        item_end_timestamp: String
         content_categories: String
         description_loc_key: String
         title_loc_key: String
@@ -192,13 +194,17 @@ module.exports = (logger) => {
         logger.info('Initiating UpdateMeetingItem Mutation resolver');
         return resolverHandler(mutationResolver.updateMeetingItem, args);
       },
-      createSubscription: async (_parent, args) => {
-        logger.info('Initiating CreateSubscription Mutation resolver');
-        return resolverHandler(mutationResolver.createSubscription, args);
-      },
       createSubscriptions: async (_parent, args) => {
         logger.info('Initiating CreateSubscriptions Mutation resolver');
         return resolverHandler(mutationResolver.createSubscriptions, args);
+      },
+      confirmEmail: async (_parent, args) => {
+        logger.info('Initiating ConfirmEmail Mutation resolver');
+        return resolverHandler(mutationResolver.confirmEmail, args);
+      },
+      unconfirmEmail: async (_parent, args) => {
+        logger.info('Initiating UnconfirmEmail Mutation resolver');
+        return resolverHandler(mutationResolver.unconfirmEmail, args);
       },
     },
   };

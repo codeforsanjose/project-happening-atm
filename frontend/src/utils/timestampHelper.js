@@ -1,16 +1,18 @@
 import dayjs from 'dayjs';
 
-export function toDateString(timestamp) {
-  return dayjs(timestamp).format('M/D/YYYY');
+export function toDateString(timestamp, format) {
+  // This function expects Unix timestamp in milliseconds (as String).
+  return dayjs(parseInt(timestamp, 10)).format(format || 'M/D/YYYY');
 }
 
 export function toTimeString(timestamp) {
-  return dayjs(timestamp).format('h:mm A');
+  // This function expects Unix timestamp in milliseconds (as String).
+  return dayjs(parseInt(timestamp, 10)).format('h:mm A');
 }
 
 export function isFutureTimestamp(timestamp) {
-  const unixTime = parseInt(timestamp, 10) / 1000;
-  return dayjs().isBefore(unixTime);
+  // This function expects Unix timestamp in milliseconds (as String).
+  return dayjs().isBefore(dayjs(parseInt(timestamp, 10)));
 }
 
 /**
@@ -49,12 +51,10 @@ export function groupMeetingsByDate(meetings) {
 
   // Fill hash table with meetings organized by year and month
   meetings.forEach((meeting) => {
-    const unixTime = parseInt(meeting.meeting_start_timestamp, 10) / 1000;
-    const date = dayjs(unixTime);
+    const date = dayjs(parseInt(meeting.meeting_start_timestamp, 10));
     const month = date.month();
     const year = date.year();
     const meetingObj = { ...meeting };
-    meetingObj.meeting_start_timestamp = unixTime;
 
     if (groups[year] === undefined) groups[year] = [];
     if (groups[year][month] === undefined) groups[year][month] = [];
@@ -72,7 +72,10 @@ export function groupMeetingsByDate(meetings) {
     for (let i = 0; i < 12; i += 1) {
       if (yearMeetings[i] !== undefined) {
         const sortedMeetings = yearMeetings[i]
-          .sort((a, b) => a.meeting_start_timestamp - b.meeting_start_timestamp);
+          .sort((a, b) =>
+            parseInt(a.meeting_start_timestamp, 10) -
+            parseInt(b.meeting_start_timestamp, 10)
+            );
 
         const monthObj = {
           year,
@@ -85,4 +88,12 @@ export function groupMeetingsByDate(meetings) {
   });
 
   return result;
+}
+
+export function getDifference(timestamp, timeUnit) {
+  // This function expects Unix timestamp in milliseconds (as String).
+  // 'timeUnit' is unit used to calculate the difference between the current time and the given one.
+  // More details can be found at https://day.js.org/docs/en/display/difference.
+  const now = dayjs();
+  return dayjs(parseInt(timestamp, 10)).diff(now, timeUnit || 'day');
 }

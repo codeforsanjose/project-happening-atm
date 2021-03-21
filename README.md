@@ -90,7 +90,7 @@ When running with docker-compose, a separate persistent volume is created for Po
 1. View the app at http://localhost:3001
 1. Run command to remove (most) of build artifacts:
    ```bash
-   docker-compose -p govt-agenda-notifier down --remove-orphans
+   docker-compose -p gov-agenda-notifier down --remove-orphans
    ```
 
 ## Option 2
