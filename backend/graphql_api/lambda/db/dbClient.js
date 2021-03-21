@@ -17,13 +17,13 @@ module.exports = async (logger) => {
     logger.error(`Error with DB: ${err.stack}`);
   });
 
-  const query = async (queryString) => {
-    logger.debug(queryString);
+  const query = async (queryString, ...args) => {
+    logger.debug(queryString, args);
     try {
-      return await client.query(queryString);
+      return await client.query(queryString, args);
     } catch (e) {
-      logger.error(`dbClient querry error: ${e.stack}`);
-      logger.debug(`errored query: ${queryString}`);
+      logger.error(`dbClient query error: ${e.stack}`);
+      logger.debug(`errored query: ${queryString}. errored args: ${args}`);
       throw e;
     }
   };
@@ -57,14 +57,22 @@ module.exports = async (logger) => {
     const queryString = `
         INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
         VALUES (
-          '${meetingType}',
-          to_timestamp(${convertMsToSeconds(meetingStartTimestamp)}),
-          '${virtualMeetingUrl}',
-          to_timestamp(${convertMsToSeconds(createdTimestamp)}),
-          to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
-          '${status}'
+          $1,
+          to_timestamp($2),
+          $3,
+          to_timestamp($4),
+          to_timestamp($5),
+          $6
         ) RETURNING id;`;
-    return query(queryString);
+    return query(
+      queryString,
+      meetingType,
+      convertMsToSeconds(meetingStartTimestamp),
+      virtualMeetingUrl,
+      convertMsToSeconds(createdTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      status
+    );
   };
 
   module.getAllMeetings = async () => {
@@ -74,7 +82,8 @@ module.exports = async (logger) => {
 
   module.getMeeting = async (id) => {
     logger.info('dbClient: getMeeting');
-    return query(`SELECT * FROM meeting WHERE id = ${id}`);
+    const queryString = 'SELECT * FROM meeting WHERE id = $1'
+    return query(queryString, id);
   };
 
   module.createMeetingItem = async (meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
@@ -85,19 +94,21 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
-        VALUES (
-          '${meetingId}',
-          '${orderNumber}',
-          to_timestamp(${convertMsToSeconds(createdTimestamp)}),
-          to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
-          to_timestamp(${convertMsToSeconds(itemStartTimestamp)}),
-          to_timestamp(${convertMsToSeconds(itemEndTimestamp)}),
-          '${status}',
-          '${contentCategories}',
-          '${descriptionLocKey}',
-          '${titleLocKey}'
-        ) RETURNING id;`;
-    return query(queryString);
+        VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6), $7, $8, $9, $10) 
+        RETURNING id;`;
+    return query(
+      queryString,
+      meetingId,
+      orderNumber,
+      convertMsToSeconds(createdTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      convertMsToSeconds(itemStartTimestamp),
+      convertMsToSeconds(itemEndTimestamp),
+      status,
+      contentCategories,
+      descriptionLocKey,
+      titleLocKey
+    );
   };
 
   module.getAllMeetingItems = async () => {
@@ -107,12 +118,14 @@ module.exports = async (logger) => {
 
   module.getMeetingItem = async (id) => {
     logger.info('dbClient: getMeetingItem');
-    return query(`SELECT * FROM meeting_item WHERE id = ${id}`);
+    const queryString = 'SELECT * FROM meeting_item WHERE id = $1';
+    return query(queryString, id);
   };
 
   module.getMeetingItemsByMeetingID = async (meetingId) => {
     logger.info('dbClient: getMeetingItemsByMeetingID');
-    return query(`SELECT * FROM meeting_item WHERE meeting_id = ${meetingId}`);
+    const queryString = 'SELECT * FROM meeting_item WHERE meeting_id = $1'
+    return query(queryString, meetingId);
   };
 
   module.getAllMeetingIDs = async () => {
@@ -144,17 +157,20 @@ module.exports = async (logger) => {
 
   module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
-    return query(`SELECT * FROM subscription WHERE id IN (${ids})`);
+    const queryString = 'SELECT * FROM subscription WHERE id IN $1'
+    return query(queryString, ids);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingID');
-    return query(`SELECT * FROM subscription WHERE meeting_id = ${id}`);
+    const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1'
+    return query(queryString, id);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingItemID');
-    return query(`SELECT * FROM subscription WHERE meeting_item_id = ${id}`);
+    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1'
+    return query(queryString, id);
   };
 
   module.getAllSubscriptions = async () => {
@@ -169,16 +185,26 @@ module.exports = async (logger) => {
     const queryString = `
         UPDATE meeting_item
         SET
-            order_number = '${orderNumber}',
-            status = '${status}',
-            item_start_timestamp = to_timestamp(${convertMsToSeconds(itemStartTimestamp)}),
-            item_end_timestamp = to_timestamp(${convertMsToSeconds(itemEndTimestamp)}),
-            updated_timestamp = to_timestamp(${convertMsToSeconds(updatedTimestamp)}),
-            content_categories = '${contentCategories}',
-            description_loc_key = '${descriptionLocKey}',
-            title_loc_key = '${titleLocKey}'
-        WHERE id = ${id}`;
-    return query(queryString);
+            order_number = $1,
+            status = $2,
+            item_start_timestamp = to_timestamp($3),
+            item_end_timestamp = to_timestamp($4),
+            updated_timestamp = to_timestamp($5),
+            content_categories = $6,
+            description_loc_key = $7,
+            title_loc_key = $8
+        WHERE id = $9`;
+    return query(queryString, 
+      orderNumber, 
+      status, 
+      convertMsToSeconds(itemStartTimestamp),
+      convertMsToSeconds(itemEndTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      contentCategories,
+      descriptionLocKey,
+      titleLocKey,
+      id
+    );
   };
 
   module.updateMeeting = async (id, status, meetingType, virtualMeetingUrl,
@@ -188,14 +214,22 @@ module.exports = async (logger) => {
     const queryString = `
         UPDATE meeting
         SET
-            status = '${status}',
-            meeting_type = '${meetingType}',
-            virtual_meeting_url = '${virtualMeetingUrl}',
-            meeting_start_timestamp = to_timestamp(${convertMsToSeconds(meetingStartTimestamp)}),
-            meeting_end_timestamp = to_timestamp(${convertMsToSeconds(meetingEndTimestamp)}),
-            updated_timestamp = to_timestamp(${convertMsToSeconds(updatedTimestamp)})
-        WHERE id = ${id}`;
-    return query(queryString);
+            status = $1,
+            meeting_type = $2,
+            virtual_meeting_url = $3,
+            meeting_start_timestamp = to_timestamp($4),
+            meeting_end_timestamp = to_timestamp($5),
+            updated_timestamp = to_timestamp($6)
+        WHERE id = $7`;
+    return query(queryString,
+      status,
+      meetingType,
+      virtualMeetingUrl,
+      convertMsToSeconds(meetingStartTimestamp),
+      convertMsToSeconds(meetingEndTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      id
+    );
   };
 
   module.getSubscriptionsByMeetingIDList = async (idList) => {
@@ -209,17 +243,20 @@ module.exports = async (logger) => {
       }
     });
     idListString += ')';
-    return query(`SELECT * FROM subscription WHERE meeting_item_id in ${idListString}`);
+    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id in $1';
+    return query(queryString, idListString);
   };
 
   module.getAdminByEmail = async (email) => {
     logger.info('dbClient: getAdminByEmail');
-    return query(`SELECT * FROM admin WHERE email_address = '${email}'`);
+    const queryString = 'SELECT * FROM admin WHERE email_address = $1';
+    return query(queryString, email);
   };
 
   module.toogleConfirmByToken = async (token, toogleBoolean) => {
     logger.info('dbClient: unconfirmUserByToken');
-    return query(`UPDATE account SET email_address_subscribed = ${toogleBoolean} WHERE token = '${token}'`);
+    const queryString = 'UPDATE account SET email_address_subscribed = $1 WHERE token = $2';
+    return query(queryString, toogleBoolean, token);
   };
 
   return module;
