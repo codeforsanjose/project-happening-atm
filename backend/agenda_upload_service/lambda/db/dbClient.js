@@ -134,13 +134,16 @@ module.exports = async (logger) => {
         INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
         VALUES ($1, to_timestamp($2), $3, to_timestamp($4), to_timestamp($5), $6) 
         RETURNING id;`;
-    return query(queryString,
-      meetingType,
-      convertMsToSeconds(meetingStartTimestamp),
-      virtualMeetingUrl,
-      convertMsToSeconds(createdTimestamp),
-      convertMsToSeconds(updatedTimestamp),
-      status
+    return query(
+      queryString, 
+      [
+        meetingType,
+        convertMsToSeconds(meetingStartTimestamp),
+        virtualMeetingUrl,
+        convertMsToSeconds(createdTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        status
+      ]
     );
   };
 
@@ -158,17 +161,19 @@ module.exports = async (logger) => {
         VALUES ($1, $2, $3, to_timestamp($4), to_timestamp($5), to_timestamp($6), to_timestamp($7), $8, $9, $10, $11) 
         RETURNING id;`;
     return query(queryString,
-      meetingId,
-      parentMeetingItemId,
-      orderNumber,
-      convertMsToSeconds(createdTimestamp),
-      convertMsToSeconds(updatedTimestamp),
-      convertMsToSeconds(itemStartTimestamp),
-      convertMsToSeconds(itemEndTimestamp),
-      status,
-      contentCategories,
-      descriptionLocKey,
-      titleLocKey
+      [
+        meetingId,
+        parentMeetingItemId,
+        orderNumber,
+        convertMsToSeconds(createdTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        convertMsToSeconds(itemStartTimestamp),
+        convertMsToSeconds(itemEndTimestamp),
+        status,
+        contentCategories,
+        descriptionLocKey,
+        titleLocKey
+      ]
     );
   };
 

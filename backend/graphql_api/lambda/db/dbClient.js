@@ -66,12 +66,14 @@ module.exports = async (logger) => {
         ) RETURNING id;`;
     return query(
       queryString,
-      meetingType,
-      convertMsToSeconds(meetingStartTimestamp),
-      virtualMeetingUrl,
-      convertMsToSeconds(createdTimestamp),
-      convertMsToSeconds(updatedTimestamp),
-      status
+      [
+        meetingType,
+        convertMsToSeconds(meetingStartTimestamp),
+        virtualMeetingUrl,
+        convertMsToSeconds(createdTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        status
+      ]
     );
   };
 
@@ -83,7 +85,7 @@ module.exports = async (logger) => {
   module.getMeeting = async (id) => {
     logger.info('dbClient: getMeeting');
     const queryString = 'SELECT * FROM meeting WHERE id = $1'
-    return query(queryString, id);
+    return query(queryString, [id]);
   };
 
   module.createMeetingItem = async (meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
@@ -96,18 +98,19 @@ module.exports = async (logger) => {
         INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
         VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6), $7, $8, $9, $10) 
         RETURNING id;`;
-    return query(
-      queryString,
-      meetingId,
-      orderNumber,
-      convertMsToSeconds(createdTimestamp),
-      convertMsToSeconds(updatedTimestamp),
-      convertMsToSeconds(itemStartTimestamp),
-      convertMsToSeconds(itemEndTimestamp),
-      status,
-      contentCategories,
-      descriptionLocKey,
-      titleLocKey
+    return query(queryString,
+      [
+        meetingId,
+        orderNumber,
+        convertMsToSeconds(createdTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        convertMsToSeconds(itemStartTimestamp),
+        convertMsToSeconds(itemEndTimestamp),
+        status,
+        contentCategories,
+        descriptionLocKey,
+        titleLocKey
+      ]
     );
   };
 
@@ -119,13 +122,13 @@ module.exports = async (logger) => {
   module.getMeetingItem = async (id) => {
     logger.info('dbClient: getMeetingItem');
     const queryString = 'SELECT * FROM meeting_item WHERE id = $1';
-    return query(queryString, id);
+    return query(queryString, [id]);
   };
 
   module.getMeetingItemsByMeetingID = async (meetingId) => {
     logger.info('dbClient: getMeetingItemsByMeetingID');
     const queryString = 'SELECT * FROM meeting_item WHERE meeting_id = $1'
-    return query(queryString, meetingId);
+    return query(queryString, [meetingId]);
   };
 
   module.getAllMeetingIDs = async () => {
@@ -158,19 +161,19 @@ module.exports = async (logger) => {
   module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
     const queryString = 'SELECT * FROM subscription WHERE id IN $1'
-    return query(queryString, ids);
+    return query(queryString, [ids]);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingID');
     const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1'
-    return query(queryString, id);
+    return query(queryString, [id]);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingItemID');
     const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1'
-    return query(queryString, id);
+    return query(queryString, [id]);
   };
 
   module.getAllSubscriptions = async () => {
@@ -195,15 +198,17 @@ module.exports = async (logger) => {
             title_loc_key = $8
         WHERE id = $9`;
     return query(queryString, 
-      orderNumber, 
-      status, 
-      convertMsToSeconds(itemStartTimestamp),
-      convertMsToSeconds(itemEndTimestamp),
-      convertMsToSeconds(updatedTimestamp),
-      contentCategories,
-      descriptionLocKey,
-      titleLocKey,
-      id
+      [
+        orderNumber, 
+        status, 
+        convertMsToSeconds(itemStartTimestamp),
+        convertMsToSeconds(itemEndTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        contentCategories,
+        descriptionLocKey,
+        titleLocKey,
+        id
+      ]
     );
   };
 
@@ -222,13 +227,15 @@ module.exports = async (logger) => {
             updated_timestamp = to_timestamp($6)
         WHERE id = $7`;
     return query(queryString,
-      status,
-      meetingType,
-      virtualMeetingUrl,
-      convertMsToSeconds(meetingStartTimestamp),
-      convertMsToSeconds(meetingEndTimestamp),
-      convertMsToSeconds(updatedTimestamp),
-      id
+      [
+        status,
+        meetingType,
+        virtualMeetingUrl,
+        convertMsToSeconds(meetingStartTimestamp),
+        convertMsToSeconds(meetingEndTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        id
+      ]
     );
   };
 
@@ -244,19 +251,19 @@ module.exports = async (logger) => {
     });
     idListString += ')';
     const queryString = 'SELECT * FROM subscription WHERE meeting_item_id in $1';
-    return query(queryString, idListString);
+    return query(queryString, [idListString]);
   };
 
   module.getAdminByEmail = async (email) => {
     logger.info('dbClient: getAdminByEmail');
     const queryString = 'SELECT * FROM admin WHERE email_address = $1';
-    return query(queryString, email);
+    return query(queryString, [email]);
   };
 
   module.toogleConfirmByToken = async (token, toogleBoolean) => {
     logger.info('dbClient: unconfirmUserByToken');
     const queryString = 'UPDATE account SET email_address_subscribed = $1 WHERE token = $2';
-    return query(queryString, toogleBoolean, token);
+    return query(queryString, [toogleBoolean, token]);
   };
 
   return module;
