@@ -117,7 +117,7 @@ module.exports = (logger) => {
       updated_timestamp: String
     }
 
-    enum Roles{
+    enum roles{
       ADMIN
       USER
     }
