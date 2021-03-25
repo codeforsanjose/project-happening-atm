@@ -1,7 +1,13 @@
 // TODO: error handling and data validation is required here
 // ex: verify that ids exist, undefined values should be passed as empty strings, etc...
+const getAuthentication = require('./authentication');
+const getValidator = require('./validators');
 
 module.exports = (logger) => {
+
+  const authentication = getAuthentication(logger);
+  const validator = getValidator(logger);
+
   const module = {};
 
   const getAllMeetings = async (dbClient) => {
@@ -113,7 +119,8 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  const getAllSubscriptions = async (dbClient) => {
+  const getAllSubscriptions = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     let res;
     try {
       res = await dbClient.getAllSubscriptions();
@@ -124,6 +131,54 @@ module.exports = (logger) => {
     return res.rows;
   };
 
+  const loginLocal = async (dbClient, email_address, password) => {
+    let token;
+    try {
+      if (password === undefined || password === null || password == "") {
+        logger.error('Unable to authenticate no password provided')
+        throw new Error('Unable to authenticate no password provided')
+      } else {
+        const user = await authentication.verifyEmailPassword(dbClient, email_address, password);
+        validator.validateAuthType(user.rows[0].auth_type, "Local");
+        token = await authentication.createJWT(user);
+      }
+    } catch (e) {
+      logger.error(`loginLocal resolver error: ${e}`);
+      throw e;
+    }
+    return { token: token }
+  };
+
+  const loginGoogle = async (dbClient, context) => {
+    let token;
+    try {
+      const user = await authentication.verifyGoogleToken(dbClient, context.token);
+      validator.validateAuthType(user.rows[0].auth_type, "Google");
+      token = await authentication.createJWT(user);
+    } catch (e) {
+      logger.error(`loginGoogle resolver error: ${e}`);
+      throw e;
+    }
+    return { token: token };
+  };
+
+  const loginMicrosoft = async (dbClient, context) => {
+    let token;
+    try {
+      const user = await authentication.verifyMicrosoftToken(dbClient, context.token);
+      validator.validateAuthType(user.rows[0].auth_type, "Microsoft");
+      token = await authentication.createJWT(user);
+    } catch (e) {
+      logger.error(`loginMicrosoft resolver error: ${e}`);
+      throw e;
+    }
+    return { token: token };
+  };
+
+  const verifyToken = async (dbClient, context) => {
+    //TODO: add logic to verify a token if sent to the server
+  }
+
   module.getAllMeetings = getAllMeetings;
   module.getMeeting = getMeeting;
   module.getAllMeetingItems = getAllMeetingItems;
@@ -132,5 +187,10 @@ module.exports = (logger) => {
   module.getAllMeetingsWithItems = getAllMeetingsWithItems;
   module.getSubscription = getSubscription;
   module.getAllSubscriptions = getAllSubscriptions;
+  module.loginLocal = loginLocal;
+  module.loginGoogle = loginGoogle;
+  module.loginMicrosoft = loginMicrosoft;
+  module.verifyToken = verifyToken;
+
   return module;
 };
