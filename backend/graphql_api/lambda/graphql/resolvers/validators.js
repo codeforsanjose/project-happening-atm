@@ -6,9 +6,6 @@
 const isLambda = process.env.IS_LAMBDA;
 const { UserInputError, ForbiddenError } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
 
-// Used to verify jwt token
-const jwt = require('jsonwebtoken');
-
 // TODO: We might want to have these set up in a config file for easy modification
 const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];
 const possibleTypes = ['test'];
@@ -126,11 +123,26 @@ module.exports = (logger) => {
   const module = {};
 
   module.validateAuthorization = (context) => {
-    user = jwt.verify(context.token, process.env.JWT_SECRET);
-    isAdmin = user.data.admin
+    const isAdmin = context.user.roles.includes('ADMIN');
     if (!isAdmin) {
-      logger.debug(`${user.name} ${user.email}: Attempted without admin credentials`);
-      throw new ForbiddenError('No admin credentials provisioned. Log in.');
+      logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without admin credentials`);
+      throw new ForbiddenError('No admin credentials provided.')
+    };
+  };
+
+  module.validateUser = (context) => {
+    const isUser = context.user.roles.includes('USER');
+    if (!isUser) {
+      logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without user credentials`);
+      throw new ForbiddenError('No user credentials provided. Please log in.')
+    }
+  };
+
+  module.validateAuthType = (authType, loginMethod) => {
+    const isMatch = authType === loginMethod;
+    if (!isMatch) {
+      logger.debug(`Incorrect login type: User auth type is ${authType} and tried to login with ${loginMethod} type.`);
+      throw new ForbiddenError('Incorrect authentication type')
     }
   };
 
@@ -211,6 +223,14 @@ module.exports = (logger) => {
     } = args;
 
     validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+    validateEmail(email_address, 'email_address', context);
+  };
+
+  module.validateCreateAccount = (args) => {
+    const context = 'createAccount'
+    // TODO: Add any protections for bad user input 
+    const { email_address } = args;
+
     validateEmail(email_address, 'email_address', context);
   };
 
