@@ -1,0 +1,403 @@
+navbar:
+  menu: Thư mục
+  browse-meetings: Tìm kiếm cuộc họp
+  about: Về chúng tôi
+  faq: Giải đáp thắc mắc
+  submit-feedback: Gửi phản hồi
+  sign-in: Đăng nhập
+  sign-out: Đăng Xuất
+
+header:
+  my-city-agenda: Chương trình nghị sự của Thành phố
+  city-council-meetings: Các Cuộc họp của Hội đồng Thành phố
+  city-council-meeting-agenda: Cuộc họp nghị sự của Hội đồng Thành phố
+
+meeting:
+  start-time: Giờ Bắt đầu
+  actions:
+    edit-info:
+      label: Chỉnh sửa Thông tin cuộc họp
+      modal:
+        title: Chỉnh sửa Thông tin cơ bản
+        button:
+          do: Cập nhật Thay đổi
+          doing: Đang Cập nhật Thay đổi
+          did: Đã Cập nhật Thay đổi
+        inputs:
+          date: Ngày
+          time: Thời gian
+    upload-new-agenda: Tải lên Văn Kiện mới
+    join:
+      zoom: Tham gia cuộc họp Zoom
+    watch: Xem buổi Phát thanh của cuộc họp 
+  status:
+    label: Trạng thái cuộc họp
+    short:
+      default-option: Cập nhật trạng thái
+      in-progress: Đang diễn ra
+      in-recess: Tạm dừng
+      ended: Kết thúc
+      cancelled: Đã huỷ
+    long:
+      in-progress: Cuộc họp đang diễn ra
+      in-recess: CUộc họp đang tạm dừng
+      ended: Cuộc họp đã kết thúc
+      cancelled: Cuộc họp đã bị buỷ
+    relative:
+      short:
+        in-progress: Đang diễn ra
+        in-1-week: Sẽ diễn ra trong vòng 1 tuần
+        in-6-days: Sẽ diễn ra trong vòng 6 ngày
+        in-5-days: Sẽ diễn ra trong vòng 5 ngày
+        in-4-days: Sẽ diễn ra trong vòng 4 ngày
+        in-3-days: Sẽ diễn ra trong vòng 3 ngày
+        in-2-days: Sẽ diễn ra trong vòng 2 ngày
+        in-1-day: Sẽ diễn ra trong vòng 1 ngày
+        in-0-day: Sẽ diễn ra trong vòng vài giờ nữa
+      long:
+        in-progress: Cuộc họp đang diễn ra 
+       in-1-week: Sẽ diễn ra trong vòng 1 tuần
+        in-6-days: Sẽ diễn ra trong vòng 6 ngày
+        in-5-days: Sẽ diễn ra trong vòng 5 ngày
+        in-4-days: Sẽ diễn ra trong vòng 4 ngày
+        in-3-days: Sẽ diễn ra trong vòng 3 ngày
+        in-2-days: Sẽ diễn ra trong vòng 2 ngày
+        in-1-day: Sẽ diễn ra trong vòng 1 ngày
+        in-0-day: Sẽ diễn ra trong vòng vài giờ nữa
+  list:
+    show-past: Hiển thị những cuộc họp đã diễn ra
+    no-meeting: Không tìm thấy cuộc họp!
+    calendar-export:
+      button: Thêm vào Lịch
+      modal:
+        title: Thêm vào Lịch
+        options:
+          apple: Apple Calendar
+          google: Google Calendar
+          outlook: Outlook Calendar
+    agenda:
+      button: Chương trình nghị sự
+    minutes: 
+      button: Ghi chú cuộc họp
+    recording: 
+      button: Bản thu hình
+    new-meeting:
+      button: Tạo cuộc họp mới
+      modal:
+        title: Tạo cuộc họp mới
+        subtitle: Thêm ngày và thời gian cuộc họp
+        inputs:
+          date: Ngày
+          time: Thời gian
+        buttons:
+          create-meeting: Tạo cuộc họp mới
+          creating-meeting: Tạo cuộc họp mới
+    delete-meeting:
+      button: Xoá cuộc họp
+      modal:
+        title: Bạn có chắn chắc rằng bạn muốn xoá cuộc họp này?
+        buttons:
+          delete: Xoá
+          deleting: Đang xoá
+          cancel: Huỷ
+  tabs:
+    agenda:
+      label: Chương trình nghị sự
+      status:
+        button: Cập nhật trạng thái
+        modal:
+          title: Cập nhật Trạng thái của Chủ đề nghị sự
+          subtitle: Chọn Trạng thái
+          button:
+            do: Lưu và Cập nhật Thay đổi
+            doing: Đang Lưu và đang Cập nhật
+            done: Đã lưu và đã Cập nhật
+        options:
+          completed: Đã Hoàn thành
+          in-progress: Đang diễn ra
+          closed: Đã kết thúc
+          removed: Đã gỡ để cân nhắc thêm
+          deferred: Đã hoãn
+      upload-new:
+        button: Tải lên Chương trình nghị sự mới
+        modal:
+          title: Tải lên Chương trình nghị mới
+          input:
+            help: Kéo và Thả CSV File
+            alt: Hoặc Tải lên từ Máy tính của bạn
+          buttons:
+            upload: Tải lên và Công bố
+            uploading: Đang tải lên và đang Công bố
+      list:
+        show-closed: Không tìm thấy Chủ đề liên quan
+        no-agenda: Không tìm thấy Chủ đề nghị sự
+        search:
+          placeholder: Tìm kiếm Chương trình nghị sự
+        n-selected: Đã Chọn
+        cancel: Huỷ
+        rearrange-modal:
+          title: Lưu và Cập nhật Thay đổi
+          text: Có vẻ như bạn đã thay đổi một hoặc một vài chủ đề. Bạn có muốn lưu và cập nhật thay đổi?
+          button:
+            do: Có, Lưu và Cập nhật Thay đổi
+            doing: Đang lưu và đang Cập nhật Thay đổi
+            did: Đã lưu và đã Cập nhật Thay đổi
+        subscribe:
+          button:
+            do: Đăng ký
+            doing: Đang Đăng ký...
+            done: Đã Đăng ký
+          page:
+            title: Đăng ký Chủ đề
+            description: Đăng ký để nhận thông báo khi chủ đề này được bàn bạc.
+            inputs:
+              sms:
+                label: Đăng ký để nhận thông báo qua tin nhắn
+                placeholder: Nhập số điện thoại
+              email:
+                label: Đăng ký để nhận thông báo qua email
+                placeholder: Nhập địa chỉ email
+          confirmation:
+            title: Bạn đã đăng ký (những) chủ đề này!
+            description: Cảm ơn bạn vì đã đăng ký. Để xác thực danh tính của mình, vui lòng kiểm tra email và xác nhận rằng bạn đã đăng ký.
+            butotn: OK
+        share:
+          button: Chia sẻ
+        more-info:
+          button: Thông tin chi tiết
+          modal:
+            title: Thông tin chi tiết
+            subtitle: Chỉnh sửa Thông tin Chủ đề
+            button:
+              do: Lưu và Cập nhật Thay đổi
+              doing: Đang Lưu và đang Cập nhật Thay đổi
+              done: Đã Lưu và đã Cập nhật Thay đổi
+            inputs:
+              agenda-item:
+                label: Chủ đề nghị sự
+              description:
+                label: Miêu tả
+              attachments:
+                label: Tài liệu đính kèm
+                upload-new: Tải tài liêu mới
+      details: Thông tin chi tiết
+        recommendation: Gợi ý 
+        attatchments: Tài liệu đính kèm
+        presentation: Bài thuyết trình
+    participate:
+      label: Tham gia
+      section:
+        join:
+          title: Tham gia cuộc họp Zoom
+          edit:
+            button: Chỉnh sửa
+            modal:
+              title: Chỉnh sửa Thông tin cuộc họp trực tuyến
+              button:
+                do: Cập nhật Thay đổi
+                doing: Đang Cập nhật Thay đổi
+                did: Đã cập nhật Thay đổi
+              inputs:
+                meeting-link: Đường dẫn đến cuộc họp trực tuyến
+                meeting-id: Thông tin về cuộc họp trực tuyến
+                call-in-info: Thông tin liên lạc
+          description:
+            preface: 'Để ngăn chặn sự lan truyền của COVID-19 và đảm bảo sự an toàn của cộng đồng, Thành phố San José hiện tại đang tổ chức các buổi họp Hội đồng Thành phố trực tuyến qua Zoom. Bạn có 2 sự lựa chọn để tham gia và nêu ra ý kiến của mình trong buổi họp trực tuyến này:'
+            number-1:
+              title: Gọi
+              subtitle: Nhập Thông tin cuộc họp
+            number-2:
+              title: Tham gia từ máy tính hoặc thiết bị thông minh tại đây
+              button: Tham gia cuộc họp Zoom
+            post-script:
+              title: yêu cầu về Trình duyệt Web của Zoom
+              text: 'Bạn bắt buộc phải tải ứng dụng. Hãy sử dụng Trình duyệt mới nhất: Chrome 30+, Firefox 27+, Microsoft Edge 12+, Safari 7+. Một số tính năng có thể sẽ không hoạt động bởi trình duyệt cũ, bao gồm Internet Explorer. Tìm hiểu thêm thông tin tại zoom.us.'
+              link:
+                one: Để biết thêm thông tin về cách tham gia cuộc họp, vui lòng nhấn vào đây.
+                two: Để biết thêm thông tin về các tính năng của Zoom, vui lòng nhấn vào đây.
+        watch:
+          title: Xem buổi Phát thanh của Cuộc họp
+          edit:
+            button: Chỉnh sửa
+            modal:
+              title: Chỉnh sửa thông tin về buổi Phát thanh
+              button:
+                do: Cập nhật Thay đổi
+                doing: Đang Cập nhật Thay đổi
+                did: Đã Cập nhật Thay đổi
+              inputs:
+                city-website: Đường dẫn đến Thành phố San José
+                city-youtube: Đường dẫn đến Youtube
+          description:
+            preface: Bạn có 3 sự lựa chọn để xem chương trình phát thanh về cuộc họp trực tiếp
+            closed-caption: Chú thích khả dụng cho tất cả mọi người
+            number-1:
+              title: Comcast Cable Channel 26
+            number-2:
+              title: Kênh Youtube của Thành phố
+              button: Đến kênh Youtube
+            number-3:
+              title: Trang Web của Thành phố
+              subtitle: Tìm cuộc họp và nhấn vào "Đang diễn ra" 
+              button: Đến Trang Web của Thành phố
+        comment:
+          title: Nhập Bình luận Công khai
+          edit:
+            button: Chỉnh sửa
+            modal:
+              title: CHỉnh sửa Thông tin Bình luận Công Khai
+              button:
+                do: Cập nhật Thay đổi
+                doing: Đang Cập Nhật Thay đổi
+                did: Đã Cập nhật Thay đổi
+              inputs:
+                email-before-meeting: Email - Trước Cuộc họp
+                email-after-meeting: Email - Sau Cuộc họp
+                e-comment: Bình luận điện tử
+          description:
+            before-meeting:
+              title: Trước Cuộc họp
+              number-1:
+                title: Gửi email đến city.clerk@sanjoseca.gov vào lúc 10:00 a.m. cùng ngày với cuộc họp
+                subtitle: Vui lòng ghi rõ Số hiệu của Chủ đề trong tiêu đề của email. Các email sẽ được đính kèm với chương trình nghị sự của Hội đồng dưới tên “Letters from the Public,” nhưng sẽ không bị đọc công khai trong cuộc họp.
+              number-2:
+                title: Thông qua đường dẫn trong bình luận điện tử
+                subtitle: Các bình luận điện tử sẽ được gửi trực tiếp đến các nhân viên của Hội đồng và Uỷ ban
+                button: Gửi bình luận điện tử
+            during-meeting:
+              title: Trong Cuộc họp
+              number-1:
+                title: Gửi email đến city.clerk@sanjoseca.gov trong cuộc họp
+                subtitle: Hãy ghi rõ Số hiệu của Chủ đề trong tiêu đề của email. Những bình luận sẽ được ghi lại trong bản thu hình của cuộc họp nhưng sẽ không bị đọc công khai trong cuộc họp.
+        consideration:
+          title: Yêu cầu được Cân nhắc riêng cho Danh sách các Chủ đề nghị sự
+          description:
+            preface: 'Sẽ không có một buổi bàn bạc riêng nào cho Danh sách các Chủ đề nghị sự bởi vì chúng được thường xuyên xem xét bởi Hội đồng Thành phố. Nếu như một thành viên của Hội đồng Thành phố, nhân viên hay công chúng yêu cầu một buổi bàn bạc về một chủ đề cụ thể, chủ đề đó sẽ được gỡ khỏi Danh sách các Chủ đề Nghị sự và sẽ được xem xét riêng. Nếu như bạn muốn yêu cầu một buổi bài bạc riêng về một chủ đề cụ thể trên Danh sách các Chủ đề:'
+            number-1:
+              title: Gửi email đến city.clerk@sanjoseca.gov vào lúc 10:00 a.m. cùng ngày với cuộc họp
+              subtitle: Vui lòng ghi rõ Số hiệu của Chủ đề nghị sự thuộc Danh sách các Chủ đề nghị sự trong tiêu đề của email.
+
+footer:
+  language:
+    change:
+      title: Chọn Ngôn ngữ
+      button:
+        do: Thay đổi Ngôn ngữ
+        doing: Đang Thay đổi Ngôn ngữ
+        did: Đã Thay đổi Ngôn ngữ
+
+standard:
+  errors:
+    something-went-wrong: Đã xảy ra lỗi
+    try-again: Thử lại
+  numbers:
+    - không
+    - một
+    - hai
+    - ba
+    - bốn
+    - năm
+    - sáu
+    - bảy
+    - tám
+    - chín
+    - mười
+  weekdays:
+    - Chủ Nhật
+    - Thứ Hai
+    - Thứ Ba
+    - Thứ Tư
+    - Thứ Năm
+    - Thứ Sáu
+    - Thứ Bảy
+  months: 
+    - Tháng Một
+    - Tháng Hai
+    - Tháng Ba
+    - Tháng Tư
+    - Tháng Năm
+    - Tháng Sáu
+    - Tháng Bảy
+    - Tháng Tám
+    - Thang Chín
+    - Tháng Mười
+    - Tháng Mười Một
+    - Tháng Mười Hai
+  buttons:
+    go-to-top: Quay trả lại đầu trang
+    back: Quay lại
+    watch: Xem
+    add: Thêm
+    adding: Đang thêm
+    remove: Bỏ
+    removing: Đang Bỏ
+    create: Tạo
+    creating: Đang Tạo
+    delete: Xoá
+    deleting: Đang Xoá
+    publish: Cập nhật
+    publishing: Đang Cập nhật
+    upload: Tải lên
+    uploading: Đang Tải lên
+    download: Tải xuống
+    downloading: Đang Tải xuống
+    cancel: Huỷ
+    canceling: Đang Huỷ
+    close: Đóng
+    closing: Đang Đóng
+    exit: Thoát
+    exiting: Đang Thoát
+    abort: Chấm dứt
+    aborting: Đang Chấm dứt
+    search: Tìm kiếm
+    searching: Đang Tìm kiếm
+    subscribe: Đăng ký
+    subscribing: Đang Đăng ký
+    share: Chia sẻ
+    sharing: Đang Chia sẻ
+    join: Tham gia
+    joining: Đang Tham gia
+    leave: Thoát
+    leaving: Đang thoát
+    ok: OK
+  words:
+    and: và
+    button: tính năng
+    buttons: các tính năng
+    city: thành phố
+    cities: các thành phố
+    council: hội đồng
+    meeting: cuộc họp 
+    meetings: các cuộc họp
+    agenda: văn kiện
+    status: trạng thái
+    warning: cảnh báo
+    error: lỗi
+    alert: chú ý
+    notification: thông báo
+    notifications: những thông báo
+    time: giờ
+    date: ngày hẹn
+    day: ngày
+    days: các ngày
+    week: tuần
+    weeks: các tuần
+    month: tháng
+    months: các tháng
+    year: năm
+    years: các năm
+    calendar: lịch
+    top: phía trên
+    left: bên trái
+    right: bên phải
+    bottom: phía dưới
+    center: trung tâm
+    middle: chính giữa
+    new: mới
+    start: bắt đầu
+    end: kết thúc
+    select: chọn
+    selected: đã chọn
+    search: tìm kiếm
+    result: kết quả
+    results: các kết quả
