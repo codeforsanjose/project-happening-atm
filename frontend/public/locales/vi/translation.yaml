@@ -56,7 +56,7 @@ meeting:
         in-0-day: Sẽ diễn ra trong vòng vài giờ nữa
       long:
         in-progress: Cuộc họp đang diễn ra 
-       in-1-week: Sẽ diễn ra trong vòng 1 tuần
+        in-1-week: Sẽ diễn ra trong vòng 1 tuần
         in-6-days: Sẽ diễn ra trong vòng 6 ngày
         in-5-days: Sẽ diễn ra trong vòng 5 ngày
         in-4-days: Sẽ diễn ra trong vòng 4 ngày
@@ -180,7 +180,7 @@ meeting:
               attachments:
                 label: Tài liệu đính kèm
                 upload-new: Tải tài liêu mới
-      details: Thông tin chi tiết
+      details:
         recommendation: Gợi ý 
         attatchments: Tài liệu đính kèm
         presentation: Bài thuyết trình

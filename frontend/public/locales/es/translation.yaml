@@ -251,8 +251,8 @@ meeting:
                 doing: Publicando Cambios
                 did: Cambios Publicados
               inputs:
-                email-before-meeting: Correo Electrónico: Antes de Reunión
-                email-after-meeting: Correo Electrónico: Después de Reunión
+                email-before-meeting: Correo Electrónico - Antes de Reunión
+                email-after-meeting: Correo Electrónico - Después de Reunión
                 e-comment: Comentario Electrónico 
           description:
             before-meeting:
