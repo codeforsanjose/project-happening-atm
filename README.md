@@ -176,6 +176,13 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
          AWS_DEFAULT_REGION=
          FROM_ADDRESS=
          SEND_EMAIL=false
+
+         JWT_SECRET = NEED-TO_CREATE-SECRET-KEY
+         JWT_ISSUER = ADD-ISSUER-DOMAIN
+         JWT_AUDIENCE = ADD-AUDIENCE
+
+         GOOGLE_CLIENT_ID = NEED-TO-REGISTER-APP
+         GOOGLE_CLIENT_SECRET = NEED-TO-REGISTER-APP
          ```
 
          - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
