@@ -54,14 +54,14 @@ jobs:
     # the cache is created without them in the post run.
     # It also restores the cache if it exists.
     - uses: satackey/action-docker-layer-caching@v0.0.11
-      # Ignore the failure of a step and avoid terminating the job.
+      # Ignore the failure of a step and avoid terminating the job..
       continue-on-error: true
 
     - name: Client - Build, Tag, Push image to ECR
       id: client-build
       uses: whoan/docker-build-with-cache-action@v5.9.0
       with:
-        dockerfile: backend/Dockerfile
+        dockerfile: backend/graphql_api/lambda/Dockerfile
         registry: ${{ steps.login-ecr.outputs.registry }}
         stages_image_name: ${{ steps.ecs-variables.outputs.repo }}
         image_name: ${{ steps.ecs-variables.outputs.repo }}
