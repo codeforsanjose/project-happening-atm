@@ -15,7 +15,6 @@ services:
       - "/usr/src/app/node_modules"
     depends_on:
       - backend_pg
-      - frontend
   backend_pg:
     build: "./backend/docker_for_local_dev_db"
     # this is for debugging; graphql connects to PG via internal docker network
@@ -55,5 +54,9 @@ services:
       # Don't sync the node_modules directory back to the client.
       - "/usr/src/app/node_modules"
     stdin_open: true
+    depends_on:
+      - backend_pg
+    environment:
+      - REACT_APP_GRAPHQL_URL=localhost:3000
 volumes:
   postgres-data:
