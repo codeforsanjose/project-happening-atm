@@ -15,10 +15,10 @@ module.exports = async (logger) => {
     logger.error(`Error with DB: ${err.stack}`);
   });
 
-  const query = async (queryString, ...args) => {
+  const query = async (queryString, args, callback) => {
     logger.debug(queryString, args);
     try {
-      return await client.query(queryString, args);
+      return await client.query(queryString, args, callback);
     } catch (e) {
       logger.error(`dbClient query error: ${e.stack}`);
       logger.debug(`errored query: ${queryString}. errored args: ${args}`);
