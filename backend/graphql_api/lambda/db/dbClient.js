@@ -20,7 +20,7 @@ module.exports = async (logger) => {
   const query = async (queryString, ...args) => {
     logger.debug(queryString, args);
     try {
-      return await client.query(queryString, args);
+      return await client.query(queryString, args[0], args[1]);
     } catch (e) {
       logger.error(`dbClient query error: ${e.stack}`);
       logger.debug(`errored query: ${queryString}. errored args: ${args}`);
@@ -84,7 +84,7 @@ module.exports = async (logger) => {
 
   module.getMeeting = async (id) => {
     logger.info('dbClient: getMeeting');
-    const queryString = 'SELECT * FROM meeting WHERE id = $1'
+    const queryString = 'SELECT * FROM meeting WHERE id = $1';
     return query(queryString, [id]);
   };
 
@@ -127,7 +127,7 @@ module.exports = async (logger) => {
 
   module.getMeetingItemsByMeetingID = async (meetingId) => {
     logger.info('dbClient: getMeetingItemsByMeetingID');
-    const queryString = 'SELECT * FROM meeting_item WHERE meeting_id = $1'
+    const queryString = 'SELECT * FROM meeting_item WHERE meeting_id = $1';
     return query(queryString, [meetingId]);
   };
 

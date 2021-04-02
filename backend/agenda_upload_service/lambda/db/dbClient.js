@@ -18,7 +18,7 @@ module.exports = async (logger) => {
   const query = async (queryString, ...args) => {
     logger.debug(queryString, args);
     try {
-      return await client.query(queryString, args);
+      return await client.query(queryString, args[0], args[1]);
     } catch (e) {
       logger.error(`dbClient query error: ${e.stack}`);
       logger.debug(`errored query: ${queryString}. errored args: ${args}`);
