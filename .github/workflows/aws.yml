@@ -137,7 +137,7 @@ jobs:
       id: client-build
       uses: whoan/docker-build-with-cache-action@v5.9.0
       with:
-        dockerfile: backend/Dockerfile
+        dockerfile: frontend/Dockerfile
         registry: ${{ steps.login-ecr.outputs.registry }}
         stages_image_name: ${{ steps.ecs-variables.outputs.repo }}
         image_name: ${{ steps.ecs-variables.outputs.repo }}
