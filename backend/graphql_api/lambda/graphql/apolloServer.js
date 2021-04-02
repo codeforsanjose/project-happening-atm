@@ -112,7 +112,7 @@ module.exports = (logger) => {
       password: String
       password_reset_token: String
       password_reset_expire: String
-      roles: [Roles]!
+      roles: [roles]!
       created_timestamp: String
       updated_timestamp: String
     }
