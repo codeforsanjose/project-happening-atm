@@ -59,11 +59,12 @@ function CSVUploadModal({ isOpen, closeModal, meetingId }) {
     setIsLoading(false);
     clearSelectedFile();
 
-    // if upload successful
-    // setUploadSuccessful(true)
-
-    // else
-    // display an error message
+    if (!response.error) {
+      setUploadSuccessful(true);
+    } else {
+      // TODO: Error message display
+      console.log(response.error);
+    }
   }
 
   const redirect = pathname === '/';
