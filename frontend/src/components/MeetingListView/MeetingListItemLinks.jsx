@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import useCSVUpload from '../../hooks/useCSVUpload';
 
 // Asset imports
 import {
@@ -13,15 +14,16 @@ import {
   DeleteIcon,
 } from '../../utils/_icons';
 
-function AdminMeetingItemLinks() {
+function AdminMeetingItemLinks({ meetingId }) {
   const { t } = useTranslation();
+  const [openModal, renderUploadModal] = useCSVUpload(meetingId);
 
   return (
     <div className="meeting-links">
       <Link to="#">
         <div className="link">
           <ViewAgendaIcon />
-          <p>{t('meeting.actions.upload-new-agenda')}</p>
+          <button type="button" onClick={openModal}>{t('meeting.actions.upload-new-agenda')}</button>
         </div>
       </Link>
       <Link to="#">
@@ -30,6 +32,7 @@ function AdminMeetingItemLinks() {
           <p>{t('meeting.list.delete-meeting.button')}</p>
         </div>
       </Link>
+      {renderUploadModal()}
     </div>
   );
 }

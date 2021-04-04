@@ -10,7 +10,6 @@ import './MeetingListView.scss';
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import MeetingListGroup from './MeetingListGroup';
 import Spinner from '../Spinner/Spinner';
-import CSVUploadModal from '../CSVUploadModal/CSVUploadModal';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
@@ -36,11 +35,6 @@ function MeetingListView() {
   const [meetings, setMeetings] = useState([]);
   const [showPastMeetings, setShowPastMeetings] = useState(false);
 
-  // CSV UPLOAD MODAL TEMP
-  const [showCSVUpload, setShowCSVUpload] = useState(false);
-  function openCSVUpload() { setShowCSVUpload(true); }
-  function closeCSVUpload() { setShowCSVUpload(false); }
-
   function handleToggle() {
     setNavToggled(!navToggled);
   }
@@ -59,8 +53,6 @@ function MeetingListView() {
   return (
     <div className="MeetingListView">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-
-      <button type="button" onClick={openCSVUpload}>Open Modal</button>
 
       <div className="meeting-list-header">
         <img className="logo" src={cityLogo} alt="logo" />
@@ -91,8 +83,6 @@ function MeetingListView() {
 
         {loading && <div className="loader"><Spinner /></div>}
         {error && <div className="loader">{`Error! ${error.message}`}</div>}
-
-        <CSVUploadModal isOpen={showCSVUpload} closeModal={closeCSVUpload} />
       </div>
     </div>
   );

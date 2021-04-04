@@ -11,5 +11,6 @@ export default async function uploadCSV(csvFile, meetingId = null) {
 
   const response = await fetch(uploadUrl, options);
   const data = await response.json();
+  console.log('upload complete:', data);
   return data;
 }

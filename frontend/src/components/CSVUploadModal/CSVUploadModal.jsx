@@ -10,7 +10,7 @@ import Spinner from '../Spinner/Spinner';
 import UploadSuccess from './UploadSuccess';
 import { PublishIcon, CancelIcon } from '../../utils/_icons';
 
-function CSVUploadModal({ isOpen, closeModal, meetingId }) {
+function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   const fileInputRef = useRef();
   const history = useHistory();
   const { pathname } = useLocation();
@@ -55,7 +55,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId }) {
     setShowConfirm(false);
     setIsLoading(true);
 
-    const response = await uploadCSV(selectedFile);
+    const response = await uploadCSV(selectedFile, meetingId);
     setIsLoading(false);
     clearSelectedFile();
 
