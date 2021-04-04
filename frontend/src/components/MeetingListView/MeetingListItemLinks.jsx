@@ -21,10 +21,14 @@ function AdminMeetingItemLinks({ meetingId }) {
   return (
     <div className="meeting-links">
       <Link to="#">
-        <div className="link">
+        <button
+          type="button"
+          className="link"
+          onClick={openModal}
+        >
           <ViewAgendaIcon />
-          <button type="button" onClick={openModal}>{t('meeting.actions.upload-new-agenda')}</button>
-        </div>
+          <p>{t('meeting.actions.upload-new-agenda')}</p>
+        </button>
       </Link>
       <Link to="#">
         <div className="link">
