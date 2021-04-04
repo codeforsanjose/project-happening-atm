@@ -44,8 +44,8 @@ export const GET_MEETING_WITH_ITEMS = gql`
         parent_meeting_item_id,
         order_number,
         status,
-        meeting_start_timestamp,
-        meeting_end_timestamp,
+        item_start_timestamp,
+        item_end_timestamp,
         content_categories,
         description_loc_key,
         title_loc_key     

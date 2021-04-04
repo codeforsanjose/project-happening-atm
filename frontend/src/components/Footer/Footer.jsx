@@ -23,6 +23,13 @@ function Footer() {
           >
             SPANISH
           </button>
+          <button
+            type="button"
+            onClick={() => i18n.changeLanguage('vi')}
+            className={i18n.language === 'vi' ? 'current-language' : ''}
+          >
+            VIETNAMESE
+          </button>
         </div>
       </nav>
     </footer>

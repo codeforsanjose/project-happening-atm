@@ -74,7 +74,7 @@ meeting:
         options:
           apple: Apple Calendar
           google: Google Calendar
-          Outlook: Outlook Calendar
+          outlook: Outlook Calendar
     agenda:
       button: Agenda
     minutes:
