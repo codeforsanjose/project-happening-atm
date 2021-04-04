@@ -10,6 +10,30 @@ import Spinner from '../Spinner/Spinner';
 import UploadSuccess from './UploadSuccess';
 import { PublishIcon, CancelIcon } from '../../utils/_icons';
 
+/**
+ * A modal to handle CSV Uploads.
+ * Use the custom 'useCSVUpload' hook when implementing CSV uploads
+ * on a page.
+ *
+ * props:
+ *    isOpen
+ *      Boolean state that indicates if the modal is shown
+ *    closeModal
+ *      Callback function to close the modal
+ *    meetingId
+ *      Number used to upload to specific meeting or create a new one if null
+ *
+ * state:
+ *    selectedFile
+ *      Current file selected by the file input
+ *    isLoading
+ *      Boolean loading state when uploading a file
+ *    showConfirm
+ *      Boolean indicating if confirmation modal is shown
+ *    uploadSuccessful
+ *      Boolean indicating if success modal is shown
+ */
+
 function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   const fileInputRef = useRef();
   const history = useHistory();
