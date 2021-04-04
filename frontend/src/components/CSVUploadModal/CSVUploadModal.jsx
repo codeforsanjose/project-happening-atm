@@ -47,15 +47,11 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   function handleFileChange() {
     const fileRef = fileInputRef.current;
     if (fileRef.files.length === 0) return;
-    // TODO: Validate files:
-    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
     setSelectedFile(fileRef.files[0]);
   }
 
   const handleFileDrop = useCallback((files) => {
-    if (files.length === 0) return;
-    // TODO: Validate dropped files:
-    // https://github.com/codeforsanjose/gov-agenda-notifier/issues/32
+    if (files.length === 0 || files[0].type !== 'text/csv') return;
     setSelectedFile(files[0]);
   }, []);
 
