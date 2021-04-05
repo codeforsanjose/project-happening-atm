@@ -98,7 +98,7 @@ function AgendaSubItem({renderedAgendaSubItem, id }) {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  
+  console.log(id);
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="AgendaItem">
       {renderedAgendaSubItem.status !== 'Pending' && <div className="item-status">{renderedAgendaSubItem.status}</div>}
@@ -204,14 +204,12 @@ const PatrickSortableAgendaSubItemContainer =
               console.log(renderedAgendaSubItem.id);
 
               return (
-              <PatrickSortableAgendaSubItemElement
-                index={index}
-                id={renderedAgendaSubItem.id}
-                key={renderedAgendaSubItem + index}
-                renderedAgendaSubItem={renderedAgendaSubItem}
-                
-              />
-            );})}
+                <AgendaSubItem 
+                  id={renderedAgendaSubItem.id} 
+                  renderedAgendaSubItem={renderedAgendaSubItem}
+                  key={renderedAgendaSubItem.id}
+                />
+              );})}
 
           </AccordionItemPanel>
         </AccordionItem>
@@ -219,14 +217,10 @@ const PatrickSortableAgendaSubItemContainer =
   );
 };
 
-const PatrickSortableAgendaSubItemElement = 
-  ({ renderedAgendaSubItem, id }) => (
-    <AgendaSubItem id={id} renderedAgendaSubItem={renderedAgendaSubItem} />
-  );
-
-const PatrickSortableAgendaItemContainer = ({items}) =>{
-  const [activeId, setActiveId] = useState(null);
+const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
+  const [activeId, setActiveId] = useState('11');
   
+ 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -235,13 +229,10 @@ const PatrickSortableAgendaItemContainer = ({items}) =>{
   );
     
   if(items.length != 0){
-    const items2 = items[0].subItems.map(item=>item.id);
-    console.log(items[0].subItems.find(item=>item.id === '1'));
-    console.log(activeId);
-
+    console.log(items[0].subItems.map(item=>item.id));
     return(
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}  sensors={sensors} collisionDetection={closestCenter}>
-        <SortableContext items={items2} strategy={verticalListSortingStrategy}>
+        <SortableContext items={items[0].subItems.map(item=>item.id)} strategy={verticalListSortingStrategy}>
           <PatrickSortableAgendaSubItemContainer renderedAgendaItem={items[0]} />
         </SortableContext>
 
@@ -254,19 +245,110 @@ const PatrickSortableAgendaItemContainer = ({items}) =>{
 
   return(<p>test</p>);
 
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
-    console.log(activeId);
+  function handleDragEnd(event){
+    const {active, over} = event;
+   
+    if (active.id !== over.id) {
+      setAgendaItems((items) => {
+        let newObj = Object.assign({},items);
+        const oldIndex = newObj[0].subItems.findIndex(item=>item.id === active.id);
+        const newIndex = newObj[0].subItems.findIndex(item=>item.id === over.id);
+        
+        newObj[0].subItems = arrayMove(items[0].subItems, oldIndex, newIndex);
+        return newObj;
+      });
+    }
+    setActiveId('null');
   }
 
-  function handleDragEnd(){
-    setActiveId(null);
-    console.log(activeId);
+  function handleDragStart(event) {
+    setActiveId(event.active.id);
   }
+};
+
+const SimpleTest = ({setAgendaItems,largeItems}) =>{
+  
+  const [activeId, setActiveId] = useState('null');
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  let items = [];
+  if(largeItems.length != 0){
+    items = largeItems[0].subItems.map(item=>item.id);
+  
+    console.log(items);
+
+    return (
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext 
+          items={items}
+          strategy={verticalListSortingStrategy}
+          >
+            {/* {items.map(id => <Item key={id} id={id}/>)} */}
+            <PatrickSortableAgendaSubItemContainer renderedAgendaItem={largeItems[0]} />
+        </SortableContext>
+      </DndContext>
+    );
+  }
+  return (<p>temp</p>);
+
+  function handleDragEnd(event) {
+    const {active, over} = event;
+    
+    /* if (active.id !== over.id) {
+      setItems((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+        
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    } */
+    if (active.id !== over.id) {
+      setAgendaItems((items) => {
+        let newObj = Object.assign({},items);
+        const oldIndex = newObj[0].subItems.findIndex(item=>item.id === active.id);
+        const newIndex = newObj[0].subItems.findIndex(item=>item.id === over.id);
+        
+        newObj[0].subItems = arrayMove(items[0].subItems, oldIndex, newIndex);
+        return newObj;
+      });
+    }
+  }
+
+  function handleDragStart(event) {
+    setActiveId(event.active.id);
+  }
+};
+
+const Item = ({id})=>{
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({id: id});
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  
+  return (
+    <p ref={setNodeRef} style={style} {...attributes} {...listeners}>THIS IS A TEST</p>
+  )
 };
 
 function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
+  console.log('test');
   const renderedAgendaItems = showCompleted
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
@@ -284,7 +366,10 @@ function AgendaView({ agendaItems, setAgendaItems }) {
     const newAgendaItems = arrayMove(agendaItems, oldIndex, newIndex);
     setAgendaItems(newAgendaItems);
   };
-  
+  setAgendaItems((tom)=>{
+    console.log(tom);
+    return tom;
+  })
   return (
     <div className="AgendaView">
       <Search />
@@ -304,8 +389,8 @@ function AgendaView({ agendaItems, setAgendaItems }) {
         onAgendaSubItemSortEnd={onAgendaSubItemSortEnd}
       /> */}
       
-      <PatrickSortableAgendaItemContainer items={renderedAgendaItems}/>
-      
+      <PatrickSortableAgendaItemContainer setAgendaItems={setAgendaItems} items={renderedAgendaItems}/>
+      {/* <SimpleTest setAgendaItems={setAgendaItems} largeItems={renderedAgendaItems}/> */}
     </div>
   );
 }
