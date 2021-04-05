@@ -68,24 +68,6 @@ const agendaSubItemLinks = [
   },
 ];
 
-function Temp({id }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id: id});
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-  
-  return (
-    <p ref={setNodeRef} style={style} {...attributes} {...listeners}>THIS IS A TEST</p>
-  )
-}
-
 function AgendaSubItem({renderedAgendaSubItem, id }) {
   const {
     attributes,
@@ -122,65 +104,6 @@ function AgendaSubItem({renderedAgendaSubItem, id }) {
     </div>
   );
 }
-
-const SortableAgendaSubItemElement = SortableElement(
-  ({ renderedAgendaSubItem }) => 
-    <AgendaSubItem renderedAgendaSubItem={renderedAgendaSubItem} />
-);
-
-const SortableAgendaSubItemContainer = SortableContainer(
-  ({ parentIndex, renderedAgendaItem }) => (
-    <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-      <AccordionItem className="AgendaGroup">
-        <AccordionItemHeading className="group-header">
-          <AccordionItemButton className="group-button">
-            <div className="button-text">
-              <div className="group-title">{renderedAgendaItem.title}</div>
-              <div className="group-status">
-                {renderedAgendaItem.status === 'Pending' ? '' : renderedAgendaItem.status}
-              </div>
-            </div>
-          </AccordionItemButton>
-        </AccordionItemHeading>
-        <AccordionItemPanel className="group-items">
-          {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) => (
-            <SortableAgendaSubItemElement
-              index={index}
-              collection={parentIndex}
-              // eslint-disable-next-line react/no-array-index-key
-              key={renderedAgendaSubItem + index}
-              renderedAgendaSubItem={renderedAgendaSubItem}
-            />
-          ))}
-
-        </AccordionItemPanel>
-      </AccordionItem>
-    </Accordion>
-  ),
-);
-
-const SortableAgendaItemElement = SortableElement(
-  ({ renderedAgendaItem, parentIndex, onAgendaSubItemSortEnd }) => (
-    <SortableAgendaSubItemContainer
-      parentIndex={parentIndex}
-      onSortEnd={onAgendaSubItemSortEnd}
-      renderedAgendaItem={renderedAgendaItem}
-    />
-  ),
-);
-
-const SortableAgendaItemContainer = SortableContainer(
-  ({ renderedAgendaItems, onAgendaSubItemSortEnd }) => (
-    renderedAgendaItems.map((renderedAgendaItem, index) => (
-      <SortableAgendaItemElement
-        renderedAgendaItem={renderedAgendaItem}
-        index={index}
-        parentIndex={index}
-        onAgendaSubItemSortEnd={onAgendaSubItemSortEnd}
-      />
-    ))
-  ),
-);
 
 const PatrickSortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
@@ -234,14 +157,7 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
           <SortableContext key={item.id} items={item.subItems.map(item=>item.id)} strategy={verticalListSortingStrategy} >
             <PatrickSortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
           </SortableContext>)}
-        {/* <SortableContext>
-          
-        </SortableContext>
-        <SortableContext items={items[0].subItems.map(item=>item.id)} strategy={verticalListSortingStrategy}>
-          {items.map(item=><PatrickSortableAgendaSubItemContainer 
-          renderedAgendaItem={item} key={item.id}/>)}
-        </SortableContext> */}
-
+        
         {/* <DragOverlay>
           {activeId ? (<Temp id={activeId} /> ): null}
         </DragOverlay> */}
@@ -249,28 +165,22 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     );
   }
 
-  return(<p>test</p>);
+  return(<div className='placeHolder'></div>);
 
   function handleDragEnd(event){
     const {active, over} = event;
    
     if (active.id !== over.id) {
       setAgendaItems((items) => {
-        let newItems = [...items];
-        const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
-        const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
-        
-        
-        if(!overParentId.localeCompare(activeParentId)){
-          const parentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-          const oldIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === active.id);
-          const newIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === over.id);
+        let newItems = JSON.parse(JSON.stringify(items));
+      
+        const parentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+        const oldIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === active.id);
+        const newIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === over.id);
 
-          newItems[parentIndex].subItems = arrayMove(items[parentIndex].subItems, oldIndex, newIndex);
-          return newItems;
-        }else{
-
-        }
+        newItems[parentIndex].subItems = arrayMove(items[parentIndex].subItems, oldIndex, newIndex);
+        return newItems;
+        
       });
     }
     setActiveId('null');
@@ -285,7 +195,6 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
       const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
       const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
       
-      //need to change the meeting id, title, and id on the sub items
       if(overParentId.localeCompare(activeParentId)){
         const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
         const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
@@ -293,11 +202,8 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
 
         const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
         newItems[activeParentIndex].subItems.splice(oldIndex,1);
-        console.log(newItems);
         agendaItem.meetingId =overParentId;
         newItems[overParentIndex].subItems.splice(0,0,agendaItem);
-        console.log(newItems);
-        console.log(agendaItem);
       }
       
       return newItems;
@@ -307,110 +213,15 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
   
   function handleDragStart(event) {
     setActiveId(event.active.id);
-    console.log(event,' event');
-  }
-};
-
-const SimpleTest = ({setAgendaItems,largeItems}) =>{
-  
-  const [activeId, setActiveId] = useState('null');
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-  let items = [];
-  if(largeItems.length != 0){
-    items = largeItems[0].subItems.map(item=>item.id);
-  
-    console.log(items);
-
-    return (
-      <DndContext 
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext 
-          items={items}
-          strategy={verticalListSortingStrategy}
-          >
-            {/* {items.map(id => <Item key={id} id={id}/>)} */}
-            <PatrickSortableAgendaSubItemContainer renderedAgendaItem={largeItems[0]} />
-        </SortableContext>
-      </DndContext>
-    );
-  }
-  return (<p>temp</p>);
-
-  function handleDragEnd(event) {
-    const {active, over} = event;
     
-    /* if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
-        
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    } */
-    if (active.id !== over.id) {
-      setAgendaItems((items) => {
-        let newObj = Object.assign({},items);
-        const oldIndex = newObj[0].subItems.findIndex(item=>item.id === active.id);
-        const newIndex = newObj[0].subItems.findIndex(item=>item.id === over.id);
-        
-        newObj[0].subItems = arrayMove(items[0].subItems, oldIndex, newIndex);
-        return newObj;
-      });
-    }
-  }
-
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
   }
 };
-
-const Item = ({id})=>{
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id: id});
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-  
-  return (
-    <p ref={setNodeRef} style={style} {...attributes} {...listeners}>THIS IS A TEST</p>
-  )
-};
-
 function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
   
   const renderedAgendaItems = showCompleted
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
-
-  const onAgendaSubItemSortEnd = ({ oldIndex, newIndex, collection }) => {
-    const newAgendaItems = [...agendaItems];
-    newAgendaItems[collection].subItems = arrayMove(
-      agendaItems[collection].subItems,
-      oldIndex,
-      newIndex,
-    );
-    setAgendaItems(newAgendaItems);
-  };
-  const onAgendaItemSortEnd = ({ oldIndex, newIndex }) => {
-    const newAgendaItems = arrayMove(agendaItems, oldIndex, newIndex);
-    setAgendaItems(newAgendaItems);
-  };
   
   return (
     <div className="AgendaView">
@@ -425,14 +236,7 @@ function AgendaView({ agendaItems, setAgendaItems }) {
         <p>Show Completed Items</p>
       </button>
 
-      {/* <SortableAgendaItemContainer
-        renderedAgendaItems={renderedAgendaItems}
-        onSortEnd={onAgendaItemSortEnd}
-        onAgendaSubItemSortEnd={onAgendaSubItemSortEnd}
-      /> */}
-      
       <PatrickSortableAgendaItemContainer setAgendaItems={setAgendaItems} items={renderedAgendaItems}/>
-      {/* <SimpleTest setAgendaItems={setAgendaItems} largeItems={renderedAgendaItems}/> */}
     </div>
   );
 }
