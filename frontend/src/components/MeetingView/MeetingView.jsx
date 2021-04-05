@@ -8,8 +8,8 @@ import AgendaView from './AgendaView/AgendaView';
 
 function makeAgendaSubItem(parentIndex, index, status) {
   return {
-    id: `${index}`,
-    meetingId: `${parentIndex}`,
+    id: `${parentIndex}.${index} Agenda Item`,
+    meetingId: `${parentIndex} Agenda Group`,
     title: `${parentIndex}.${index} Agenda Item`,
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl euismod, tristique leo sit amet, eleifend enim.',
     status,
@@ -21,7 +21,7 @@ function makeAgendaItem(index) {
   // eslint-disable-next-line no-nested-ternary
   const status = index <= 2 ? 'Completed' : index === 3 ? 'In Progress' : 'Pending';
   return {
-    id: index,
+    id: `${index} Agenda Group`,
     title: `${index} Agenda Group`,
     description: '',
     status,
