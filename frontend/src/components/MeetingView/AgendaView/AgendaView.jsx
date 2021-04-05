@@ -98,7 +98,7 @@ function AgendaSubItem({renderedAgendaSubItem, id }) {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  console.log(id);
+ 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="AgendaItem">
       {renderedAgendaSubItem.status !== 'Pending' && <div className="item-status">{renderedAgendaSubItem.status}</div>}
@@ -185,7 +185,7 @@ const SortableAgendaItemContainer = SortableContainer(
 const PatrickSortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
     
-    console.log(renderedAgendaItem);
+
     return(
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
         <AccordionItem className="AgendaGroup">
@@ -201,8 +201,6 @@ const PatrickSortableAgendaSubItemContainer =
           </AccordionItemHeading>
           <AccordionItemPanel className="group-items">
             {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
-              console.log(renderedAgendaSubItem.id);
-
               return (
                 <AgendaSubItem 
                   id={renderedAgendaSubItem.id} 
@@ -229,12 +227,20 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
   );
     
   if(items.length != 0){
-    console.log(items[0].subItems.map(item=>item.id));
+    
     return(
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}  sensors={sensors} collisionDetection={closestCenter}>
-        <SortableContext items={items[0].subItems.map(item=>item.id)} strategy={verticalListSortingStrategy}>
-          <PatrickSortableAgendaSubItemContainer renderedAgendaItem={items[0]} />
+      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}  sensors={sensors} collisionDetection={closestCenter}>
+        {items.map(item=>
+          <SortableContext key={item.id} items={item.subItems.map(item=>item.id)} strategy={verticalListSortingStrategy} >
+            <PatrickSortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
+          </SortableContext>)}
+        {/* <SortableContext>
+          
         </SortableContext>
+        <SortableContext items={items[0].subItems.map(item=>item.id)} strategy={verticalListSortingStrategy}>
+          {items.map(item=><PatrickSortableAgendaSubItemContainer 
+          renderedAgendaItem={item} key={item.id}/>)}
+        </SortableContext> */}
 
         {/* <DragOverlay>
           {activeId ? (<Temp id={activeId} /> ): null}
@@ -250,19 +256,58 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
    
     if (active.id !== over.id) {
       setAgendaItems((items) => {
-        let newObj = Object.assign({},items);
-        const oldIndex = newObj[0].subItems.findIndex(item=>item.id === active.id);
-        const newIndex = newObj[0].subItems.findIndex(item=>item.id === over.id);
+        let newItems = [...items];
+        const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
+        const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
         
-        newObj[0].subItems = arrayMove(items[0].subItems, oldIndex, newIndex);
-        return newObj;
+        
+        if(!overParentId.localeCompare(activeParentId)){
+          const parentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+          const oldIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === active.id);
+          const newIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === over.id);
+
+          newItems[parentIndex].subItems = arrayMove(items[parentIndex].subItems, oldIndex, newIndex);
+          return newItems;
+        }else{
+
+        }
       });
     }
     setActiveId('null');
   }
 
+  function handleDragOver(event){
+    const {active, over} = event;
+    
+    setAgendaItems((items)=>{
+      let newItems = JSON.parse(JSON.stringify(items))
+
+      const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
+      const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
+      
+      //need to change the meeting id, title, and id on the sub items
+      if(overParentId.localeCompare(activeParentId)){
+        const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+        const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
+        const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+
+        const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+        newItems[activeParentIndex].subItems.splice(oldIndex,1);
+        console.log(newItems);
+        agendaItem.meetingId =overParentId;
+        newItems[overParentIndex].subItems.splice(0,0,agendaItem);
+        console.log(newItems);
+        console.log(agendaItem);
+      }
+      
+      return newItems;
+    });
+    
+  }
+  
   function handleDragStart(event) {
     setActiveId(event.active.id);
+    console.log(event,' event');
   }
 };
 
@@ -348,7 +393,7 @@ const Item = ({id})=>{
 
 function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
-  console.log('test');
+  
   const renderedAgendaItems = showCompleted
     ? agendaItems
     : agendaItems.filter((item) => item.status !== 'Completed');
@@ -366,10 +411,7 @@ function AgendaView({ agendaItems, setAgendaItems }) {
     const newAgendaItems = arrayMove(agendaItems, oldIndex, newIndex);
     setAgendaItems(newAgendaItems);
   };
-  setAgendaItems((tom)=>{
-    console.log(tom);
-    return tom;
-  })
+  
   return (
     <div className="AgendaView">
       <Search />
