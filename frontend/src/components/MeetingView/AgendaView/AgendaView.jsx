@@ -219,10 +219,10 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
 
   function handleDragOver(event){
     const {active, over} = event;
-    const regEx = /^\d$/;
+    const regEx = /^\d+./;
 
     if(over != null){
-      if(!regEx.test(over.id)){
+      if(regEx.test(over.id)){
         setAgendaItems((items)=>{
           let newItems = JSON.parse(JSON.stringify(items))
 
