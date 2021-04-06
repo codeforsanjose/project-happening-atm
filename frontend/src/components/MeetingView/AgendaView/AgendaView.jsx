@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Accordion,
@@ -68,7 +68,7 @@ const agendaSubItemLinks = [
   },
 ];
 
-function AgendaSubItem({renderedAgendaSubItem, id }) {
+const SortableItem = ({renderedAgendaSubItem, id }) => {
   const {
     attributes,
     listeners,
@@ -76,34 +76,57 @@ function AgendaSubItem({renderedAgendaSubItem, id }) {
     transform,
     transition,
   } = useSortable({id: id});
+  
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
- 
+  
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="AgendaItem">
-      {renderedAgendaSubItem.status !== 'Pending' && <div className="item-status">{renderedAgendaSubItem.status}</div>}
-
-      <input type="checkbox" />
-      <h4>{renderedAgendaSubItem.title}</h4>
-      <p>{renderedAgendaSubItem.description}</p>
-
-      <div className="item-links">
-        {
-          agendaSubItemLinks.map((link) => (
-            <Link to={link.getPath(renderedAgendaSubItem)} key={link.text}>
-              <div className="link">
-                <link.Icon />
-                <p>{link.text}</p>
-              </div>
-            </Link>
-          ))
-        }
-      </div>
-    </div>
+    <AgendaSubItem id={id} 
+      renderedAgendaSubItem={renderedAgendaSubItem} 
+      ref={setNodeRef} style={style} {...attributes}
+      {...listeners}
+    />
   );
 }
+
+const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems, id, ...props}, ref) => {
+   
+  if(typeof renderedAgendaSubItem != 'undefined'){
+    return buildAgendaItem(renderedAgendaSubItem);
+  }else{
+    const parentItem = renderedAgendaSubItems.find(parent=>parent.subItems.find(subItem=>subItem.id.localeCompare(renderedAgendaSubItem)));
+    const agendaItem = parentItem.subItems.find(subItem=>subItem.id.localeCompare(renderedAgendaSubItem));
+    
+    return buildAgendaItem(agendaItem);
+  }
+
+  function buildAgendaItem(renderedAgendaSubItem){
+    return(
+      <div {...props} ref={ref} className="AgendaItem">
+        {renderedAgendaSubItem.status !== 'Pending' && <div className="item-status">{renderedAgendaSubItem.status}</div>}
+
+        <input type="checkbox" />
+        <h4>{renderedAgendaSubItem.title}</h4>
+        <p>{renderedAgendaSubItem.description}</p>
+
+        <div className="item-links">
+          {
+            agendaSubItemLinks.map((link) => (
+              <Link to={link.getPath(renderedAgendaSubItem)} key={link.text}>
+                <div className="link">
+                  <link.Icon />
+                  <p>{link.text}</p>
+                </div>
+              </Link>
+            ))
+          }
+        </div>
+      </div>
+    )
+  }
+});
 
 const PatrickSortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
@@ -125,7 +148,7 @@ const PatrickSortableAgendaSubItemContainer =
           <AccordionItemPanel className="group-items">
             {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
               return (
-                <AgendaSubItem 
+                <SortableItem 
                   id={renderedAgendaSubItem.id} 
                   renderedAgendaSubItem={renderedAgendaSubItem}
                   key={renderedAgendaSubItem.id}
@@ -158,9 +181,9 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
             <PatrickSortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
           </SortableContext>)}
         
-        {/* <DragOverlay>
-          {activeId ? (<Temp id={activeId} /> ): null}
-        </DragOverlay> */}
+        <DragOverlay>
+          {activeId ? <AgendaSubItem id={activeId} renderedAgendaSubItems={items} /> : null}
+        </DragOverlay>
       </DndContext>      
     );
   }
@@ -216,6 +239,7 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     
   }
 };
+
 function AgendaView({ agendaItems, setAgendaItems }) {
   const [showCompleted, setShowCompleted] = useState(true);
   
