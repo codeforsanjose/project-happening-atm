@@ -169,10 +169,12 @@ const SortableAgendaSubItemContainer =
   );
 };
 
+
 const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
-  const [activeId, setActiveId] = useState('11');
+  //Active id will be assigned the ID of the agendaItem being moved my pointer
+  const [activeId, setActiveId] = useState(null); 
   
- 
+  
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -180,6 +182,7 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     })
   );
     
+  //The API has a delay, need to account for the period that the array is empty
   if(items.length !== 0){
     
     return(
@@ -194,13 +197,15 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
         </DragOverlay>
       </DndContext>      
     );
+  }else{
+    return(<div className='placeHolder'></div>);
   }
 
-  return(<div className='placeHolder'></div>);
-
+  //This function is called when the user lets go of their mouse and releases the agenda item
   function handleDragEnd(event){
     const {active, over} = event;
     
+    //This if statement is entered only when the agenda item was released on top of another agenda item
     if (over != null && active.id !== over.id && over) {
       setAgendaItems((items) => {
         let newItems = JSON.parse(JSON.stringify(items));
@@ -216,12 +221,16 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     }
     setActiveId('null');
   }
-
+  
+  //This function is triggered when the currently dragged agenda item is moved
+  //Its primary purpose is to handle the moving of an agenda item into another container
   function handleDragOver(event){
     const {active, over} = event;
-    const regEx = /^\d+./;
+    const regEx = /^\d+./; //This reg expression matches an agenda Item id, example 3.5
 
+    //This first if statement fires only if the agenda item is over another agenda item or container
     if(over != null){
+      //This if statement fires only if the dragged agenda item is over another agenda item
       if(regEx.test(over.id)){
         setAgendaItems((items)=>{
           let newItems = JSON.parse(JSON.stringify(items))
@@ -229,6 +238,7 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
           const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
           const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
           
+          //This if statement is fired only when the agenda item is introduced to a new agenda group container
           if(overParentId.localeCompare(activeParentId)){
             
             const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
@@ -244,33 +254,21 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
           return newItems;
         });
       }else{
+        //This else branch will only fire if the agenda item is being dragged over a agenda group container
+        //This should only happen when there is only one agenda item, or none
         setAgendaItems((items)=>{
-
-          const overParentIndex = items.findIndex(item=>!item.id.localeCompare(over.id));
-          let newItems = JSON.parse(JSON.stringify(items));
-          if(items[overParentIndex].subItems.length === 0){            
+          
+          let newItems = JSON.parse(JSON.stringify(items));                             
             
-            const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-            const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+          const overParentIndex = items.findIndex(item=>!item.id.localeCompare(over.id));
+          const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+          const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
 
-            const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-            newItems[activeParentIndex].subItems.splice(oldIndex,1);
-            agendaItem.meetingId =over.id;
-            newItems[overParentIndex].subItems.push(agendaItem);       
-          }else{
-            if((items[overParentIndex].subItems.length === 1)){
-              
-              const overParentId = over.id;                            
-              const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-              const overParentIndex = newItems.findIndex(item=>item.id === over.id);
-              const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
-
-              const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-              newItems[activeParentIndex].subItems.splice(oldIndex,1);
-              agendaItem.meetingId =overParentId;
-              newItems[overParentIndex].subItems.splice(0,0,agendaItem);    
-            }   
-          }
+          const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+          newItems[activeParentIndex].subItems.splice(oldIndex,1);
+          agendaItem.meetingId =over.id;
+          newItems[overParentIndex].subItems.push(agendaItem);       
+          
           return newItems;
         });
       }
