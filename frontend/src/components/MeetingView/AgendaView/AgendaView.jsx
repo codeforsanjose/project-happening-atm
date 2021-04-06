@@ -256,9 +256,8 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
             const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
             newItems[activeParentIndex].subItems.splice(oldIndex,1);
             agendaItem.meetingId =over.id;
-            console.log(agendaItem);
             newItems[overParentIndex].subItems.push(agendaItem);
-            console.log(newItems);
+            
             return newItems;
           });
         }else{ if((items[overParentIndex].subItems.length === 1)){
