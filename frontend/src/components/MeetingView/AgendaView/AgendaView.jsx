@@ -68,6 +68,8 @@ const agendaSubItemLinks = [
   },
 ];
 
+//This is what makes the item sortable, in order to ensure the drag overlay worked correctly
+//AgendaSubItem had to render the actua
 const SortableItem = ({renderedAgendaSubItem, id }) => {
   const {
     attributes,
@@ -91,6 +93,7 @@ const SortableItem = ({renderedAgendaSubItem, id }) => {
   );
 }
 
+//
 const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems, id, ...props}, ref) => {
    
   if(typeof renderedAgendaSubItem != 'undefined'){
@@ -128,6 +131,7 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
   }
 });
 
+//This functinn builds the agenda Groups, and their containers
 const SortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
 
@@ -153,6 +157,8 @@ const SortableAgendaSubItemContainer =
             </AccordionItemButton>
           </AccordionItemHeading>
           <AccordionItemPanel className="group-items">
+            {/*This extra div is needed to turn the agenda group into a dropable container,
+             this is needed in the event the agenda group has no items */}
             <div style={style} ref={setNodeRef}>
               {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
                 return (
@@ -182,7 +188,7 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     })
   );
     
-  //The API has a delay, need to account for the period that the array is empty
+  //The API has a delay in data request, need to account for the period that the array is empty
   if(items.length !== 0){
     
     return(
@@ -255,7 +261,7 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
         });
       }else{
         //This else branch will only fire if the agenda item is being dragged over a agenda group container
-        //This should only happen when there is only one agenda item, or none
+        //This should only happen when there is one agenda item, or none
         setAgendaItems((items)=>{
           
           let newItems = JSON.parse(JSON.stringify(items));                             
@@ -275,6 +281,7 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     }
   }
   
+  //only fired when the user begins dragging an agenda item
   function handleDragStart(event) {
     setActiveId(event.active.id);
     
