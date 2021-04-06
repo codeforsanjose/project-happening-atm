@@ -23,6 +23,7 @@ import Search from '../../Header/Search';
 import {
   DndContext, 
   closestCenter,
+  rectIntersection,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -99,7 +100,6 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
   }else{
     const parentItem = renderedAgendaSubItems.find(parent=>parent.subItems.find(subItem=>!subItem.id.localeCompare(id)));
     const agendaItem = parentItem.subItems.find(subItem=>!subItem.id.localeCompare(id));
-    console.log(agendaItem);
     return buildAgendaItem(agendaItem);
   }
 
@@ -136,6 +136,10 @@ const PatrickSortableAgendaSubItemContainer =
       id: renderedAgendaItem.id
     });
 
+    //needed to ensure the dragable element can be placed
+    const style={
+      minHeight:'60px'
+    };
     return(
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
         <AccordionItem className="AgendaGroup">
@@ -150,7 +154,7 @@ const PatrickSortableAgendaSubItemContainer =
             </AccordionItemButton>
           </AccordionItemHeading>
           <AccordionItemPanel className="group-items">
-            <div ref={setNodeRef}>
+            <div style={style} ref={setNodeRef}>
               {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
                 return (
                   <SortableItem 
@@ -180,7 +184,7 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
   if(items.length != 0){
     
     return(
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}  sensors={sensors} collisionDetection={closestCenter}>
+      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}  sensors={sensors} collisionDetection={rectIntersection}>
         {items.map(item=>
           <SortableContext key={item.id} items={item.subItems.map(item=>item.id)} strategy={verticalListSortingStrategy} >
             <PatrickSortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
@@ -197,8 +201,8 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
 
   function handleDragEnd(event){
     const {active, over} = event;
-   
-    if (active.id !== over.id) {
+    
+    if (over != null && active.id !== over.id && over) {
       setAgendaItems((items) => {
         let newItems = JSON.parse(JSON.stringify(items));
       
@@ -217,49 +221,71 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
   function handleDragOver(event){
     const {active, over} = event;
     const regEx = /^\d$/;
-    
-    
-    if(!regEx.test(over.id)){
-      setAgendaItems((items)=>{
-        let newItems = JSON.parse(JSON.stringify(items))
 
-        const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
-        const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
-        
-        if(overParentId.localeCompare(activeParentId)){
-          const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-          const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
-          const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
-
-          const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-          newItems[activeParentIndex].subItems.splice(oldIndex,1);
-          agendaItem.meetingId =overParentId;
-          newItems[overParentIndex].subItems.splice(0,0,agendaItem);
-        }
-        
-        return newItems;
-      });
-    }else{
-      const overParentIndex = items.findIndex(item=>item.id === over.id);
-
-      if(items[overParentIndex].subItems.length === 0){
+    if(over != null){
+      if(!regEx.test(over.id)){
         setAgendaItems((items)=>{
-          let newItems = JSON.parse(JSON.stringify(items));
+          let newItems = JSON.parse(JSON.stringify(items))
 
-          const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-          const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+          const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
+          const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
+          
+          if(overParentId.localeCompare(activeParentId)){
+            
+            const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+            const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
+            const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
 
-          const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-          newItems[activeParentIndex].subItems.splice(oldIndex,1);
-          agendaItem.meetingId =over.id;
-
-          newItems[overParentIndex].subItems.splice(0,0,agendaItem);
-          //return newItems;
-          return items;
+            const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+            newItems[activeParentIndex].subItems.splice(oldIndex,1);
+            agendaItem.meetingId =overParentId;
+            newItems[overParentIndex].subItems.splice(0,0,agendaItem);
+          }
+          
+          return newItems;
         });
+      }else{
+        const overParentIndex = items.findIndex(item=>item.id === over.id);
+        
+        if(items[overParentIndex].subItems.length === 0){
+          setAgendaItems((items)=>{
+            let newItems = JSON.parse(JSON.stringify(items));
+
+            const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+            const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+
+            const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+            newItems[activeParentIndex].subItems.splice(oldIndex,1);
+            agendaItem.meetingId =over.id;
+            console.log(agendaItem);
+            newItems[overParentIndex].subItems.push(agendaItem);
+            console.log(newItems);
+            return newItems;
+            return items;
+          });
+        }else{ if((items[overParentIndex].subItems.length === 1)){
+            setAgendaItems((items)=>{
+              let newItems = JSON.parse(JSON.stringify(items))
+      
+              const overParentId = over.id;
+              const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
+              
+              const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+              const overParentIndex = newItems.findIndex(item=>item.id === over.id);
+              const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+
+              const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+              newItems[activeParentIndex].subItems.splice(oldIndex,1);
+              agendaItem.meetingId =overParentId;
+              newItems[overParentIndex].subItems.splice(0,0,agendaItem);
+              
+              
+              return newItems;
+            });
+          }
+        }
       }
     }
-    
   }
   
   function handleDragStart(event) {
