@@ -51,7 +51,7 @@ import {CSS} from '@dnd-kit/utilities';
  * 
  * options:
  *    minHeightAgendaContainer
- *      This is the min heigh that the agenda group container must be. This is necessary to ensure 
+ *      This is the min height that the agenda group container must be. This is necessary to ensure 
  *      that an agenda item can be placed inside the container when the container is empty
  * 
  */
