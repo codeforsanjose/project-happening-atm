@@ -7,7 +7,6 @@ import {
   AccordionItemButton,
   AccordionItemPanel,
 } from 'react-accessible-accordion';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import './AgendaView.scss';
 import './AgendaItem.scss';
@@ -22,7 +21,6 @@ import {
 import Search from '../../Header/Search';
 import {
   DndContext, 
-  closestCenter,
   rectIntersection,
   KeyboardSensor,
   PointerSensor,
@@ -103,6 +101,7 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
     return buildAgendaItem(agendaItem);
   }
 
+  
   function buildAgendaItem(renderedAgendaSubItem){
     return(
       <div {...props} ref={ref} className="AgendaItem">
@@ -129,10 +128,10 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
   }
 });
 
-const PatrickSortableAgendaSubItemContainer = 
+const SortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
 
-    const {isOver, setNodeRef} = useDroppable({
+    const {setNodeRef} = useDroppable({
       id: renderedAgendaItem.id
     });
 
@@ -170,7 +169,7 @@ const PatrickSortableAgendaSubItemContainer =
   );
 };
 
-const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
+const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
   const [activeId, setActiveId] = useState('11');
   
  
@@ -181,13 +180,13 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
     })
   );
     
-  if(items.length != 0){
+  if(items.length !== 0){
     
     return(
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}  sensors={sensors} collisionDetection={rectIntersection}>
         {items.map(item=>
           <SortableContext key={item.id} items={item.subItems.map(item=>item.id)} strategy={verticalListSortingStrategy} >
-            <PatrickSortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
+            <SortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
           </SortableContext>)}
         
         <DragOverlay>
@@ -261,15 +260,12 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
             newItems[overParentIndex].subItems.push(agendaItem);
             console.log(newItems);
             return newItems;
-            return items;
           });
         }else{ if((items[overParentIndex].subItems.length === 1)){
             setAgendaItems((items)=>{
               let newItems = JSON.parse(JSON.stringify(items))
       
-              const overParentId = over.id;
-              const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
-              
+              const overParentId = over.id;                            
               const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
               const overParentIndex = newItems.findIndex(item=>item.id === over.id);
               const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
@@ -314,7 +310,7 @@ function AgendaView({ agendaItems, setAgendaItems }) {
         <p>Show Completed Items</p>
       </button>
 
-      <PatrickSortableAgendaItemContainer setAgendaItems={setAgendaItems} items={renderedAgendaItems}/>
+      <SortableAgendaItemContainer setAgendaItems={setAgendaItems} items={renderedAgendaItems}/>
     </div>
   );
 }
