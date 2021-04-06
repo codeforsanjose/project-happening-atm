@@ -48,7 +48,16 @@ import {CSS} from '@dnd-kit/utilities';
  * state:
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
+ * 
+ * options:
+ *    minHeightAgendaContainer
+ *      This is the min heigh that the agenda group container must be. This is necessary to ensure 
+ *      that an agenda item can be placed inside the container when the container is empty
+ * 
  */
+const options = {
+  minHeightAgendaContainer:'60px'
+};
 
 const agendaSubItemLinks = [
   {
@@ -68,8 +77,7 @@ const agendaSubItemLinks = [
   },
 ];
 
-//This is what makes the item sortable, in order to ensure the drag overlay worked correctly
-//AgendaSubItem had to render the actua
+//This is what makes the AgendaSubItem is sortable, in order to ensure the drag overlay worked correctly
 const SortableItem = ({renderedAgendaSubItem, id }) => {
   const {
     attributes,
@@ -93,18 +101,22 @@ const SortableItem = ({renderedAgendaSubItem, id }) => {
   );
 }
 
-//
+//This is the rendered agenda item, renderedAgendaSubItem is only passed by SortableItem,
+//id and renderedAgendaSubItems are passed by the drag overlay
 const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems, id, ...props}, ref) => {
    
+  
+  //This if statement is enetered if a single agenda item is passed to be rendered
   if(typeof renderedAgendaSubItem != 'undefined'){
     return buildAgendaItem(renderedAgendaSubItem);
-  }else{
+
+  }else{//This else statement is entered when the drag overlay passes the ID and the items to be rendered array
     const parentItem = renderedAgendaSubItems.find(parent=>parent.subItems.find(subItem=>!subItem.id.localeCompare(id)));
     const agendaItem = parentItem.subItems.find(subItem=>!subItem.id.localeCompare(id));
     return buildAgendaItem(agendaItem);
   }
 
-  
+  //This function takes a agenda item and renders it
   function buildAgendaItem(renderedAgendaSubItem){
     return(
       <div {...props} ref={ref} className="AgendaItem">
@@ -131,7 +143,7 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
   }
 });
 
-//This functinn builds the agenda Groups, and their containers
+//This function builds the agenda Groups, and their containers
 const SortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
 
@@ -139,9 +151,9 @@ const SortableAgendaSubItemContainer =
       id: renderedAgendaItem.id
     });
 
-    //needed to ensure the dragable element can be placed
+    //needed to ensure the dragable element can be placed when the container is empty
     const style={
-      minHeight:'60px'
+      minHeight:options.minHeightAgendaContainer
     };
     return(
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
@@ -175,7 +187,7 @@ const SortableAgendaSubItemContainer =
   );
 };
 
-
+//This handles all the sorting, it is the main outer container
 const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
   //Active id will be assigned the ID of the agendaItem being moved my pointer
   const [activeId, setActiveId] = useState(null); 
