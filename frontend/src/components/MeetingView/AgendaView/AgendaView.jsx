@@ -28,6 +28,7 @@ import {
   useSensor,
   useSensors,
   DragOverlay,
+  useDroppable,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -96,9 +97,9 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
   if(typeof renderedAgendaSubItem != 'undefined'){
     return buildAgendaItem(renderedAgendaSubItem);
   }else{
-    const parentItem = renderedAgendaSubItems.find(parent=>parent.subItems.find(subItem=>subItem.id.localeCompare(renderedAgendaSubItem)));
-    const agendaItem = parentItem.subItems.find(subItem=>subItem.id.localeCompare(renderedAgendaSubItem));
-    
+    const parentItem = renderedAgendaSubItems.find(parent=>parent.subItems.find(subItem=>!subItem.id.localeCompare(id)));
+    const agendaItem = parentItem.subItems.find(subItem=>!subItem.id.localeCompare(id));
+    console.log(agendaItem);
     return buildAgendaItem(agendaItem);
   }
 
@@ -130,7 +131,10 @@ const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems
 
 const PatrickSortableAgendaSubItemContainer = 
   ({renderedAgendaItem }) => {
-    
+
+    const {isOver, setNodeRef} = useDroppable({
+      id: renderedAgendaItem.id
+    });
 
     return(
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
@@ -146,15 +150,16 @@ const PatrickSortableAgendaSubItemContainer =
             </AccordionItemButton>
           </AccordionItemHeading>
           <AccordionItemPanel className="group-items">
-            {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
-              return (
-                <SortableItem 
-                  id={renderedAgendaSubItem.id} 
-                  renderedAgendaSubItem={renderedAgendaSubItem}
-                  key={renderedAgendaSubItem.id}
-                />
-              );})}
-
+            <div ref={setNodeRef}>
+              {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
+                return (
+                  <SortableItem 
+                    id={renderedAgendaSubItem.id} 
+                    renderedAgendaSubItem={renderedAgendaSubItem}
+                    key={renderedAgendaSubItem.id}
+                  />
+                );})}
+            </div>
           </AccordionItemPanel>
         </AccordionItem>
       </Accordion>
@@ -211,26 +216,49 @@ const PatrickSortableAgendaItemContainer = ({items, setAgendaItems}) =>{
 
   function handleDragOver(event){
     const {active, over} = event;
+    const regEx = /^\d$/;
     
-    setAgendaItems((items)=>{
-      let newItems = JSON.parse(JSON.stringify(items))
+    
+    if(!regEx.test(over.id)){
+      setAgendaItems((items)=>{
+        let newItems = JSON.parse(JSON.stringify(items))
 
-      const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
-      const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
-      
-      if(overParentId.localeCompare(activeParentId)){
-        const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-        const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
-        const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+        const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
+        const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
+        
+        if(overParentId.localeCompare(activeParentId)){
+          const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+          const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
+          const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
 
-        const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-        newItems[activeParentIndex].subItems.splice(oldIndex,1);
-        agendaItem.meetingId =overParentId;
-        newItems[overParentIndex].subItems.splice(0,0,agendaItem);
+          const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+          newItems[activeParentIndex].subItems.splice(oldIndex,1);
+          agendaItem.meetingId =overParentId;
+          newItems[overParentIndex].subItems.splice(0,0,agendaItem);
+        }
+        
+        return newItems;
+      });
+    }else{
+      const overParentIndex = items.findIndex(item=>item.id === over.id);
+
+      if(items[overParentIndex].subItems.length === 0){
+        setAgendaItems((items)=>{
+          let newItems = JSON.parse(JSON.stringify(items));
+
+          const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
+          const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+
+          const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
+          newItems[activeParentIndex].subItems.splice(oldIndex,1);
+          agendaItem.meetingId =over.id;
+
+          newItems[overParentIndex].subItems.splice(0,0,agendaItem);
+          //return newItems;
+          return items;
+        });
       }
-      
-      return newItems;
-    });
+    }
     
   }
   
