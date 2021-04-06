@@ -205,9 +205,9 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
       setAgendaItems((items) => {
         let newItems = JSON.parse(JSON.stringify(items));
       
-        const parentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-        const oldIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === active.id);
-        const newIndex = newItems[parentIndex].subItems.findIndex(item=>item.id === over.id);
+        const parentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>!item.id.localeCompare(active.id)));
+        const oldIndex = newItems[parentIndex].subItems.findIndex(item=>!item.id.localeCompare(activeId));
+        const newIndex = newItems[parentIndex].subItems.findIndex(item=>!item.id.localeCompare(over.id));
 
         newItems[parentIndex].subItems = arrayMove(items[parentIndex].subItems, oldIndex, newIndex);
         return newItems;
@@ -244,26 +244,22 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
           return newItems;
         });
       }else{
-        const overParentIndex = items.findIndex(item=>item.id === over.id);
-        
-        if(items[overParentIndex].subItems.length === 0){
-          setAgendaItems((items)=>{
-            let newItems = JSON.parse(JSON.stringify(items));
+        setAgendaItems((items)=>{
 
+          const overParentIndex = items.findIndex(item=>!item.id.localeCompare(over.id));
+          let newItems = JSON.parse(JSON.stringify(items));
+          if(items[overParentIndex].subItems.length === 0){            
+            
             const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
             const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
 
             const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
             newItems[activeParentIndex].subItems.splice(oldIndex,1);
             agendaItem.meetingId =over.id;
-            newItems[overParentIndex].subItems.push(agendaItem);
-            
-            return newItems;
-          });
-        }else{ if((items[overParentIndex].subItems.length === 1)){
-            setAgendaItems((items)=>{
-              let newItems = JSON.parse(JSON.stringify(items))
-      
+            newItems[overParentIndex].subItems.push(agendaItem);       
+          }else{
+            if((items[overParentIndex].subItems.length === 1)){
+              
               const overParentId = over.id;                            
               const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
               const overParentIndex = newItems.findIndex(item=>item.id === over.id);
@@ -272,13 +268,11 @@ const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
               const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
               newItems[activeParentIndex].subItems.splice(oldIndex,1);
               agendaItem.meetingId =overParentId;
-              newItems[overParentIndex].subItems.splice(0,0,agendaItem);
-              
-              
-              return newItems;
-            });
+              newItems[overParentIndex].subItems.splice(0,0,agendaItem);    
+            }   
           }
-        }
+          return newItems;
+        });
       }
     }
   }
