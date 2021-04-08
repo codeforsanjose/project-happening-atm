@@ -228,28 +228,6 @@ To create a new migration:
 2. Add your migration in that file.
 3. Migrations will be automatically run on next request to the backend.
 
-# Infrastructure
+# Help
 
-Ideally, deployments are automatically handled by the CI/CD pipeline. This section of documentation facilitates manual infrastructure management, if required.
-
-## Local Configuration:
-
-1.  Setup [AWS CLI](https://docs.aws.amazon.com/polly/latest/dg/setup-aws-cli.html)
-2.  Install [Terraform](https://www.terraform.io/)
-3.  `make` utility
-    - Additional configuration to use `make` is required on [Windows](https://vispud.blogspot.com/2019/02/how-to-run-makefile-in-windows.html)
-
-## Manual Deployment Management:
-
-1.  Deploy infrastructure to AWS:
-    1. Navigate to the `/infrastructure` directory
-    2. Run command:
-       ```bash
-       make deploy
-       ```
-2.  Remove deployed infrastructure from AWS:
-    1. Navigate to the `/infrastructure` directory
-    2. Run command:
-       ```bash
-       make destroy
-       ```
+If you run into issues getting the above app to work, please post to Slack `#proj-happening-atm-eng` with a detailed bug report. If you have trouble running docker/docker-compose, please paste the results of `docker-compose -p gov-agenda-notifier down --remove-orphans` with your bug report.
