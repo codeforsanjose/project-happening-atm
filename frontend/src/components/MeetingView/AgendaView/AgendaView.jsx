@@ -31,6 +31,7 @@ function AgendaView({ meeting }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
+  
 
   const handleSelectionCancel = () => {
     setSelectedItems({});
@@ -105,6 +106,7 @@ function AgendaView({ meeting }) {
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
         {renderedItems.map((meetingItem) => {
           if (meetingItem.id in agendaGroups) {
+            console.log(meetingItem);
             return (
               <AgendaGroup
                 key={meetingItem.id}
