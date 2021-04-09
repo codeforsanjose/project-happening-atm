@@ -89,14 +89,14 @@ module.exports = async (logger) => {
   };
 
   module.createMeetingItem = async (meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
-    status, contentCategories, descriptionLocKey, titleLocKey) => {
+    status, contentCategories, descriptionLocKey, titleLocKey, parentMeetingItemId) => {
     logger.info('dbClient: createMeetingItem');
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
     const queryString = `
-        INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
-        VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6), $7, $8, $9, $10) 
+        INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key, parent_meeting_item_id)
+        VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6), $7, $8, $9, $10, $11) 
         RETURNING id;`;
     return query(queryString,
       [
@@ -109,7 +109,8 @@ module.exports = async (logger) => {
         status,
         contentCategories,
         descriptionLocKey,
-        titleLocKey
+        titleLocKey,
+        parentMeetingItemId
       ]
     );
   };
