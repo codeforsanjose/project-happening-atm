@@ -9,6 +9,21 @@ import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
+import {
+  DndContext, 
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
@@ -31,16 +46,22 @@ function AgendaView({ meeting }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
+  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items));
+  const [activeId, setActiveId] = useState(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const handleSelectionCancel = () => {
     setSelectedItems({});
   };
-
+  
   const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
-    console.log(meetingId);
-    console.log(itemId);
-    console.log(isChecked);
-
+    
     if (isChecked && !(meetingId in selectedItems)) {
       selectedItems[meetingId] = {};
     }
@@ -64,11 +85,12 @@ function AgendaView({ meeting }) {
   };
 
   //rewritten to make the agendaGroups into an array, and not an object of holding arrays
-  const groupMeetingItems = (meetingItems) => {
+  function groupMeetingItems (meetingItems){
     // Groups all the meeting items by `parent_meeting_item_id`.
     // Returns a hash table with keys as agenda items id (the ones without `parent_meeting_item_id`)
     // and values as the items themselves. Inside such items there can be a property `items` which
     // is an array of agenda items whose `parent_meeting_item_id` is equal to the corresponding key.
+
     const itemsWithNoParent = meetingItems.filter((item) => item.parent_meeting_item_id === null);
     const itemsWithParent = meetingItems.filter((item) => item.parent_meeting_item_id !== null);
 
@@ -78,9 +100,6 @@ function AgendaView({ meeting }) {
       agendaGroups[i].items = [];
     });
 
-    console.log(agendaGroups);
-    console.log(itemsWithParent);
-
     itemsWithParent.forEach(item=>{
       agendaGroups.forEach((parent,i)=>{
         if(parent.id === item.parent_meeting_item_id){
@@ -88,15 +107,26 @@ function AgendaView({ meeting }) {
         }
       })
     });
-
-    console.log(agendaGroups);
+    
     return agendaGroups;
   };
 
-  const renderedItems = showCompleted
-    ? meeting.items
-    : meeting.items.filter((item) => item.status !== MeetingItemStates.COMPLETED);
-  const agendaGroups = groupMeetingItems(renderedItems);
+  //needed to create two distinct groups of agendas. One for rendering and one for directly moving items
+  const createRenderedGroups = (agendaGroups)=>{
+    let uncompletedOnly = [];
+    agendaGroups.forEach(parent=>{
+      if(parent.status != MeetingItemStates.COMPLETED){
+        uncompletedOnly.push(parent);
+        parent.items = parent.items.filter(item=>item.status !== MeetingItemStates.COMPLETED);
+      }
+    });
+
+    return showCompleted ? agendaGroups : uncompletedOnly;
+  }
+
+  const renderedGroups = createRenderedGroups(agendaGroups);
+  const parentItems = agendaGroups.map(parent=>parent.id);
+  console.log(parentItems);
 
   return (
     <div className="AgendaView">
@@ -110,20 +140,32 @@ function AgendaView({ meeting }) {
         {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
         <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
-
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {agendaGroups.map(parent=>{
-          return(
-          <AgendaGroup
-            key={parent.id}
-            agendaGroup={parent}
-            selectedItems={selectedItems}
-            handleItemSelection={handleAgendaItemSelection}
-            >
-          </AgendaGroup>
-          );
-        })}
-      </Accordion>
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        
+      >
+        <SortableContext
+          items={parentItems}
+          strategy={verticalListSortingStrategy}
+        >
+          <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+            {renderedGroups.map(parent=>{
+              return(
+              <AgendaGroup
+                key={parent.id}
+                agendaGroup={parent}
+                selectedItems={selectedItems}
+                handleItemSelection={handleAgendaItemSelection}
+                >
+              </AgendaGroup>
+              );
+            })}
+          </Accordion>
+        </SortableContext>
+      </DndContext>
 
       { Object.keys(selectedItems).length > 0
         && (
@@ -134,6 +176,36 @@ function AgendaView({ meeting }) {
         )}
     </div>
   );
+
+  function handleDragStart(event) {
+    const {active} = event;
+    
+    setActiveId(active.id);
+  }
+
+  function handleDragEnd(event) {
+    const {active, over} = event;
+    
+    if (active.id !== over.id) {
+      setAgendaGroups((parents) => {
+        console.log(parents);
+        let oldIndex;
+        let newIndex;
+
+        parents.forEach((parent, index)=>{
+          if(parent.id === active.id){
+            oldIndex = index;
+          }
+          if(parent.id === over.id){
+            newIndex = index;
+          }
+        });
+          
+        return arrayMove(parents, oldIndex, newIndex);
+      });
+    }
+  }
+  
 }
 
 export default AgendaView;

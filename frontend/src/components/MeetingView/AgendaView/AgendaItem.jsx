@@ -50,8 +50,7 @@ const itemLinks = [
 function AgendaItem({ item, isSelected, handleSelection }) {
   const handleCheck = (evt) => {
     if (evt.target) {
-      
-      handleSelection(item.parent_meeting_item_id, item.id, {2:evt.target.checked});
+      handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
 
