@@ -59,6 +59,7 @@ function AgendaView({ meeting }) {
     }
   };
 
+  //rewritten to make the agendaGroups into an array, and not an object of holding arrays
   const groupMeetingItems = (meetingItems) => {
     // Groups all the meeting items by `parent_meeting_item_id`.
     // Returns a hash table with keys as agenda items id (the ones without `parent_meeting_item_id`)
@@ -67,20 +68,24 @@ function AgendaView({ meeting }) {
     const itemsWithNoParent = meetingItems.filter((item) => item.parent_meeting_item_id === null);
     const itemsWithParent = meetingItems.filter((item) => item.parent_meeting_item_id !== null);
 
-    const agendaGroups = {};
-    itemsWithNoParent.forEach((item) => {
-      agendaGroups[item.id] = { ...item };
-      agendaGroups[item.id].items = [];
+    const agendaGroups =[];
+    itemsWithNoParent.forEach((item,i) => {
+      agendaGroups.push({ ...item });
+      agendaGroups[i].items = [];
     });
 
-    itemsWithParent.forEach((item) => {
-      // If the parent meeting item is not in the list of the meeting items,
-      // the data is invalid but we ignore it here.
-      if (item.parent_meeting_item_id in agendaGroups) {
-        agendaGroups[item.parent_meeting_item_id].items.push(item);
-      }
+    console.log(agendaGroups);
+    console.log(itemsWithParent);
+
+    itemsWithParent.forEach(item=>{
+      agendaGroups.forEach((parent,i)=>{
+        if(parent.id === item.parent_meeting_item_id){
+          parent.items.push(item);
+        }
+      })
     });
 
+    console.log(agendaGroups);
     return agendaGroups;
   };
 
@@ -103,18 +108,16 @@ function AgendaView({ meeting }) {
       </button>
 
       <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {renderedItems.map((meetingItem) => {
-          if (meetingItem.id in agendaGroups) {
-            return (
-              <AgendaGroup
-                key={meetingItem.id}
-                agendaGroup={agendaGroups[meetingItem.id]}
-                selectedItems={selectedItems}
-                handleItemSelection={handleAgendaItemSelection}
-              />
-            );
-          }
-          return null;
+        {agendaGroups.map(parent=>{
+          return(
+          <AgendaGroup
+            key={parent.id}
+            agendaGroup={parent}
+            selectedItems={selectedItems}
+            handleAgendaItemSelection={handleAgendaItemSelection}
+            >
+          </AgendaGroup>
+          );
         })}
       </Accordion>
 
