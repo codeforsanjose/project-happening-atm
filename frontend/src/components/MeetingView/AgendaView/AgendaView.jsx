@@ -143,6 +143,7 @@ function AgendaView({ meeting }) {
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
         
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
@@ -167,11 +168,66 @@ function AgendaView({ meeting }) {
     
     setActiveId(active.id);
   }
+  //This function will handle the swapping of items between their agenda containers
+  function handleDragOver(event){
+    const {active, over} = event;
 
+    //enter if branch when moving items only
+    if(agendaGroups.filter(parent=>parent.id === active.id).length === 0){
+      let activeContainerIndex;
+      let overContainerIndex;
+      let activeItemIndex;
+      let overItemIndex;
+
+      //need to find out the container index of the active and over items
+      agendaGroups.forEach((parent,parentIndex)=>{
+
+        parent.items.forEach(((item, itemIndex)=>{
+
+          if(item.id === active.id){
+            activeContainerIndex = parentIndex;
+            activeItemIndex = itemIndex;
+          }
+          if(item.id === over.id){
+            overContainerIndex = parentIndex;
+            overItemIndex = itemIndex;
+          }else{
+            if(over.id === parent.id){
+              overContainerIndex = parentIndex;
+              itemIndex = 0;
+            }
+          }
+        }))
+      })
+
+      //enter if branch when items moving from one agenda container to another
+      if(activeContainerIndex != overContainerIndex){
+        insertNewContainer(active,over,activeContainerIndex,overContainerIndex,overItemIndex,activeItemIndex);
+      }
+      
+    }
+
+    function insertNewContainer(active,over,activeContainerIndex,overContainerIndex,overItemIndex,activeItemIndex){
+      setAgendaGroups((parents) => {
+        let newParents = JSON.parse(JSON.stringify(parents));        
+        const itemToMove = newParents[activeContainerIndex].items.slice(activeItemIndex, activeItemIndex + 1)[0];
+        console.log(activeContainerIndex, 'activeContainerIndex');
+        console.log(overContainerIndex,'overContainerIndex');
+        console.log(newParents,'newParents');
+        newParents[activeContainerIndex].items.splice(activeItemIndex,1);
+        newParents[overContainerIndex].items.splice(activeItemIndex,0, itemToMove);
+        
+        //return arrayMove(parents, oldIndex, newIndex);
+        return newParents;
+      });
+    }
+  }
+
+  
   function handleDragEnd(event) {
     const {active, over} = event;
     
-    if (active.id !== over.id) {
+    if (over != null && active.id !== over.id) {
       
       //If statement only entered when moving the main agenda containers
       if(agendaGroups.filter(parent=>parent.id === active.id).length > 0){
