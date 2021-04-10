@@ -37,6 +37,10 @@ function AgendaView({ meeting }) {
   };
 
   const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
+    console.log(meetingId);
+    console.log(itemId);
+    console.log(isChecked);
+
     if (isChecked && !(meetingId in selectedItems)) {
       selectedItems[meetingId] = {};
     }
@@ -114,7 +118,7 @@ function AgendaView({ meeting }) {
             key={parent.id}
             agendaGroup={parent}
             selectedItems={selectedItems}
-            handleAgendaItemSelection={handleAgendaItemSelection}
+            handleItemSelection={handleAgendaItemSelection}
             >
           </AgendaGroup>
           );
