@@ -9,6 +9,22 @@ import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
+
+//dnd kit
+import {
+  DndContext, 
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
@@ -31,7 +47,14 @@ function AgendaView({ meeting }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
+  const [outerContainerIDs,setOuterContainerIDs] = useState(assignOuterContainerIDs);
   
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const handleSelectionCancel = () => {
     setSelectedItems({});
@@ -60,14 +83,14 @@ function AgendaView({ meeting }) {
     }
   };
 
-  const groupMeetingItems = (meetingItems) => {
+  function groupMeetingItems (meetingItems){
     // Groups all the meeting items by `parent_meeting_item_id`.
     // Returns a hash table with keys as agenda items id (the ones without `parent_meeting_item_id`)
     // and values as the items themselves. Inside such items there can be a property `items` which
     // is an array of agenda items whose `parent_meeting_item_id` is equal to the corresponding key.
     const itemsWithNoParent = meetingItems.filter((item) => item.parent_meeting_item_id === null);
     const itemsWithParent = meetingItems.filter((item) => item.parent_meeting_item_id !== null);
-
+  
     const agendaGroups = {};
     itemsWithNoParent.forEach((item) => {
       agendaGroups[item.id] = { ...item };
@@ -89,7 +112,20 @@ function AgendaView({ meeting }) {
     ? meeting.items
     : meeting.items.filter((item) => item.status !== MeetingItemStates.COMPLETED);
   const agendaGroups = groupMeetingItems(renderedItems);
-
+  
+  
+  function assignOuterContainerIDs(){    
+    let agendaGroups = groupMeetingItems(meeting.items);
+    
+    let outerContainers = meeting.items.filter(meetingItem=>{
+      if(meetingItem.id in agendaGroups){
+        return true;
+      } 
+      return false;
+    });
+    return outerContainers.map(container=>container.id);
+  };
+  
   return (
     <div className="AgendaView">
       <Search />
@@ -103,23 +139,33 @@ function AgendaView({ meeting }) {
         <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
 
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {renderedItems.map((meetingItem) => {
-          if (meetingItem.id in agendaGroups) {
-            console.log(meetingItem);
-            return (
-              <AgendaGroup
-                key={meetingItem.id}
-                agendaGroup={agendaGroups[meetingItem.id]}
-                selectedItems={selectedItems}
-                handleItemSelection={handleAgendaItemSelection}
-              />
-            );
-          }
-          return null;
-        })}
-      </Accordion>
-
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={closestCenter}
+      >
+        <SortableContext 
+        items={outerContainerIDs}
+        strategy={verticalListSortingStrategy}
+      >
+          <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+            {renderedItems.map((meetingItem) => {
+              if (meetingItem.id in agendaGroups) {
+                
+                return (
+                  <AgendaGroup
+                    key={meetingItem.id}
+                    agendaGroup={agendaGroups[meetingItem.id]}
+                    selectedItems={selectedItems}
+                    handleItemSelection={handleAgendaItemSelection}
+                  />
+                );
+              }
+              return null;
+            })}
+          </Accordion>
+        </SortableContext>
+      </DndContext>
+        
       { Object.keys(selectedItems).length > 0
         && (
           <MultipleSelectionBox
