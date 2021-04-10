@@ -6,6 +6,10 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
 
+import {
+  useSortable
+} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 const itemLinks = [
   {
     getPath: (item) => `/subscribe?${buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })}`,
@@ -48,6 +52,19 @@ const itemLinks = [
  */
 
 function AgendaItem({ item, isSelected, handleSelection }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({id: item.id});
+  
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const handleCheck = (evt) => {
     if (evt.target) {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
@@ -55,7 +72,7 @@ function AgendaItem({ item, isSelected, handleSelection }) {
   };
 
   return (
-    <div className="AgendaItem">
+    <div className="AgendaItem" ref={setNodeRef} style={style} {...attributes} {...listeners}>
       {item.status !== MeetingItemStates.PENDING
         && <div className="item-status">{item.status}</div>}
 
