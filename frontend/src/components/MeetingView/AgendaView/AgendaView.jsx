@@ -204,8 +204,11 @@ function AgendaView({ meeting }) {
       let overIndex;
 
       let activeIsOver = active.id === over.id;
+      let overIsContainer = parents.filter(parent=>parent.id === over.id).length > 0;
+      let activeIsContainer = parents.filter(parent=>parent.id === active.id).length > 0;
+
       console.log(activeIsOver);
-      if(!activeIsOver){
+      if(!activeIsOver && !overIsContainer && !activeIsContainer){
 
         for(let i = 0; i < newParents.length;i++){
           newParents[i].items.forEach((item,itemIndex)=>{
