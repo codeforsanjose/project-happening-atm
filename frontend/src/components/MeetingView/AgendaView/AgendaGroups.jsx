@@ -97,12 +97,11 @@ function AgendaGroupHeader({agendaGroup,selectedItems}){
     
 
   );
-
 }
 
 function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
   let agendaItemIds = agendaGroup.items.map(item=>item.id);
-  console.log(agendaItemIds);
+
   return (
     <SortableContext
       items={agendaItemIds}
@@ -111,6 +110,7 @@ function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
       <AccordionItemPanel className="group-items">
             {agendaGroup.items.map((item) => (
               <AgendaItem
+                id={item.id}
                 key={item.id}
                 item={item}
                 isSelected={selectedItems[agendaGroup.id] !== undefined

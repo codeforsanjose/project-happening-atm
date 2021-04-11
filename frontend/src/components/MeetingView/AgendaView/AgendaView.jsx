@@ -8,6 +8,7 @@ import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
+import {RenderedAgendaItem} from './AgendaItem';
 
 import {
   DndContext, 
@@ -16,6 +17,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragOverlay,
+  rectIntersection
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -44,8 +47,7 @@ function AgendaView({ meeting }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
-  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems)
-  const [renderedAgendaGroups, setRenderedAgendaGroups] = useState(createRenderedGroups);
+  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems);
   const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
@@ -58,7 +60,7 @@ function AgendaView({ meeting }) {
   const handleSelectionCancel = () => {
     setSelectedItems({});
   };
-  console.log(renderedAgendaGroups);
+  
 
   const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
     
@@ -90,13 +92,12 @@ function AgendaView({ meeting }) {
     // Returns a hash table with keys as agenda items id (the ones without `parent_meeting_item_id`)
     // and values as the items themselves. Inside such items there can be a property `items` which
     // is an array of agenda items whose `parent_meeting_item_id` is equal to the corresponding key.
-    console.log('groupMeetingItems RAN');
     
     let items = JSON.parse(JSON.stringify(meeting.items));
     const itemsWithNoParent = items.filter((item) => item.parent_meeting_item_id === null);
     const itemsWithParent = items.filter((item) => item.parent_meeting_item_id !== null);
 
-    let agendaGroups =[];
+    const agendaGroups =[];
     itemsWithNoParent.forEach((item,i) => {
       agendaGroups.push({ ...item });
       agendaGroups[i].items = [];
@@ -110,46 +111,42 @@ function AgendaView({ meeting }) {
       })
     });
     
-    //agendaGroups = createRenderedGroups(agendaGroups);
     return agendaGroups;
   };
 
   //needed to create two distinct groups of agendas. One for rendering and one for directly moving items
-  function createRenderedGroups(){
-    setShowCompleted((completed) => !completed)
+  function createRenderedGroups(agendaGroups){
+    let newAgendaGroups = JSON.parse(JSON.stringify(agendaGroups));
     
     let uncompletedOnly = [];
-    agendaGroups.forEach(parent=>{
+    newAgendaGroups.forEach(parent=>{
       if(parent.status != MeetingItemStates.COMPLETED){
         uncompletedOnly.push(parent);
         parent.items = parent.items.filter(item=>item.status !== MeetingItemStates.COMPLETED);
       }
     });
     
-    return showCompleted ? agendaGroups : uncompletedOnly;
-    
-    setRenderedAgendaGroups(showCompleted ? agendaGroups : uncompletedOnly);
+    return (showCompleted ? newAgendaGroups : uncompletedOnly);
   }
+  const renderedAgendaGroups = createRenderedGroups(agendaGroups);
+  const parentIds = agendaGroups.map(parent=>parent.id);
+  const activeIsParent = parentIds.filter(parent=> parent === activeId).length > 0;
+  let parentContainerIndex;
+  let activeitem = {id:null};
 
-  //needed to create two distinct groups of agendas. One for rendering and one for directly moving items
-  function createRenderedGroups2(){
-    setShowCompleted((completed) => !completed)
-    
-    let uncompletedOnly = [];
-    agendaGroups.forEach(parent=>{
-      if(parent.status != MeetingItemStates.COMPLETED){
-        uncompletedOnly.push(parent);
-        parent.items = parent.items.filter(item=>item.status !== MeetingItemStates.COMPLETED);
+  agendaGroups.forEach((parent,i)=>{
+    parent.items.forEach(item=>{
+      if(item.id === activeId){
+        parentContainerIndex = i;
       }
-    });
+    })
+  });
   
-    setRenderedAgendaGroups(showCompleted ? agendaGroups : uncompletedOnly);
+  if(typeof parentContainerIndex != 'undefined'){
+    activeitem = agendaGroups[parentContainerIndex].items.find(item=>item.id === activeId);
   }
-
   
-  const parentItems = renderedAgendaGroups.map(parent=>parent.id);
-  
-  
+  const displayAgenda = showCompleted ? agendaGroups : renderedAgendaGroups;
   return (
     <div className="AgendaView">
       <Search />
@@ -157,23 +154,27 @@ function AgendaView({ meeting }) {
       <button
         type="button"
         className="complete-toggle"
-        onClick={createRenderedGroups2}
+        onClick={() => setShowCompleted((completed) => !completed)}
       >
         {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
         <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
       <DndContext 
         sensors={sensors}
-        collisionDetection={closestCenter}
+        collisionDetection={rectIntersection}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-          <AgendaGroups agendaGroups={renderedAgendaGroups} 
+          <AgendaGroups agendaGroups={displayAgenda} 
             selectedItems={selectedItems} handleAgendaItemSelection={handleAgendaItemSelection} 
           />
         </Accordion>
+
+        <DragOverlay>
+          {!activeIsParent ? <RenderedAgendaItem id={activeId} item={activeitem} flag={{activeIsParent}} /> : null}
+        </DragOverlay>
       </DndContext>
 
       { Object.keys(selectedItems).length > 0
@@ -194,8 +195,8 @@ function AgendaView({ meeting }) {
   //This function will handle the swapping of items between the agenda containers
   function handleDragOver(event){
     const {active, over} = event;
-    console.log('inside handle drag');
-    setRenderedAgendaGroups((parents)=>{
+    
+    setAgendaGroups((parents)=>{
       let newParents = JSON.parse(JSON.stringify(parents));
 
       let activeContainerIndex;
@@ -203,12 +204,19 @@ function AgendaView({ meeting }) {
       let activeIndex;
       let overIndex;
 
-      let activeIsOver = active.id === over.id;
-      let overIsContainer = parents.filter(parent=>parent.id === over.id).length > 0;
-      let activeIsContainer = parents.filter(parent=>parent.id === active.id).length > 0;
+      let activeIsOver
+      let overIsContainer
+      let activeIsContainer
 
-      console.log(activeIsOver);
-      if(!activeIsOver && !overIsContainer && !activeIsContainer){
+      let overIsNull = over === null;
+      if(!overIsNull){
+        activeIsOver = active.id === over.id;
+        overIsContainer = parents.filter(parent=>parent.id === over.id).length > 0;
+        activeIsContainer = parents.filter(parent=>parent.id === active.id).length > 0;
+      }
+      console.log('over running');
+      
+      if(!overIsNull && !activeIsOver && !overIsContainer && !activeIsContainer){
 
         for(let i = 0; i < newParents.length;i++){
           newParents[i].items.forEach((item,itemIndex)=>{
@@ -227,8 +235,6 @@ function AgendaView({ meeting }) {
           let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
           itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
           newParents[overContainerIndex].items.splice(overIndex+1,0,itemToMove);
-          console.log(newParents);
-          console.log(itemToMove);
         }
       }
 
@@ -244,7 +250,7 @@ function AgendaView({ meeting }) {
     if (over != null && active.id !== over.id) {
       
       //If statement only entered when moving the main agenda containers
-      if(renderedAgendaGroups.filter(parent=>parent.id === active.id).length > 0){
+      if(agendaGroups.filter(parent=>parent.id === active.id).length > 0){
         parentAgendaOnly(active,over);
       }else{
         movingItems(active,over);
@@ -254,9 +260,9 @@ function AgendaView({ meeting }) {
 
 
     function movingItems(active,over){
-      setRenderedAgendaGroups((parents) => {
+      setAgendaGroups((parents) => {
         let newParents = JSON.parse(JSON.stringify(parents));
-        console.log(newParents);
+        
         let parentIndex;
         let oldIndex;
         let newIndex;
@@ -280,7 +286,7 @@ function AgendaView({ meeting }) {
     }
     
     function parentAgendaOnly(active,over){
-      setRenderedAgendaGroups((parents) => {
+      setAgendaGroups((parents) => {
         
         let oldIndex;
         let newIndex;

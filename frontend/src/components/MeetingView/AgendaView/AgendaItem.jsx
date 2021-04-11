@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import { Link } from 'react-router-dom';
 import './AgendaItem.scss';
 import { buildSubscriptionQueryString } from '../../Subscribe/subscribeQueryString';
@@ -51,28 +51,45 @@ const itemLinks = [
  *      A handler for agenda item selection
  */
 
-function AgendaItem({ item, isSelected, handleSelection }) {
+function AgendaItem({id, item, isSelected, handleSelection }) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({id: item.id});
-  
+  } = useSortable({id: id});
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
+  return (
+    <RenderedAgendaItem {...attributes}
+    {...listeners} ref={setNodeRef} style={style} id={id} item={item} isSelected={isSelected} handleSelection={handleSelection}/>
+  );
+}
+
+function AgendaItemActionLink({ link }) {
+  return (
+    <div className="link">
+      <link.Icon />
+      <p>{link.text}</p>
+    </div>
+  );
+}
+
+const RenderedAgendaItem = forwardRef(({flag, handleSelection,isSelected,item,id, ...props}, ref) =>{
+  
   const handleCheck = (evt) => {
-    if (evt.target) {
+    if (evt.target && typeof handleSelection != 'undefined') {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
-
+  
   return (
-    <div className="AgendaItem" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div {...props} ref={ref} className="AgendaItem" >
       {item.status !== MeetingItemStates.PENDING
         && <div className="item-status">{item.status}</div>}
 
@@ -102,15 +119,7 @@ function AgendaItem({ item, isSelected, handleSelection }) {
       </div>
     </div>
   );
-}
-
-function AgendaItemActionLink({ link }) {
-  return (
-    <div className="link">
-      <link.Icon />
-      <p>{link.text}</p>
-    </div>
-  );
-}
+});
 
 export default AgendaItem;
+export {RenderedAgendaItem};
