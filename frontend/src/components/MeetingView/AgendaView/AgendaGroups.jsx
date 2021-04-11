@@ -43,58 +43,39 @@ import {CSS} from '@dnd-kit/utilities';
 function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }) {
   const parentItems = agendaGroups.map(parent=>parent.id);
   return (
-    <SortableContext
-      items={parentItems}
-      strategy={verticalListSortingStrategy}
-    >
-      {agendaGroups.map(parent=>{
-
-        return(
-          <AccordionItem className="AgendaGroup">
-            <AgendaGroupHeader
-              key={parent.id}
-              agendaGroup={parent}
-            />
-            <AgendaGroupBody
-              agendaGroup={parent}
-              selectedItems={selectedItems}
-              handleItemSelection={handleAgendaItemSelection}
-            />
-          </AccordionItem>
-        );
-      })}
-    </SortableContext>
+    agendaGroups.map(parent=>{
+      return(
+        <AccordionItem className="AgendaGroup" key={parent.id + 'accord'}>
+          <AgendaGroupHeader
+            key={parent.id}
+            agendaGroup={parent}
+          />
+          <AgendaGroupBody
+            key={parent.id + 'agendaGroup'}
+            agendaGroup={parent}
+            selectedItems={selectedItems}
+            handleItemSelection={handleAgendaItemSelection}
+          />
+        </AccordionItem>
+      );
+    })
   );
 }
 
 function AgendaGroupHeader({agendaGroup,selectedItems}){
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id: agendaGroup.id});
   
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <AccordionItemHeading className="group-header">
-            <AccordionItemButton className="group-button">
-              <div className="button-text">
-                <div className="group-title">{agendaGroup.title_loc_key}</div>
-                <div className="group-status">
-                  {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
-                </div>
+    <AccordionItemHeading className="group-header">
+          <AccordionItemButton className="group-button">
+            <div className="button-text">
+              <div className="group-title">{agendaGroup.title_loc_key}</div>
+              <div className="group-status">
+                {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
               </div>
-            </AccordionItemButton>
-      </AccordionItemHeading>
-    </div>
+            </div>
+          </AccordionItemButton>
+    </AccordionItemHeading>
+    
 
   );
 
@@ -102,7 +83,7 @@ function AgendaGroupHeader({agendaGroup,selectedItems}){
 
 function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
   let agendaItemIds = agendaGroup.items.map(item=>item.id);
-  
+  console.log(agendaItemIds);
   return (
     <SortableContext
       items={agendaItemIds}

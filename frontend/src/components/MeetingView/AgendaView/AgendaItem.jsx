@@ -87,7 +87,7 @@ function AgendaItem({ item, isSelected, handleSelection }) {
           itemLinks.map((link) => {
             if (link.isDisabled(item)) {
               return (
-                <div className="disabled">
+                <div className="disabled" key={item.id + "link"}>
                   <AgendaItemActionLink link={link} />
                 </div>
               );
