@@ -26,7 +26,7 @@ import {CSS} from '@dnd-kit/utilities';
  * A group of agenda items in a collapsible accordion.
  *
  * props:
- *    agendaGroup
+ *    agendaGroups
  *      Object that represents an agenda group.
  *      {
  *        id: Number id of group
