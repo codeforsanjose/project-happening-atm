@@ -37,7 +37,7 @@ module.exports = (logger) => {
   };
 
   module.createMeeting = async (dbClient, args, context) => {
-    //validator.validateAuthorization(context);
+    validator.validateAuthorization(context);
     validator.validateCreateMeeting(args);
 
     let res;
@@ -71,7 +71,7 @@ module.exports = (logger) => {
   };
 
   module.createMeetingItem = async (dbClient, args, context) => {
-    //validator.validateAuthorization(context);
+    validator.validateAuthorization(context);
     validator.validateCreateMeetingItem(args);
 
     let res;
@@ -131,7 +131,7 @@ module.exports = (logger) => {
       res = await dbClient.updateMeetingItem(
         args.id, args.order_number, args.status, args.item_start_timestamp,
         args.item_end_timestamp, args.content_categories, args.description_loc_key,
-        args.title_loc_key,
+        args.title_loc_key, args.parent_meeting_item_id,
       );
     } catch (e) {
       logger.error(`updateMeetingItem resolver error - dbClient.updateMeetingItem: ${e}`);

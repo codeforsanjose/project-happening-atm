@@ -95,8 +95,11 @@ module.exports = async (logger) => {
     const createdTimestamp = now;
     const updatedTimestamp = now;
     const queryString = `
-        INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key, parent_meeting_item_id)
-        VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6), $7, $8, $9, $10, $11) 
+        INSERT INTO meeting_item(meeting_id, order_number, created_timestamp, updated_timestamp,
+          item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key,
+          title_loc_key, parent_meeting_item_id)
+        VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6),
+          $7, $8, $9, $10, $11) 
         RETURNING id;`;
     return query(queryString,
       [
@@ -183,23 +186,25 @@ module.exports = async (logger) => {
   };
 
   module.updateMeetingItem = async (id, orderNumber, status, itemStartTimestamp,
-    itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey) => {
+    itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey, parentMeetingItemId) => {
     logger.info('dbClient: updateMeetingItem');
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting_item
         SET
-            order_number = $1,
-            status = $2,
-            item_start_timestamp = to_timestamp($3),
-            item_end_timestamp = to_timestamp($4),
-            updated_timestamp = to_timestamp($5),
-            content_categories = $6,
-            description_loc_key = $7,
-            title_loc_key = $8
-        WHERE id = $9`;
+            order_number = $2,
+            status = $3,
+            item_start_timestamp = to_timestamp($4),
+            item_end_timestamp = to_timestamp($5),
+            updated_timestamp = to_timestamp($6),
+            content_categories = $7,
+            description_loc_key = $8,
+            title_loc_key = $9,
+            parent_meeting_item_id = $10
+        WHERE id = $1`;
     return query(queryString, 
       [
+        id,
         orderNumber, 
         status, 
         convertMsToSeconds(itemStartTimestamp),
@@ -208,7 +213,7 @@ module.exports = async (logger) => {
         contentCategories,
         descriptionLocKey,
         titleLocKey,
-        id
+        parentMeetingItemId
       ]
     );
   };
