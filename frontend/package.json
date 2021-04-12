@@ -10,6 +10,7 @@
     "@apollo/client": "^3.2.5",
     "@dnd-kit/core": "^2.1.2",
     "@dnd-kit/sortable": "^2.0.1",
+    "@dnd-kit/utilities": "^1.0.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

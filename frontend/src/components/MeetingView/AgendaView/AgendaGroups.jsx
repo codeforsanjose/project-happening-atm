@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+// Necessary as dnd sort uses prop spreading for its listeners and props
 import React from 'react';
 import {
   AccordionItem,
@@ -7,9 +9,6 @@ import {
 } from 'react-accessible-accordion';
 import './AgendaGroup.scss';
 
-import AgendaItem from './AgendaItem';
-import MeetingItemStates from '../../../constants/MeetingItemStates';
-
 import {
   useDroppable,
 } from '@dnd-kit/core';
@@ -17,10 +16,11 @@ import {
 import {
   SortableContext,
   verticalListSortingStrategy,
-  useSortable
+  useSortable,
 } from '@dnd-kit/sortable';
-import {CSS} from '@dnd-kit/utilities';
-
+import { CSS } from '@dnd-kit/utilities';
+import MeetingItemStates from '../../../constants/MeetingItemStates';
+import AgendaItem from './AgendaItem';
 
 /**
  * A group of agenda items in a collapsible accordion.
@@ -46,84 +46,86 @@ import {CSS} from '@dnd-kit/utilities';
  *      Indicates an item is being dragged
  */
 
-//Necessary to allow the dragging of an item into an empty group
- const options = {
-  minHeightAgendaContainer:'60px'
+// Necessary to allow the dragging of an item into an empty group
+const options = {
+  minHeightAgendaContainer: '60px',
 };
 
-function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection, dragOverlayActive }) {
-  const parentItems = agendaGroups.map(parent=>parent.id);
+function AgendaGroups({
+  agendaGroups, selectedItems, handleAgendaItemSelection, dragOverlayActive,
+}) {
+  const parentItems = agendaGroups.map((parent) => parent.id);
 
-  //AgendaGroup was split into a header and body to permit the seperate dragging of the group and the items.
+  // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
     <SortableContext
       items={parentItems}
       strategy={verticalListSortingStrategy}
     >
-      {agendaGroups.map(parent=>{
-        return(
-          <AccordionItem className="AgendaGroup" key={parent.id + 'accord'}>
-            <AgendaGroupHeader
-              key={parent.id}
-              agendaGroup={parent}
-            />
-            <AgendaGroupBody
-              key={parent.id + 'agendaGroup'}
-              agendaGroup={parent}
-              selectedItems={selectedItems}
-              handleItemSelection={handleAgendaItemSelection}
-              dragOverlayActive={dragOverlayActive}
-            />
-          </AccordionItem>
-        );
-      })};
+      {agendaGroups.map((parent) => (
+        <AccordionItem className="AgendaGroup" key={`${parent.id}accord`}>
+          <AgendaGroupHeader
+            key={parent.id}
+            agendaGroup={parent}
+          />
+          <AgendaGroupBody
+            key={`${parent.id}agendaGroup`}
+            agendaGroup={parent}
+            selectedItems={selectedItems}
+            handleItemSelection={handleAgendaItemSelection}
+            dragOverlayActive={dragOverlayActive}
+          />
+        </AccordionItem>
+      ))}
+      ;
     </SortableContext>
   );
 }
 
-function AgendaGroupHeader({agendaGroup,selectedItems}){
+function AgendaGroupHeader({ agendaGroup }) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({id: agendaGroup.id});
-  
+  } = useSortable({ id: agendaGroup.id });
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  
+
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <AccordionItemHeading className="group-header">
-            <AccordionItemButton className="group-button">
-              <div className="button-text">
-                <div className="group-title">{agendaGroup.title_loc_key}</div>
-                <div className="group-status">
-                  {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
-                </div>
-              </div>
-            </AccordionItemButton>
+        <AccordionItemButton className="group-button">
+          <div className="button-text">
+            <div className="group-title">{agendaGroup.title_loc_key}</div>
+            <div className="group-status">
+              {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
+            </div>
+          </div>
+        </AccordionItemButton>
       </AccordionItemHeading>
     </div>
-    
 
   );
 }
 
-function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection, dragOverlayActive}){
-  const {setNodeRef} = useDroppable({
-    id: agendaGroup.dropID
+function AgendaGroupBody({
+  agendaGroup, selectedItems, handleItemSelection, dragOverlayActive,
+}) {
+  const { setNodeRef } = useDroppable({
+    id: agendaGroup.dropID,
   });
 
-  //needed to ensure the dragable element can be placed when the container is empty
-  const style={
-    minHeight:options.minHeightAgendaContainer
+  // needed to ensure the dragable element can be placed when the container is empty
+  const style = {
+    minHeight: options.minHeightAgendaContainer,
   };
-  
-  let agendaItemIds = agendaGroup.items.map(item=>item.id);
+
+  const agendaItemIds = agendaGroup.items.map((item) => item.id);
 
   return (
     <SortableContext
@@ -131,19 +133,19 @@ function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection, dragOve
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">
-          <div style={style} ref={setNodeRef}>
-            {agendaGroup.items.map((item) => (
-              <AgendaItem
-                id={item.id}
-                key={item.id}
-                item={item}
-                isSelected={selectedItems[agendaGroup.id] !== undefined
+        <div style={style} ref={setNodeRef}>
+          {agendaGroup.items.map((item) => (
+            <AgendaItem
+              id={item.id}
+              key={item.id}
+              item={item}
+              isSelected={selectedItems[agendaGroup.id] !== undefined
                   && selectedItems[agendaGroup.id][item.id] !== undefined}
-                handleSelection={handleItemSelection}
-                dragOverlayActive={dragOverlayActive}
-              />
-            ))}
-          </div>
+              handleSelection={handleItemSelection}
+              dragOverlayActive={dragOverlayActive}
+            />
+          ))}
+        </div>
       </AccordionItemPanel>
     </SortableContext>
   );

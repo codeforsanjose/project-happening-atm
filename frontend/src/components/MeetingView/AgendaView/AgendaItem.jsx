@@ -1,15 +1,17 @@
-import React, {forwardRef} from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+// Necessary as dnd sort uses prop spreading for its listeners and props
+import React, { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import './AgendaItem.scss';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { buildSubscriptionQueryString } from '../../Subscribe/subscribeQueryString';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
 
-import {
-  useSortable
-} from '@dnd-kit/sortable';
-import {CSS} from '@dnd-kit/utilities';
 const itemLinks = [
   {
     getPath: (item) => `/subscribe?${buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })}`,
@@ -55,23 +57,24 @@ const itemLinks = [
 
 /**
  * Important
- * 
+ *
  *  RenderedAgendaItem is creating a overlay checkbox that renders on top of the component.
  *  Any changes that change the height of the component will cause the overlay checkbox to align
  *  The overlay checkbox can be adjusted in AgendaItem.scss
  *
  */
 
-
-//The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
-function AgendaItem({id, item, isSelected, handleSelection, dragOverlayActive }) {
+// The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
+function AgendaItem({
+  id, item, isSelected, handleSelection, dragOverlayActive,
+}) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({id: id});
+  } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -79,8 +82,17 @@ function AgendaItem({id, item, isSelected, handleSelection, dragOverlayActive })
   };
 
   return (
-    <RenderedAgendaItem {...attributes}
-    {...listeners} ref={setNodeRef} style={style} id={id} item={item} dragOverlayActive={dragOverlayActive} isSelected={isSelected} handleSelection={handleSelection}/>
+    <RenderedAgendaItem
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+      style={style}
+      id={id}
+      item={item}
+      dragOverlayActive={dragOverlayActive}
+      isSelected={isSelected}
+      handleSelection={handleSelection}
+    />
   );
 }
 
@@ -93,51 +105,53 @@ function AgendaItemActionLink({ link }) {
   );
 }
 
-const RenderedAgendaItem = forwardRef(({dragOverlayActive, flag, handleSelection,isSelected,item,id, ...props}, ref) =>{
-  
+const RenderedAgendaItem = forwardRef(({
+  dragOverlayActive, flag, handleSelection, isSelected, item, id, ...props
+}, ref) => {
   const handleCheck = (evt) => {
-    if (evt.target && typeof handleSelection != 'undefined') {
+    if (evt.target && typeof handleSelection !== 'undefined') {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
 
-  //These variables and the proceding if statements are necessary to ensure that the checkbox overlay is
-  //at the correct height. The overlay is absolutly positioned and the item "status" changes the height
+  // These variables and the proceding if statements are necessary
+  // to ensure that the checkbox overlay is at the correct height.
+  // The overlay is absolutly positioned and the item "status" changes the height
   let classWhenDragging;
   let classNotDragging;
 
-  if(item.status !== MeetingItemStates.PENDING){
-    classWhenDragging= "hideCheckBox";
-    classNotDragging= "completeOvrLaidChkBx";
-  }else{
-    classWhenDragging = "hideCheckBox";
-    classNotDragging = "overlaidCheckBox";
+  if (item.status !== MeetingItemStates.PENDING) {
+    classWhenDragging = 'hideCheckBox';
+    classNotDragging = 'completeOvrLaidChkBx';
+  } else {
+    classWhenDragging = 'hideCheckBox';
+    classNotDragging = 'overlaidCheckBox';
   }
-  
-  //The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
-  //This allows the smooth pressing of the checkbox and the ability to drag
-  //Without this the dragOverlay prevented the pressing of the checkbox
+
+  // The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
+  // This allows the smooth pressing of the checkbox and the ability to drag
+  // Without this the dragOverlay prevented the pressing of the checkbox
   return (
     <div>
-      <div className='relativeEmptyContainer'>
+      <div className="relativeEmptyContainer">
         <input type="checkbox" className={dragOverlayActive ? classWhenDragging : classNotDragging} checked={isSelected} onChange={handleCheck} />
       </div>
-      <div {...props} ref={ref} className="AgendaItem" >
+      <div {...props} ref={ref} className="AgendaItem">
         {item.status !== MeetingItemStates.PENDING
           && <div className="item-status">{item.status}</div>}
-        
+
         <div className="row">
           <input type="checkbox" checked={isSelected} onChange={handleCheck} />
           <h4>{item.title_loc_key}</h4>
         </div>
         <p>{item.description_loc_key}</p>
-        
+
         <div className="item-links">
           {
             itemLinks.map((link) => {
               if (link.isDisabled(item)) {
                 return (
-                  <div className="disabled" key={item.id + "link"}>
+                  <div className="disabled" key={`${item.id}link`}>
                     <AgendaItemActionLink link={link} />
                   </div>
                 );
@@ -155,6 +169,6 @@ const RenderedAgendaItem = forwardRef(({dragOverlayActive, flag, handleSelection
   );
 });
 
-//must export RenderedAgendaItem so that the dragOverlay can use it
+// must export RenderedAgendaItem so that the dragOverlay can use it
 export default AgendaItem;
-export {RenderedAgendaItem};
+export { RenderedAgendaItem };
