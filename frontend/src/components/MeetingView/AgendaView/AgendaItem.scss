@@ -1,54 +1,5 @@
 @import "../../../utils/_colors.scss";
 
-//overlaid on top of the actual checkbox, this is necessary for drag overlay and the checkbox to work
-
-//This is rendered for when the item status is not ""completed"
-.overlaidCheckBox{
-  position: relative;
-  transform: scale(1.4);
-  z-index: 2;
-  top: 1.3rem;
-  left: 1.125rem;
-
-  @media only screen
-  and (min-device-width: 812px) {
-    top: 1.71rem;
-    left: 1.5625rem;
-  }
-  
-}
-
-//This is rendered when the item status is "completed"
-.completeOvrLaidChkBx{
-  position: relative;
-  transform: scale(1.4);
-  z-index: 2;
-  top: 2.79rem;
-  left: 1.125rem;
-
-  @media only screen
-  and (min-device-width: 812px) {
-    top: 3.2rem;
-    left: 1.5625rem;
-  }
-}
-
-//creates a container which does not disrupt document flow and allows the overlay checkboxes not to effect 
-//the document flow
-//Without this when sorting items the space between items becomes inconsistant
-.relativeEmptyContainer{
-  width:0px;
-  height:0px;
-  position:relative;
-}
-
-//makes the overlay checkbox invisible
-.hideCheckBox{
-  display:none;
-}
-//
-
-
 .AgendaItem {
   box-sizing: border-box;
   margin-bottom: 1em;

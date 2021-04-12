@@ -106,7 +106,7 @@ function AgendaItemActionLink({ link }) {
 }
 
 const RenderedAgendaItem = forwardRef(({
-  dragOverlayActive, flag, handleSelection, isSelected, item, id, ...props
+  dragOverlayActive, handleSelection, isSelected, item, id, ...props
 }, ref) => {
   const handleCheck = (evt) => {
     if (evt.target && typeof handleSelection !== 'undefined') {
@@ -114,40 +114,22 @@ const RenderedAgendaItem = forwardRef(({
     }
   };
 
-  // These variables and the proceding if statements are necessary
-  // to ensure that the checkbox overlay is at the correct height.
-  // The overlay is absolutly positioned and the item "status" changes the height
-  let classWhenDragging;
-  let classNotDragging;
-
-  if (item.status !== MeetingItemStates.PENDING) {
-    classWhenDragging = 'hideCheckBox';
-    classNotDragging = 'completeOvrLaidChkBx';
-  } else {
-    classWhenDragging = 'hideCheckBox';
-    classNotDragging = 'overlaidCheckBox';
-  }
-
   // The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
   // This allows the smooth pressing of the checkbox and the ability to drag
   // Without this the dragOverlay prevented the pressing of the checkbox
   return (
-    <div>
-      <div className="relativeEmptyContainer">
-        <input type="checkbox" className={dragOverlayActive ? classWhenDragging : classNotDragging} checked={isSelected} onChange={handleCheck} />
-      </div>
-      <div {...props} ref={ref} className="AgendaItem">
-        {item.status !== MeetingItemStates.PENDING
+    <div {...props} ref={ref} className="AgendaItem">
+      {item.status !== MeetingItemStates.PENDING
           && <div className="item-status">{item.status}</div>}
 
-        <div className="row">
-          <input type="checkbox" checked={isSelected} onChange={handleCheck} />
-          <h4>{item.title_loc_key}</h4>
-        </div>
-        <p>{item.description_loc_key}</p>
+      <div className="row">
+        <input type="checkbox" checked={isSelected} onChange={handleCheck} />
+        <h4>{item.title_loc_key}</h4>
+      </div>
+      <p>{item.description_loc_key}</p>
 
-        <div className="item-links">
-          {
+      <div className="item-links">
+        {
             itemLinks.map((link) => {
               if (link.isDisabled(item)) {
                 return (
@@ -163,7 +145,6 @@ const RenderedAgendaItem = forwardRef(({
               );
             })
           }
-        </div>
       </div>
     </div>
   );

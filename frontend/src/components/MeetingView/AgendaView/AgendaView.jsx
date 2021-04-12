@@ -104,7 +104,12 @@ function AgendaView({ meeting }) {
   const [dragOverlayActive, setDragOverlayActive] = useState(false);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      // This requies the user to click and hold to initiate a drag
+      activationConstraint: {
+        distance: 0,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
@@ -395,7 +400,7 @@ function AgendaView({ meeting }) {
 
         <DragOverlay>
 
-          {!activeIsParent ? (
+          {activeId && !activeIsParent ? (
             <RenderedAgendaItem
               id={activeId}
               item={activeitem}
