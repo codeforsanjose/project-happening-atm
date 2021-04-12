@@ -40,16 +40,21 @@ import {CSS} from '@dnd-kit/utilities';
  *      {
  *        [meeting_id]: { [meeting_item_id]}
  *      }
- *    handleItemSelection
+ *    handleAgendaItemSelection
  *      A handler for agenda item selection
+ *    dragOverlayActive
+ *      Indicates an item is being dragged
  */
 
+//Necessary to allow the dragging of an item into an empty group
  const options = {
   minHeightAgendaContainer:'60px'
 };
 
 function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection, dragOverlayActive }) {
   const parentItems = agendaGroups.map(parent=>parent.id);
+
+  //AgendaGroup was split into a header and body to permit the seperate dragging of the group and the items.
   return (
     <SortableContext
       items={parentItems}

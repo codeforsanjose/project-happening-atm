@@ -49,8 +49,21 @@ const itemLinks = [
  *      A boolean value representing if this agenda item is selected (checked) by user
  *    handleSelection
  *      A handler for agenda item selection
+ *    dragOverlayActive
+ *      Indicates an item is being dragged
  */
 
+/**
+ * Important
+ * 
+ *  RenderedAgendaItem is creating a overlay checkbox that renders on top of the component.
+ *  Any changes that change the height of the component will cause the overlay checkbox to align
+ *  The overlay checkbox can be adjusted in AgendaItem.scss
+ *
+ */
+
+
+//The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
 function AgendaItem({id, item, isSelected, handleSelection, dragOverlayActive }) {
   const {
     attributes,
@@ -87,6 +100,9 @@ const RenderedAgendaItem = forwardRef(({dragOverlayActive, flag, handleSelection
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
+
+  //These variables and the proceding if statements are necessary to ensure that the checkbox overlay is
+  //at the correct height. The overlay is absolutly positioned and the item "status" changes the height
   let classWhenDragging;
   let classNotDragging;
 
@@ -98,6 +114,9 @@ const RenderedAgendaItem = forwardRef(({dragOverlayActive, flag, handleSelection
     classNotDragging = "overlaidCheckBox";
   }
   
+  //The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
+  //This allows the smooth pressing of the checkbox and the ability to drag
+  //Without this the dragOverlay prevented the pressing of the checkbox
   return (
     <div>
       <div className='relativeEmptyContainer'>
@@ -136,5 +155,6 @@ const RenderedAgendaItem = forwardRef(({dragOverlayActive, flag, handleSelection
   );
 });
 
+//must export RenderedAgendaItem so that the dragOverlay can use it
 export default AgendaItem;
 export {RenderedAgendaItem};

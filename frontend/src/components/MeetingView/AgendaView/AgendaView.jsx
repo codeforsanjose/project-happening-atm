@@ -12,7 +12,6 @@ import {RenderedAgendaItem} from './AgendaItem';
 
 import {
   DndContext, 
-  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -41,7 +40,25 @@ import {
  *      {
  *        [meeting_id]: { [meeting_item_id]}
  *      }
+ *    agendaGroups
+ *      The meeting prop transformed into an array of objects. Each of these objects holds the information
+ *      for the main container, and an array of items under the group
+ *    activeId
+ *      This represents the current agenda item or parent of the agenda items being moved
+ *    dragOverlayActive
+ *      This is used to track when the dragOverlay for DND kit is being rendered. 
+ *      Its purpose is to control the display of a input check box that is acting as a overlay
+ *      ontop of the component. This was necessary as drag overlay would not allow the clicking of the
+ *      check mark.
+ *      
+ *  
+ *      
+ *    
  */
+  
+const OPTIONS = {
+  dropIdPostfix:'Drop' //This is used to create a unique ID for the droppable containers within AgendaGroupBody
+};
 
 function AgendaView({ meeting }) {
   const { t } = useTranslation();
@@ -87,13 +104,9 @@ function AgendaView({ meeting }) {
     }
   };
 
-  //rewritten to make the agendaGroups into an array, and not an object of holding arrays
+  //This function is taking the meeting prop and organizing it into an array of objects.
+  //Each object acts as the parent of an agenda group and holds a items array of all agenda items
   function groupMeetingItems(){
-    // Groups all the meeting items by `parent_meeting_item_id`.
-    // Returns a hash table with keys as agenda items id (the ones without `parent_meeting_item_id`)
-    // and values as the items themselves. Inside such items there can be a property `items` which
-    // is an array of agenda items whose `parent_meeting_item_id` is equal to the corresponding key.
-    
     let items = JSON.parse(JSON.stringify(meeting.items));
     const itemsWithNoParent = items.filter((item) => item.parent_meeting_item_id === null);
     const itemsWithParent = items.filter((item) => item.parent_meeting_item_id !== null);
@@ -112,18 +125,20 @@ function AgendaView({ meeting }) {
       })
     });
 
-    agendaGroups.forEach(parent=>parent.dropID = parent.id + "Drop");
+    //this is adding to each parent ID a unique ID to represent the dropable container within each agenda group
+    //necessary to allow moving agenda items into a empty container
+    agendaGroups.forEach(parent=>parent.dropID = parent.id + OPTIONS.dropIdPostfix);
     
     return agendaGroups;
   };
 
-  //needed to create two distinct groups of agendas. One for rendering and one for directly moving items
+  //Necessary to ensure two agenda groups exist. One that is rendered, the other that holds the data
   function createRenderedGroups(agendaGroups){
     let newAgendaGroups = JSON.parse(JSON.stringify(agendaGroups));
     
     let uncompletedOnly = [];
     newAgendaGroups.forEach(parent=>{
-      if(parent.status != MeetingItemStates.COMPLETED){
+      if(parent.status !== MeetingItemStates.COMPLETED){
         uncompletedOnly.push(parent);
         parent.items = parent.items.filter(item=>item.status !== MeetingItemStates.COMPLETED);
       }
@@ -131,7 +146,10 @@ function AgendaView({ meeting }) {
     
     return (showCompleted ? newAgendaGroups : uncompletedOnly);
   }
-  const renderedAgendaGroups = createRenderedGroups(agendaGroups);
+
+
+
+  //These variables below are necessary to ensure the dragOverlay functions correctly
   const parentIds = agendaGroups.map(parent=>parent.id);
   const activeIsParent = parentIds.filter(parent=> parent === activeId).length > 0;
   let parentContainerIndex = 0;
@@ -148,8 +166,12 @@ function AgendaView({ meeting }) {
   if(typeof parentContainerIndex != 'undefined'){
     activeitem = agendaGroups[parentContainerIndex].items.find(item=>item.id === activeId);
   }
-  
-  const displayAgenda = showCompleted ? agendaGroups : renderedAgendaGroups;
+  //
+
+
+  //Necessary as the createRenderedGroups function returns renderedAgendaGroups of which prevents the DND kit from
+  //moving items between completed and pending groups
+  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
   return (
     <div className="AgendaView">
       <Search />
@@ -196,22 +218,27 @@ function AgendaView({ meeting }) {
     </div>
   );
 
+  //called when the user starts dragging
   function handleDragStart(event) {
     const {active} = event;
   
     setActiveId(active.id);
   }
 
+  //called when the user is moving the dragOverlay
+  //This is used to hide the checkbox overlaid on top of the components
   function handleDragMove(){
     setDragOverlayActive(true);
   }
 
+  //called when the user drags the dragOverlay on top of a agenda item or the group header
   //This function will handle the swapping of items between the agenda containers
   function handleDragOver(event){
     const {active, over} = event;
     
     setAgendaGroups((parents)=>{
       let newParents = JSON.parse(JSON.stringify(parents));
+
 
       let activeContainerIndex;
       let overContainerIndex;
@@ -244,16 +271,17 @@ function AgendaView({ meeting }) {
           });
         }
 
-        if(activeContainerIndex != overContainerIndex){
-          const dropIds = newParents.map(parent=>parent.dropID);
+        //entered when the dragOverlay has entered a new agenda group
+        if(activeContainerIndex !== overContainerIndex){
           const overIsDropId = newParents.filter(parent=>parent.dropID === over.id).length > 0;
 
+          //entered when the dragOverlay is not the header of the agenda group
           if(!overIsDropId){
             let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
             itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
             newParents[overContainerIndex].items.splice(overIndex+1,0,itemToMove);
           
-          }else{
+          }else{//entered when the overlay is on top of the header
             newParents.forEach((parent,i)=>{
               if(parent.dropID === over.id){
                 overContainerIndex = i;
@@ -272,7 +300,7 @@ function AgendaView({ meeting }) {
     
   }
 
-  
+  //called when the user lets go of the dragged item
   function handleDragEnd(event) {
     const {active, over} = event;
     console.log(event);
@@ -338,6 +366,7 @@ function AgendaView({ meeting }) {
         return arrayMove(parents, oldIndex, newIndex);
       });
     }
+    //This lets the checkmark overlay become visible again
     setDragOverlayActive(false);
   }
   
