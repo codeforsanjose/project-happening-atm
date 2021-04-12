@@ -35,6 +35,7 @@ function MeetingListItem({ item }) {
   // Determine which set of item links to use based on meeting status
   const MeetingItemLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
   // TODO: Implement admin links
+  // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
 
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
