@@ -97,7 +97,7 @@ function AgendaView({ meeting }) {
     const itemsWithNoParent = items.filter((item) => item.parent_meeting_item_id === null);
     const itemsWithParent = items.filter((item) => item.parent_meeting_item_id !== null);
 
-    const agendaGroups =[];
+    let agendaGroups =[];
     itemsWithNoParent.forEach((item,i) => {
       agendaGroups.push({ ...item });
       agendaGroups[i].items = [];
@@ -110,6 +110,8 @@ function AgendaView({ meeting }) {
         }
       })
     });
+
+    agendaGroups.forEach(parent=>parent.dropID = parent.id + "Drop");
     
     return agendaGroups;
   };
@@ -214,7 +216,6 @@ function AgendaView({ meeting }) {
         overIsContainer = parents.filter(parent=>parent.id === over.id).length > 0;
         activeIsContainer = parents.filter(parent=>parent.id === active.id).length > 0;
       }
-      console.log('over running');
       
       if(!overIsNull && !activeIsOver && !overIsContainer && !activeIsContainer){
 
@@ -232,9 +233,25 @@ function AgendaView({ meeting }) {
         }
 
         if(activeContainerIndex != overContainerIndex){
-          let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
-          itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
-          newParents[overContainerIndex].items.splice(overIndex+1,0,itemToMove);
+          const dropIds = newParents.map(parent=>parent.dropID);
+          const overIsDropId = newParents.filter(parent=>parent.dropID === over.id).length > 0;
+
+          if(!overIsDropId){
+            let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
+            itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
+            newParents[overContainerIndex].items.splice(overIndex+1,0,itemToMove);
+          
+          }else{
+            newParents.forEach((parent,i)=>{
+              if(parent.dropID === over.id){
+                overContainerIndex = i;
+              }
+            });
+
+            let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
+            itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
+            newParents[overContainerIndex].items.push(itemToMove);
+          }
         }
       }
 

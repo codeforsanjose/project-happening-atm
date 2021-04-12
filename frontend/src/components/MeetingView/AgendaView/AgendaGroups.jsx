@@ -11,6 +11,10 @@ import AgendaItem from './AgendaItem';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import {
+  useDroppable,
+} from '@dnd-kit/core';
+
+import {
   SortableContext,
   verticalListSortingStrategy,
   useSortable
@@ -39,6 +43,10 @@ import {CSS} from '@dnd-kit/utilities';
  *    handleItemSelection
  *      A handler for agenda item selection
  */
+
+ const options = {
+  minHeightAgendaContainer:'60px'
+};
 
 function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }) {
   const parentItems = agendaGroups.map(parent=>parent.id);
@@ -100,6 +108,15 @@ function AgendaGroupHeader({agendaGroup,selectedItems}){
 }
 
 function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
+  const {setNodeRef} = useDroppable({
+    id: agendaGroup.dropID
+  });
+
+  //needed to ensure the dragable element can be placed when the container is empty
+  const style={
+    minHeight:options.minHeightAgendaContainer
+  };
+  
   let agendaItemIds = agendaGroup.items.map(item=>item.id);
 
   return (
@@ -108,6 +125,7 @@ function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">
+          <div style={style} ref={setNodeRef}>
             {agendaGroup.items.map((item) => (
               <AgendaItem
                 id={item.id}
@@ -118,7 +136,8 @@ function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
                 handleSelection={handleItemSelection}
               />
             ))}
-        </AccordionItemPanel>
+          </div>
+      </AccordionItemPanel>
     </SortableContext>
   );
 }
