@@ -143,12 +143,12 @@ function AgendaView({ meeting }) {
 
     const uncompletedOnly = [];
 
-    for (let i = 0; i < newAgendaGroups.lenght; i += 1) {
+    for (let i = 0; i < newAgendaGroups.length; i += 1) {
       if (newAgendaGroups[i].status !== MeetingItemStates.COMPLETED) {
         const group = newAgendaGroups[i];
         uncompletedOnly.push(group);
         const items = group.items.filter((item) => item.status !== MeetingItemStates.COMPLETED);
-        group.items = items;
+        newAgendaGroups[i].items = items;
       }
     }
 
