@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './MeetingItem.scss';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -9,6 +10,7 @@ function MeetingItem({
   title = '2.1 Approval of Unemployment Insurance Appropriation Ordinance Adjustments to Increase Payment of Claims and Access to Reserves',
   meetingItemState = MeetingItemStates.PENDING,
 }) {
+  const { t } = useTranslation();
   const [stateClassName, icon, statusString] = useMeetingItemIcon(meetingItemState);
 
   return (
@@ -25,7 +27,7 @@ function MeetingItem({
       <h1>Agenda Item Details</h1>
       <p className="title">{title}</p>
       <br />
-      <h1>Recommendation</h1>
+      <h1>{t('meeting.tabs.agenda.details.recommendation')}</h1>
       <p className="recommendation">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Subscribe.scss';
 import classnames from 'classnames';
-import { useParams, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import BackNavigation from '../BackNavigation/BackNavigation';
 import Spinner from '../Spinner/Spinner';
 import CustomInput from '../CustomInput/CustomInput';
@@ -10,19 +11,20 @@ import {
   validatePhone,
   validateEmail,
 } from './validation';
+import { convertQueryStringToServerFormat } from './subscribeQueryString';
 
 /**
  * This is the component for community member subscribe page.
  *
  * props:
- *    createSubscription
- *      The function that creates a subscription on the server
+ *    createSubscriptions
+ *      The function that creates a subscription (or subscriptions) on the server
  *    isLoading
  *      A boolean values that indicates whether the communication with the server is in progress
  *    error
  *      An error object returned from the server if there is any error
- *    subscription
- *      A newly created subscription (response from the server)
+ *    subscriptions
+ *      Newly created subscriptions (response from the server)
  *
  *
  * state:
@@ -39,13 +41,15 @@ import {
  */
 
 function Subscribe({
-  createSubscription,
+  createSubscriptions,
   isLoading,
   error,
-  subscription,
+  subscriptions,
 }) {
+  const { t } = useTranslation();
+
   const history = useHistory();
-  const { meetingId, itemId } = useParams();
+  const queryString = useLocation().search;
   const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -78,12 +82,11 @@ function Subscribe({
     }
     e.preventDefault();
 
-    createSubscription({
+    createSubscriptions({
       variables: {
         phone_number: phone,
         email_address: email,
-        meeting_id: parseInt(meetingId, 10),
-        meeting_item_id: parseInt(itemId, 10),
+        meetings: convertQueryStringToServerFormat(queryString),
       },
     });
   };
@@ -97,17 +100,16 @@ function Subscribe({
       <BackNavigation />
       <div className="wrapper">
         <div className="text">
-          <h3>Subscribe to item</h3>
+          <h3>{t('meeting.tabs.agenda.list.subscribe.page.title')}</h3>
           <p>
-            Subscribe to receive a notification when this item is up next
-            for discussion and when discussions for this item begin.
+            {t('meeting.tabs.agenda.list.subscribe.page.description')}
           </p>
           <form className="form">
             <div className="input-group">
-              <span>Subscribe to text notifications</span>
+              <span>{t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.label')}</span>
               <CustomInput
                 type="tel"
-                placeholder="Enter phone number"
+                placeholder={t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.placeholder')}
                 isRequired
                 isSubmitted={isFormSubmitted}
                 value={phone}
@@ -116,10 +118,10 @@ function Subscribe({
               />
             </div>
             <div className="input-group">
-              <span>Subscribe to email notifications</span>
+              <span>{t('meeting.tabs.agenda.list.subscribe.page.inputs.email.label')}</span>
               <CustomInput
                 type="email"
-                placeholder="Enter email address"
+                placeholder={t('meeting.tabs.agenda.list.subscribe.page.inputs.email.placeholder')}
                 isRequired
                 isSubmitted={isFormSubmitted}
                 value={email}
@@ -127,9 +129,10 @@ function Subscribe({
                 errorMessage={emailError}
               />
             </div>
-            { subscription && subscription.id
+            { subscriptions && subscriptions.length > 0
               && (
                 <SubscribeConfirmation
+                  numberOfSubscriptions={subscriptions.length}
                   onClose={closeConfirmation}
                 />
               )}

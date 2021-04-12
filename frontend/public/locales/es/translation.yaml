@@ -1,0 +1,403 @@
+navbar:
+  menu: Menu
+  browse-meetings: Navegar Juntas
+  about: Nosotros
+  faq: Preguntas Frecuentes
+  submit-feedback: Enviar Sugerencias
+  sign-in: Iniciar Sesión
+  sign-out: Cerrar Sesión 
+
+header:
+  my-city-agenda: Agenda de Mi Ciudad
+  city-council-meetings: Reuniones del Consejo de la Ciudad
+  city-council-meeting-agenda: Agenda de la Reunión del Consejo de la Ciudad
+
+meeting:
+  start-time: Hora de Inicio
+  actions:
+    edit-info:
+      label: Editar Información de Reunion
+      modal:
+        title: Editar Información Básica
+        button:
+          do: Publicar Cambios
+          doing: Publicando Cambios
+          did: Cambios Publicados
+        inputs:
+          date: Fecha
+          time: Tiempo
+    upload-new-agenda: Subir Nueva Agenda
+    join:
+      zoom: Unirse a la Reunión Zoom
+    watch: Ver Transmisión de Reunión
+  status:
+    label: Estado de la Reunión
+    short:
+      default-option: Estado de Actualización
+      in-progress: En Curso
+      in-recess: En Receso
+      ended: Terminó
+      cancelled: Cancelado
+    long:
+      in-progress: Reunión Esta en Curso
+      in-recess: Reunión Esta en Receso
+      ended: Reunión ha Terminado
+      cancelled: Reunión ha sido Cancelada
+    relative:
+      short:
+        in-progress: En Curso
+        in-1-week: Comienza en una Semana
+        in-6-days: Comienza en 6 Días
+        in-5-days: Comienza en 5 Días
+        in-4-days: Comienza en 4 Días
+        in-3-days: Comienza en 3 Días
+        in-2-days: Comienza en 2 Días
+        in-1-day: Comienza en 1 Día
+        in-0-day: Comienza en unas Pocas Horas
+      long:
+        in-progress: Reunión Esta en Curso
+        in-1-week: Reunión Comienza en una Semana
+        in-6-days: Reunión Comienza en 6 Días
+        in-5-days: Reunión Comienza en 5 Días
+        in-4-days: Reunión Comienza en 4 Días
+        in-3-days: Reunión Comienza en 3 Días
+        in-2-days: Reunión Comienza en 2 Días
+        in-1-day: Reunión Comienza en un Día
+        in-0-day: Reunión comienza en unas Pocas Horas
+  list:
+    show-past: Mostrar Reuniónes Pasadas
+    no-meeting: ¡No se Encontraron Reuniones!
+    calendar-export:
+      button: Exportar a Calendario
+      modal:
+        title: Añadir al Calendario
+        options:
+          apple: Calendario Apple
+          google: Calendario Google
+          outlook: Calendario Outlook
+    agenda:
+      button: Agenda
+    minutes:
+      button: Minutos
+    recording:
+      button: Grabación
+    new-meeting:
+      button: Crear Nueva Reunión
+      modal:
+        title: Crear Nueva Reunión
+        subtitle: Añadir fecha y tiempo de nueva reunión
+        inputs:
+          date: Fecha
+          time: Tiempo
+        buttons:
+          create-meeting: Crear Nueva Reunión
+          creating-meeting: Creando Nueva Reunión
+    delete-meeting:
+      button: Borrar Reunión
+      modal:
+        title: ¿Estás seguro que quieres eliminar esta reunión?
+        buttons:
+          delete: Borrar
+          deleting: Borrando
+          cancel: Cancelar
+  tabs:
+    agenda:
+      label: Agenda
+      status:
+        button: Estado de Actualización
+        modal:
+          title: Actualizar el Estado De Elementos de la Agenda
+          subtitle: Seleccionar Estado
+          button:
+            do: Guardar y Publicar Cambios
+            doing: Guardando y Publicando
+            done: Guardado y Publicado
+        options:
+          completed: Completado
+          in-progress: En Curso
+          closed: Cerrado
+          removed: Eliminado para una Consideración Separada
+          deferred: Diferido
+      upload-new:
+        button: Subir Nueva Agenda
+        modal:
+          title: Subir Nueva Agenda
+          input:
+            help: Arrastrar y Soltar Archivo CSV
+            alt: O Cargue Desde su Computadora
+          buttons:
+            upload: Cargar y Publicar
+            uploading: Cargando y Publicándo 
+      list:
+        show-closed: Mostrar Elementos Cerrados
+        no-agenda: ¡No se Encontraron Elementos de la Agenda!
+        search:
+          placeholder: Buscar Agenda
+        n-selected: Selecccionado
+        cancel: Cancelar
+        rearrange-modal:
+          title: Guardar y Publicar Cambios
+          text: Parece que reorganizó uno o más puntos de la agenda. ¿Le gustaría guardar y publicar cambios?
+          button:
+            do: Si, Guardar y Publicar Cambios
+            doing: Guardar y Publicar
+            did: Guardado y Publicado
+        subscribe:
+          button:
+            do: Suscribir
+            doing: Suscribiendo...
+            done: Subscrito
+          page:
+            title: Suscribirse al Artículo
+            description: Suscríbase para recibir una notificación cuando este tema sea el próximo en discusión y cuándo comiencen las discusiones sobre este tema.
+            inputs:
+              sms:
+                label: Suscribirse a notificaciones de texto
+                placeholder: Ingresar número teléfonico
+              email:
+                label: Suscríbete a las notificaciones por correo electrónico
+                placeholder: Ingresar correo electrónico
+          confirmation:
+            title: ¡Te has suscrito a los elementos de la agenda!
+            description: Gracias por registrarte. Para verificar su identidad, verifique su correo electrónico y confirme sus suscripciones.
+            butotn: OK
+        share:
+          button: Compartir
+        more-info:
+          button: Más Información
+          modal:
+            title: Más Información
+            subtitle: Editar Información del Artículo
+            button:
+              do: Guardar y Publicar Cambios
+              doing: Guardando y Publicando
+              done: Guardado y Publicado
+            inputs:
+              agenda-item:
+                label: Articulo de la Agenda
+              description:
+                label: Descripción
+              attachments:
+                label: Archivos Adjuntos
+                upload-new: Subir Nuevo
+      details:
+        recommendation: Recomendación
+        attatchments: Archivos Adjuntos
+        presentation: Presentación
+    participate:
+      label: Participa
+      section:
+        join:
+          title: Únase a la Reunión Virtual
+          edit:
+            button: Editar
+            modal:
+              title: Editar Información de Reunión Virtual
+              button:
+                do: Publicar Cambios
+                doing: Publicando Cambios
+                did: Cambios Publicados
+              inputs:
+                meeting-link: Enlace de Reunión Virtual
+                meeting-id: ID de Reunión Virtual
+                call-in-info: Información de Llamada
+          description:
+            preface: 'Para ayudar a detener la propagación de COVID-19 y mantener a nuestra comunidad segura, la Ciudad de San José está llevando a cabo reuniones del Concejo Municipal virtualmente usando Zoom. Tiene 2 opciones para unirse y proporcionar comentarios hablados en la reunión virtual:'
+            number-1:
+              title: Llamada
+              subtitle: Ingrese el ID de la Reunión
+            number-2:
+              title: Únase desde su computadora o dispositivo inteligente aquí
+              button: Unirse a Reunión Zoom
+            post-script:
+              title: Requisitos del Navegador Web para  Zoom
+              text: 'Debe tener la aplicación instalada. Utilice un navegador actual y actualizado: Chrome 30+, Firefox 27+, Microsoft Edge 12+, Safari 7+. Algunas funciones pueden estar deshabilitadas en navegadores más antiguos, incluyendo Internet Explorer. Obtenga más información en zoom.us.'
+              link:
+                one: Para obtener más información sobre cómo unirse a una reunión, haga clic aquí.
+                two: Para obtener más información sobre los controles de Zoom, haga clic aquí.
+        watch:
+          title: Ver la Transmisión de la Reunión
+          edit:
+            button: Editar
+            modal:
+              title: Editar Información de Transmisión de Reunión 
+              button:
+                do: Publicar Cambios
+                doing: Publicando Cambios
+                did: Cambios Publicados
+              inputs:
+                city-website: Enlace Ciudad de San José
+                city-youtube: Enlace de YouTube
+          description:
+            preface: 'Tiene 3 opciones para ver la transmisión de la reunión en vivo:'
+            closed-caption: Subtítulos están Disponibles para Todos
+            number-1:
+              title: Canal de cable de Comcast 26
+            number-2:
+              title: Canal de YouTube de la ciudad
+              button: Ir a YouTube
+            number-3:
+              title: Sitio Web de la Ciudad
+              subtitle: Busque la reunión y haga clic en "En curso" o "Actualmente en sesión" para ver.
+              button: Ir al Sitio Web de la Ciudad
+        comment:
+          title: Enviar Comentario Público Escrito
+          edit:
+            button: Editar
+            modal:
+              title: Editar Información de Comentario Público 
+              button:
+                do: Publicar Cambios
+                doing: Publicando Cambios
+                did: Cambios Publicados
+              inputs:
+                email-before-meeting: Correo Electrónico - Antes de Reunión
+                email-after-meeting: Correo Electrónico - Después de Reunión
+                e-comment: Comentario Electrónico 
+          description:
+            before-meeting:
+              title: Antes de Reunión
+              number-1:
+                title: Envíe un correo electrónico a city.clerk@sanjoseca.gov antes de las 10:00 a.m. del día de la reunión
+                subtitle: Por favor, identifique el número de artículo de la agenda en el asunto de su correo electrónico. Los correos electrónicos se adjuntarán al artículo del Consejo bajo “Cartas del público”, pero no se leerán en voz alta durante la reunión.            
+              number-2:
+                title: A través del enlace de eComment
+                subtitle: eComments se envían directamente al personal del Consejo y del Comité.
+                button: Enviar eComment
+            during-meeting:
+              title: Durante la Reunión
+              number-1:
+                title: Envíe un correo electrónico a city.clerk@sanjoseca.gov durante la reunión
+                subtitle: Por favor, identifique el número de artículo de la agenda en el asunto de su correo electrónico. Los comentarios recibidos se incluirán como parte del registro de la reunión, pero no se leerán en voz alta durante la reunión
+        consideration:
+          title: Solicitar una consideración separada de un elemento del calendario
+          description:
+            preface: 'No habrá discusión separada de los elementos del Calendario ya que el Concejo Municipal los considera rutinarios y serán adoptados por una moción. Si un miembro del Concejo Municipal, el personal o el público solicita una discusión sobre un tema en particular, ese tema puede ser eliminado del Calendario y considerado por separado. Si desea solicitar una discusión por separado sobre un elemento en particular del calendario:'
+            number-1:
+              title: Envíe un correo electrónico a city.clerk@sanjoseca.gov antes de las 10:00 a.m. del día de la reunión.
+              subtitle: Por favor, identifique el número de artículo de la agenda del calendario en la línea de asunto de su correo electrónico
+
+footer:
+  language:
+    change:
+      title: Seleccione un idioma
+      button:
+        do: Cambiar Idioma
+        doing: Cambiando Idioma
+        did: Idioma Cambiado
+
+standard:
+  errors:
+    something-went-wrong: Algo salió Mal
+    try-again: Volver a intent
+  numbers:
+    - cero
+    - uno
+    - dos
+    - tres
+    - cuatro
+    - cinco
+    - seis
+    - siete
+    - ocho
+    - nueve
+    - diez
+  weekdays:
+    - domingo
+    - lunes
+    - martes
+    - miercoles
+    - jueves
+    - viernes
+    - sabado
+  months: 
+    - Enero
+    - Febrero
+    - Marzo
+    - Abril
+    - Mayo
+    - Junio
+    - Julio
+    - Agosto
+    - Septiembre
+    - Octubre
+    - Noviembre
+    - Diciembre
+  buttons:
+    go-to-top: Ir Arriba
+    back: Atras
+    watch: Ver
+    add: Agregar
+    adding: Agregando
+    remove: Remover
+    removing: Removiendo
+    create: Crear
+    creating: Creando
+    delete: Borrar
+    deleting: Borrando
+    publish: Publicar
+    publishing: Publicando
+    upload: Subir
+    uploading: Subiendo
+    download: Descargar
+    downloading: Descargando
+    cancel: Cancelar
+    canceling: Cancelando
+    close: Cerrar
+    closing: Cerrando
+    exit: Salir
+    exiting: Saliendo
+    abort: Abortar
+    aborting: Abortando
+    search: Buscar
+    searching: Buscando
+    subscribe: Suscribir
+    subscribing: Suscribiendo
+    share: Compartir
+    sharing: Compartiendo
+    join: Unirse
+    joining: Uniendose
+    leave: Salir
+    leaving: Saliendose
+    ok: OK
+  words:
+    and: y
+    button: botón
+    buttons: botónes
+    city: ciudad
+    cities: ciudades
+    council: consejo
+    meeting: reunión
+    meetings: reuniònes
+    agenda: agenda
+    status: estado
+    warning: advertencia
+    error: error
+    alert: alerta
+    notification: notificaciòn
+    notifications: notificaciònes
+    time: hora
+    date: fecha
+    day: día
+    days: días
+    week: semana
+    weeks: semanas
+    month: mes
+    months: meses
+    year: año
+    years: años
+    calendar: calendario
+    top: arrina
+    left: izquierda
+    right: derecha
+    bottom: abajo
+    center: centro
+    middle: en medio
+    new: nuevo
+    start: comienzo
+    end: fin
+    select: seleccionar
+    selected: seleccionado
+    search: buscar
+    result: resultado
+    results: resultados

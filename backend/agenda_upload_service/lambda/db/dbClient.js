@@ -15,13 +15,13 @@ module.exports = async (logger) => {
     logger.error(`Error with DB: ${err.stack}`);
   });
 
-  const query = async (queryString) => {
-    logger.debug(queryString);
+  const query = async (queryString, args, callback) => {
+    logger.debug(queryString, args);
     try {
-      return await client.query(queryString);
+      return await client.query(queryString, args, callback);
     } catch (e) {
-      logger.error(`dbClient querry error: ${e.stack}`);
-      logger.debug(`errored query: ${queryString}`);
+      logger.error(`dbClient query error: ${e.stack}`);
+      logger.debug(`errored query: ${queryString}. errored args: ${args}`);
       throw e;
     }
   };
@@ -121,6 +121,10 @@ module.exports = async (logger) => {
     await client.end();
   };
 
+  const convertMsToSeconds = (milliseconds) => {
+    return milliseconds / 1000;
+  };
+
   module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
     logger.info('dbClient: createMeeting');
     const now = Date.now();
@@ -128,9 +132,19 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
-        VALUES ('${meetingType}', to_timestamp(${meetingStartTimestamp}), '${virtualMeetingUrl}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), '${status}')
+        VALUES ($1, to_timestamp($2), $3, to_timestamp($4), to_timestamp($5), $6) 
         RETURNING id;`;
-    return query(queryString);
+    return query(
+      queryString, 
+      [
+        meetingType,
+        convertMsToSeconds(meetingStartTimestamp),
+        virtualMeetingUrl,
+        convertMsToSeconds(createdTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        status
+      ]
+    );
   };
 
   module.createMeetingItem = async (
@@ -144,21 +158,33 @@ module.exports = async (logger) => {
     const updatedTimestamp = now;
     const queryString = `
         INSERT INTO meeting_item(meeting_id, parent_meeting_item_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
-        VALUES ('${meetingId}', ${parentMeetingItemId}, '${orderNumber}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}), to_timestamp(${itemStartTimestamp}), to_timestamp(${itemEndTimestamp}), '${status}', '${contentCategories}', '${descriptionLocKey}', '${titleLocKey}')
+        VALUES ($1, $2, $3, to_timestamp($4), to_timestamp($5), to_timestamp($6), to_timestamp($7), $8, $9, $10, $11) 
         RETURNING id;`;
-    return query(queryString);
+    return query(queryString,
+      [
+        meetingId,
+        parentMeetingItemId,
+        orderNumber,
+        convertMsToSeconds(createdTimestamp),
+        convertMsToSeconds(updatedTimestamp),
+        convertMsToSeconds(itemStartTimestamp),
+        convertMsToSeconds(itemEndTimestamp),
+        status,
+        contentCategories,
+        descriptionLocKey,
+        titleLocKey
+      ]
+    );
   };
 
-  module.createSubscription = async (phoneNumber, emailAddress, meetingItemId, meetingId) => {
-    logger.info('dbClient: createSubscription');
-    const now = Date.now();
-    const createdTimestamp = now;
-    const updatedTimestamp = now;
-    const queryString = `
-        INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id, created_timestamp, updated_timestamp)
-        VALUES ('${phoneNumber}', '${emailAddress}', '${meetingItemId}', '${meetingId}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
-        RETURNING id;`;
-    return query(queryString);
+  module.getMeeting = async (id) => {
+    logger.info('dbClient: getMeeting');
+    return query(`SELECT * FROM meeting WHERE id = ${id}`);
+  };
+
+  module.deleteMeetingItemsFroMeeting = async (meetingId) => {
+    logger.info('dbClient: getMeeting');
+    return query(`DELETE FROM meeting_item WHERE meeting_id = ${meetingId}`);
   };
 
   return module;

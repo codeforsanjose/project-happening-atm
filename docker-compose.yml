@@ -15,7 +15,6 @@ services:
       - "/usr/src/app/node_modules"
     depends_on:
       - backend_pg
-      - frontend
   backend_pg:
     build: "./backend/docker_for_local_dev_db"
     # this is for debugging; graphql connects to PG via internal docker network
@@ -24,6 +23,22 @@ services:
     volumes:
       - ./backend/docker_for_local_dev_db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres-data:/var/lib/postgresql/data
+  backend_upload:
+    image: "node:14"
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "npm install && npm start"
+    working_dir: "/usr/src/app"
+    ports:
+      - "3002:3002"
+    volumes:
+      - "./backend/agenda_upload_service/lambda:/usr/src/app"
+      # Don't sync the node_modules directory back to the client.
+      - "/usr/src/app/node_modules"
+    depends_on:
+      - backend_pg
+      - frontend
   frontend:
     # node-sass 4* needs node version 14
     image: "node:14"
@@ -39,5 +54,9 @@ services:
       # Don't sync the node_modules directory back to the client.
       - "/usr/src/app/node_modules"
     stdin_open: true
+    depends_on:
+      - backend_pg
+    environment:
+      - REACT_APP_GRAPHQL_URL=localhost:3000
 volumes:
   postgres-data:

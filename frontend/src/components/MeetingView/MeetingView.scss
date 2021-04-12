@@ -48,4 +48,13 @@
       }
     }
   }
+
+  .spinner-wrapper {
+    margin: 10px;
+  }
+
+  .error {
+    color: $red;
+    margin-left: 10px;
+  }
 }

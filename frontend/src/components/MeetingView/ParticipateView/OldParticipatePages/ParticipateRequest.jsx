@@ -1,29 +1,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 function ParticipateRequest() {
+  const { t } = useTranslation();
+
   return (
     <div className="ParticipateContent">
       <h3 className="ParticipateHeader">
-        Request Separate Consideration of a Consent Calendar Item
+        {t('meeting.tabs.participate.section.consideration.title')}
       </h3>
 
       <p>
-        There will be no separate discussion of Consent Calendar items as
-        they are considered to be routine by the City Council and will be
-        adopted by one motion. If a member of the City Council, staff, or
-        public requests discussion on a particular item, that item may be
-        removed from the Consent Calendar and considered separately.
-      </p>
-
-      <p>
-        If you wish to request separate discussion on a particular item
-        of the consent calendar:
+        {t('meeting.tabs.participate.section.consideration.description.preface')}
       </p>
 
       <ol>
         <li>
           <p>
+            {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Email
             {' '}
             <a href="mailto:city.clerk@sanjoseca.gov">city.clerk@sanjoseca.gov</a>
@@ -31,8 +26,7 @@ function ParticipateRequest() {
             by 10:00 a.m. the day of the meeting.
           </p>
           <p className="info">
-            Please identify the Consent Calendar Agenda Item Number in the
-            subject line of your email.
+            {t('meeting.tabs.participate.section.consideration.description.number-1.subtitle')}
           </p>
         </li>
       </ol>

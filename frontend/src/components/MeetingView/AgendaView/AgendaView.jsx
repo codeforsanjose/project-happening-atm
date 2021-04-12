@@ -1,312 +1,186 @@
-import React, { useState, forwardRef } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Accordion,
-  AccordionItem,
-  AccordionItemHeading,
-  AccordionItemButton,
-  AccordionItemPanel,
-} from 'react-accessible-accordion';
-import arrayMove from 'array-move';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
-import './AgendaItem.scss';
-import './AgendaSubItem.scss';
-import {
-  CheckedCheckboxIcon,
-  UncheckedCheckboxIcon,
-  NotificationsIcon,
-  ShareIcon,
-  AddIcon,
-} from '../../../utils/_icons';
+
+import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
+import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
+import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
+import MeetingItemStates from '../../../constants/MeetingItemStates';
+import {RenderedAgendaItem} from './AgendaItem';
+
 import {
   DndContext, 
-  rectIntersection,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
   DragOverlay,
-  useDroppable,
+  rectIntersection
 } from '@dnd-kit/core';
 import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  useSortable,
+  arrayMove,
+  sortableKeyboardCoordinates
 } from '@dnd-kit/sortable';
-import {CSS} from '@dnd-kit/utilities';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
  *
  * props:
- *    agendaItems
- *      An array of the current meeting's agenda items
+ *    meeting
+ *      An object representing a meeting with an array of the agenda items
  *
  * state:
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
- * 
- * options:
- *    minHeightAgendaContainer
- *      This is the min height that the agenda group container must be. This is necessary to ensure 
- *      that an agenda item can be placed inside the container when the container is empty
- * 
+ *    selectedItems
+ *      Agenda items selected by user. It is an object (has a dictionary structure) like
+ *      {
+ *        [meeting_id]: { [meeting_item_id]}
+ *      }
+ *    agendaGroups
+ *      The meeting prop transformed into an array of objects. Each of these objects holds the information
+ *      for the main container, and an array of items under the group
+ *    activeId
+ *      This represents the current agenda item or parent of the agenda items being moved
+ *    dragOverlayActive
+ *      This is used to track when the dragOverlay for DND kit is being rendered. 
+ *      Its purpose is to control the display of a input check box that is acting as a overlay
+ *      ontop of the component. This was necessary as drag overlay would not allow the clicking of the
+ *      check mark.
+ *      
+ *  
+ *      
+ *    
  */
-const options = {
-  minHeightAgendaContainer:'60px'
+  
+const OPTIONS = {
+  dropIdPostfix:'Drop' //This is used to create a unique ID for the droppable containers within AgendaGroupBody
 };
 
-const agendaSubItemLinks = [
-  {
-    getPath: (item) => `/subscribe/${item.meetingId}/${item.id}`,
-    Icon: NotificationsIcon,
-    text: 'Subscribe',
-  },
-  {
-    getPath: (item) => '/',
-    Icon: ShareIcon,
-    text: 'Share',
-  },
-  {
-    getPath: (item) => '/',
-    Icon: AddIcon,
-    text: 'More Info',
-  },
-];
+function AgendaView({ meeting }) {
+  const { t } = useTranslation();
+  const [showCompleted, setShowCompleted] = useState(true);
+  const [selectedItems, setSelectedItems] = useState({});
+  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems);
+  const [activeId, setActiveId] = useState(null);
+  const [dragOverlayActive, setDragOverlayActive] = useState(false);
 
-//This is what makes the AgendaSubItem is sortable, in order to ensure the drag overlay worked correctly
-const SortableItem = ({renderedAgendaSubItem, id }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id: id});
-  
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-  
-  return (
-    <AgendaSubItem id={id} 
-      renderedAgendaSubItem={renderedAgendaSubItem} 
-      ref={setNodeRef} style={style} {...attributes}
-      {...listeners}
-    />
-  );
-}
-
-//This is the rendered agenda item, renderedAgendaSubItem is only passed by SortableItem,
-//id and renderedAgendaSubItems are passed by the drag overlay
-const AgendaSubItem = forwardRef(({renderedAgendaSubItem, renderedAgendaSubItems, id, ...props}, ref) => {
-   
-  
-  //This if statement is enetered if a single agenda item is passed to be rendered
-  if(typeof renderedAgendaSubItem != 'undefined'){
-    return buildAgendaItem(renderedAgendaSubItem);
-
-  }else{//This else statement is entered when the drag overlay passes the ID and the items to be rendered array
-    const parentItem = renderedAgendaSubItems.find(parent=>parent.subItems.find(subItem=>!subItem.id.localeCompare(id)));
-    const agendaItem = parentItem.subItems.find(subItem=>!subItem.id.localeCompare(id));
-    return buildAgendaItem(agendaItem);
-  }
-
-  //This function takes a agenda item and renders it
-  function buildAgendaItem(renderedAgendaSubItem){
-    return(
-      <div {...props} ref={ref} className="AgendaItem">
-        {renderedAgendaSubItem.status !== 'Pending' && <div className="item-status">{renderedAgendaSubItem.status}</div>}
-
-        <input type="checkbox" />
-        <h4>{renderedAgendaSubItem.title}</h4>
-        <p>{renderedAgendaSubItem.description}</p>
-
-        <div className="item-links">
-          {
-            agendaSubItemLinks.map((link) => (
-              <Link to={link.getPath(renderedAgendaSubItem)} key={link.text}>
-                <div className="link">
-                  <link.Icon />
-                  <p>{link.text}</p>
-                </div>
-              </Link>
-            ))
-          }
-        </div>
-      </div>
-    )
-  }
-});
-
-//This function builds the agenda Groups, and their containers
-const SortableAgendaSubItemContainer = 
-  ({renderedAgendaItem }) => {
-
-    const {setNodeRef} = useDroppable({
-      id: renderedAgendaItem.id
-    });
-
-    //needed to ensure the dragable element can be placed when the container is empty
-    const style={
-      minHeight:options.minHeightAgendaContainer
-    };
-    return(
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        <AccordionItem className="AgendaGroup">
-          <AccordionItemHeading className="group-header">
-            <AccordionItemButton className="group-button">
-              <div className="button-text">
-                <div className="group-title">{renderedAgendaItem.title}</div>
-                <div className="group-status">
-                  {renderedAgendaItem.status === 'Pending' ? '' : renderedAgendaItem.status}
-                </div>
-              </div>
-            </AccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel className="group-items">
-            {/*This extra div is needed to turn the agenda group into a dropable container,
-             this is needed in the event the agenda group has no items */}
-            <div style={style} ref={setNodeRef}>
-              {renderedAgendaItem.subItems.map((renderedAgendaSubItem, index) =>{
-                return (
-                  <SortableItem 
-                    id={renderedAgendaSubItem.id} 
-                    renderedAgendaSubItem={renderedAgendaSubItem}
-                    key={renderedAgendaSubItem.id}
-                  />
-                );})}
-            </div>
-          </AccordionItemPanel>
-        </AccordionItem>
-      </Accordion>
-  );
-};
-
-//This handles all the sorting, it is the main outer container
-const SortableAgendaItemContainer = ({items, setAgendaItems}) =>{
-  //Active id will be assigned the ID of the agendaItem being moved my pointer
-  const [activeId, setActiveId] = useState(null); 
-  
-  
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-    
-  //The API has a delay in data request, need to account for the period that the array is empty
-  if(items.length !== 0){
-    
-    return(
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}  sensors={sensors} collisionDetection={rectIntersection}>
-        {items.map(item=>
-          <SortableContext key={item.id} items={item.subItems.map(item=>item.id)} strategy={verticalListSortingStrategy} >
-            <SortableAgendaSubItemContainer renderedAgendaItem={item} key={item.id}/>
-          </SortableContext>)}
-        
-        <DragOverlay>
-          {activeId ? <AgendaSubItem id={activeId} renderedAgendaSubItems={items} /> : null}
-        </DragOverlay>
-      </DndContext>      
-    );
-  }else{
-    return(<div className='placeHolder'></div>);
-  }
 
-  //This function is called when the user lets go of their mouse and releases the agenda item
-  function handleDragEnd(event){
-    const {active, over} = event;
-    
-    //This if statement is entered only when the agenda item was released on top of another agenda item
-    if (over != null && active.id !== over.id && over) {
-      setAgendaItems((items) => {
-        let newItems = JSON.parse(JSON.stringify(items));
-      
-        const parentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>!item.id.localeCompare(active.id)));
-        const oldIndex = newItems[parentIndex].subItems.findIndex(item=>!item.id.localeCompare(activeId));
-        const newIndex = newItems[parentIndex].subItems.findIndex(item=>!item.id.localeCompare(over.id));
-
-        newItems[parentIndex].subItems = arrayMove(items[parentIndex].subItems, oldIndex, newIndex);
-        return newItems;
-        
-      });
-    }
-    setActiveId('null');
-  }
+  const handleSelectionCancel = () => {
+    setSelectedItems({});
+  };
   
-  //This function is triggered when the currently dragged agenda item is moved
-  //Its primary purpose is to handle the moving of an agenda item into another container
-  function handleDragOver(event){
-    const {active, over} = event;
-    const regEx = /^\d+./; //This reg expression matches an agenda Item id, example 3.5
 
-    //This first if statement fires only if the agenda item is over another agenda item or container
-    if(over != null){
-      //This if statement fires only if the dragged agenda item is over another agenda item
-      if(regEx.test(over.id)){
-        setAgendaItems((items)=>{
-          let newItems = JSON.parse(JSON.stringify(items))
+  const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
+    
+    if (isChecked && !(meetingId in selectedItems)) {
+      selectedItems[meetingId] = {};
+    }
 
-          const overParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === over.id)).id;
-          const activeParentId = newItems.find(parent=>parent.subItems.find(subItem=>subItem.id === active.id)).id;
-          
-          //This if statement is fired only when the agenda item is introduced to a new agenda group container
-          if(overParentId.localeCompare(activeParentId)){
-            
-            const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-            const overParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === over.id));
-            const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+    const selectedAgendaItems = selectedItems[meetingId];
+    if (isChecked) {
+      selectedAgendaItems[itemId] = isChecked;
+    } else {
+      delete selectedAgendaItems[itemId];
+    }
+    if (Object.keys(selectedAgendaItems).length === 0) {
+      // There are no more selected items with meeting id equal to `meetingId`.
+      // We delete the whole entry from `selectedItems` then.
+      const newSelectedItems = { ...selectedItems };
+      delete newSelectedItems[meetingId];
+      setSelectedItems(newSelectedItems);
+    } else {
+      const newSelectedItems = { ...selectedItems, [meetingId]: selectedAgendaItems };
+      setSelectedItems(newSelectedItems);
+    }
+  };
 
-            const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-            newItems[activeParentIndex].subItems.splice(oldIndex,1);
-            agendaItem.meetingId =overParentId;
-            newItems[overParentIndex].subItems.splice(0,0,agendaItem);
-          }
-          
-          return newItems;
-        });
-      }else{
-        //This else branch will only fire if the agenda item is being dragged over a agenda group container
-        //This should only happen when there is one agenda item, or none
-        setAgendaItems((items)=>{
-          
-          let newItems = JSON.parse(JSON.stringify(items));                             
-            
-          const overParentIndex = items.findIndex(item=>!item.id.localeCompare(over.id));
-          const activeParentIndex = newItems.findIndex(parent=>parent.subItems.find(item=>item.id === active.id));
-          const oldIndex = newItems[activeParentIndex].subItems.findIndex(item=>item.id === active.id);
+  //This function is taking the meeting prop and organizing it into an array of objects.
+  //Each object acts as the parent of an agenda group and holds a items array of all agenda items
+  function groupMeetingItems(){
+    let items = JSON.parse(JSON.stringify(meeting.items));
+    const itemsWithNoParent = items.filter((item) => item.parent_meeting_item_id === null);
+    const itemsWithParent = items.filter((item) => item.parent_meeting_item_id !== null);
 
-          const agendaItem = newItems[activeParentIndex].subItems.slice(oldIndex,oldIndex + 1)[0];
-          newItems[activeParentIndex].subItems.splice(oldIndex,1);
-          agendaItem.meetingId =over.id;
-          newItems[overParentIndex].subItems.push(agendaItem);       
-          
-          return newItems;
-        });
+    let agendaGroups =[];
+    itemsWithNoParent.forEach((item,i) => {
+      agendaGroups.push({ ...item });
+      agendaGroups[i].items = [];
+    });
+
+    itemsWithParent.forEach(item=>{
+      agendaGroups.forEach((parent,i)=>{
+        if(parent.id === item.parent_meeting_item_id){
+          parent.items.push(item);
+        }
+      })
+    });
+
+    //this is adding to each parent ID a unique ID to represent the dropable container within each agenda group
+    //necessary to allow moving agenda items into a empty container
+    agendaGroups.forEach(parent=>parent.dropID = parent.id + OPTIONS.dropIdPostfix);
+    
+    return agendaGroups;
+  };
+
+  //Necessary to ensure two agenda groups exist. One that is rendered, the other that holds the data
+  function createRenderedGroups(agendaGroups){
+    let newAgendaGroups = JSON.parse(JSON.stringify(agendaGroups));
+    
+    let uncompletedOnly = [];
+    newAgendaGroups.forEach(parent=>{
+      if(parent.status !== MeetingItemStates.COMPLETED){
+        uncompletedOnly.push(parent);
+        parent.items = parent.items.filter(item=>item.status !== MeetingItemStates.COMPLETED);
       }
+    });
+    
+    return (showCompleted ? newAgendaGroups : uncompletedOnly);
+  }
+
+
+
+  //These statements and variables below are necessary to ensure the dragOverlay functions correctly
+
+  let parentIds = 0;
+  let activeIsParent = true;   //needed to ensure dragOverlay does not render when agendaGroup is empty
+  let parentContainerIndex = 0;
+  let activeitem = 0;
+
+  //entered only when there are items to display
+  if(agendaGroups.length > 0){
+
+    parentIds = agendaGroups.map(parent=>parent.id);
+    activeIsParent = parentIds.filter(parent=> parent === activeId).length > 0;
+    parentContainerIndex = 0;
+    activeitem = {id:null};
+
+    agendaGroups.forEach((parent,i)=>{
+      parent.items.forEach(item=>{
+        if(item.id === activeId){
+          parentContainerIndex = i;
+        }
+      })
+    });
+    
+    if(typeof parentContainerIndex != 'undefined'){
+      activeitem = agendaGroups[parentContainerIndex].items.find(item=>item.id === activeId);
     }
   }
-  
-  //only fired when the user begins dragging an agenda item
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
-    
-  }
-};
+  //
 
-function AgendaView({ agendaItems, setAgendaItems }) {
-  const [showCompleted, setShowCompleted] = useState(true);
-  
-  const renderedAgendaItems = showCompleted
-    ? agendaItems
-    : agendaItems.filter((item) => item.status !== 'Completed');
-  
+  //Necessary as the createRenderedGroups function returns renderedAgendaGroups of which prevents the DND kit from
+  //moving items between completed and pending groups
+  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
   return (
     <div className="AgendaView">
       <Search />
@@ -317,12 +191,223 @@ function AgendaView({ agendaItems, setAgendaItems }) {
         onClick={() => setShowCompleted((completed) => !completed)}
       >
         {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-        <p>Show Completed Items</p>
+        <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={rectIntersection}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
+        onDragMove={handleDragMove}
+      >
+        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+          <AgendaGroups agendaGroups={displayAgenda} dragOverlayActive={dragOverlayActive}
+            selectedItems={selectedItems} handleAgendaItemSelection={handleAgendaItemSelection} 
+          />
+        </Accordion>
 
-      <SortableAgendaItemContainer setAgendaItems={setAgendaItems} items={renderedAgendaItems}/>
+        <DragOverlay>
+          
+          {!activeIsParent ? <RenderedAgendaItem id={activeId} item={activeitem} 
+            isSelected={selectedItems[agendaGroups[parentContainerIndex].id] !== undefined
+            && selectedItems[agendaGroups[parentContainerIndex].id][activeitem.id] !== undefined}
+            handleSelection={handleAgendaItemSelection} dragOverlayActive={dragOverlayActive}
+            /> : null}
+        </DragOverlay>
+      </DndContext>
+
+      { Object.keys(selectedItems).length > 0
+        && (
+          <MultipleSelectionBox
+            selectedItems={selectedItems}
+            handleCancel={handleSelectionCancel}
+          />
+        )}
     </div>
   );
+
+  //called when the user starts dragging
+  function handleDragStart(event) {
+    const {active} = event;
+  
+    setActiveId(active.id);
+  }
+
+  //called when the user is moving the dragOverlay
+  //This is used to hide the checkbox overlaid on top of the components
+  function handleDragMove(){
+    setDragOverlayActive(true);
+  }
+
+  //called when the user drags the dragOverlay on top of a agenda item or the group header
+  //This function will handle the swapping of items between the agenda containers
+  function handleDragOver(event){
+    const {active, over} = event;
+    
+    setAgendaGroups((parents)=>{
+      let newParents = JSON.parse(JSON.stringify(parents));
+      
+      //these are used in the conditional expressions
+      let activeIsOver
+      let overIsContainer
+      let activeIsContainer
+
+      //assigns the conditional expressions, has to be put in the if statement in  the event the dragged
+      //item is brought out of the draggable zone
+      let overIsNull = over === null;
+      if(!overIsNull){
+        activeIsOver = active.id === over.id;
+        overIsContainer = parents.filter(parent=>parent.id === over.id).length > 0;
+        activeIsContainer = parents.filter(parent=>parent.id === active.id).length > 0;
+      }
+      
+      //item swapping is handled within
+      if(!overIsNull && !activeIsOver && !overIsContainer && !activeIsContainer){
+
+        let activeContainerIndex;
+        let overContainerIndex;
+        let activeIndex;
+        let overIndex;
+
+        //finding the values of the variables above
+        newParents.forEach((parent,parentIndex)=>{
+          parent.items.forEach((item,itemIndex)=>{
+            if(item.id === active.id){
+              activeIndex = itemIndex;
+              activeContainerIndex = parentIndex;
+            }
+            if(item.id === over.id){
+              overIndex = itemIndex;
+              overContainerIndex = parentIndex;
+            }
+          })
+        })
+        //entered when the dragOverlay has entered a new agenda group
+        if(activeContainerIndex !== overContainerIndex){
+          const overIsDropId = newParents.filter(parent=>parent.dropID === over.id).length > 0;
+          
+          //This makes sure the selected items are in the correct object containers
+          setSelectedItems((selectedItems)=>{
+            let deepCopy = JSON.parse(JSON.stringify(selectedItems));   
+            let needToSwap = false;
+
+            for(let property in deepCopy){
+              if(deepCopy[property][active.id]){
+                needToSwap = true;
+              }
+              delete deepCopy[property][active.id];
+            }
+
+            //entered only if a swap is needed
+            if(needToSwap){
+
+              //entered only when no object is already asigned, prevents erasing previously checked items
+              //in the agenda container that the dragged item is moving to
+              if(!deepCopy.hasOwnProperty(newParents[overContainerIndex].id)){
+                deepCopy[newParents[overContainerIndex].id] = {};
+              }
+              deepCopy[newParents[overContainerIndex].id][active.id] = true;         
+            }
+
+            return deepCopy;
+          })
+
+          //entered when the dragOverlay is not on top of the header
+          if(!overIsDropId){
+            let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
+            itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
+            newParents[overContainerIndex].items.splice(overIndex+1,0,itemToMove);
+
+          }else{//entered when the overlay is on top of the header
+            newParents.forEach((parent,i)=>{
+              if(parent.dropID === over.id){
+                overContainerIndex = i;
+              }
+            });
+
+            let itemToMove = newParents[activeContainerIndex].items.splice(activeIndex,1)[0];
+            itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
+            newParents[overContainerIndex].items.push(itemToMove);
+          }
+        }
+      }
+
+      return newParents;
+    });
+    
+  }
+
+  //called when the user lets go of the dragged item
+  function handleDragEnd(event) {
+    const {active, over} = event;
+    console.log(event);
+    console.log(agendaGroups);
+    if (over != null && active.id !== over.id) {
+      
+      //If statement only entered when moving the main agenda containers
+      if(agendaGroups.filter(parent=>parent.id === active.id).length > 0){
+        parentAgendaOnly(active,over);
+      }else{
+        movingItems(active,over);
+      }
+    }
+    
+
+
+    function movingItems(active,over){
+      setAgendaGroups((parents) => {
+        let newParents = JSON.parse(JSON.stringify(parents));
+
+        let overIsContainer = newParents.filter(parent=>parent.id === over.id).length > 0;
+        
+        if(!overIsContainer){
+          let parentIndex;
+          let oldIndex;
+          let newIndex;
+
+          parents.forEach((parent, index)=>{
+            parent.items.forEach((item, itemIndex)=>{
+              if(item.id === active.id){
+                parentIndex = index;
+                oldIndex = itemIndex;
+              }
+              
+              if(item.id === over.id){
+                newIndex = itemIndex;
+              }
+            })
+          });
+          
+          newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
+        }
+        return newParents;
+        
+      });
+    }
+    
+    function parentAgendaOnly(active,over){
+      setAgendaGroups((parents) => {
+        
+        let oldIndex;
+        let newIndex;
+
+        parents.forEach((parent, index)=>{
+          if(parent.id === active.id){
+            oldIndex = index;
+          }
+          if(parent.id === over.id){
+            newIndex = index;
+          }
+        });
+          
+        return arrayMove(parents, oldIndex, newIndex);
+      });
+    }
+    //This lets the checkmark overlay become visible again
+    setDragOverlayActive(false);
+  }
+  
 }
 
 export default AgendaView;

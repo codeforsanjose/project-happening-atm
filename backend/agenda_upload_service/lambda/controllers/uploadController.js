@@ -24,7 +24,7 @@ module.exports = (logger) => {
     }
   };
 
-  const ingestData = async (dbClient, csvData) => {
+  const ingestData = async (dbClient, meetingId, csvData) => {
     const jsonValue = await csvtojson().fromString(csvData);
 
     const agendaItems = new Map();
@@ -51,14 +51,6 @@ module.exports = (logger) => {
         subItemMap.set(subItemNumber, title);
       }
     });
-
-    let meetingId;
-    try {
-      const res = await dbClient.createMeeting('test', 1, '', 'PENDING');
-      meetingId = res.rows[0].id;
-    } catch (err) {
-      logger.error(err);
-    }
 
     // Here we loop through our new agenda data structure and update our DB.
     // Despite its nested loops, this portion actually runs in O(N) time complexity,
@@ -100,21 +92,47 @@ module.exports = (logger) => {
 
   const csvUpload = async (dbClient, req, res) => {
     logger.info('CSV Upload Controller');
+
     // This is the expected value of the name attribute in the upload request
     const expectedNameAttribute = 'csvfile';
 
+    let meetingId = req.params["meetingId"];
+
+    try {
+      if (!meetingId) {
+        const res = await dbClient.createMeeting('test', 1, '', 'PENDING');
+        meetingId = res.rows[0].id;
+      } else {
+        const res = await dbClient.getMeeting(Number(meetingId))
+
+        if (res.rows.length == 0) {
+          throw(`Meeting with id: ${meetingId} not found`);
+        }
+
+        meetingId = res.rows[0].id;
+        logger.debug(`Dropping existing meeting items for meeting: ${meetingId}`)
+
+        await dbClient.deleteMeetingItemsFroMeeting(meetingId)
+      }
+    } catch (err) {
+      logger.error(err);
+      res.status(400).json({ error: err });
+      return
+    }
+
     if (expectedNameAttribute in req.files) {
       const csvData = req.files[expectedNameAttribute].data.toString('utf8');
-      const jsonValue = await ingestData(dbClient, csvData);
+      const jsonValue = await ingestData(dbClient, meetingId, csvData);
       res.status(201).json({ jsonValue });
     } else {
-      const message = '400 Bad Request: unrecongized name attribute';
+      const error = '400 Bad Request: unrecongized name attribute';
       logger.info(message);
-      res.status(400).json({ message });
+      res.status(400).json({ error });
     }
   };
 
   module.csvUpload = async (req, res) => dbLifeCycleWrapper(csvUpload, req, res);
+  module.csvUploadForMeeting = async (req, res) => dbLifeCycleWrapper(csvUpload, req, res);
 
   return module;
 };

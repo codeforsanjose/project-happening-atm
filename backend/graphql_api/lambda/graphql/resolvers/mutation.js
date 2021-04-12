@@ -3,14 +3,41 @@
 // values should be passed as empty strings, etc...
 const getSubscriptionController = require('../../controllers/subscriptionsController');
 const getValidator = require('./validators');
+const getAuthentication = require('./authentication');
+const getsesClient = require('../../ses/sesClient');
 
 module.exports = (logger) => {
   const subscriptionController = getSubscriptionController(logger);
   const validator = getValidator(logger);
+  const authentication = getAuthentication(logger);
+  const sesClient = getsesClient(logger);
 
   const module = {};
 
-  module.createMeeting = async (dbClient, args) => {
+  module.confirmEmail = async (dbClient, args) => {
+    try {
+      await dbClient.toogleConfirmByToken(args.token, true);
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
+
+    return true;
+  };
+
+  module.unconfirmEmail = async (dbClient, args) => {
+    try {
+      await dbClient.toogleConfirmByToken(args.token, false);
+    } catch (e) {
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      throw e;
+    }
+
+    return true;
+  };
+
+  module.createMeeting = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateCreateMeeting(args);
 
     let res;
@@ -43,7 +70,8 @@ module.exports = (logger) => {
     throw Error('Internal Error');
   };
 
-  module.createMeetingItem = async (dbClient, args) => {
+  module.createMeetingItem = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateCreateMeetingItem(args);
 
     let res;
@@ -67,30 +95,34 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  module.createSubscription = async (dbClient, args) => {
-    validator.validateCreateSubscription(args);
+  module.createSubscriptions = async (dbClient, args) => {
+    validator.validateUser(context);
+    validator.validateCreateSubscriptions(args);
 
     let res;
     try {
-      res = await dbClient.createSubscription(
-        args.phone_number, args.email_address, args.meeting_item_id, args.meeting_id,
+      res = await dbClient.createSubscriptions(
+        args.phone_number, args.email_address, args.meetings,
       );
     } catch (e) {
-      logger.error(`createSubscription resolver error - dbClient.createSubscription: ${e}`);
+      logger.error(`createSubscriptions resolver error - dbClient.createSubscriptions: ${e}`);
       throw e;
     }
-    const newId = res.rows[0].id;
+
+    const ids = [];
+    res.rows.forEach((row) => { ids.push(row.id); });
 
     try {
-      res = await dbClient.getSubscription(newId);
+      res = await dbClient.getSubscription(ids);
     } catch (e) {
-      logger.error(`createSubscription resolver error - dbClient.getSubscription: ${e}`);
+      logger.error(`createSubscriptions resolver error - dbClient.getSubscriptions: ${e}`);
       throw e;
     }
-    return res.rows[0];
+    return res.rows;
   };
 
-  module.updateMeetingItem = async (dbClient, args) => {
+  module.updateMeetingItem = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateUpdateMeetingItem(args);
 
     let res;
@@ -138,13 +170,14 @@ module.exports = (logger) => {
         }
         break;
       default:
-          // TODO: This state should be impossible, handle as an error
+      // TODO: This state should be impossible, handle as an error
     }
 
     return meetingItem;
   };
 
-  module.updateMeeting = async (dbClient, args) => {
+  module.updateMeeting = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
     validator.validateUpdateMeeting(args);
 
     let res;
@@ -177,7 +210,7 @@ module.exports = (logger) => {
         }
         break;
       default:
-          // TODO: This state should be impossible, handle as an error
+      // TODO: This state should be impossible, handle as an error
     }
 
     try {
@@ -188,6 +221,69 @@ module.exports = (logger) => {
     }
     return res.rows[0];
   };
+
+  module.createAccount = async (dbClient, args, context) => {
+    let res;
+    let user;
+    if (context.token === null) {
+      const isAdmin = await authentication.verifyAdmin(dbClient, args.email_address.toLowerCase().trim());
+      const roles = isAdmin ? '{ADMIN}' : '{USER}';
+      const password = await authentication.hashPassword(args.password);
+      const token = await authentication.randomToken();
+      user = {
+        first_name: args.first_name,
+        last_name: args.last_name,
+        email_address: args.email_address,
+        roles: roles,
+        password: password,
+        auth_type: "Local",
+        token: token
+      }
+    } else {
+      const issuer = await authentication.identifyTokenIssuer(context.token);
+      // Creating account for Google Auth
+      if (issuer === "accounts.google.com") {
+        user = await authentication.verifyGoogleToken(dbClient, context.token);
+      }
+      //TODO: Need to add Microsoft Issuer namer
+      if (issuer === "NEED TO ADD MICROSOFT ISSUER") {
+        user = await authentication.verifyMicrosoftToken(dbClient, context.token);
+      }
+    }
+    // Creating Account in DB
+    try {
+      // TODO: Need to add more to this validator
+      validator.validateCreateAccount(user);
+      // Formatting email address
+      const lowerCaseEMailAddress = user.email_address.toLowerCase().trim();
+      // Looking to see if email already in use
+      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress)
+      if (dbResponse.rows.length > 0) {
+        logger.error('Email already signed up. Please login.')
+        throw new Error('Email already signed up. Please login.')
+      } else {
+        res = await dbClient.createAccount(
+          user.first_name, user.last_name, lowerCaseEMailAddress, user.roles, user.auth_type, user.password, user.token
+        );
+      }
+    } catch (e) {
+      logger.error(`createAccount resolver error - dbClient.createAccount: ${e}`);
+      throw new Error(e);
+    }
+
+    // Grabbing user from database, creating JWT and verifying email address.
+    try {
+      const dbUser = await dbClient.getAccountById(res.rows[0].id);
+      res = authentication.createJWT(dbUser);
+      sesClient.sendConfirmEmail(dbUser.rows[0].email_address, dbUser.rows[0].token);
+    } catch (e) {
+      logger.error(`createAccount resolver error - dbClient.createAccount ${e}`);
+      throw new Error(e);
+    }
+
+    return { token: res };
+  };
+
 
   return module;
 };

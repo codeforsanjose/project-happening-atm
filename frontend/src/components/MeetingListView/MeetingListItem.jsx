@@ -1,34 +1,53 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import './MeetingListItem.scss';
 
-import { CalendarTodayIcon, ViewAgendaIcon } from '../../utils/_icons';
+// Component imports
+import {
+  PastMeetingItemLinks,
+  PendingMeetingItemLinks,
+} from './MeetingListItemLinks';
+
+/**
+ * A meeting displayed as an accordion sub item.
+ *
+ * props:
+ *    item
+ *      Object that represents a meeting item.
+ *      {
+ *        id: Number id of item
+ *        meeting_start_timestamp: String starting timestamp (Unix time)
+ *        status: String status of item - ['PENDING', 'IN PROGRESS', 'CLOSED']
+ *      }
+ */
 
 function MeetingListItem({ item }) {
-  const { id, startTime } = item;
-  const date = toDateString(startTime);
-  const time = toTimeString(startTime);
+  const { t } = useTranslation();
+  // eslint-disable-next-line camelcase
+  const { id, meeting_start_timestamp, status } = item;
+  const date = toDateString(meeting_start_timestamp);
+  const time = toTimeString(meeting_start_timestamp);
+  const isInProgress = status === 'IN PROGRESS';
+
+  // Determine which set of item links to use based on meeting status
+  const MeetingItemLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  // TODO: Implement admin links
 
   return (
-    <div className="MeetingListItem">
-      <h3 className="meeting-date">{date}</h3>
-      <div className="meeting-time">{time}</div>
-      <div className="meeting-links">
-        <Link to="#">
-          <div className="link">
-            <CalendarTodayIcon />
-            <p>Export to Calendar</p>
-          </div>
-        </Link>
-        <Link to={`meeting/${id}`} className="disabled-link">
-          <div className="link">
-            <ViewAgendaIcon />
-            <p>Agenda</p>
-          </div>
-        </Link>
-      </div>
+    <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
+      <Link to={`meeting/${id}`} className="meeting-date">
+        <h3>
+          {date}
+          {isInProgress && ` - ${t('meeting.status.short.in-progress')}`}
+        </h3>
+      </Link>
+      <Link to={`meeting/${id}`} className="meeting-time">
+        <div>{time}</div>
+      </Link>
+      <MeetingItemLinks meetingId={id} isInProgress={isInProgress} />
     </div>
   );
 }

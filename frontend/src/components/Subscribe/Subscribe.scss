@@ -2,11 +2,10 @@
 
 .subscribe-view {
   z-index: 3000;
-  height: 100%;
   width: 100%;
-  position: absolute;
-  top:0;
-  left:0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   background: $blueSky;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
@@ -23,7 +22,7 @@
     @media screen
     and (min-width: 812px) {
       max-width: 812px;
-      margin: 0 auto;
+      margin: 5em auto;
     }
   }
 
