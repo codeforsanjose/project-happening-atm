@@ -49,6 +49,7 @@ function AgendaView({ meeting }) {
   const [selectedItems, setSelectedItems] = useState({});
   const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems);
   const [activeId, setActiveId] = useState(null);
+  const [dragOverlayActive, setDragOverlayActive] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -133,7 +134,7 @@ function AgendaView({ meeting }) {
   const renderedAgendaGroups = createRenderedGroups(agendaGroups);
   const parentIds = agendaGroups.map(parent=>parent.id);
   const activeIsParent = parentIds.filter(parent=> parent === activeId).length > 0;
-  let parentContainerIndex;
+  let parentContainerIndex = 0;
   let activeitem = {id:null};
 
   agendaGroups.forEach((parent,i)=>{
@@ -167,15 +168,21 @@ function AgendaView({ meeting }) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
+        onDragMove={handleDragMove}
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-          <AgendaGroups agendaGroups={displayAgenda} 
+          <AgendaGroups agendaGroups={displayAgenda} dragOverlayActive={dragOverlayActive}
             selectedItems={selectedItems} handleAgendaItemSelection={handleAgendaItemSelection} 
           />
         </Accordion>
 
         <DragOverlay>
-          {!activeIsParent ? <RenderedAgendaItem id={activeId} item={activeitem} flag={{activeIsParent}} /> : null}
+          
+          {!activeIsParent ? <RenderedAgendaItem id={activeId} item={activeitem} 
+            isSelected={selectedItems[agendaGroups[parentContainerIndex].id] !== undefined
+            && selectedItems[agendaGroups[parentContainerIndex].id][activeitem.id] !== undefined}
+            handleSelection={handleAgendaItemSelection} dragOverlayActive={dragOverlayActive}
+            /> : null}
         </DragOverlay>
       </DndContext>
 
@@ -191,9 +198,14 @@ function AgendaView({ meeting }) {
 
   function handleDragStart(event) {
     const {active} = event;
-    
+  
     setActiveId(active.id);
   }
+
+  function handleDragMove(){
+    setDragOverlayActive(true);
+  }
+
   //This function will handle the swapping of items between the agenda containers
   function handleDragOver(event){
     const {active, over} = event;
@@ -263,7 +275,8 @@ function AgendaView({ meeting }) {
   
   function handleDragEnd(event) {
     const {active, over} = event;
-    
+    console.log(event);
+    console.log(agendaGroups);
     if (over != null && active.id !== over.id) {
       
       //If statement only entered when moving the main agenda containers
@@ -279,26 +292,31 @@ function AgendaView({ meeting }) {
     function movingItems(active,over){
       setAgendaGroups((parents) => {
         let newParents = JSON.parse(JSON.stringify(parents));
-        
-        let parentIndex;
-        let oldIndex;
-        let newIndex;
 
-        parents.forEach((parent, index)=>{
-          parent.items.forEach((item, itemIndex)=>{
-            if(item.id === active.id){
-              parentIndex = index;
-              oldIndex = itemIndex;
-            }
-            
-            if(item.id === over.id){
-              newIndex = itemIndex;
-            }
-          })
-        });
+        let overIsContainer = newParents.filter(parent=>parent.id === over.id).length > 0;
         
-        newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
+        if(!overIsContainer){
+          let parentIndex;
+          let oldIndex;
+          let newIndex;
+
+          parents.forEach((parent, index)=>{
+            parent.items.forEach((item, itemIndex)=>{
+              if(item.id === active.id){
+                parentIndex = index;
+                oldIndex = itemIndex;
+              }
+              
+              if(item.id === over.id){
+                newIndex = itemIndex;
+              }
+            })
+          });
+          
+          newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
+        }
         return newParents;
+        
       });
     }
     
@@ -320,7 +338,7 @@ function AgendaView({ meeting }) {
         return arrayMove(parents, oldIndex, newIndex);
       });
     }
-
+    setDragOverlayActive(false);
   }
   
 }

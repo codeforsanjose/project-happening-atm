@@ -51,7 +51,7 @@ const itemLinks = [
  *      A handler for agenda item selection
  */
 
-function AgendaItem({id, item, isSelected, handleSelection }) {
+function AgendaItem({id, item, isSelected, handleSelection, dragOverlayActive }) {
   const {
     attributes,
     listeners,
@@ -67,7 +67,7 @@ function AgendaItem({id, item, isSelected, handleSelection }) {
 
   return (
     <RenderedAgendaItem {...attributes}
-    {...listeners} ref={setNodeRef} style={style} id={id} item={item} isSelected={isSelected} handleSelection={handleSelection}/>
+    {...listeners} ref={setNodeRef} style={style} id={id} item={item} dragOverlayActive={dragOverlayActive} isSelected={isSelected} handleSelection={handleSelection}/>
   );
 }
 
@@ -80,42 +80,57 @@ function AgendaItemActionLink({ link }) {
   );
 }
 
-const RenderedAgendaItem = forwardRef(({flag, handleSelection,isSelected,item,id, ...props}, ref) =>{
+const RenderedAgendaItem = forwardRef(({dragOverlayActive, flag, handleSelection,isSelected,item,id, ...props}, ref) =>{
   
   const handleCheck = (evt) => {
     if (evt.target && typeof handleSelection != 'undefined') {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
+  let classWhenDragging;
+  let classNotDragging;
+
+  if(item.status !== MeetingItemStates.PENDING){
+    classWhenDragging= "hideCheckBox";
+    classNotDragging= "completeOvrLaidChkBx";
+  }else{
+    classWhenDragging = "hideCheckBox";
+    classNotDragging = "overlaidCheckBox";
+  }
   
   return (
-    <div {...props} ref={ref} className="AgendaItem" >
-      {item.status !== MeetingItemStates.PENDING
-        && <div className="item-status">{item.status}</div>}
-
-      <div className="row">
-        <input type="checkbox" checked={isSelected} onChange={handleCheck} />
-        <h4>{item.title_loc_key}</h4>
+    <div>
+      <div className='relativeEmptyContainer'>
+        <input type="checkbox" className={dragOverlayActive ? classWhenDragging : classNotDragging} checked={isSelected} onChange={handleCheck} />
       </div>
-      <p>{item.description_loc_key}</p>
-
-      <div className="item-links">
-        {
-          itemLinks.map((link) => {
-            if (link.isDisabled(item)) {
+      <div {...props} ref={ref} className="AgendaItem" >
+        {item.status !== MeetingItemStates.PENDING
+          && <div className="item-status">{item.status}</div>}
+        
+        <div className="row">
+          <input type="checkbox" checked={isSelected} onChange={handleCheck} />
+          <h4>{item.title_loc_key}</h4>
+        </div>
+        <p>{item.description_loc_key}</p>
+        
+        <div className="item-links">
+          {
+            itemLinks.map((link) => {
+              if (link.isDisabled(item)) {
+                return (
+                  <div className="disabled" key={item.id + "link"}>
+                    <AgendaItemActionLink link={link} />
+                  </div>
+                );
+              }
               return (
-                <div className="disabled" key={item.id + "link"}>
+                <Link to={link.getPath(item)} key={link.text}>
                   <AgendaItemActionLink link={link} />
-                </div>
+                </Link>
               );
-            }
-            return (
-              <Link to={link.getPath(item)} key={link.text}>
-                <AgendaItemActionLink link={link} />
-              </Link>
-            );
-          })
-        }
+            })
+          }
+        </div>
       </div>
     </div>
   );

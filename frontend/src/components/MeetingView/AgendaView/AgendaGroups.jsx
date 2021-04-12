@@ -48,7 +48,7 @@ import {CSS} from '@dnd-kit/utilities';
   minHeightAgendaContainer:'60px'
 };
 
-function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }) {
+function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection, dragOverlayActive }) {
   const parentItems = agendaGroups.map(parent=>parent.id);
   return (
     <SortableContext
@@ -67,6 +67,7 @@ function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }
               agendaGroup={parent}
               selectedItems={selectedItems}
               handleItemSelection={handleAgendaItemSelection}
+              dragOverlayActive={dragOverlayActive}
             />
           </AccordionItem>
         );
@@ -107,7 +108,7 @@ function AgendaGroupHeader({agendaGroup,selectedItems}){
   );
 }
 
-function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
+function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection, dragOverlayActive}){
   const {setNodeRef} = useDroppable({
     id: agendaGroup.dropID
   });
@@ -134,6 +135,7 @@ function AgendaGroupBody({agendaGroup,selectedItems,handleItemSelection}){
                 isSelected={selectedItems[agendaGroup.id] !== undefined
                   && selectedItems[agendaGroup.id][item.id] !== undefined}
                 handleSelection={handleItemSelection}
+                dragOverlayActive={dragOverlayActive}
               />
             ))}
           </div>

@@ -1,5 +1,45 @@
 @import "../../../utils/_colors.scss";
 
+//overlaid on top of the actual checkbox, this is necessary for drag overlay to work
+.overlaidCheckBox{
+  position: relative;
+  transform: scale(1.4);
+  z-index: 2;
+  top: 1.3rem;
+  left: 1.125rem;
+
+  @media only screen
+  and (min-device-width: 812px) {
+    top: 1.71rem;
+    left: 1.5625rem;
+  }
+  
+}
+
+.completeOvrLaidChkBx{
+  position: relative;
+  transform: scale(1.4);
+  z-index: 2;
+  top: 2.79rem;
+  left: 1.125rem;
+
+  @media only screen
+  and (min-device-width: 812px) {
+    top: 3.2rem;
+    left: 1.5625rem;
+  }
+}
+
+.relativeEmptyContainer{
+  width:0px;
+  height:0px;
+  position:relative;
+}
+
+.hideCheckBox{
+  display:none;
+}
+
 .AgendaItem {
   box-sizing: border-box;
   margin-bottom: 1em;
