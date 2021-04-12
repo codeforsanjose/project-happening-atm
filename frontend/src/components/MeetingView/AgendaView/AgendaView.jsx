@@ -251,21 +251,20 @@ function AgendaView({ meeting }) {
           // This makes sure the selected items are in the correct object containers
           setSelectedItems(() => {
             const deepCopy = JSON.parse(JSON.stringify(selectedItems));
-            const overContainerKey = newParents[overContainerIndex].id;
+            const activeContainerKey = String(newParents[activeContainerIndex].id);
+            const overContainerKey = String(newParents[overContainerIndex].id);
             let needToSwap = false;
 
-            console.log(Object.keys(deepCopy));
+            const keyIsUndefined = typeof deepCopy[activeContainerKey] === 'undefined';
 
-            for (const property in deepCopy) {
-              if (deepCopy[property][active.id]) {
-                needToSwap = true;
-              }
-              delete deepCopy[property][active.id];
+            if (!keyIsUndefined && deepCopy[activeContainerKey][active.id]) {
+              needToSwap = true;
+              delete deepCopy[activeContainerKey][active.id];
             }
 
             // entered only if a swap is needed
             if (needToSwap) {
-              // entered only when no object is already asigned, prevents erasing previously checked items
+              // entered when no object already assigned, prevents erasing previously checked items
               // in the agenda container that the dragged item is moving to
               if (!Object.prototype.hasOwnProperty.call(deepCopy, overContainerKey)) {
                 deepCopy[newParents[overContainerIndex].id] = {};
