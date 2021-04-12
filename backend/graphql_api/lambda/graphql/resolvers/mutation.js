@@ -79,7 +79,6 @@ module.exports = (logger) => {
       res = await dbClient.createMeetingItem(
         args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp,
         args.status, args.content_categories, args.description_loc_key, args.title_loc_key,
-        args.parent_meeting_item_id,
       );
     } catch (e) {
       logger.error(`createMeetingItem resolver error - dbClient.createMeetingItem: ${e}`);
@@ -131,7 +130,7 @@ module.exports = (logger) => {
       res = await dbClient.updateMeetingItem(
         args.id, args.order_number, args.status, args.item_start_timestamp,
         args.item_end_timestamp, args.content_categories, args.description_loc_key,
-        args.title_loc_key, args.parent_meeting_item_id,
+        args.title_loc_key,
       );
     } catch (e) {
       logger.error(`updateMeetingItem resolver error - dbClient.updateMeetingItem: ${e}`);
