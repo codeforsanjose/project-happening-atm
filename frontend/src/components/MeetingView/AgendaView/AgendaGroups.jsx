@@ -77,7 +77,6 @@ function AgendaGroups({
           />
         </AccordionItem>
       ))}
-      ;
     </SortableContext>
   );
 }
@@ -136,7 +135,6 @@ function AgendaGroupBody({
         <div style={style} ref={setNodeRef}>
           {agendaGroup.items.map((item) => (
             <AgendaItem
-              id={item.id}
               key={item.id}
               item={item}
               isSelected={selectedItems[agendaGroup.id] !== undefined

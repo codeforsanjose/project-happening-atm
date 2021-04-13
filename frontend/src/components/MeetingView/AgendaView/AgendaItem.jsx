@@ -66,7 +66,7 @@ const itemLinks = [
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
 function AgendaItem({
-  id, item, isSelected, handleSelection, dragOverlayActive,
+  item, isSelected, handleSelection, dragOverlayActive,
 }) {
   const {
     attributes,
@@ -74,7 +74,7 @@ function AgendaItem({
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id });
+  } = useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -87,7 +87,7 @@ function AgendaItem({
       {...listeners}
       ref={setNodeRef}
       style={style}
-      id={id}
+      id={item.id}
       item={item}
       dragOverlayActive={dragOverlayActive}
       isSelected={isSelected}
@@ -109,7 +109,7 @@ const RenderedAgendaItem = forwardRef(({
   dragOverlayActive, handleSelection, isSelected, item, id, ...props
 }, ref) => {
   const handleCheck = (evt) => {
-    if (evt.target && typeof handleSelection !== 'undefined') {
+    if (evt.target) {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
   };
