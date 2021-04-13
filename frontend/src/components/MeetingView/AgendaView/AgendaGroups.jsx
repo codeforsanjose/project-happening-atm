@@ -42,8 +42,6 @@ import AgendaItem from './AgendaItem';
  *      }
  *    handleAgendaItemSelection
  *      A handler for agenda item selection
- *    dragOverlayActive
- *      Indicates an item is being dragged
  */
 
 // Necessary to allow the dragging of an item into an empty group
@@ -51,9 +49,7 @@ const options = {
   minHeightAgendaContainer: '60px',
 };
 
-function AgendaGroups({
-  agendaGroups, selectedItems, handleAgendaItemSelection, dragOverlayActive,
-}) {
+function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }) {
   const parentItems = agendaGroups.map((parent) => parent.id);
 
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
@@ -73,7 +69,6 @@ function AgendaGroups({
             agendaGroup={parent}
             selectedItems={selectedItems}
             handleItemSelection={handleAgendaItemSelection}
-            dragOverlayActive={dragOverlayActive}
           />
         </AccordionItem>
       ))}
@@ -112,9 +107,7 @@ function AgendaGroupHeader({ agendaGroup }) {
   );
 }
 
-function AgendaGroupBody({
-  agendaGroup, selectedItems, handleItemSelection, dragOverlayActive,
-}) {
+function AgendaGroupBody({ agendaGroup, selectedItems, handleItemSelection }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
   });
@@ -140,7 +133,6 @@ function AgendaGroupBody({
               isSelected={selectedItems[agendaGroup.id] !== undefined
                   && selectedItems[agendaGroup.id][item.id] !== undefined}
               handleSelection={handleItemSelection}
-              dragOverlayActive={dragOverlayActive}
             />
           ))}
         </div>

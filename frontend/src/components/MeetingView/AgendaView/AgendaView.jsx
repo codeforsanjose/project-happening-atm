@@ -45,12 +45,6 @@ import { RenderedAgendaItem } from './AgendaItem';
  *      for the main container, and an array of items under the group
  *    activeId
  *      This represents the current agenda item or parent of the agenda items being moved
- *    dragOverlayActive
- *      This is used to track when the dragOverlay for DND kit is being rendered.
- *      Its purpose is to control the display of a input check box that is acting as a overlay
- *      ontop of the component.
- *      This was necessary as drag overlay would not allow the clicking of the
- *      check mark.
  *
  *
  *
@@ -101,7 +95,6 @@ function AgendaView({ meeting }) {
   const [selectedItems, setSelectedItems] = useState({});
   const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items));
   const [activeId, setActiveId] = useState(null);
-  const [dragOverlayActive, setDragOverlayActive] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -199,12 +192,6 @@ function AgendaView({ meeting }) {
     const { active } = event;
 
     setActiveId(active.id);
-  };
-
-  // called when the user is moving the dragOverlay
-  // This is used to hide the checkbox overlaid on top of the components
-  const handleDragMove = () => {
-    setDragOverlayActive(true);
   };
 
   // called when the user drags the dragOverlay on top of a agenda item or the group header
@@ -364,9 +351,6 @@ function AgendaView({ meeting }) {
         movingItems();
       }
     }
-
-    // This lets the checkmark overlay become visible again
-    setDragOverlayActive(false);
   };
 
   return (
@@ -387,12 +371,10 @@ function AgendaView({ meeting }) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
-        onDragMove={handleDragMove}
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
           <AgendaGroups
             agendaGroups={displayAgenda}
-            dragOverlayActive={dragOverlayActive}
             selectedItems={selectedItems}
             handleAgendaItemSelection={handleAgendaItemSelection}
           />
@@ -407,7 +389,6 @@ function AgendaView({ meeting }) {
               isSelected={selectedItems[agendaGroups[parentContainerIndex].id] !== undefined
             && selectedItems[agendaGroups[parentContainerIndex].id][activeitem.id] !== undefined}
               handleSelection={handleAgendaItemSelection}
-              dragOverlayActive={dragOverlayActive}
             />
           ) : null}
         </DragOverlay>

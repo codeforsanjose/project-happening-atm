@@ -65,9 +65,7 @@ const itemLinks = [
  */
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
-function AgendaItem({
-  item, isSelected, handleSelection, dragOverlayActive,
-}) {
+function AgendaItem({ item, isSelected, handleSelection }) {
   const {
     attributes,
     listeners,
@@ -89,7 +87,6 @@ function AgendaItem({
       style={style}
       id={item.id}
       item={item}
-      dragOverlayActive={dragOverlayActive}
       isSelected={isSelected}
       handleSelection={handleSelection}
     />
@@ -106,7 +103,7 @@ function AgendaItemActionLink({ link }) {
 }
 
 const RenderedAgendaItem = forwardRef(({
-  dragOverlayActive, handleSelection, isSelected, item, id, ...props
+  handleSelection, isSelected, item, id, ...props
 }, ref) => {
   const handleCheck = (evt) => {
     if (evt.target) {
