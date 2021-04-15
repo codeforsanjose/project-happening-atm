@@ -120,7 +120,7 @@ const RenderedAgendaItem = forwardRef(({
           && <div className="item-status">{item.status}</div>}
 
       <div className="row">
-        <input type="checkbox" checked={isSelected} onChange={handleCheck} />
+        {item.status === MeetingItemStates.PENDING && <input type="checkbox" checked={isSelected} onChange={handleCheck} />}
         <h4>{item.title_loc_key}</h4>
       </div>
       <p>{item.description_loc_key}</p>
