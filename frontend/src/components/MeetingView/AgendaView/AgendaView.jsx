@@ -297,62 +297,42 @@ function AgendaView({ meeting }) {
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
-    // these are the functions used within the if statement that follows them
-    const movingItems = () => {
+    // if statement only entered when the agendaitem is over a valid drop location
+    if (over != null && active.id !== over.id) {
       setAgendaGroups((parents) => {
         const newParents = JSON.parse(JSON.stringify(parents));
 
-        const overIsContainer = newParents.filter((parent) => parent.id === over.id).length > 0;
-
-        if (!overIsContainer) {
-          let parentIndex;
-          let oldIndex;
-          let newIndex;
-
-          parents.forEach((parent, index) => {
-            parent.items.forEach((item, itemIndex) => {
-              if (item.id === active.id) {
-                parentIndex = index;
-                oldIndex = itemIndex;
-              }
-
-              if (item.id === over.id) {
-                newIndex = itemIndex;
-              }
-            });
-          });
-
-          newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
-        }
-        return newParents;
-      });
-    };
-
-    const parentAgendaOnly = () => {
-      setAgendaGroups((parents) => {
-        let oldIndex;
-        let newIndex;
+        let parentIndex; // index of the agendaGroup currently hovered over
+        let oldIndex; // The old index of the agendaItem being moved
+        let newIndex; // The new index of the agendaItem being moved
 
         parents.forEach((parent, index) => {
-          if (parent.id === active.id) {
-            oldIndex = index;
-          }
-          if (parent.id === over.id) {
-            newIndex = index;
-          }
+          parent.items.forEach((item, itemIndex) => {
+            if (item.id === active.id) {
+              parentIndex = index;
+              oldIndex = itemIndex;
+            }
+
+            if (item.id === over.id) {
+              newIndex = itemIndex;
+            }
+          });
         });
 
-        return arrayMove(parents, oldIndex, newIndex);
-      });
-    };
+        newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
 
-    if (over != null && active.id !== over.id) {
-      // If statement only entered when moving the main agenda containers
-      if (agendaGroups.filter((parent) => parent.id === active.id).length > 0) {
-        parentAgendaOnly();
-      } else {
-        movingItems();
-      }
+        // eslint-disable-next-line prefer-destructuring
+        const items = newParents[parentIndex].items;
+        for (let i = 0; i < items.length - 1; i += 1) {
+          console.log(items);
+          if (items[i].order_number >= items[i + 1].order_number) {
+            items[i].order_number = items[i + 1].order_number;
+            items[i + 1].order_number += 1;
+          }
+        }
+        console.log(newParents);
+        return newParents;
+      });
     }
   };
 
