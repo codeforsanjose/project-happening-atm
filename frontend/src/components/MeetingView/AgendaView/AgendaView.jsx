@@ -84,6 +84,9 @@ const groupMeetingItems = (allItems) => {
     agendaGroups[i].dropID = agendaDropIDs[i];
   }
 
+  // ensure the agenda groups will render by order number
+  agendaGroups.forEach((group) => group.items.sort((a, b) => a.order_number - b.order_number));
+
   return agendaGroups;
 };
 
