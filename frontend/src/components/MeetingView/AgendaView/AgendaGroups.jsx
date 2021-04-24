@@ -16,9 +16,8 @@ import {
 import {
   SortableContext,
   verticalListSortingStrategy,
-  useSortable,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
 
@@ -50,18 +49,12 @@ const options = {
 };
 
 function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }) {
-  const parentItems = agendaGroups.map((parent) => parent.id);
-
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
-    <SortableContext
-      items={parentItems}
-      strategy={verticalListSortingStrategy}
-    >
+    <>
       {agendaGroups.map((parent) => (
         <AccordionItem className="AgendaGroup" key={`${parent.id}accord`}>
           <AgendaGroupHeader
-            key={parent.id}
             agendaGroup={parent}
           />
           <AgendaGroupBody
@@ -72,26 +65,13 @@ function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }
           />
         </AccordionItem>
       ))}
-    </SortableContext>
+    </>
   );
 }
 
 function AgendaGroupHeader({ agendaGroup }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: agendaGroup.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div>
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button">
           <div className="button-text">
