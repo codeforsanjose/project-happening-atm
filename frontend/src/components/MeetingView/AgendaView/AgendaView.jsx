@@ -53,6 +53,7 @@ import { RenderedAgendaItem } from './AgendaItem';
 
 const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
+  oNumStart: 1, // default first number in order
 };
 
 // This function is taking the meeting prop and organizing it into an array of objects.
@@ -85,6 +86,7 @@ const groupMeetingItems = (allItems) => {
   }
 
   // ensure the agenda groups will render by order number
+  agendaGroups.sort((a, b) => a.order_number - b.order_number);
   agendaGroups.forEach((group) => group.items.sort((a, b) => a.order_number - b.order_number));
 
   return agendaGroups;
@@ -98,6 +100,7 @@ function AgendaView({ meeting }) {
   const [selectedItems, setSelectedItems] = useState({});
   const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items));
   const [activeId, setActiveId] = useState(null);
+  const [oNumStart] = useState(agendaGroups[0].order_number);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -321,19 +324,22 @@ function AgendaView({ meeting }) {
 
         newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
 
-        // eslint-disable-next-line prefer-destructuring
-        const items = newParents[parentIndex].items;
-        for (let i = 0; i < items.length - 1; i += 1) {
-          console.log(items);
-          if (items[i].order_number >= items[i + 1].order_number) {
-            items[i].order_number = items[i + 1].order_number;
-            items[i + 1].order_number += 1;
-          }
-        }
-        console.log(newParents);
         return newParents;
       });
     }
+
+    // resort the agendaItems after a drop
+    setAgendaGroups((parents) => {
+      const newParents = JSON.parse(JSON.stringify(parents));
+
+      for (let i = 0; i < newParents.length; i += 1) {
+        for (let j = 0, oN = oNumStart; j < newParents[i].items.length; j += 1, oN += 1) {
+          newParents[i].items[j].order_number = oN;
+        }
+      }
+
+      return newParents;
+    });
   };
 
   return (

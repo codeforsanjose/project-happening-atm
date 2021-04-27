@@ -124,6 +124,11 @@ const RenderedAgendaItem = forwardRef(({
         <h4>{item.title_loc_key}</h4>
       </div>
       <p>{item.description_loc_key}</p>
+      <p style={{ color: 'black', fontWeight: 900 }}>
+        Order Number is
+        {' '}
+        {item.order_number}
+      </p>
 
       <div className="item-links">
         {
