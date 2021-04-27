@@ -22,7 +22,6 @@ import AgendaTable from './components/AgendaTable/AgendaTable';
 import MeetingView from './components/MeetingView/MeetingView';
 import Subscribe from './components/Subscribe/Subscribe';
 import AdminView from './components/AdminView/AdminView';
-import AdminUploadView from './components/AdminView/AdminUploadView/AdminUploadView';
 import EmailConfirmPage from './components/EmailConfirmPage/EmailConfirmPage';
 import Footer from './components/Footer/Footer';
 
@@ -111,13 +110,6 @@ function App() {
                 <AdminView
                   headerText="Edit Agenda Items"
                   component={AgendaTable}
-                />
-              </Route>
-
-              <Route path={`${AdminPaths.UPLOAD_CSV}/:id`}>
-                <AdminView
-                  headerText={t('meeting.actions.upload-new-agenda')}
-                  component={AdminUploadView}
                 />
               </Route>
             </Switch>
