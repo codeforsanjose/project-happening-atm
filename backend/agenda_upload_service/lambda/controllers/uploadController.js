@@ -123,7 +123,7 @@ module.exports = (logger) => {
     if (expectedNameAttribute in req.files) {
       const csvData = req.files[expectedNameAttribute].data.toString('utf8');
       const jsonValue = await ingestData(dbClient, meetingId, csvData);
-      res.status(201).json({ jsonValue });
+      res.status(201).json({ jsonValue, meetingId });
     } else {
       const error = '400 Bad Request: unrecongized name attribute';
       logger.info(message);

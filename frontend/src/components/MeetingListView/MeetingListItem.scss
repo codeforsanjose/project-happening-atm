@@ -46,6 +46,13 @@
       a {
         margin-right: 3em;
       }
+
+      button {
+        background-color: inherit;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+      }
     }
   }
 
