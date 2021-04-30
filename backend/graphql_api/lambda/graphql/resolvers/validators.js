@@ -2,9 +2,7 @@
 // I'm disabling this error because we're using variable names from the schema
 // that use snake_case since they're referencing values in our DB that also uses snake_case
 
-// This environment variable is only set in AWS. Local development shouldn't have it.
-const isLambda = process.env.IS_LAMBDA;
-const { UserInputError, ForbiddenError } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
+const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
 const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];

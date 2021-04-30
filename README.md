@@ -228,28 +228,15 @@ To create a new migration:
 2. Add your migration in that file.
 3. Migrations will be automatically run on next request to the backend.
 
-# Infrastructure
+# Workflow
 
-Ideally, deployments are automatically handled by the CI/CD pipeline. This section of documentation facilitates manual infrastructure management, if required.
+1. Go to the issues page to find something to work on: https://github.com/codeforsanjose/gov-agenda-notifier/issues. If you're not sure, ping #proj-happening-atm-eng in slack for help.
+1. Create a branch off `develop` and make your commits.
+1. Open a PR to `develop` branch. Once merged, it'll autodeploy to the staging environment.
+1. To deploy to production, open a PR from `develop` to `main` branch. Once merged, it'll autodeploy to the production environment.
 
-## Local Configuration:
+NOTE: Do NOT open PRs directly to `main` branch without merging it in develop. If you want to deploy a specific commit to branch, you can do so, but open another PR to the `develop` branch so the two branches don't diverge.
 
-1.  Setup [AWS CLI](https://docs.aws.amazon.com/polly/latest/dg/setup-aws-cli.html)
-2.  Install [Terraform](https://www.terraform.io/)
-3.  `make` utility
-    - Additional configuration to use `make` is required on [Windows](https://vispud.blogspot.com/2019/02/how-to-run-makefile-in-windows.html)
+# Help
 
-## Manual Deployment Management:
-
-1.  Deploy infrastructure to AWS:
-    1. Navigate to the `/infrastructure` directory
-    2. Run command:
-       ```bash
-       make deploy
-       ```
-2.  Remove deployed infrastructure from AWS:
-    1. Navigate to the `/infrastructure` directory
-    2. Run command:
-       ```bash
-       make destroy
-       ```
+If you run into issues getting the above app to work, please post to Slack `#proj-happening-atm-eng` with a detailed bug report. If you have trouble running docker/docker-compose, please paste the results of `docker-compose -p gov-agenda-notifier down --remove-orphans` with your bug report.
