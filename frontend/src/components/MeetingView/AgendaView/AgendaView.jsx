@@ -366,8 +366,12 @@ function AgendaView({ meeting }) {
       return newParents;
     });
 
-    // save changes to the server
-    saveReOrder(agendaGroups, updateMeetingItem);
+    // force the retrieval of the most recent agendaGroups, prevents the passing of stale data
+    setAgendaGroups((parents) => {
+      saveReOrder(parents, updateMeetingItem);
+
+      return parents;
+    });
   };
 
   return (
@@ -382,6 +386,7 @@ function AgendaView({ meeting }) {
         {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
         <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
+
       <DndContext
         sensors={sensors}
         collisionDetection={rectIntersection}
