@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
+import { useMutation } from '@apollo/client';
 
 import {
   DndContext,
@@ -16,12 +17,14 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
+
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import { RenderedAgendaItem } from './AgendaItem';
+import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -54,6 +57,27 @@ import { RenderedAgendaItem } from './AgendaItem';
 const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
   oNumStart: 1, // default first number in order
+};
+
+const saveReOrder = (agendaGroups, updateMeetingItem) => {
+  for (let parent = 0; parent < agendaGroups.length; parent += 1) {
+    for (let child = 0; child < agendaGroups[parent].items.length; child += 1) {
+      updateMeetingItem({
+        variables: {
+          id: agendaGroups[parent].items[child].id,
+          order_number: agendaGroups[parent].items[child].order_number,
+          status: agendaGroups[parent].items[child].status,
+          content_categories: agendaGroups[parent].items[child].content_categories,
+          item_start_timestamp: agendaGroups[parent].items[child].item_start_timestamp,
+          description_loc_key: agendaGroups[parent].items[child].description_loc_key,
+          title_loc_key: agendaGroups[parent].items[child].title_loc_key,
+          parent_meeting_item_id: agendaGroups[parent].items[child].parent_meeting_item_id,
+          item_end_timestamp: agendaGroups[parent].items[child].item_end_timestamp,
+
+        },
+      });
+    }
+  }
 };
 
 // This function is taking the meeting prop and organizing it into an array of objects.
@@ -100,7 +124,8 @@ function AgendaView({ meeting }) {
   const [selectedItems, setSelectedItems] = useState({});
   const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items));
   const [activeId, setActiveId] = useState(null);
-  const [oNumStart] = useState(agendaGroups[0].order_number);
+  const [oNumStart] = useState(agendaGroups.length > 0 ? agendaGroups[0].order_number : null);
+  const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -340,6 +365,9 @@ function AgendaView({ meeting }) {
 
       return newParents;
     });
+
+    // save changes to the server
+    saveReOrder(agendaGroups, updateMeetingItem);
   };
 
   return (
