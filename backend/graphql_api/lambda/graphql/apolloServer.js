@@ -29,15 +29,15 @@ module.exports = (logger) => {
         loginLocal(email_address: String!, password: String!): auth_data
         loginGoogle: auth_data
         loginMicrosoft: auth_data
-        
+
         # TODO: Need to add verify token query
-        
+
         # TODO: Need to add reset password query
     }
 
     type Mutation {
-        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String): meeting
-        updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String): meeting
+        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String, virtual_meeting_id: String!, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
+        updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String, , virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
 
         createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
         updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
@@ -83,6 +83,13 @@ module.exports = (logger) => {
         meeting_start_timestamp: String
         meeting_end_timestamp: String
         virtual_meeting_url: String
+        virtual_meeting_id: String
+        call_in_information: String
+        email_before_meeting: String
+        email_during_meeting: String
+        eComment: String
+        city_of_san_jose_meeting: String
+        youtube_link: String
     }
 
     type meeting_item {
@@ -107,7 +114,7 @@ module.exports = (logger) => {
       unsubscribe_token: String
       email_address: String
       phone_number: String
-      phone_number_subscribed: Boolean 
+      phone_number_subscribed: Boolean
       email_address_subscribed: Boolean
       password: String
       password_reset_token: String
@@ -121,7 +128,7 @@ module.exports = (logger) => {
       ADMIN
       USER
     }
-  
+
 
     type auth_data {
       token: String!

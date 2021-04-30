@@ -49,20 +49,28 @@ module.exports = async (logger) => {
     return milliseconds / 1000;
   };
 
-  module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status) => {
+  module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status, virtualMeetingId, callInInformation, emailBeforeMeeting, emailDuringMeeting, eComment, cityOfSanJoseMeeting, youtubeLink) => {
     logger.info('dbClient: createMeeting');
+    logger.info(virtualMeetingId);
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
     const queryString = `
-        INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status)
+        INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status, virtual_meeting_id, call_in_information, email_before_meeting, email_during_meeting, ecomment, city_of_san_jose_meeting, youtube_link)
         VALUES (
           $1,
           to_timestamp($2),
           $3,
           to_timestamp($4),
           to_timestamp($5),
-          $6
+          $6,
+          $7,
+          $8,
+          $9,
+          $10,
+          $11,
+          $12,
+          $13
         ) RETURNING id;`;
     return query(
       queryString,
@@ -72,7 +80,14 @@ module.exports = async (logger) => {
         virtualMeetingUrl,
         convertMsToSeconds(createdTimestamp),
         convertMsToSeconds(updatedTimestamp),
-        status
+        status,
+        virtualMeetingId,
+        callInInformation,
+        emailBeforeMeeting,
+        emailDuringMeeting,
+        eComment,
+        cityOfSanJoseMeeting,
+        youtubeLink
       ]
     );
   };
@@ -105,7 +120,7 @@ module.exports = async (logger) => {
           item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key,
           title_loc_key, parent_meeting_item_id)
         VALUES ($1, $2, to_timestamp($3), to_timestamp($4), to_timestamp($5), to_timestamp($6),
-          $7, $8, $9, $10, $11) 
+          $7, $8, $9, $10, $11)
         RETURNING id;`;
     return query(queryString,
       [
@@ -208,11 +223,11 @@ module.exports = async (logger) => {
             title_loc_key = $9,
             parent_meeting_item_id = $10
         WHERE id = $1`;
-    return query(queryString, 
+    return query(queryString,
       [
         id,
-        orderNumber, 
-        status, 
+        orderNumber,
+        status,
         convertMsToSeconds(itemStartTimestamp),
         convertMsToSeconds(itemEndTimestamp),
         convertMsToSeconds(updatedTimestamp),
@@ -225,7 +240,9 @@ module.exports = async (logger) => {
   };
 
   module.updateMeeting = async (id, status, meetingType, virtualMeetingUrl,
-    meetingStartTimestamp, meetingEndTimestamp) => {
+    meetingStartTimestamp, meetingEndTimestamp, virtualMeetingId,
+    callInInformation, emailBeforeMeeting, emailDuringMeeting, eComment,
+    cityOfSanJoseMeeting, youtubeLink) => {
     logger.info('dbClient: updateMeeting');
     const updatedTimestamp = Date.now();
     const queryString = `
@@ -236,8 +253,15 @@ module.exports = async (logger) => {
             virtual_meeting_url = $3,
             meeting_start_timestamp = to_timestamp($4),
             meeting_end_timestamp = to_timestamp($5),
-            updated_timestamp = to_timestamp($6)
-        WHERE id = $7`;
+            updated_timestamp = to_timestamp($6),
+            virtual_meeting_id = $7,
+            call_in_information = $8,
+            email_before_meeting = $9,
+            email_during_meeting = $10,
+            ecomment = $11,
+            city_of_san_jose_meeting = $12,
+            youtube_link = $13
+        WHERE id = $14`;
     return query(queryString,
       [
         status,
@@ -246,6 +270,13 @@ module.exports = async (logger) => {
         convertMsToSeconds(meetingStartTimestamp),
         convertMsToSeconds(meetingEndTimestamp),
         convertMsToSeconds(updatedTimestamp),
+        virtualMeetingId,
+        callInInformation,
+        emailBeforeMeeting,
+        emailDuringMeeting,
+        eComment,
+        cityOfSanJoseMeeting,
+        youtubeLink,
         id
       ]
     );
