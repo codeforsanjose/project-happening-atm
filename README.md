@@ -10,34 +10,29 @@ The City of San Jose is interested in this service, but this is a project that c
 
 # Tech Stack
 
-- Currently migrating deployed version to AWS
 - Frontend
   - React.js + hooks
   - SASS
 - Backend
   - [Node.js and npm](https://www.npmjs.com/get-npm)
-  - [Docker](https://www.docker.com/products/docker-desktop)
-  - [Postgres](https://wiki.postgresql.org/wiki/Homebrew)
-  - [GraphQL](https://graphql.org/learn/)
-  - [Apollo](https://www.apollographql.com/docs/)
-  - [Twilio](https://www.twilio.com/docs)
-  - [AWS Lambda](https://aws.amazon.com/lambda/)
-  - [AWS API Gateway](https://aws.amazon.com/api-gateway/)
-  - [AWS RDS](https://aws.amazon.com/rds/)
+  - [GraphQL](https://graphql.org/learn/) for backend.
+  - [Apollo](https://www.apollographql.com/docs/) for backend.
+  - [Postgres](https://wiki.postgresql.org/wiki/Homebrew) / [AWS RDS](https://aws.amazon.com/rds/) for database.
   - [AWS S3](https://aws.amazon.com/s3/)
-  - [AWS Amplify](https://aws.amazon.com/amplify/)
-  - [Terraform](https://www.terraform.io/)
+  - [Twilio](https://www.twilio.com/docs) for sending SMS.
+  - [AWS SES](https://aws.amazon.com/s3/) for sending emails.
+  - [Docker](https://www.docker.com/products/docker-desktop) to bring up development environment.
 
 # Resources
 
-- Slack Channel: #csj-city-meeting-participation
+- Slack Channel: #proj-happening-atm-eng
 - [Google Drive](https://drive.google.com/drive/folders/1LAloOcCLCf4Mi-ulkx1ofZw1iIip2T0s)
 - [Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
 - [List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
-# Local Development
+# Setup
 
-There are two ways to setup for local developemnt, with docker-compose (option 1) or directly (option 2).
+There are two ways to setup for local developemnt, with docker-compose (option 1) or directly (option 2). Option 1 is the recommened way to get started. It will bring up the app with a single docker command.
 
 ## Option 1
 
@@ -46,8 +41,7 @@ When running with docker-compose, a separate persistent volume is created for Po
 1. Go to the issues page to find something to work on:
    - https://github.com/codeforsanjose/gov-agenda-notifier/issues
 1. Install Docker: https://www.docker.com/products/docker-desktop
-1. Create a `.env` file in the `/backend/graphql_api/lambda` directory
-1. Make sure the file includes these keys:
+1. Create a `.env` file in the `/backend/graphql_api/lambda` directory with below contents:
 
    ```
    NODE_ENV=development
@@ -107,23 +101,23 @@ When running with docker-compose, a separate persistent volume is created for Po
 
 ## Option 2
 
+This method is deprecated as of 4/21 and will soon be removed. Please use Option 1.
+
 ### To Begin Work on the Frontend / Serve Frontend
 
-1. Go to the issues page to find something to work on:
-   - https://github.com/codeforsanjose/gov-agenda-notifier/issues
-2. Install [Node.js and npm](https://www.npmjs.com/get-npm)
-3. Install project dependencies:
+1. Install [Node.js and npm](https://www.npmjs.com/get-npm)
+1. Install project dependencies:
    1. Please disable any linting or formatting solutions you have running globally. We enforce the Airbnb style guide with ESLint.
-   2. Navigate to the `/frontend` directory
-   3. Run command:
+   1. Navigate to the `/frontend` directory
+   1. Run command:
       ```bash
       npm install
       ```
-   4. ESLint should be running as soon as you open a file with VS Code.
-4. Make modifications to the codebase to address the issue your working on
-5. See your changes:
+   1. ESLint should be running as soon as you open a file with VS Code.
+1. Make modifications to the codebase to address the issue your working on
+1. See your changes:
    1. Navigate to the `/frontend` directory
-   2. Run command:
+   1. Run command:
       ```bash
       npm start
       ```
@@ -155,8 +149,6 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
 
    1. Create a `.env` file in the `/backend/graphql_api/lambda` directory
 
-      1. Make sure the file includes these keys:
-
          ```
          NODE_ENV=development
 
@@ -186,7 +178,6 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
          ```
 
          - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
-         - Message Trace Ohrt on Slack if you need secret keys
 
    2. Install project dependencies:
       1. Navigate to the `/backend/graphql_api/lambda` directory
@@ -216,7 +207,17 @@ make rm-image
 
 After deleting the image with that command, follow steps "2. Initialize the local DB" again for your local DB to be back up and running.
 
-### Migrations
+# Architecture
+
+Frontend and backend are their own services. Frontend is in React and can be found in `frontend/` folder. To fetch data, frontend makes http requests to the backend using Graphql. Backend can be found in `backend/graphql_api/lambda` folder.
+
+Upload is its own express app and can be found in `backend/agenda_upload_service/`. The upload services will be brought up by docker-compose along with the other services. To upload, use the example file (`backend/agenda_upload_service/example.csv`), then do:
+
+    curl --form csvfile='@backend/agenda_upload_service/example.csv' -F csvfile=example.csv localhost:3002/upload
+
+Graphql requires you to write resolvers (`backend/graphql_api/lambda/graphql/resolvers`) which once registered can be called by the frontend. There's `backend/graphql_api/lambda/db/dbClient.js` which is used by the resolvers to connect to the database.
+
+## Migrations
 
 `postgres-migrations` library is used to manage migrations. `backend/graphql_api/lambda/migrations/` contains all the migrations with the exception of creating the database which still exists in `backend/docker_for_local_dev_db/init.sql`.
 
@@ -225,31 +226,24 @@ Migrations are run on each request in `backend/graphql_api/lambda/db/dbClient.js
 To create a new migration:
 
 1. Create a new file in `backend/graphql_api/lambda/migrations/` with incrementing integer prefix and few words describing the change, for example `002-add-link-to-meeting.sql`.
-2. Add your migration in that file.
-3. Migrations will be automatically run on next request to the backend.
+1. Add your migration in that file.
+1. Migrations will be automatically run on next request to the backend.
 
-# Infrastructure
+# Workflow
 
-Ideally, deployments are automatically handled by the CI/CD pipeline. This section of documentation facilitates manual infrastructure management, if required.
+1. Go to the issues page to find something to work on: https://github.com/codeforsanjose/gov-agenda-notifier/issues. If you're not sure, ping #proj-happening-atm-eng in slack for help.
+1. Create a branch off `develop` and make your commits.
+1. Open a PR to `develop` branch. Once merged, it'll autodeploy to the staging environment.
+1. To deploy to production, open a PR from `develop` to `main` branch. Once merged, it'll autodeploy to the production environment.
 
-## Local Configuration:
+NOTE: Do NOT open PRs directly to `main` branch without merging it in develop. If you want to deploy a specific commit to branch, you can do so, but open another PR to the `develop` branch so the two branches don't diverge.
 
-1.  Setup [AWS CLI](https://docs.aws.amazon.com/polly/latest/dg/setup-aws-cli.html)
-2.  Install [Terraform](https://www.terraform.io/)
-3.  `make` utility
-    - Additional configuration to use `make` is required on [Windows](https://vispud.blogspot.com/2019/02/how-to-run-makefile-in-windows.html)
+# Deploy
 
-## Manual Deployment Management:
+We are using Code for San Jose AWS account to deploy the app to staging and production urls. See `.github/workflows/aws.yml` for worflow. All the logic for bringing up the apps resides in the Code For San Jose terraform repo. The only exception are the Dockerfile in each of the services. This way we don't have to do any devops for this app and can rely on Code for San Jose's infrastructure.
 
-1.  Deploy infrastructure to AWS:
-    1. Navigate to the `/infrastructure` directory
-    2. Run command:
-       ```bash
-       make deploy
-       ```
-2.  Remove deployed infrastructure from AWS:
-    1. Navigate to the `/infrastructure` directory
-    2. Run command:
-       ```bash
-       make destroy
-       ```
+Staging url can be found at https://happening-atm-stage.codeforsanjose.org. Production is at TODO.
+
+# Help
+
+If you run into issues getting the above app to work, please post to Slack `#proj-happening-atm-eng` with a detailed bug report. If you have trouble running docker/docker-compose, please paste the results of `docker-compose -p gov-agenda-notifier down --remove-orphans` with your bug report.

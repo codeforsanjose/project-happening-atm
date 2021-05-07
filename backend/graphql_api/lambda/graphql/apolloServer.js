@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
 
-// This environment variable is only set in AWS. Local development shouldn't have it.
-const isLambda = process.env.IS_LAMBDA;
-const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
+const { ApolloServer, gql } = require('apollo-server');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
