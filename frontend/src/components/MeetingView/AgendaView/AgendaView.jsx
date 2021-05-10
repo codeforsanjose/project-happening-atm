@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
-import { useMutation } from '@apollo/client';
+import {
+  useQuery, useMutation, ApolloClient, createHttpLink, InMemoryCache,
+} from '@apollo/client';
 
 import {
   DndContext,
@@ -18,13 +20,14 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 
+import { setContext } from '@apollo/client/link/context';
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import { RenderedAgendaItem } from './AgendaItem';
-import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+import { UPDATE_MEETING_ITEM, LOGIN_LOCAL } from '../../../graphql/graphql';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -58,6 +61,24 @@ const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
   oNumStart: 1, // default first number in order
 };
+let token;
+
+function Login() {
+  const { loading, error, data } = useQuery(LOGIN_LOCAL, {
+    variables: {
+      email_address: 'a@abc.com',
+      password: '12345',
+    },
+  });
+
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
+
+  console.log(data.loginLocal.token);
+  token = data.loginLocal.token;
+  window.localStorage.setItem('token', token);
+  return (<input type="button" value={token} />);
+}
 
 const saveReOrder = (agendaGroups, updateMeetingItem) => {
   for (let parent = 0; parent < agendaGroups.length; parent += 1) {
@@ -376,6 +397,7 @@ function AgendaView({ meeting }) {
 
   return (
     <div className="AgendaView">
+      <Login />
       <Search />
 
       <button

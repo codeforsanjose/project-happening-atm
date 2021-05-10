@@ -11,7 +11,9 @@ import {
   ApolloProvider,
   useQuery,
   useMutation,
+  createHttpLink,
 } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 import './index.scss';
 
@@ -32,10 +34,37 @@ import AdminPaths from './constants/AdminPaths';
 
 import './i18n';
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+});
+console.log(localStorage.getItem('token'));
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
+console.log(parseJwt(localStorage.getItem('token')));
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+console.log(`http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`);
 
 function SampleQuery() {
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
