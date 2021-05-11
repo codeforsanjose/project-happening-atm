@@ -11,8 +11,9 @@ import {
   ApolloProvider,
   useQuery,
   useMutation,
+  createHttpLink,
 } from '@apollo/client';
-
+import { setContext } from '@apollo/client/link/context';
 import './index.scss';
 
 import classnames from 'classnames';
@@ -29,11 +30,46 @@ import * as serviceWorker from './serviceWorker';
 
 import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
-
+import LoginHandler from './components/LoginHandler/LoginHandler';
+import AuthRoute from './components/AuthRoute/AuthRoute';
 import './i18n';
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+});
+
+// this will decode a token into a usable json object
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
+//
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  const tokenObj = parseJwt(token);
+
+  // get the seconds since epoch
+  const seconds = new Date() / 1000;
+
+  // return the headers to the context so httpLink can read them
+  // token must have correct issuer, and not be expired
+
+  return {
+    headers: {
+      ...headers,
+      authorization: tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds ? `Bearer ${token}` : '',
+    },
+  };
+});
+console.log(authLink);
+console.log(localStorage.getItem('token'));
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -73,9 +109,9 @@ function App() {
         <div className={classnames('app-root')}>
           <Router>
             <Switch>
-              <Route exact path="/">
+              <AuthRoute exact path="/">
                 <MeetingListView />
-              </Route>
+              </AuthRoute>
               <Route path="/subscribe">
                 <SubscriptionPage />
               </Route>
@@ -84,6 +120,9 @@ function App() {
               </Route>
               <Route path="/confirm/:token/:action">
                 <EmailConfirmPage />
+              </Route>
+              <Route path="/login">
+                <LoginHandler />
               </Route>
 
               {/* <Route exact path="/participate/join">

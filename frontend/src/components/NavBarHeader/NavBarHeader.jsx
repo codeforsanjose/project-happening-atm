@@ -14,6 +14,7 @@ function Header({ toggled, handleToggle }) {
           <a href="/" rel="noopener noreferrer">
             {t('header.my-city-agenda')}
           </a>
+          <input className="sign-in" type="button" value="Sign Out" />
           <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
         <NavLinks toggled={toggled} className="nav-links" />
