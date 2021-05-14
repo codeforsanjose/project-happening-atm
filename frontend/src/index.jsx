@@ -102,7 +102,7 @@ function SubscriptionPage() {
 
 function App() {
   const { t } = useTranslation();
-  const [signedIn, setSignedIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(localStorage.getItem('happening-signed-in'));
 
   return (
     <React.StrictMode>

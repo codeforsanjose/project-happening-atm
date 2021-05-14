@@ -9,6 +9,7 @@ import {
 function AuthRoute({
   children, path, exact, signedIn,
 }) {
+  console.log(signedIn);
   return (
     <Route
       exact
