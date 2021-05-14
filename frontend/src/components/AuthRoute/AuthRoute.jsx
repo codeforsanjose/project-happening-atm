@@ -6,12 +6,14 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-function AuthRoute({ children, link }) {
-  console.log('AuthRoute');
+function AuthRoute({
+  children, path, exact, signedIn,
+}) {
   return (
     <Route
-      path={link}
-      render={({ location }) => (true ? (
+      exact
+      path={path}
+      render={({ location }) => (signedIn ? (
         children
       ) : (
         <Redirect

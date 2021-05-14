@@ -1,0 +1,99 @@
+.LoginHandler{
+    
+    width:100vw;
+    #loginHeader{
+        min-height:8rem;
+        width:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background-color:white;
+    }
+    #loginBody{
+        
+        background-color:#003366;
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        p{
+            text-align:center;
+            font-size:1.75rem;
+            line-height:2.625rem;
+            font-weight:700;
+            padding-top:2.5rem;
+            color:white;
+            margin-bottom:0;
+        }
+
+        #introTextSeperator{
+            width:24rem;
+            margin:1rem 0 1.5rem 0;
+        }
+        
+        #googleLogin{
+            margin-bottom:2rem;
+        }
+
+        .google-microsoft-login{
+            background-color:#D5BBA2;
+            width:30rem;
+            height:3rem;
+        }
+
+        #or{
+            display:flex;
+            flex-direction: row;
+            margin: 2rem 0 2rem 0;
+
+            span{
+                color:white;
+                margin:0 2rem 0 2rem;
+            }
+
+            hr{
+                width:9rem;
+                height:0rem;
+                background-color:white;
+            }
+        }
+
+        form{
+            display:flex;
+            flex-direction: column;
+            
+           
+
+            .localLogin{    
+                width:30rem;
+                height:3rem;
+            }
+            #localNameLogin{
+                margin-bottom:2rem;
+            }
+            .localLogin::placeholder{    
+                font-size:1rem;
+                padding-left:1rem;
+            }
+            #passAnchor{
+                color:white;
+                text-decoration: none;
+                font-size:1rem;
+                margin-top:1rem;
+            }
+            #submitButton{
+                width:15rem;
+                height:4rem;
+                border:none;
+                border-radius: 0.5rem;
+                font-size:1.5rem;
+                background-color:#D5BBA2;
+                margin-left:auto;
+                margin-top:1rem;
+                margin-right:auto;
+                font-weight:800;
+            }
+        }
+    }
+    
+}

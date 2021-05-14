@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -102,6 +102,7 @@ function SubscriptionPage() {
 
 function App() {
   const { t } = useTranslation();
+  const [signedIn, setSignedIn] = useState(false);
 
   return (
     <React.StrictMode>
@@ -109,20 +110,20 @@ function App() {
         <div className={classnames('app-root')}>
           <Router>
             <Switch>
-              <AuthRoute exact path="/">
+              <AuthRoute exact path="/" signedIn={signedIn}>
                 <MeetingListView />
               </AuthRoute>
-              <Route path="/subscribe">
+              <AuthRoute path="/subscribe" signedIn={signedIn}>
                 <SubscriptionPage />
-              </Route>
-              <Route path="/meeting/:id">
+              </AuthRoute>
+              <AuthRoute path="/meeting/:id" signedIn={signedIn}>
                 <MeetingView />
-              </Route>
-              <Route path="/confirm/:token/:action">
+              </AuthRoute>
+              <AuthRoute path="/confirm/:token/:action" signedIn={signedIn}>
                 <EmailConfirmPage />
-              </Route>
+              </AuthRoute>
               <Route path="/login">
-                <LoginHandler />
+                <LoginHandler setSignedIn={setSignedIn} />
               </Route>
 
               {/* <Route exact path="/participate/join">
@@ -138,19 +139,19 @@ function App() {
                   <ParticipatePage Component={ParticipateRequest} />
                 </Route> */}
 
-              <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
+              <AuthRoute path={`${AdminPaths.EDIT_MEETING}/:id`} signedIn={signedIn}>
                 <AdminView
                   headerText={t('meeting.actions.edit-info.label')}
                   component={() => <div>Placeholder for Edit Meeting</div>}
                 />
-              </Route>
+              </AuthRoute>
 
-              <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
+              <AuthRoute path={`${AdminPaths.EDIT_AGENDA}/:id`} signedIn={signedIn}>
                 <AdminView
                   headerText="Edit Agenda Items"
                   component={AgendaTable}
                 />
-              </Route>
+              </AuthRoute>
             </Switch>
           </Router>
           <Footer />
