@@ -33,7 +33,7 @@ import AdminPaths from './constants/AdminPaths';
 import './i18n';
 
 const client = new ApolloClient({
-  uri: `${process.env.REACT_APP_GRAPHQL_URL}`,
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
   cache: new InMemoryCache(),
 });
 
