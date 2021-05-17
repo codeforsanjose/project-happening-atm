@@ -34,6 +34,7 @@ import LoginHandler from './components/LoginHandler/LoginHandler';
 import AuthRoute from './components/AuthRoute/AuthRoute';
 import './i18n';
 
+<<<<<<< HEAD
 const httpLink = createHttpLink({
   uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
 });
@@ -70,6 +71,10 @@ console.log(authLink);
 console.log(localStorage.getItem('token'));
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
+=======
+const client = new ApolloClient({
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+>>>>>>> develop
   cache: new InMemoryCache(),
 });
 
