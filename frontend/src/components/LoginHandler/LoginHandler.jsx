@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './LoginHandler.scss';
-
+import {
+  useHistory,
+} from 'react-router-dom';
 import {
   useLazyQuery,
 } from '@apollo/client';
+
 import { LOGIN_LOCAL } from '../../graphql/graphql';
 
 const clickHandler = (login, error, userName, password) => {
@@ -27,11 +30,13 @@ function LoginHandler({ setSignedIn }) {
   const [login, { data, error }] = useLazyQuery(LOGIN_LOCAL);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   if (data) {
     window.localStorage.setItem('token', data.loginLocal.token);
-    window.localStorage.setItem('happening-signed-in', true);
+    window.localStorage.setItem('signedIn', true);
     setSignedIn(true);
+    history.push('/');
   }
   return (
     <div className="LoginHandler">

@@ -35,7 +35,7 @@ import AuthRoute from './components/AuthRoute/AuthRoute';
 import './i18n';
 
 const httpLink = createHttpLink({
-  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
 });
 
 // this will decode a token into a usable json object
@@ -62,12 +62,11 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds ? `Bearer ${token}` : '',
+      authorization: tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds ? `Bearer ${token}` : '',
     },
   };
 });
-console.log(authLink);
-console.log(localStorage.getItem('token'));
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
@@ -100,9 +99,17 @@ function SubscriptionPage() {
   );
 }
 
+const initializeSignIn = () => {
+  const seconds = new Date() / 1000;
+  const token = localStorage.getItem('token');
+  const tokenObj = parseJwt(token);
+
+  return tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds && window.localStorage.getItem('signedIn');
+};
+
 function App() {
   const { t } = useTranslation();
-  const [signedIn, setSignedIn] = useState(localStorage.getItem('happening-signed-in'));
+  const [signedIn, setSignedIn] = useState(initializeSignIn);
 
   return (
     <React.StrictMode>
