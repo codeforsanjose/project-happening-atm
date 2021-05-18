@@ -223,6 +223,19 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
+  module.deleteMeeting = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
+
+    let res;
+    try {
+      res = await dbClient.deleteMeeting(args.id);
+    } catch (e) {
+      logger.error(`deleteMeeting resolver error - dbClient.deleteMeeting: ${e}`);
+      throw e;
+    }
+    return res;
+  };
+
   module.createAccount = async (dbClient, args, context) => {
     let res;
     let user;
