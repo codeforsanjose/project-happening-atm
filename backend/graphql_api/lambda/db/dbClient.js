@@ -88,6 +88,12 @@ module.exports = async (logger) => {
     return query(queryString, [id]);
   };
 
+  module.deleteMeeting = async (id) => {
+    logger.info('dbClient: deleteMeeting');
+    const queryString = 'DELETE FROM meeting WHERE id = $1';
+    return query(queryString, [id]);
+  };
+
   module.createMeetingItem = async (meetingId, orderNumber, itemStartTimestamp, itemEndTimestamp,
     status, contentCategories, descriptionLocKey, titleLocKey, parentMeetingItemId) => {
     logger.info('dbClient: createMeetingItem');
