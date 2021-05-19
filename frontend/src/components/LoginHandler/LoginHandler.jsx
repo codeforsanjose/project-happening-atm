@@ -28,10 +28,6 @@ const clickHandler = (login, error, userName, password) => {
   });
 };
 
-const hoverHandler = (e) => {
-  console.log(e.target);
-};
-
 // setSignedIn is the state setter for the signedIn state variable
 function LoginHandler({ setSignedIn }) {
   const [login, { data, error }] = useLazyQuery(LOGIN_LOCAL);
@@ -58,7 +54,7 @@ function LoginHandler({ setSignedIn }) {
 
           <hr id="introTextSeperator" />
 
-          <div className="google-microsoft-login" id="googleLogin" onMouseOver={hoverHandler} onFocus={hoverHandler}>
+          <div className="google-microsoft-login" id="googleLogin">
             <img
               src={googleIcon}
               alt="googleLogin"

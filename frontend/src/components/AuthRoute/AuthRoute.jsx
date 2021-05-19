@@ -1,15 +1,12 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
-  Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
 
 function AuthRoute({
-  children, path, exact, signedIn,
+  children, path, signedIn,
 }) {
-  console.log(signedIn);
   return (
     <Route
       exact

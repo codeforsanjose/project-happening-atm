@@ -1,12 +1,6 @@
 .LoginHandler{
     font-family: 'Poppins', sans-serif;
 
-    //animations
-    @keyframes slideLeft {
-        0% {align-self: baseline;}
-        100% {width:28rem; align-self:baseline;}
-      }
-
     width:100vw;
     #loginHeader{
         min-height:8rem;
@@ -58,6 +52,9 @@
                 align-items: center;
                 align-self:baseline;
                 margin-left:3.7rem; 
+                transition: width 0.2s;
+                border-radius:0.5rem;
+                cursor:pointer;
                 img{
                     width:2.2rem;
                     border-radius:50%;
@@ -71,9 +68,9 @@
             }
 
             .google-microsoft-login:hover{
-                animation-name: slideLeft;
-                animation-duration: 0.2s;
-                animation-fill-mode: forwards;
+                width:28rem;
+                transition: width 0.2s;
+                background:#CC9966;
             }
 
             #or{
