@@ -36,7 +36,7 @@ import ThemeContext from './components/ThemeContext/ThemeContext';
 import './i18n';
 
 const httpLink = createHttpLink({
-  uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
 });
 
 // this will decode a token into a usable json object, allows the access of the json properties
