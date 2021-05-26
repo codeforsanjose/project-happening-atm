@@ -1,7 +1,5 @@
 import { gql } from '@apollo/client';
 
-// agenda items below
-// getters
 export const GET_ALL_MEETINGS = gql`
   query {
     getAllMeetings {
