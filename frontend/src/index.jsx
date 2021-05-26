@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -14,7 +14,6 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
 import './index.scss';
 
 import classnames from 'classnames';
@@ -31,13 +30,16 @@ import * as serviceWorker from './serviceWorker';
 
 import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
-
+import LoginHandler from './components/LoginHandler/LoginHandler';
+import AuthRoute from './components/AuthRoute/AuthRoute';
+import ThemeContext from './components/ThemeContext/ThemeContext';
 import './i18n';
 
 const httpLink = createHttpLink({
-  uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
 });
-console.log(localStorage.getItem('token'));
+
+// this will decode a token into a usable json object, allows the access of the json properties
 const parseJwt = (token) => {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -46,16 +48,22 @@ const parseJwt = (token) => {
   }
 };
 
-console.log(parseJwt(localStorage.getItem('token')));
+//
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token');
+  const tokenObj = parseJwt(token);
+
+  // get the seconds since epoch
+  const seconds = new Date() / 1000;
+
   // return the headers to the context so httpLink can read them
+  // token must have correct issuer, and not be expired
 
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds ? `Bearer ${token}` : '',
     },
   };
 });
@@ -64,7 +72,6 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-console.log(`http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`);
 
 function SampleQuery() {
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
@@ -93,29 +100,45 @@ function SubscriptionPage() {
   );
 }
 
+const initializeSignIn = () => {
+  const seconds = new Date() / 1000;
+  const token = localStorage.getItem('token');
+  const tokenObj = parseJwt(token);
+  // provides verification to the front-end the login status
+  const loggedIn = tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds && window.localStorage.getItem('signedIn');
+  window.localStorage.setItem('signedIn', loggedIn);
+
+  return loggedIn;
+};
+
 function App() {
   const { t } = useTranslation();
+  const [signedIn, setSignedIn] = useState(initializeSignIn);
 
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <div className={classnames('app-root')}>
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <MeetingListView />
-              </Route>
-              <Route path="/subscribe">
-                <SubscriptionPage />
-              </Route>
-              <Route path="/meeting/:id">
-                <MeetingView />
-              </Route>
-              <Route path="/confirm/:token/:action">
-                <EmailConfirmPage />
-              </Route>
+        <ThemeContext.Provider value={{ setSignedIn, signedIn }}>
+          <div className={classnames('app-root')}>
+            <Router>
+              <Switch>
+                <AuthRoute exact path="/" signedIn={signedIn}>
+                  <MeetingListView />
+                </AuthRoute>
+                <AuthRoute path="/subscribe" signedIn={signedIn}>
+                  <SubscriptionPage />
+                </AuthRoute>
+                <AuthRoute path="/meeting/:id" signedIn={signedIn}>
+                  <MeetingView />
+                </AuthRoute>
+                <AuthRoute path="/confirm/:token/:action" signedIn={signedIn}>
+                  <EmailConfirmPage />
+                </AuthRoute>
+                <Route path="/login">
+                  <LoginHandler />
+                </Route>
 
-              {/* <Route exact path="/participate/join">
+                {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
                 </Route>
                 <Route exact path="/participate/watch">
@@ -128,24 +151,25 @@ function App() {
                   <ParticipatePage Component={ParticipateRequest} />
                 </Route> */}
 
-              <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
-                <AdminView
-                  headerText={t('meeting.actions.edit-info.label')}
-                  component={() => <div>Placeholder for Edit Meeting</div>}
-                />
-              </Route>
+                <AuthRoute path={`${AdminPaths.EDIT_MEETING}/:id`} signedIn={signedIn}>
+                  <AdminView
+                    headerText={t('meeting.actions.edit-info.label')}
+                    component={() => <div>Placeholder for Edit Meeting</div>}
+                  />
+                </AuthRoute>
 
-              <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
-                <AdminView
-                  headerText="Edit Agenda Items"
-                  component={AgendaTable}
-                />
-              </Route>
-            </Switch>
-          </Router>
-          <Footer />
-          <SampleQuery />
-        </div>
+                <AuthRoute path={`${AdminPaths.EDIT_AGENDA}/:id`} signedIn={signedIn}>
+                  <AdminView
+                    headerText="Edit Agenda Items"
+                    component={AgendaTable}
+                  />
+                </AuthRoute>
+              </Switch>
+            </Router>
+            <Footer />
+            <SampleQuery />
+          </div>
+        </ThemeContext.Provider>
       </ApolloProvider>
     </React.StrictMode>
   );

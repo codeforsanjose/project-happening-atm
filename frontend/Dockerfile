@@ -1,5 +1,7 @@
 FROM node:14 as builder
 
+ARG REACT_APP_GRAPHQL_URL
+
 WORKDIR /app
 
 COPY package*.json /app/

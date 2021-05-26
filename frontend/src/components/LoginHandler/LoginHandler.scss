@@ -1,0 +1,139 @@
+.LoginHandler{
+    font-family: 'Poppins', sans-serif;
+
+    width:100vw;
+    #loginHeader{
+        min-height:8rem;
+        width:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background-color:white;
+    }
+    #loginBody{
+        
+        background-color:#003366;
+        width:100%;
+        
+        .innerWrapper{
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            width:37rem;
+            margin-left:auto;
+            margin-right:auto;
+            
+            p{
+                text-align:center;
+                font-size:1.75rem;
+                line-height:2.625rem;
+                font-weight:700;
+                padding-top:2.5rem;
+                color:white;
+                margin-bottom:0;
+            }
+
+            #introTextSeperator{
+                width:24rem;
+                margin:1rem 0 1.5rem 0;
+            }
+            
+            #googleLogin{
+                margin-bottom:2rem;
+            }
+
+            .google-microsoft-login{
+                background-color:#D5BBA2;
+                width:30rem;
+                height:3rem;
+                box-sizing: border-box;
+                padding-left:1.2rem;
+                display:flex;
+                align-items: center;
+                align-self:baseline;
+                margin-left:3.7rem; 
+                transition: width 0.2s;
+                border-radius:0.5rem;
+                cursor:pointer;
+                img{
+                    width:2.2rem;
+                    border-radius:50%;
+                    border-width:1px;
+                }
+                span{
+                    margin-left:1.5rem;
+                    font-weight:700;
+                    font-size:1.2rem;
+                }
+            }
+
+            .google-microsoft-login:hover{
+                width:28rem;
+                transition: width 0.2s;
+                background:#CC9966;
+            }
+
+            #or{
+                display:flex;
+                flex-direction: row;
+                margin: 2rem 0 2rem 0;
+
+                span{
+                    color:white;
+                    margin:0 2rem 0 2rem;
+                }
+
+                hr{
+                    width:9rem;
+                    height:0rem;
+                    background-color:white;
+                }
+            }
+
+            form{
+                display:flex;
+                flex-direction: column;
+                
+                .inputError{
+                    font-size:1rem;
+                    margin-top:0;
+                    padding-top:0;
+                    color:#ff5f54;
+                }
+
+                .localLogin{    
+                    width:30rem;
+                    height:3rem;
+                }
+                #localNameLogin{
+                    margin-bottom:2rem;
+                }
+                .localLogin{    
+                    box-sizing:border-box;
+                    padding-left:1rem;
+                    font-size:1rem; 
+                }
+                #passAnchor{
+                    color:white;
+                    text-decoration: none;
+                    font-size:1rem;
+                    margin-top:1rem;
+                }
+                #submitButton{
+                    width:15rem;
+                    height:4rem;
+                    border:none;
+                    border-radius: 0.5rem;
+                    font-size:1.5rem;
+                    background-color:#D5BBA2;
+                    margin-left:auto;
+                    margin-top:1rem;
+                    margin-right:auto;
+                    font-weight:800;
+                    cursor:pointer;
+                }
+            }
+        }
+    }
+    
+}
