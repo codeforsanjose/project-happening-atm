@@ -36,7 +36,7 @@ module.exports = (logger) => {
     }
 
     type Mutation {
-        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String, virtual_meeting_id: String!, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
+        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String, virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
         updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String, , virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
 
         createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
