@@ -14,13 +14,6 @@ import ThemeContext from '../ThemeContext/ThemeContext';
 
 // This function makes the query call to perform the login
 const clickHandler = (login, error, userName, password) => {
-  /* login({
-    variables: {
-      email_address: 'a@abc.com',
-      password: '12345',
-    },
-  }); */
-
   login({
     variables: {
       email_address: userName,
