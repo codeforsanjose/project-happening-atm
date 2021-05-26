@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-# gov-agenda-notifier
+# proj-happening-atm
 
 It's common for city council, planning and commision meetings to only list one start time. The agenda items aren't scheduled for specific times because they do not know how long it will take to discuss each item. This leaves attendees wondering when they'll be able to comment on the agenda item they're interested in.
 
@@ -41,7 +41,7 @@ When running with docker-compose, a separate persistent volume is created for Po
 1. Go to the issues page to find something to work on:
    - https://github.com/codeforsanjose/gov-agenda-notifier/issues
 1. Install Docker: https://www.docker.com/products/docker-desktop
-1. Create a `.env` file in the `/backend/graphql_api/lambda` directory with below contents:
+1. Create a `.env` file in the `/backend/graphql_api/lambda` and paste the following in that file without changing anything (you don't need the values to get started):
 
    ```
    NODE_ENV=development
@@ -63,19 +63,17 @@ When running with docker-compose, a separate persistent volume is created for Po
    FROM_ADDRESS=
    SEND_EMAIL=false
 
-   JWT_SECRET = NEED-TO_CREATE-SECRET-KEY
-   JWT_ISSUER = ADD-ISSUER-DOMAIN
-   JWT_AUDIENCE = ADD-AUDIENCE
+   JWT_SECRET=NEED-TO_CREATE-SECRET-KEY
+   JWT_ISSUER=ADD-ISSUER-DOMAIN
+   JWT_AUDIENCE=ADD-AUDIENCE
 
-   GOOGLE_CLIENT_ID = NEED-TO-REGISTER-APP
-   GOOGLE_CLIENT_SECRET = NEED-TO-REGISTER-APP
+   GOOGLE_CLIENT_ID=NEED-TO-REGISTER-APP
+   GOOGLE_CLIENT_SECRET=NEED-TO-REGISTER-APP
    ```
 
    - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
-   - Message Trace Ohrt on Slack if you need secret keys
 
-1. Create a `.env` file in the `backend/agenda_upload_service/lambda/` directory
-1. Make sure the file includes these keys:
+1. Create a `.env` file in the `backend/agenda_upload_service/lambda` and paste the following in that file without changing anything (you don't need the values to get started):
 
    ```
    NODE_ENV=development
@@ -228,6 +226,8 @@ To create a new migration:
 1. Create a new file in `backend/graphql_api/lambda/migrations/` with incrementing integer prefix and few words describing the change, for example `002-add-link-to-meeting.sql`.
 1. Add your migration in that file.
 1. Migrations will be automatically run on next request to the backend.
+
+When adding or updating fields that are used in the Graphql mutations, be sure to update `backend/graphql_api/lambda/graphql/apolloServer.js`.
 
 # Workflow
 
