@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginHandler.scss';
 import {
-  useHistory,
+  Redirect,
 } from 'react-router-dom';
 import {
   useLazyQuery,
@@ -10,8 +10,9 @@ import {
 import { LOGIN_LOCAL } from '../../graphql/graphql';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
-// constants
+import ThemeContext from '../ThemeContext/ThemeContext';
 
+// This function makes the query call to perform the login
 const clickHandler = (login, error, userName, password) => {
   /* login({
     variables: {
@@ -28,21 +29,24 @@ const clickHandler = (login, error, userName, password) => {
   });
 };
 
-// setSignedIn is the state setter for the signedIn state variable
-function LoginHandler({ setSignedIn }) {
+function LoginHandler() {
   const [login, { data, error }] = useLazyQuery(LOGIN_LOCAL);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const contextType = React.useContext(ThemeContext); // holds setSignIn, and signIn props
 
-  if (data) {
-    window.localStorage.setItem('token', data.loginLocal.token);
-    window.localStorage.setItem('signedIn', true);
-    setSignedIn(true);
-    history.push('/');
-  }
+  useEffect(() => {
+    // Successful sign in
+    if (data) {
+      window.localStorage.setItem('token', data.loginLocal.token);
+      window.localStorage.setItem('signedIn', true);
+      contextType.setSignedIn(true);
+    }
+  }, [data, contextType]);
+
   return (
     <div className="LoginHandler">
+      {contextType.signedIn ? <Redirect to="/" /> : ''}
       <div id="loginHeader">CITY LOGO</div>
       <div id="loginBody">
         <div className="innerWrapper">

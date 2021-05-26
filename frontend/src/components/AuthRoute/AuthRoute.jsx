@@ -4,6 +4,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 
+// This component redirects to the login page when the user is logged out
 function AuthRoute({
   children, path, signedIn,
 }) {

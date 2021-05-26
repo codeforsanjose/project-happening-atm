@@ -32,13 +32,14 @@ import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/gra
 import AdminPaths from './constants/AdminPaths';
 import LoginHandler from './components/LoginHandler/LoginHandler';
 import AuthRoute from './components/AuthRoute/AuthRoute';
+import ThemeContext from './components/ThemeContext/ThemeContext';
 import './i18n';
 
 const httpLink = createHttpLink({
   uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
 });
 
-// this will decode a token into a usable json object
+// this will decode a token into a usable json object, allows the access of the json properties
 const parseJwt = (token) => {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -103,8 +104,11 @@ const initializeSignIn = () => {
   const seconds = new Date() / 1000;
   const token = localStorage.getItem('token');
   const tokenObj = parseJwt(token);
+  // provides verification to the front-end the login status
+  const loggedIn = tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds && window.localStorage.getItem('signedIn');
+  window.localStorage.setItem('signedIn', loggedIn);
 
-  return tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds && window.localStorage.getItem('signedIn');
+  return loggedIn;
 };
 
 function App() {
@@ -114,26 +118,27 @@ function App() {
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <div className={classnames('app-root')}>
-          <Router>
-            <Switch>
-              <AuthRoute exact path="/" signedIn={signedIn}>
-                <MeetingListView />
-              </AuthRoute>
-              <AuthRoute path="/subscribe" signedIn={signedIn}>
-                <SubscriptionPage />
-              </AuthRoute>
-              <AuthRoute path="/meeting/:id" signedIn={signedIn}>
-                <MeetingView />
-              </AuthRoute>
-              <AuthRoute path="/confirm/:token/:action" signedIn={signedIn}>
-                <EmailConfirmPage />
-              </AuthRoute>
-              <Route path="/login">
-                <LoginHandler setSignedIn={setSignedIn} />
-              </Route>
+        <ThemeContext.Provider value={{ setSignedIn, signedIn }}>
+          <div className={classnames('app-root')}>
+            <Router>
+              <Switch>
+                <AuthRoute exact path="/" signedIn={signedIn}>
+                  <MeetingListView />
+                </AuthRoute>
+                <AuthRoute path="/subscribe" signedIn={signedIn}>
+                  <SubscriptionPage />
+                </AuthRoute>
+                <AuthRoute path="/meeting/:id" signedIn={signedIn}>
+                  <MeetingView />
+                </AuthRoute>
+                <AuthRoute path="/confirm/:token/:action" signedIn={signedIn}>
+                  <EmailConfirmPage />
+                </AuthRoute>
+                <Route path="/login">
+                  <LoginHandler />
+                </Route>
 
-              {/* <Route exact path="/participate/join">
+                {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
                 </Route>
                 <Route exact path="/participate/watch">
@@ -146,24 +151,25 @@ function App() {
                   <ParticipatePage Component={ParticipateRequest} />
                 </Route> */}
 
-              <AuthRoute path={`${AdminPaths.EDIT_MEETING}/:id`} signedIn={signedIn}>
-                <AdminView
-                  headerText={t('meeting.actions.edit-info.label')}
-                  component={() => <div>Placeholder for Edit Meeting</div>}
-                />
-              </AuthRoute>
+                <AuthRoute path={`${AdminPaths.EDIT_MEETING}/:id`} signedIn={signedIn}>
+                  <AdminView
+                    headerText={t('meeting.actions.edit-info.label')}
+                    component={() => <div>Placeholder for Edit Meeting</div>}
+                  />
+                </AuthRoute>
 
-              <AuthRoute path={`${AdminPaths.EDIT_AGENDA}/:id`} signedIn={signedIn}>
-                <AdminView
-                  headerText="Edit Agenda Items"
-                  component={AgendaTable}
-                />
-              </AuthRoute>
-            </Switch>
-          </Router>
-          <Footer />
-          <SampleQuery />
-        </div>
+                <AuthRoute path={`${AdminPaths.EDIT_AGENDA}/:id`} signedIn={signedIn}>
+                  <AdminView
+                    headerText="Edit Agenda Items"
+                    component={AgendaTable}
+                  />
+                </AuthRoute>
+              </Switch>
+            </Router>
+            <Footer />
+            <SampleQuery />
+          </div>
+        </ThemeContext.Provider>
       </ApolloProvider>
     </React.StrictMode>
   );
