@@ -33,12 +33,12 @@ function MeetingListItem({ item }) {
   const time = toTimeString(meeting_start_timestamp);
   const isInProgress = status === 'IN PROGRESS';
 
-  // Determine which set of item links to use based on meeting status
-  const isAdmin = true; // CHANGE
+  // Determine which set of item links to use based on meeting status and role
+  // TODO: Integrate with auth
+  // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
+  const isAdmin = true;
   const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
   const MeetingItemLinks = isAdmin ? AdminMeetingItemLinks : PublicLinks;
-  // TODO: Implement admin links
-  // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
 
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>

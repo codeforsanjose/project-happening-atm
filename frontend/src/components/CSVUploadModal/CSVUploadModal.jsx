@@ -98,7 +98,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
       <SuccessModal
         isOpen={isOpen}
         closeModal={clearAndCloseModal}
-        headerText='Agenda Successfully Uploaded!'
+        headerText="Agenda Successfully Uploaded!"
         confirmModal={redirect ? redirectToMeeting : clearAndCloseModal}
         confirmText={redirect ? 'Go to Meeting' : 'Close'}
       />

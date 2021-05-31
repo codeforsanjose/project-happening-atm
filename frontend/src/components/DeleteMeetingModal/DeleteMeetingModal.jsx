@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+import React, { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useMutation } from '@apollo/client';
-import './DeleteMeetingModal.scss';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import { CancelIcon } from '../../utils/_icons';
 import { DELETE_MEETING } from '../../graphql/graphql';
+import './DeleteMeetingModal.scss';
 
 import SuccessModal from '../SuccessModal/SuccessModal';
 import Spinner from '../Spinner/Spinner';
@@ -27,27 +29,36 @@ import Spinner from '../Spinner/Spinner';
  *      Boolean indicating if success modal is shown
  */
 
-function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
+function DeleteMeetingModal({
+  isOpen,
+  closeModal,
+  meetingId,
+  startTime,
+}) {
+  const history = useHistory();
   const [deleteMeeting, { loading }] = useMutation(DELETE_MEETING);
   const [deleteSuccessful, setDeleteSuccessful] = useState(false);
 
   const date = toDateString(startTime);
   const time = toTimeString(startTime);
 
-  function clearAndCloseModal() {
+  const clearAndCloseModal = useCallback(() => {
     setDeleteSuccessful(false);
     closeModal();
-  }
+  }, [closeModal]);
 
-  async function handleDelete() {
+  const refresh = useCallback(() => {
+    history.go(0);
+  }, [history]);
+
+  const handleDelete = useCallback(async () => {
     try {
-      await deleteMeeting({variables: { id: meetingId }});
-      // delete from state
+      await deleteMeeting({ variables: { id: meetingId } });
       setDeleteSuccessful(true);
     } catch (e) {
       console.error(e);
     }
-  }
+  }, [deleteMeeting, meetingId]);
 
   Modal.setAppElement('#root');
 
@@ -55,10 +66,10 @@ function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
     return (
       <SuccessModal
         isOpen={isOpen}
-        closeModal={clearAndCloseModal}
+        closeModal={refresh}
         headerText="Meeting Successfully Deleted!"
-        confirmModal={clearAndCloseModal}
-        confirmText="Close"
+        confirmModal={refresh}
+        confirmText="Return"
       />
     );
   }
