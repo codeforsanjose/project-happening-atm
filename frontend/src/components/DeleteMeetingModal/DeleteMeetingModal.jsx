@@ -1,19 +1,17 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import Modal from 'react-modal';
+import { useMutation } from '@apollo/client';
 import './DeleteMeetingModal.scss';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
-import uploadCSV from '../../utils/uploadHelper';
+import { CancelIcon } from '../../utils/_icons';
+import { DELETE_MEETING } from '../../graphql/graphql';
 
 import SuccessModal from '../SuccessModal/SuccessModal';
 import Spinner from '../Spinner/Spinner';
-import { PublishIcon, CancelIcon } from '../../utils/_icons';
-import { DELETE_MEETING } from '../../graphql/graphql';
 
 /**
- * A modal to handle CSV Uploads.
- * Use the custom 'useCSVUpload' hook when implementing CSV uploads
+ * A modal to meeting deletion.
+ * Use the custom 'useDeleteModal' hook when implementing deletion
  * on a page.
  *
  * props:
@@ -25,19 +23,12 @@ import { DELETE_MEETING } from '../../graphql/graphql';
  *      Number used to upload to specific meeting or create a new one if null
  *
  * state:
- *    selectedFile
- *      Current file selected by the file input
- *    isLoading
- *      Boolean loading state when uploading a file
- *    showConfirm
- *      Boolean indicating if confirmation modal is shown
  *    deleteSuccessful
  *      Boolean indicating if success modal is shown
  */
 
 function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
-  // const [deleteMeeting, { loading, error, data }] = useMutation(DELETE_MEETING);
-  const [isLoading, setIsLoading] = useState(false);
+  const [deleteMeeting, { loading, error, data }] = useMutation(DELETE_MEETING);
   const [deleteSuccessful, setDeleteSuccessful] = useState(false);
 
   const date = toDateString(startTime);
@@ -50,20 +41,13 @@ function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
 
   async function handleDelete() {
     try {
-      setIsLoading(true);
-
-      // deleteMeeting(meetingId);
-
+      await deleteMeeting({variables: { id: meetingId }});
+      // delete from state
       setDeleteSuccessful(true);
     } catch (e) {
       console.error(e);
-    } finally {
-      setIsLoading(false);
     }
   }
-
-  const deleteButtonText = isLoading
-    ? 'Deleting' : 'Delete';
 
   Modal.setAppElement('#root');
 
@@ -101,8 +85,8 @@ function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
             className="delete-button modal-button"
             onClick={handleDelete}
           >
-            {isLoading && <Spinner />}
-            {deleteButtonText}
+            {loading && <Spinner />}
+            {loading ? 'Deleting' : 'Delete'}
           </button>
 
           <button

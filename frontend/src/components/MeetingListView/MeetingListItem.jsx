@@ -7,6 +7,7 @@ import './MeetingListItem.scss';
 
 // Component imports
 import {
+  AdminMeetingItemLinks,
   PastMeetingItemLinks,
   PendingMeetingItemLinks,
 } from './MeetingListItemLinks';
@@ -33,7 +34,9 @@ function MeetingListItem({ item }) {
   const isInProgress = status === 'IN PROGRESS';
 
   // Determine which set of item links to use based on meeting status
-  const MeetingItemLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  const isAdmin = true; // CHANGE
+  const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  const MeetingItemLinks = isAdmin ? AdminMeetingItemLinks : PublicLinks;
   // TODO: Implement admin links
   // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
 
@@ -48,7 +51,7 @@ function MeetingListItem({ item }) {
       <Link to={`meeting/${id}`} className="meeting-time">
         <div>{time}</div>
       </Link>
-      <MeetingItemLinks meetingId={id} isInProgress={isInProgress} />
+      <MeetingItemLinks meetingId={id} isInProgress={isInProgress} meeting={item} />
     </div>
   );
 }
