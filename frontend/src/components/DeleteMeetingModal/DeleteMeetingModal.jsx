@@ -22,7 +22,7 @@ import Spinner from '../Spinner/Spinner';
  *    closeModal
  *      Callback function to close the modal
  *    meetingId
- *      Number used to upload to specific meeting or create a new one if null
+ *      Id number used to delete the specific meeting
  *    startTime
  *      Timestamp of meeting start time used for display
  *

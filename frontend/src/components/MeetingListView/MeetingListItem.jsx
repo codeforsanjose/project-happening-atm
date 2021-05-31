@@ -36,7 +36,7 @@ function MeetingListItem({ item }) {
   // Determine which set of item links to use based on meeting status and role
   // TODO: Integrate with auth to determine user role
   // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
-  const role = 'USER';
+  const role = 'USER'; // TEMP
   const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
   const MeetingItemLinks = role === 'ADMIN' ? AdminMeetingItemLinks : PublicLinks;
 
