@@ -17,7 +17,7 @@ import {
 
 function AdminMeetingItemLinks({ meeting }) {
   const { t } = useTranslation();
-  const [openModal, renderUploadModal] = useCSVUpload(meeting.id);
+  const [openUploadModal, UploadModal] = useCSVUpload(meeting);
   const [openDeleteModal, DeleteModal] = useDeleteMeeting(meeting);
 
   return (
@@ -26,7 +26,7 @@ function AdminMeetingItemLinks({ meeting }) {
         <button
           type="button"
           className="link"
-          onClick={openModal}
+          onClick={openUploadModal}
         >
           <ViewAgendaIcon />
           <p>{t('meeting.actions.upload-new-agenda')}</p>
@@ -43,7 +43,7 @@ function AdminMeetingItemLinks({ meeting }) {
         </button>
       </Link>
 
-      {renderUploadModal()}
+      <UploadModal />
       <DeleteModal />
     </div>
   );
@@ -70,7 +70,7 @@ function PastMeetingItemLinks() {
   );
 }
 
-function PendingMeetingItemLinks({ meetingId, isInProgress }) {
+function PendingMeetingItemLinks({ meeting, isInProgress }) {
   const { t } = useTranslation();
 
   return (
@@ -81,7 +81,7 @@ function PendingMeetingItemLinks({ meetingId, isInProgress }) {
           <p>{t('meeting.list.calendar-export.button')}</p>
         </div>
       </Link>
-      <Link to={`meeting/${meetingId}`}>
+      <Link to={`meeting/${meeting.id}`}>
         <div className="link">
           <ViewAgendaIcon />
           <p>{t('meeting.list.agenda.button')}</p>

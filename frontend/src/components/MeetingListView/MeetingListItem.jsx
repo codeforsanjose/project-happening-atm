@@ -51,7 +51,7 @@ function MeetingListItem({ item }) {
       <Link to={`meeting/${id}`} className="meeting-time">
         <div>{time}</div>
       </Link>
-      <MeetingItemLinks meetingId={id} isInProgress={isInProgress} meeting={item} />
+      <MeetingItemLinks meeting={item} isInProgress={isInProgress} />
     </div>
   );
 }

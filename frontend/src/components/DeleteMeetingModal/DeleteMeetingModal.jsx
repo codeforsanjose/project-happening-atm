@@ -28,7 +28,7 @@ import Spinner from '../Spinner/Spinner';
  */
 
 function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
-  const [deleteMeeting, { loading, error, data }] = useMutation(DELETE_MEETING);
+  const [deleteMeeting, { loading }] = useMutation(DELETE_MEETING);
   const [deleteSuccessful, setDeleteSuccessful] = useState(false);
 
   const date = toDateString(startTime);

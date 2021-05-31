@@ -3,15 +3,13 @@ import React, { useState } from 'react';
 import DeleteMeetingModal from '../components/DeleteMeetingModal/DeleteMeetingModal';
 
 /**
- * Used to implement CSV Upload on a page.
- * Pass in a meeting id to specify a meeting to upload to,
- * or leave as null to upload to a new meeting.
+ * Used to implement meeting deletion on a page.
  *
  * Returns:
  *  openModal
- *    Callback function to show the CSV upload modal
- *  renderUploadModal
- *    Function to render the component
+ *    Callback function to show the delete modal
+ *  DeleteModal
+ *    Modal component
  */
 
 const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
