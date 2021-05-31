@@ -16,7 +16,7 @@ function LoginHandler() {
   const [login, { data, error }] = useLazyQuery(LOGIN_LOCAL);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const contextType = React.useContext(LoginContext); // holds setSignIn, and signIn props
+  const loginContext = React.useContext(LoginContext); // holds setSignIn, and signIn props
 
   // This function makes the query call to perform the login
   const clickHandler = () => {
@@ -33,13 +33,13 @@ function LoginHandler() {
     if (data) {
       window.localStorage.setItem('token', data.loginLocal.token);
       window.localStorage.setItem('signedIn', true);
-      contextType.setSignedIn(true);
+      loginContext.setSignedIn(true);
     }
-  }, [data, contextType]);
+  }, [data, loginContext]);
 
   return (
     <div className="LoginHandler">
-      {contextType.signedIn ? <Redirect to="/" /> : ''}
+      {loginContext.signedIn ? <Redirect to="/" /> : ''}
       <div className="loginHeader">CITY LOGO</div>
       <div className="loginBody">
         <div className="innerWrapper">

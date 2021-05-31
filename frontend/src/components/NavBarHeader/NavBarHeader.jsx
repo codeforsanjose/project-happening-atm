@@ -10,18 +10,18 @@ import LoginContext from '../LoginContext/LoginContext';
 
 function Header({ toggled, handleToggle }) {
   const { t } = useTranslation();
-  const contextType = React.useContext(LoginContext);
+  const loginContext = React.useContext(LoginContext);
 
   const signOut = () => {
     window.localStorage.setItem('token', '');
     window.localStorage.setItem('signedIn', false);
-    contextType.setSignedIn(false);
+    loginContext.setSignedIn(false);
   };
 
   return (
     <header>
       <nav className="no-select">
-        {contextType.signedIn ? '' : <Redirect to="/login" /> }
+        {loginContext.signedIn ? '' : <Redirect to="/login" /> }
         <div className="nav-bar">
           <a href="/" rel="noopener noreferrer">
             {t('header.my-city-agenda')}
