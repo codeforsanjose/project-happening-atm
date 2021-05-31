@@ -32,11 +32,11 @@ import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/gra
 import AdminPaths from './constants/AdminPaths';
 import LoginHandler from './components/LoginHandler/LoginHandler';
 import AuthRoute from './components/AuthRoute/AuthRoute';
-import ThemeContext from './components/ThemeContext/ThemeContext';
+import LoginContext from './components/LoginContext/LoginContext';
 import './i18n';
 
 const httpLink = createHttpLink({
-  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
 });
 
 // this will decode a token into a usable json object, allows the access of the json properties
@@ -118,7 +118,7 @@ function App() {
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <ThemeContext.Provider value={{ setSignedIn, signedIn }}>
+        <LoginContext.Provider value={{ setSignedIn, signedIn }}>
           <div className={classnames('app-root')}>
             <Router>
               <Switch>
@@ -169,7 +169,7 @@ function App() {
             <Footer />
             <SampleQuery />
           </div>
-        </ThemeContext.Provider>
+        </LoginContext.Provider>
       </ApolloProvider>
     </React.StrictMode>
   );

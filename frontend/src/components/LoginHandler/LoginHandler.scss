@@ -2,7 +2,7 @@
     font-family: 'Poppins', sans-serif;
 
     width:100vw;
-    #loginHeader{
+    .loginHeader{
         min-height:8rem;
         width:100%;
         display:flex;
@@ -10,7 +10,7 @@
         justify-content: center;
         background-color:white;
     }
-    #loginBody{
+    .loginBody{
         
         background-color:#003366;
         width:100%;
@@ -33,12 +33,12 @@
                 margin-bottom:0;
             }
 
-            #introTextSeperator{
+            .introTextSeperator{
                 width:24rem;
                 margin:1rem 0 1.5rem 0;
             }
             
-            #googleLogin{
+            .googleLogin{
                 margin-bottom:2rem;
             }
 
@@ -73,7 +73,7 @@
                 background:#CC9966;
             }
 
-            #or{
+            .or{
                 display:flex;
                 flex-direction: row;
                 margin: 2rem 0 2rem 0;
@@ -90,7 +90,7 @@
                 }
             }
 
-            form{
+            .inputWrapper{
                 display:flex;
                 flex-direction: column;
                 
@@ -105,7 +105,7 @@
                     width:30rem;
                     height:3rem;
                 }
-                #localNameLogin{
+                .localNameLogin{
                     margin-bottom:2rem;
                 }
                 .localLogin{    
@@ -113,13 +113,13 @@
                     padding-left:1rem;
                     font-size:1rem; 
                 }
-                #passAnchor{
+                .passAnchor{
                     color:white;
                     text-decoration: none;
                     font-size:1rem;
                     margin-top:1rem;
                 }
-                #submitButton{
+                .signInButton{
                     width:15rem;
                     height:4rem;
                     border:none;
