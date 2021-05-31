@@ -97,6 +97,7 @@ function DeleteMeetingModal({
             type="button"
             className="delete-button modal-button"
             onClick={handleDelete}
+            disabled={loading}
           >
             {loading && <Spinner />}
             {loading ? 'Deleting' : 'Delete'}
