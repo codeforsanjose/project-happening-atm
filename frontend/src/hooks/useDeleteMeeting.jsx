@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-
 import React, { useState } from 'react';
 import DeleteMeetingModal from '../components/DeleteMeetingModal/DeleteMeetingModal';
 
