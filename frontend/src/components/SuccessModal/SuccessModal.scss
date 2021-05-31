@@ -1,0 +1,72 @@
+@import "../../utils/_colors.scss";
+
+.SuccessModal {
+  max-width: 90vw;
+  box-shadow: rgba(0,0,0,0.8) 0 0 10px;
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  margin: 0 auto;
+  transform: translate(-5%, -50%);
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  border-radius: 10px;
+  outline: none;
+
+  @media only screen and (min-device-width: 812px) {
+    max-width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .modal-header {
+    background-color: $cityBlue;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px 5px 0 0;
+
+    svg {
+      fill: #ffffff;
+    }
+  }
+
+  .modal-body {
+    background-color: #ffffff;
+    padding: 1em 1.2em;
+    border-radius: 0 0 5px 5px;
+    text-align: center;
+
+    h4 {
+      font-weight: 600;
+    }
+
+    p {
+      font-weight: 400;
+    }
+
+    .row {
+      justify-content: center;
+      align-items: center;
+
+      button {
+        border-radius: 0.5em;
+        padding: 0.25em 1.4em;
+        cursor: pointer;
+        background-color: $cityBronze;
+        opacity: 0.8;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        line-height: 25px;
+        font-family: 'Poppins', sans-serif;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
