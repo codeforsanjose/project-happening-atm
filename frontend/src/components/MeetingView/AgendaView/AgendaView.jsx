@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
 import {
-  useQuery, useMutation, ApolloClient, createHttpLink, InMemoryCache,
+  useQuery, useMutation, useLazyQuery,
 } from '@apollo/client';
 
 import {
@@ -20,14 +20,13 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 
-import { setContext } from '@apollo/client/link/context';
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import { RenderedAgendaItem } from './AgendaItem';
-import { UPDATE_MEETING_ITEM, LOGIN_LOCAL } from '../../../graphql/graphql';
+import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -62,44 +61,6 @@ const OPTIONS = {
   oNumStart: 1, // default first number in order
 };
 let token;
-
-function Login() {
-  const { loading, error, data } = useQuery(LOGIN_LOCAL, {
-    variables: {
-      email_address: 'a@abc.com',
-      password: '12345',
-    },
-  });
-
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-
-  console.log(data.loginLocal.token);
-  token = data.loginLocal.token;
-  window.localStorage.setItem('token', token);
-  return (<input type="button" value={token} />);
-}
-
-const saveReOrder = (agendaGroups, updateMeetingItem) => {
-  for (let parent = 0; parent < agendaGroups.length; parent += 1) {
-    for (let child = 0; child < agendaGroups[parent].items.length; child += 1) {
-      updateMeetingItem({
-        variables: {
-          id: agendaGroups[parent].items[child].id,
-          order_number: agendaGroups[parent].items[child].order_number,
-          status: agendaGroups[parent].items[child].status,
-          content_categories: agendaGroups[parent].items[child].content_categories,
-          item_start_timestamp: agendaGroups[parent].items[child].item_start_timestamp,
-          description_loc_key: agendaGroups[parent].items[child].description_loc_key,
-          title_loc_key: agendaGroups[parent].items[child].title_loc_key,
-          parent_meeting_item_id: agendaGroups[parent].items[child].parent_meeting_item_id,
-          item_end_timestamp: agendaGroups[parent].items[child].item_end_timestamp,
-
-        },
-      });
-    }
-  }
-};
 
 // This function is taking the meeting prop and organizing it into an array of objects.
 // Each object acts as the parent of an agenda group and holds a items array of all agenda items
@@ -147,7 +108,7 @@ function AgendaView({ meeting }) {
   const [activeId, setActiveId] = useState(null);
   const [oNumStart] = useState(agendaGroups.length > 0 ? agendaGroups[0].order_number : null);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
-
+  console.log(agendaGroups);
   const sensors = useSensors(
     useSensor(PointerSensor, {
       // This requies the user to click and hold to initiate a drag
@@ -204,6 +165,30 @@ function AgendaView({ meeting }) {
 
     return (showCompleted ? newAgendaGroups : uncompletedOnly);
   }
+
+  // saves the new rendering
+  const saveReOrder = () => {
+    console.log(agendaGroups);
+    for (let parent = 0; parent < agendaGroups.length; parent += 1) {
+      for (let child = 0; child < agendaGroups[parent].items.length; child += 1) {
+        console.log(`locKey: ${agendaGroups[parent].items[child].title_loc_key} order num: ${agendaGroups[parent].items[child].order_number}`);
+        updateMeetingItem({
+          variables: {
+            id: agendaGroups[parent].items[child].id,
+            order_number: agendaGroups[parent].items[child].order_number,
+            status: agendaGroups[parent].items[child].status,
+            content_categories: agendaGroups[parent].items[child].content_categories,
+            item_start_timestamp: agendaGroups[parent].items[child].item_start_timestamp,
+            description_loc_key: agendaGroups[parent].items[child].description_loc_key,
+            title_loc_key: agendaGroups[parent].items[child].title_loc_key,
+            parent_meeting_item_id: agendaGroups[parent].items[child].parent_meeting_item_id,
+            item_end_timestamp: agendaGroups[parent].items[child].item_end_timestamp,
+
+          },
+        });
+      }
+    }
+  };
 
   // These statements and variables below are necessary to ensure the dragOverlay functions
 
@@ -386,18 +371,12 @@ function AgendaView({ meeting }) {
 
       return newParents;
     });
-
-    // force the retrieval of the most recent agendaGroups, prevents the passing of stale data
-    setAgendaGroups((parents) => {
-      saveReOrder(parents, updateMeetingItem);
-
-      return parents;
-    });
   };
 
   return (
     <div className="AgendaView">
-      <Login />
+      <button className="saveOrder" type="button" onClick={saveReOrder}>Save Order</button>
+
       <Search />
 
       <button
