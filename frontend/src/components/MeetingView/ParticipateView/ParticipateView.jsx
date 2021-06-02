@@ -9,19 +9,17 @@ import {
   VoiceChatIcon, OnDemandVideoIcon, EmailIcon, NewReleasesIcon,
 } from '../../../utils/_icons';
 
-function JoinTheVirtualMeetingPanel() {
+function JoinTheVirtualMeetingPanel({ meeting }) {
   const { t } = useTranslation();
 
   return (
     <>
       <ol>
         <li>
-          {/* TODO: Add phone number, zoom meeting id, and link to join zoom meeting
-          https://github.com/codeforsanjose/gov-agenda-notifier/issues/103 */}
           {/* TODO #127: Figure out how we're going to translate interactive texts */}
-          <p>Call ###-###-####</p>
+          <p>Call {meeting.call_in_information}</p>
           <p className="info">
-            Enter Meeting ID ### #### ####
+            Enter Meeting ID {meeting.virtual_meeting_id}<br/>
             Select *9 to &#34;Raise Hand&#34; to speak.
             Select *6 to unmute when your name is called.
           </p>
@@ -29,9 +27,12 @@ function JoinTheVirtualMeetingPanel() {
         <li>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
           <p>{t('meeting.tabs.participate.section.join.description.number-2.title')}*</p>
-          <Link to="/">
+          <a href={meeting.virtual_meeting_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <button type="button">{t('meeting.tabs.participate.section.join.description.number-2.button')}</button>
-          </Link>
+          </a>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
           <p className="info bold">*{t('meeting.tabs.participate.section.join.description.post-script.title')}</p>
           <p className="info">
@@ -70,7 +71,7 @@ function JoinTheVirtualMeetingPanel() {
     </>
   );
 }
-function WatchMeetingBroadcastPanel() {
+function WatchMeetingBroadcastPanel({ meeting }) {
   const { t } = useTranslation();
 
   return (
@@ -90,7 +91,7 @@ function WatchMeetingBroadcastPanel() {
         <li>
           <p>{t('meeting.tabs.participate.section.watch.description.number-2.title')}</p>
           <a
-            href="https://www.youtube.com/CityOfSanJoseCalifornia"
+            href={meeting.youtube_link}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -114,7 +115,7 @@ function WatchMeetingBroadcastPanel() {
     </>
   );
 }
-function SubmitWrittenPublicCommentPanel() {
+function SubmitWrittenPublicCommentPanel({ meeting }) {
   const { t } = useTranslation();
 
   return (
@@ -127,7 +128,9 @@ function SubmitWrittenPublicCommentPanel() {
             {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Email
             {' '}
-            <a href="mailto:city.clerk@sanjoseca.gov">city.clerk@sanjoseca.gov</a>
+            <a href={`mailto:${meeting.email_before_meeting}`}>
+              {meeting.email_before_meeting}
+            </a>
             {' '}
             by 10:00 a.m. the day of the meeting.
           </p>
@@ -140,11 +143,12 @@ function SubmitWrittenPublicCommentPanel() {
           <p className="info">
             {t('meeting.tabs.participate.section.comment.description.before-meeting.number-2.subtitle')}
           </p>
-          {/* TODO: Add link to eComment site for meeting
-    https://github.com/codeforsanjose/gov-agenda-notifier/issues/104 */}
-          <Link to="/">
+          <a href={meeting.ecomment}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <button type="button">{t('meeting.tabs.participate.section.comment.description.before-meeting.number-2.button')}</button>
-          </Link>
+          </a>
         </li>
       </ol>
 
@@ -156,7 +160,9 @@ function SubmitWrittenPublicCommentPanel() {
             {/* TODO #127: Figure out how we're going to translate interactive texts */}
             Email
             {' '}
-            <a href="mailto:councilmeeting@sanjoseca.gov">councilmeeting@sanjoseca.gov</a>
+            <a href={`mailto:${meeting.email_during_meeting}`}>
+              {meeting.email_during_meeting}
+            </a>
             {' '}
             during the meeting.
           </p>
@@ -202,7 +208,7 @@ const CHOICES = [
     description: '',
     items: [],
     icon: <VoiceChatIcon />,
-    panel: <JoinTheVirtualMeetingPanel />,
+    panel: JoinTheVirtualMeetingPanel,
   },
   {
     id: 2,
@@ -210,7 +216,7 @@ const CHOICES = [
     description: '',
     items: [],
     icon: <OnDemandVideoIcon />,
-    panel: <WatchMeetingBroadcastPanel />,
+    panel: WatchMeetingBroadcastPanel,
   },
   {
     id: 3,
@@ -218,7 +224,7 @@ const CHOICES = [
     description: '',
     items: [],
     icon: <EmailIcon />,
-    panel: <SubmitWrittenPublicCommentPanel />,
+    panel: SubmitWrittenPublicCommentPanel,
   },
   {
     id: 4,
@@ -226,11 +232,11 @@ const CHOICES = [
     description: '',
     items: [],
     icon: <NewReleasesIcon />,
-    panel: <RequestSeparateConsiderationOfAConsentCalendarItemPanel />,
+    panel: RequestSeparateConsiderationOfAConsentCalendarItemPanel,
   },
 ];
 
-function ParticipateAccordion({ choice }) {
+function ParticipateAccordion({ choice, meeting }) {
   const { t } = useTranslation();
 
   return (
@@ -246,7 +252,9 @@ function ParticipateAccordion({ choice }) {
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className="panel-animation">
-        <div className="panel">{choice.panel}</div>
+        <div className="panel">
+          {React.createElement(choice.panel, { meeting })}
+        </div>
       </AccordionItemPanel>
     </AccordionItem>
   );
@@ -257,7 +265,7 @@ function ParticipateAccordion({ choice }) {
  * Used in the MeetingView component.
  */
 
-function ParticipateView() {
+function ParticipateView({ meeting }) {
   return (
     <ul style={{ padding: '0 1.25em' }}>
       <Accordion
@@ -265,7 +273,11 @@ function ParticipateView() {
         allowMultipleExpanded
       >
         {CHOICES.map((choice) => (
-          <ParticipateAccordion key={choice.id} choice={choice} />
+          <ParticipateAccordion
+            key={choice.id}
+            choice={choice}
+            meeting={meeting}
+          />
         ))}
       </Accordion>
     </ul>

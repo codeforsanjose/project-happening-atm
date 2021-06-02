@@ -87,7 +87,7 @@ module.exports = (logger) => {
         call_in_information: String
         email_before_meeting: String
         email_during_meeting: String
-        eComment: String
+        ecomment: String
         city_of_san_jose_meeting: String
         youtube_link: String
     }

@@ -36,7 +36,13 @@ export const GET_MEETING_WITH_ITEMS = gql`
         meeting_type,
         meeting_start_timestamp,
         meeting_end_timestamp,
-        virtual_meeting_url
+        virtual_meeting_url,
+        virtual_meeting_id,
+        call_in_information,
+        email_before_meeting,
+        email_during_meeting,
+        ecomment,
+        youtube_link,
       }
       items {
         id,
