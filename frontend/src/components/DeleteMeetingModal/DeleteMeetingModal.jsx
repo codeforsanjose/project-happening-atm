@@ -2,6 +2,7 @@
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import { CancelIcon } from '../../utils/_icons';
@@ -38,6 +39,7 @@ function DeleteMeetingModal({
   startTime,
 }) {
   const history = useHistory();
+  const { t } = useTranslation();
   const [deleteMeeting, { loading }] = useMutation(DELETE_MEETING);
   const [deleteSuccessful, setDeleteSuccessful] = useState(false);
 
@@ -89,7 +91,7 @@ function DeleteMeetingModal({
           <CancelIcon />
         </button>
 
-        <h2>Are you sure you want to delete this meeting?</h2>
+        <h2>{t('meeting.list.delete-meeting.modal.title')}</h2>
         <p className="delete-meeting-info">{`${date} - ${time}`}</p>
 
         <div className="modal-buttons">
@@ -100,7 +102,9 @@ function DeleteMeetingModal({
             disabled={loading}
           >
             {loading && <Spinner />}
-            {loading ? 'Deleting' : 'Delete'}
+            {loading
+              ? t('meeting.list.delete-meeting.modal.buttons.deleting')
+              : t('meeting.list.delete-meeting.modal.buttons.delete')}
           </button>
 
           <button
@@ -108,7 +112,7 @@ function DeleteMeetingModal({
             className="modal-button"
             onClick={closeModal}
           >
-            Cancel
+            {t('meeting.list.delete-meeting.modal.buttons.cancel')}
           </button>
         </div>
       </div>
