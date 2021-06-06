@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
 import {
-  useQuery, useMutation, useLazyQuery,
+  useMutation,
 } from '@apollo/client';
 
 import {
@@ -60,7 +60,6 @@ const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
   oNumStart: 1, // default first number in order
 };
-let token;
 
 // This function is taking the meeting prop and organizing it into an array of objects.
 // Each object acts as the parent of an agenda group and holds a items array of all agenda items
@@ -98,6 +97,12 @@ const groupMeetingItems = (allItems) => {
   return agendaGroups;
 };
 
+// returns the curent user role
+const getRole = () => {
+  const token = localStorage.getItem('token');
+  return JSON.parse(atob(token.split('.')[1])).roles[0] === 'ADMIN';
+};
+
 // These are the event handlers for the DndContext
 
 function AgendaView({ meeting }) {
@@ -107,8 +112,9 @@ function AgendaView({ meeting }) {
   const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items));
   const [activeId, setActiveId] = useState(null);
   const [oNumStart] = useState(agendaGroups.length > 0 ? agendaGroups[0].order_number : null);
+  const [isAdmin] = useState(getRole);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
-  console.log(agendaGroups);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       // This requies the user to click and hold to initiate a drag
@@ -168,10 +174,8 @@ function AgendaView({ meeting }) {
 
   // saves the new rendering
   const saveReOrder = () => {
-    console.log(agendaGroups);
     for (let parent = 0; parent < agendaGroups.length; parent += 1) {
       for (let child = 0; child < agendaGroups[parent].items.length; child += 1) {
-        console.log(`locKey: ${agendaGroups[parent].items[child].title_loc_key} order num: ${agendaGroups[parent].items[child].order_number}`);
         updateMeetingItem({
           variables: {
             id: agendaGroups[parent].items[child].id,
@@ -375,7 +379,7 @@ function AgendaView({ meeting }) {
 
   return (
     <div className="AgendaView">
-      <button className="saveOrder" type="button" onClick={saveReOrder}>Save Order</button>
+      {isAdmin ? <button className="saveOrder" type="button" onClick={saveReOrder}>Save Order</button> : ''}
 
       <Search />
 
@@ -391,12 +395,13 @@ function AgendaView({ meeting }) {
       <DndContext
         sensors={sensors}
         collisionDetection={rectIntersection}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragOver={handleDragOver}
+        onDragStart={isAdmin ? handleDragStart : null}
+        onDragEnd={isAdmin ? handleDragEnd : null}
+        onDragOver={isAdmin ? handleDragOver : null}
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
           <AgendaGroups
+            isAdmin={isAdmin}
             agendaGroups={displayAgenda}
             selectedItems={selectedItems}
             handleAgendaItemSelection={handleAgendaItemSelection}
@@ -405,7 +410,7 @@ function AgendaView({ meeting }) {
 
         <DragOverlay>
 
-          {activeId && !activeIsParent ? (
+          {isAdmin && activeId && !activeIsParent ? (
             <RenderedAgendaItem
               id={activeId}
               item={activeitem}
