@@ -12,7 +12,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragOverlay,
   rectIntersection,
 } from '@dnd-kit/core';
 import {
@@ -24,10 +23,9 @@ import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
-import { RenderedAgendaItem } from './AgendaItem';
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
-
+import DragOverlayHandler from './DragOverlayHandler/DragOverlayHandler';
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
@@ -58,7 +56,6 @@ import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunc
 
 const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
-  oNumStart: 1, // default first number in order
 };
 
 // This function is taking the meeting prop and organizing it into an array of objects.
@@ -194,41 +191,21 @@ function AgendaView({ meeting }) {
     }
   };
 
-  // These statements and variables below are necessary to ensure the dragOverlay functions
-
-  let parentIds = 0;
-  let activeIsParent = true; // ensure dragOverlay does not render when agendaGroup's empty
-  let parentContainerIndex = 0;
-  let activeitem = 0;
-
-  // entered only when there are items to display
-  if (agendaGroups.length > 0) {
-    parentIds = agendaGroups.map((parent) => parent.id);
-    activeIsParent = parentIds.filter((parent) => parent === activeId).length > 0;
-    parentContainerIndex = 0;
-    activeitem = { id: null };
-
-    agendaGroups.forEach((parent, i) => {
-      parent.items.forEach((item) => {
-        if (item.id === activeId) {
-          parentContainerIndex = i;
-        }
-      });
-    });
-
-    if (typeof parentContainerIndex !== 'undefined') {
-      activeitem = agendaGroups[parentContainerIndex].items.find((item) => item.id === activeId);
-    }
-  }
-  //
-
   // Necessary as the createRenderedGroups function returns renderedAgendaGroups
   // of which prevents the DND kit from moving items between completed and pending groups
   const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups();
 
+  // These are the props for various functions, and components in object form
+  // Event handler functions
   const onDragStartArgs = { setActiveId };
   const onDragEndArgs = { setAgendaGroups, oNumStart };
   const onDragOverArgs = { setAgendaGroups, setSelectedItems, selectedItems };
+
+  // DragOverlayhandler props
+  const dragOverlayProps = {
+    agendaGroups, activeId, handleAgendaItemSelection, selectedItems,
+  };
+
   return (
     <div className="AgendaView">
       {isAdmin ? <button className="saveOrder" type="button" onClick={saveReOrder}>Save Order</button> : ''}
@@ -260,18 +237,7 @@ function AgendaView({ meeting }) {
           />
         </Accordion>
 
-        <DragOverlay>
-
-          {isAdmin && activeId && !activeIsParent ? (
-            <RenderedAgendaItem
-              id={activeId}
-              item={activeitem}
-              isSelected={selectedItems[agendaGroups[parentContainerIndex].id] !== undefined
-            && selectedItems[agendaGroups[parentContainerIndex].id][activeitem.id] !== undefined}
-              handleSelection={handleAgendaItemSelection}
-            />
-          ) : null}
-        </DragOverlay>
+        {isAdmin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
       </DndContext>
 
       { Object.keys(selectedItems).length > 0
