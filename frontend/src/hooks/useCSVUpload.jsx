@@ -9,16 +9,16 @@ import CSVUploadModal from '../components/CSVUploadModal/CSVUploadModal';
  * Returns:
  *  openModal
  *    Callback function to show the CSV upload modal
- *  renderUploadModal
- *    Function to render the component
+ *  UploadModal
+ *    Modal component
  */
 
-const useCSVUpload = (id = null) => {
+const useCSVUpload = ({ id = null }) => {
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => { setShowModal(false); };
   const openModal = () => { setShowModal(true); };
 
-  const renderUploadModal = () => (
+  const UploadModal = () => (
     showModal
       ? (
         <CSVUploadModal
@@ -29,7 +29,7 @@ const useCSVUpload = (id = null) => {
       ) : null
   );
 
-  return [openModal, renderUploadModal];
+  return [openModal, UploadModal];
 };
 
 export default useCSVUpload;

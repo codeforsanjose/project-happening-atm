@@ -7,7 +7,7 @@ import uploadCSV from '../../utils/uploadHelper';
 
 import DragAndDrop from './DragAndDrop';
 import Spinner from '../Spinner/Spinner';
-import UploadSuccess from './UploadSuccess';
+import SuccessModal from '../SuccessModal/SuccessModal';
 import { PublishIcon, CancelIcon } from '../../utils/_icons';
 
 /**
@@ -95,9 +95,10 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
 
   if (uploadSuccessful) {
     return (
-      <UploadSuccess
+      <SuccessModal
         isOpen={isOpen}
         closeModal={clearAndCloseModal}
+        headerText="Agenda Successfully Uploaded!"
         confirmModal={redirect ? redirectToMeeting : clearAndCloseModal}
         confirmText={redirect ? 'Go to Meeting' : 'Close'}
       />
