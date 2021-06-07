@@ -22,10 +22,14 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
-import MeetingItemStates from '../../../constants/MeetingItemStates';
-import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
-import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
 import DragOverlayHandler from './DragOverlayHandler/DragOverlayHandler';
+import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+
+// functions for this component
+import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
+import groupMeetingItems from './agendaViewFunctions/groupMeetingItems';
+import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
+import saveReOrder from './agendaViewFunctions/saveReOrder';
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
@@ -48,6 +52,13 @@ import DragOverlayHandler from './DragOverlayHandler/DragOverlayHandler';
  *      for the main container, and an array of items under the group
  *    activeId
  *      This represents the current agenda item or parent of the agenda items being moved
+ *    oNumStart
+ *      This is the starting order-number, it is set to the order-number value
+ *      of the first parent element order number
+ *    isAdmin
+ *      Flag to indicate user is admin or not
+ *    updateMeetingItem
+ *      Graphql mutation to save the new order after drag and dropping
  *
  *
  *
@@ -58,44 +69,8 @@ const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
 };
 
-// This function is taking the meeting prop and organizing it into an array of objects.
-// Each object acts as the parent of an agenda group and holds a items array of all agenda items
-const groupMeetingItems = (allItems) => {
-  const items = JSON.parse(JSON.stringify(allItems));
-  const itemsWithNoParent = items.filter((item) => item.parent_meeting_item_id === null);
-  const itemsWithParent = items.filter((item) => item.parent_meeting_item_id !== null);
-
-  const agendaGroups = [];
-  itemsWithNoParent.forEach((item, i) => {
-    agendaGroups.push({ ...item });
-    agendaGroups[i].items = [];
-  });
-
-  itemsWithParent.forEach((item) => {
-    agendaGroups.forEach((parent) => {
-      if (parent.id === item.parent_meeting_item_id) {
-        parent.items.push(item);
-      }
-    });
-  });
-
-  // this is adding to each parent ID a unique ID to represent the dropable
-  // container within each agenda group
-  // necessary to allow moving agenda items into a empty container
-  const agendaDropIDs = agendaGroups.map((parent) => parent.id + OPTIONS.dropIdPostfix);
-  for (let i = 0; i < agendaGroups.length; i += 1) {
-    agendaGroups[i].dropID = agendaDropIDs[i];
-  }
-
-  // ensure the agenda groups will render by order number
-  agendaGroups.sort((a, b) => a.order_number - b.order_number);
-  agendaGroups.forEach((group) => group.items.sort((a, b) => a.order_number - b.order_number));
-
-  return agendaGroups;
-};
-
 // returns the curent user role
-const getRole = () => {
+const getAdminStatus = () => {
   const token = localStorage.getItem('token');
   return JSON.parse(atob(token.split('.')[1])).roles[0] === 'ADMIN';
 };
@@ -106,12 +81,13 @@ function AgendaView({ meeting }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
-  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items));
+  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items, OPTIONS));
   const [activeId, setActiveId] = useState(null);
   const [oNumStart] = useState(agendaGroups.length > 0 ? agendaGroups[0].order_number : null);
-  const [isAdmin] = useState(getRole);
+  const [isAdmin] = useState(getAdminStatus);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
 
+  // required for dndKit
   const sensors = useSensors(
     useSensor(PointerSensor, {
       // This requies the user to click and hold to initiate a drag
@@ -123,10 +99,6 @@ function AgendaView({ meeting }) {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   );
-
-  const handleSelectionCancel = () => {
-    setSelectedItems({});
-  };
 
   const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
     if (isChecked && !(meetingId in selectedItems)) {
@@ -151,64 +123,37 @@ function AgendaView({ meeting }) {
     }
   };
 
-  // Necessary to ensure two agenda groups exist. One that is rendered,the other that holds the data
-  function createRenderedGroups() {
-    const newAgendaGroups = JSON.parse(JSON.stringify(agendaGroups));
-
-    const uncompletedOnly = [];
-
-    for (let i = 0; i < newAgendaGroups.length; i += 1) {
-      if (newAgendaGroups[i].status !== MeetingItemStates.COMPLETED) {
-        const group = newAgendaGroups[i];
-        uncompletedOnly.push(group);
-        const items = group.items.filter((item) => item.status !== MeetingItemStates.COMPLETED);
-        newAgendaGroups[i].items = items;
-      }
-    }
-
-    return (showCompleted ? newAgendaGroups : uncompletedOnly);
-  }
-
-  // saves the new rendering
-  const saveReOrder = () => {
-    for (let parent = 0; parent < agendaGroups.length; parent += 1) {
-      for (let child = 0; child < agendaGroups[parent].items.length; child += 1) {
-        updateMeetingItem({
-          variables: {
-            id: agendaGroups[parent].items[child].id,
-            order_number: agendaGroups[parent].items[child].order_number,
-            status: agendaGroups[parent].items[child].status,
-            content_categories: agendaGroups[parent].items[child].content_categories,
-            item_start_timestamp: agendaGroups[parent].items[child].item_start_timestamp,
-            description_loc_key: agendaGroups[parent].items[child].description_loc_key,
-            title_loc_key: agendaGroups[parent].items[child].title_loc_key,
-            parent_meeting_item_id: agendaGroups[parent].items[child].parent_meeting_item_id,
-            item_end_timestamp: agendaGroups[parent].items[child].item_end_timestamp,
-
-          },
-        });
-      }
-    }
-  };
-
-  // Necessary as the createRenderedGroups function returns renderedAgendaGroups
-  // of which prevents the DND kit from moving items between completed and pending groups
-  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups();
-
   // These are the props for various functions, and components in object form
   // Event handler functions
   const onDragStartArgs = { setActiveId };
   const onDragEndArgs = { setAgendaGroups, oNumStart };
   const onDragOverArgs = { setAgendaGroups, setSelectedItems, selectedItems };
 
+  // regular function props
+  const createRenderGroupsArgs = { agendaGroups, showCompleted };
+
   // DragOverlayhandler props
   const dragOverlayProps = {
     agendaGroups, activeId, handleAgendaItemSelection, selectedItems,
   };
 
+  // Necessary as the createRenderedGroups function returns renderedAgendaGroups
+  // of which prevents the DND kit from moving items between completed and pending groups
+  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(createRenderGroupsArgs);
+
   return (
     <div className="AgendaView">
-      {isAdmin ? <button className="saveOrder" type="button" onClick={saveReOrder}>Save Order</button> : ''}
+      {isAdmin
+        ? (
+          <button
+            className="saveOrder"
+            type="button"
+            onClick={() => { saveReOrder(agendaGroups, updateMeetingItem); }}
+          >
+            Save Order
+          </button>
+        )
+        : ''}
 
       <Search />
 
@@ -244,7 +189,7 @@ function AgendaView({ meeting }) {
         && (
           <MultipleSelectionBox
             selectedItems={selectedItems}
-            handleCancel={handleSelectionCancel}
+            handleCancel={() => setSelectedItems({})}
           />
         )}
     </div>

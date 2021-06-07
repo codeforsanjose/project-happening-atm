@@ -6,6 +6,9 @@ import {
 
 import { RenderedAgendaItem } from '../AgendaItem';
 
+// This component will render the draggable overlay of the currently dragged item.
+// In otherwords it creates a duplicate of the item being dragged for appearance purposes only.
+
 function DragOverlayHandler(props) {
   // deconstructing all the props, had to disable deconstructing rule
   // so that I can deconstruct as an object
