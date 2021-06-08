@@ -57,6 +57,6 @@ services:
     depends_on:
       - backend_pg
     environment:
-      - REACT_APP_GRAPHQL_URL=localhost:3000
+      - REACT_APP_GRAPHQL_URL=http://localhost:3000
 volumes:
   postgres-data:
