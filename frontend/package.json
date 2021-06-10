@@ -25,6 +25,7 @@
     "react-accessible-accordion": "^3.3.3",
     "react-autocomplete": "^1.8.1",
     "react-dom": "^16.14.0",
+    "react-google-login": "^5.2.2",
     "react-i18next": "^11.8.5",
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",

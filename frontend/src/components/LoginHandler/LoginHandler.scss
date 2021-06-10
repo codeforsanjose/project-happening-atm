@@ -55,12 +55,16 @@
                 transition: width 0.2s;
                 border-radius:0.5rem;
                 cursor:pointer;
+                border-style:none;
+
                 img{
                     width:2.2rem;
                     border-radius:50%;
                     border-width:1px;
                 }
                 span{
+                    font-family: 'Poppins', sans-serif;
+                    letter-spacing:1.5px;
                     margin-left:1.5rem;
                     font-weight:700;
                     font-size:1.2rem;
@@ -119,7 +123,8 @@
                     font-size:1rem;
                     margin-top:1rem;
                 }
-                .signInButton{
+                .signInButton
+                {
                     width:15rem;
                     height:4rem;
                     border:none;
