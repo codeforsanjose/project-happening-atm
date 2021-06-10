@@ -77,7 +77,7 @@ function MeetingView() {
         && (
           showAgendaView
             ? <AgendaView meeting={meetingWithItems} />
-            : <ParticipateView />
+            : <ParticipateView meeting={meetingWithItems} />
         )}
       {error && <p className="error">{ error.message }</p>}
     </div>
