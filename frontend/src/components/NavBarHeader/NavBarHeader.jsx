@@ -7,14 +7,15 @@ import HamburgerIcon from './HamburgerIcon';
 import NavLinks from './NavLinks';
 import './NavBarHeader.scss';
 import LoginContext from '../LoginContext/LoginContext';
+import LocalStorageTerms from '../../constants/LocalStorageTerms';
 
 function Header({ toggled, handleToggle }) {
   const { t } = useTranslation();
   const loginContext = React.useContext(LoginContext);
 
   const signOut = () => {
-    window.localStorage.setItem('token', '');
-    window.localStorage.setItem('signedIn', false);
+    window.localStorage.setItem(LocalStorageTerms.TOKEN, '');
+    window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, false);
     loginContext.setSignedIn(false);
   };
 
