@@ -73,6 +73,21 @@ export const CREATE_SUBSCRIPTIONS = gql`
   }
 `;
 
+export const LOGIN_LOCAL = gql`
+  query LoginLocal(
+    $email_address: String!,
+    $password: String!,
+    
+  ){
+    loginLocal(
+      email_address:$email_address,
+      password:$password,
+    ){
+      token
+    }
+  }
+`;
+
 export const CONFIRM_EMAIL = gql`
   mutation confirmEmail(
     $token: String
