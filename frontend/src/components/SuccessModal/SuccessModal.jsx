@@ -1,6 +1,5 @@
 import React from 'react';
-import './UploadSuccess.scss';
-import classnames from 'classnames';
+import './SuccessModal.scss';
 import Modal from 'react-modal';
 import { ConfirmationIcon } from '../../utils/_icons';
 
@@ -12,22 +11,25 @@ import { ConfirmationIcon } from '../../utils/_icons';
  *      A boolean indicating if the modal is open
  *    closeModal
  *      A function/callback which is called when the window is being closed
+ *    headerText
+ *      A string header message of the modal
  *    confirmModal
  *      A function/callback provided to the modal confirm button
  *    confirmText
  *      A string displayed on the confirmation button of the modal
  */
 
-function UploadSuccess({
+function SuccessModal({
   isOpen,
   closeModal,
+  headerText,
   confirmModal,
   confirmText,
 }) {
   return (
     <Modal
       isOpen={isOpen}
-      className={classnames('upload-confirmation')}
+      className="SuccessModal"
       overlayClassName="modal-overlay"
       onRequestClose={closeModal}
     >
@@ -36,7 +38,7 @@ function UploadSuccess({
       </div>
       <div className="modal-body">
         <h4>
-          Agenda Successfully Uploaded!
+          {headerText}
         </h4>
         <div className="row">
           <button
@@ -51,4 +53,4 @@ function UploadSuccess({
   );
 }
 
-export default UploadSuccess;
+export default SuccessModal;

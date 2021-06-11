@@ -1,3 +1,5 @@
+@import '../../utils/_colors.scss';
+
 .LoginHandler{
     font-family: 'Poppins', sans-serif;
 
@@ -8,11 +10,10 @@
         display:flex;
         align-items: center;
         justify-content: center;
-        background-color:white;
     }
     .loginBody{
         
-        background-color:#003366;
+        background-color:$cityBlue;
         width:100%;
         
         .innerWrapper{
@@ -43,7 +44,7 @@
             }
 
             .google-microsoft-login{
-                background-color:#D5BBA2;
+                background-color:$lightBronze;
                 width:30rem;
                 height:3rem;
                 box-sizing: border-box;
@@ -70,7 +71,7 @@
             .google-microsoft-login:hover{
                 width:28rem;
                 transition: width 0.2s;
-                background:#CC9966;
+                background:$cityBronze;
             }
 
             .or{
@@ -125,7 +126,7 @@
                     border:none;
                     border-radius: 0.5rem;
                     font-size:1.5rem;
-                    background-color:#D5BBA2;
+                    background-color:$lightBronze;
                     margin-left:auto;
                     margin-top:1rem;
                     margin-right:auto;

@@ -38,7 +38,13 @@ export const GET_MEETING_WITH_ITEMS = gql`
         meeting_type,
         meeting_start_timestamp,
         meeting_end_timestamp,
-        virtual_meeting_url
+        virtual_meeting_url,
+        virtual_meeting_id,
+        call_in_information,
+        email_before_meeting,
+        email_during_meeting,
+        ecomment,
+        youtube_link,
       }
       items {
         id,
@@ -50,7 +56,7 @@ export const GET_MEETING_WITH_ITEMS = gql`
         item_end_timestamp,
         content_categories,
         description_loc_key,
-        title_loc_key     
+        title_loc_key
       }
 
     }
@@ -129,5 +135,13 @@ export const UNCONFIRM_EMAIL = gql`
     $token: String
   ) {
     unconfirmEmail(token: $token)
+  }
+`;
+
+export const DELETE_MEETING = gql`
+  mutation deleteMeeting(
+    $id: Int!
+  ) {
+    deleteMeeting(id: $id)
   }
 `;

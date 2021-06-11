@@ -277,6 +277,22 @@ meeting:
               title: Email city.clerk@sanjoseca.gov by 10:00 a.m. the day of the meeting.
               subtitle: Please identify the Consent Calendar Agenda Item Number in the subject line of your email.
 
+login:
+  header:
+    cityLogo: City Logo
+  body:
+    header:
+      welcomeToCity: Welcome to the City of San José
+      cityCouncil: City Council Meeting Virtual Agenda
+    oauth:
+      google: Sign In with Google
+      microsoft: Sign In with Microsoft
+    or: or
+    textSignIn:
+      userName: Username
+      password: Password
+      forgotPass: Forgot Password?
+      
 footer:
   language:
     change:
@@ -290,6 +306,7 @@ standard:
   errors:
     something-went-wrong: Something went wrong
     try-again: Try again
+    badEmailPass: ERROR WRONG PASSWORD AND/OR EMAIL
   numbers:
     - zero
     - one
