@@ -24,6 +24,9 @@ import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 import DragOverlayHandler from './DragOverlayHandler/DragOverlayHandler';
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+import LocalStorageTerms from '../../../constants/LocalStorageTerms';
+import UserRoles from '../../../constants/UserRoles';
+import parseJwt from '../../../utils/parseJwt';
 
 // functions for this component
 import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
@@ -71,8 +74,10 @@ const OPTIONS = {
 
 // returns the curent user role
 const getAdminStatus = () => {
-  const token = localStorage.getItem('token');
-  return JSON.parse(atob(token.split('.')[1])).roles[0] === 'ADMIN';
+  const token = localStorage.getItem(LocalStorageTerms.TOKEN);
+  const parsedToken = parseJwt(token);
+
+  return parsedToken.roles[0] === UserRoles.ADMIN;
 };
 
 // These are the event handlers for the DndContext
