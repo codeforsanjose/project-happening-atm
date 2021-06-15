@@ -124,6 +124,7 @@ const RenderedAgendaItem = forwardRef(({
         <h4>{item.title_loc_key}</h4>
       </div>
       <p>{item.description_loc_key}</p>
+
       <div className="item-links">
         {
             itemLinks.map((link) => {
