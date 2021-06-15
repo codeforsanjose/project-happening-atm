@@ -22,17 +22,18 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
-import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
-import LocalStorageTerms from '../../../constants/LocalStorageTerms';
-import UserRoles from '../../../constants/UserRoles';
-import parseJwt from '../../../utils/parseJwt';
 
-// functions for this component
+// functions used by this component
 import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
 import groupMeetingItems from './agendaViewFunctions/groupMeetingItems';
 import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
 import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
+import getAdminStatus from '../../../utils/getAdminStatus';
+
+// graphql
+import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
@@ -70,14 +71,7 @@ import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 
 const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
-};
-
-// returns the curent user role
-const getAdminStatus = () => {
-  const token = localStorage.getItem(LocalStorageTerms.TOKEN);
-  const parsedToken = parseJwt(token);
-
-  return parsedToken.roles[0] === UserRoles.ADMIN;
+  oNumStart: 1,
 };
 
 // These are the event handlers for the DndContext
@@ -88,10 +82,10 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   const [selectedItems, setSelectedItems] = useState({});
   const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items, OPTIONS));
   const [activeId, setActiveId] = useState(null);
-  const [oNumStart] = useState(agendaGroups.length > 0 ? agendaGroups[0].order_number : null);
+  const [oNumStart] = useState(OPTIONS.oNumStart);
   const [isAdmin] = useState(getAdminStatus);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
-
+  console.log(agendaGroups);
   useEffect(
     () => {
       if (saveMeetingItems) {
@@ -156,17 +150,6 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
 
   return (
     <div className="AgendaView">
-      {isAdmin
-        ? (
-          <button
-            className="saveOrder"
-            type="button"
-            onClick={() => { saveReOrder(agendaGroups, updateMeetingItem); }}
-          >
-            Save Order
-          </button>
-        )
-        : ''}
 
       <Search />
 

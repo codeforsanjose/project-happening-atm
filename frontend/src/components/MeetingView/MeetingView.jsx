@@ -54,7 +54,12 @@ function MeetingView() {
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <Header loading={loading} meeting={meetingWithItems} setSaveMeetingItems={setSaveMeetingItems} />
+      <Header
+        loading={loading}
+        meeting={meetingWithItems}
+        setSaveMeetingItems={setSaveMeetingItems}
+        showUpdateStatus={showAgendaView}
+      />
 
       <div className="view-toggle">
         <div className={showAgendaView ? 'view-active' : ''}>
