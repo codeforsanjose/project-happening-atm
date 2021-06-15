@@ -24,6 +24,7 @@ import Spinner from '../Spinner/Spinner';
  *    navToggled
  *      A boolean value indicating if the header nav component is open
  */
+
 const createMeetings = (data, setMeetingWithItems) => {
   const meeting = { ...data.getMeetingWithItems.meeting };
   meeting.items = data.getMeetingWithItems.items;
@@ -34,17 +35,20 @@ function MeetingView() {
   const { t } = useTranslation();
   const { id } = useParams();
 
+  // queries
   const { loading, error, data } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
     fetchPolicy: 'network-only',
   });
 
+  // states
   const [meetingWithItems, setMeetingWithItems] = useState({});
   const [showAgendaView, setShowAgendaView] = useState(true);
   const [navToggled, setNavToggled] = useState(false);
   // flag to indicate meeting items need to be saved
   const [saveMeetingItems, setSaveMeetingItems] = useState(false);
 
+  // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
     fetchPolicy: 'network-only',
     onCompleted: (d) => { createMeetings(d, setMeetingWithItems); },
@@ -61,7 +65,8 @@ function MeetingView() {
     }
   }, [data]);
 
-  //
+  // grabs the meeting data when user leaves particpate to and returns to agenda
+  // neccesarray to ensure accurate data displayed
   useEffect(() => {
     if (showAgendaView) {
       getMeetingWithItems({
