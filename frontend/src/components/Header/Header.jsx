@@ -72,8 +72,11 @@ function Header({
               getAdminStatus() && showUpdateStatus && (
                 <>
                   <div className="saveStatus">
-                    Meeting Status:
-                    <button className="saveStatusButton" type="button" onClick={() => { setSaveMeetingItems(true); }}>Update Status</button>
+                    {t('meeting.status.label')}
+                    :
+                    <button className="saveStatusButton" type="button" onClick={() => { setSaveMeetingItems(true); }}>
+                      {t('meeting.status.short.default-option')}
+                    </button>
                   </div>
                 </>
               )
