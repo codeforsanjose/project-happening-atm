@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './MeetingView.scss';
 import { useParams } from 'react-router-dom';
 
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_MEETING_WITH_ITEMS } from '../../graphql/graphql';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
@@ -24,6 +24,11 @@ import Spinner from '../Spinner/Spinner';
  *    navToggled
  *      A boolean value indicating if the header nav component is open
  */
+const createMeetings = (data, setMeetingWithItems) => {
+  const meeting = { ...data.getMeetingWithItems.meeting };
+  meeting.items = data.getMeetingWithItems.items;
+  setMeetingWithItems(meeting);
+};
 
 function MeetingView() {
   const { t } = useTranslation();
@@ -31,6 +36,7 @@ function MeetingView() {
 
   const { loading, error, data } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
+    fetchPolicy: 'network-only',
   });
 
   const [meetingWithItems, setMeetingWithItems] = useState({});
@@ -39,17 +45,30 @@ function MeetingView() {
   // flag to indicate meeting items need to be saved
   const [saveMeetingItems, setSaveMeetingItems] = useState(false);
 
+  const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
+    fetchPolicy: 'network-only',
+    onCompleted: (d) => { createMeetings(d, setMeetingWithItems); },
+  });
+
   function handleToggle() {
     setNavToggled(!navToggled);
   }
 
+  // this handles the initial query only
   useEffect(() => {
     if (data) {
-      const meeting = { ...data.getMeetingWithItems.meeting };
-      meeting.items = data.getMeetingWithItems.items;
-      setMeetingWithItems(meeting);
+      createMeetings(data, setMeetingWithItems);
     }
   }, [data]);
+
+  //
+  useEffect(() => {
+    if (showAgendaView) {
+      getMeetingWithItems({
+        variables: { id: parseInt(id, 10) },
+      });
+    }
+  }, [showAgendaView, id, getMeetingWithItems]);
 
   return (
     <div className="meeting-view">

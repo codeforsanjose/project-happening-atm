@@ -96,6 +96,13 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
       }
     },
   );
+
+  // updates agendaGroups if the meeting data changes,
+  // ensures changes made to order are displayed correctly
+  useEffect(() => {
+    setAgendaGroups(groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix));
+  }, [meeting]);
+
   // required for dndKit
   const sensors = useSensors(
     useSensor(PointerSensor, {
