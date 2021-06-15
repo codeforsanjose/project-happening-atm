@@ -36,6 +36,8 @@ function MeetingView() {
   const [meetingWithItems, setMeetingWithItems] = useState({});
   const [showAgendaView, setShowAgendaView] = useState(true);
   const [navToggled, setNavToggled] = useState(false);
+  // flag to indicate meeting items need to be saved
+  const [saveMeetingItems, setSaveMeetingItems] = useState(false);
 
   function handleToggle() {
     setNavToggled(!navToggled);
@@ -52,7 +54,7 @@ function MeetingView() {
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <Header loading={loading} meeting={meetingWithItems} />
+      <Header loading={loading} meeting={meetingWithItems} setSaveMeetingItems={setSaveMeetingItems} />
 
       <div className="view-toggle">
         <div className={showAgendaView ? 'view-active' : ''}>
@@ -76,7 +78,13 @@ function MeetingView() {
       {!(loading || error) && data && 'items' in meetingWithItems
         && (
           showAgendaView
-            ? <AgendaView meeting={meetingWithItems} />
+            ? (
+              <AgendaView
+                meeting={meetingWithItems}
+                saveMeetingItems={saveMeetingItems}
+                setSaveMeetingItems={setSaveMeetingItems}
+              />
+            )
             : <ParticipateView meeting={meetingWithItems} />
         )}
       {error && <p className="error">{ error.message }</p>}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
@@ -22,7 +22,6 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
-import DragOverlayHandler from './DragOverlayHandler/DragOverlayHandler';
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 import LocalStorageTerms from '../../../constants/LocalStorageTerms';
 import UserRoles from '../../../constants/UserRoles';
@@ -33,6 +32,7 @@ import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunc
 import groupMeetingItems from './agendaViewFunctions/groupMeetingItems';
 import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
 import saveReOrder from './agendaViewFunctions/saveReOrder';
+import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 /**
  * Used to display a list of a meeting's agenda items and controls to
  * search and filter the items; Used in the MeetingView.
@@ -82,7 +82,7 @@ const getAdminStatus = () => {
 
 // These are the event handlers for the DndContext
 
-function AgendaView({ meeting }) {
+function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
@@ -92,6 +92,14 @@ function AgendaView({ meeting }) {
   const [isAdmin] = useState(getAdminStatus);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
 
+  useEffect(
+    () => {
+      if (saveMeetingItems) {
+        setSaveMeetingItems(false);
+        saveReOrder(agendaGroups, updateMeetingItem);
+      }
+    },
+  );
   // required for dndKit
   const sensors = useSensors(
     useSensor(PointerSensor, {
