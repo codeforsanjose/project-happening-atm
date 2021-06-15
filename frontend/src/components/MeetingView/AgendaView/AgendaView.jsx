@@ -59,8 +59,7 @@ import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
  *    activeId
  *      This represents the current agenda item or parent of the agenda items being moved
  *    oNumStart
- *      This is the starting order-number, it is set to the order-number value
- *      of the first parent element order number
+ *      This is the starting order-number, can be set in the const OPTIONS object
  *    isAdmin
  *      Flag to indicate user is admin or not
  *    updateMeetingItem
@@ -82,9 +81,10 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
-  const [agendaGroups, setAgendaGroups] = useState(groupMeetingItems(meeting.items, OPTIONS));
+  const [agendaGroups, setAgendaGroups] = useState(
+    groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix),
+  );
   const [activeId, setActiveId] = useState(null);
-  const [oNumStart] = useState(OPTIONS.oNumStart);
   const [isAdmin] = useState(getAdminStatus);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
 
@@ -135,7 +135,7 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   // These are the props for various functions, and components in object form
   // Event handler functions
   const onDragStartArgs = { setActiveId };
-  const onDragEndArgs = { setAgendaGroups, oNumStart };
+  const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
   const onDragOverArgs = { setAgendaGroups, setSelectedItems, selectedItems };
 
   // regular function props
