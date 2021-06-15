@@ -24,6 +24,9 @@ import Spinner from '../Spinner/Spinner';
  *    navToggled
  *      A boolean value indicating if the header nav component is open
  */
+const OPTIONS = {
+  refreshTimer: 1000, // ms to refresh meetingWithItems after clicking participate
+};
 
 const createMeetings = (data, setMeetingWithItems) => {
   const meeting = { ...data.getMeetingWithItems.meeting };
@@ -68,10 +71,13 @@ function MeetingView() {
   // grabs the meeting data when user leaves particpate to and returns to agenda
   // neccesarray to ensure accurate data displayed
   useEffect(() => {
-    if (showAgendaView) {
-      getMeetingWithItems({
-        variables: { id: parseInt(id, 10) },
-      });
+    if (!showAgendaView) {
+      // timer necessary to ensure the query is called after the database has been updated
+      window.setTimeout(() => {
+        getMeetingWithItems({
+          variables: { id: parseInt(id, 10) },
+        });
+      }, OPTIONS.refreshTimer);
     }
   }, [showAgendaView, id, getMeetingWithItems]);
 
