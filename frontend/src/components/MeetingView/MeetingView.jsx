@@ -50,7 +50,7 @@ function MeetingView() {
   const [navToggled, setNavToggled] = useState(false);
   // flag to indicate meeting items need to be saved
   const [saveMeetingItems, setSaveMeetingItems] = useState(false);
-
+  const [loadingAgendaView, setLoadingAgendaView] = useState(false);
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
     fetchPolicy: 'network-only',
@@ -72,11 +72,13 @@ function MeetingView() {
   // neccesarray to ensure accurate data displayed
   useEffect(() => {
     if (!showAgendaView) {
+      setLoadingAgendaView(true); // displays spinner while data loading and in agendaView
       // timer necessary to ensure the query is called after the database has been updated
       window.setTimeout(() => {
         getMeetingWithItems({
           variables: { id: parseInt(id, 10) },
         });
+        setLoadingAgendaView(false);
       }, OPTIONS.refreshTimer);
     }
   }, [showAgendaView, id, getMeetingWithItems]);
@@ -110,15 +112,18 @@ function MeetingView() {
         </div>
       </div>
       {loading && <Spinner />}
+      {showAgendaView && loadingAgendaView && <Spinner />}
       {!(loading || error) && data && 'items' in meetingWithItems
         && (
           showAgendaView
             ? (
+              !loadingAgendaView && (
               <AgendaView
                 meeting={meetingWithItems}
                 saveMeetingItems={saveMeetingItems}
                 setSaveMeetingItems={setSaveMeetingItems}
               />
+              )
             )
             : <ParticipateView meeting={meetingWithItems} />
         )}
