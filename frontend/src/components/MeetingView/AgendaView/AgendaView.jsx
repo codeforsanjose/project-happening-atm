@@ -72,7 +72,7 @@ import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
 const OPTIONS = {
   dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
-  oNumStart: 1,
+  oNumStart: 1, // This is the starting index of a group of item's order number
 };
 
 // These are the event handlers for the DndContext
