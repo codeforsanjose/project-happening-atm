@@ -102,11 +102,9 @@ function AgendaGroupBody({
     minHeight: options.minHeightAgendaContainer,
   };
 
-  const agendaItemIds = agendaGroup.items.map((item) => item.id);
-
   return (
     <SortableContext
-      items={isAdmin ? agendaItemIds : []}
+      items={isAdmin ? agendaGroup.items.map((item) => item.id) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">

@@ -85,7 +85,7 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   const [oNumStart] = useState(OPTIONS.oNumStart);
   const [isAdmin] = useState(getAdminStatus);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
-  console.log(agendaGroups);
+
   useEffect(
     () => {
       if (saveMeetingItems) {
