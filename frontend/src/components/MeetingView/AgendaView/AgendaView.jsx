@@ -19,6 +19,8 @@ import {
 } from '@dnd-kit/sortable';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
+
+// components used by this component
 import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
