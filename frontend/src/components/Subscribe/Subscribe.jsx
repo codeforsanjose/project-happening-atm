@@ -55,8 +55,7 @@ function Subscribe() {
   const [createSubscriptions, { loading, error }] = useMutation(
     CREATE_SUBSCRIPTIONS,
     {
-      onCompleted: data => data && data.createSubscriptions ?
-        setSubscriptions(data.createSubscriptions) : setSubscriptions(null)
+      onCompleted: data => setSubscriptions(data?.createSubscriptions ?? null)
     }
   );
 
