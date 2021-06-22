@@ -10,7 +10,6 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
-  useMutation,
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -31,7 +30,7 @@ import LoginContext from './components/LoginContext/LoginContext';
 
 import * as serviceWorker from './serviceWorker';
 
-import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/graphql';
+import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
 import LocalStorageTerms from './constants/LocalStorageTerms';
 import verifyToken from './utils/verifyToken';
@@ -74,19 +73,6 @@ function SampleQuery() {
   return null;
 }
 
-function SubscriptionPage() {
-  const [createSubscriptions, { loading, error, data }] = useMutation(CREATE_SUBSCRIPTIONS);
-
-  return (
-    <Subscribe
-      createSubscriptions={createSubscriptions}
-      isLoading={loading}
-      error={error}
-      subscriptions={data && data.createSubscriptions}
-    />
-  );
-}
-
 const initializeSignIn = () => {
   const tokenSignedIn = window.localStorage.getItem(LocalStorageTerms.SIGNED_IN);
 
@@ -112,7 +98,7 @@ function App() {
                   <MeetingListView />
                 </AuthRoute>
                 <AuthRoute path="/subscribe" signedIn={signedIn}>
-                  <SubscriptionPage />
+                  <Subscribe />
                 </AuthRoute>
                 <AuthRoute path="/meeting/:id" signedIn={signedIn}>
                   <MeetingView />

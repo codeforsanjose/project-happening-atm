@@ -100,7 +100,7 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  module.createSubscriptions = async (dbClient, args) => {
+  module.createSubscriptions = async (dbClient, args, context) => {
     validator.validateUser(context);
     validator.validateCreateSubscriptions(args);
 

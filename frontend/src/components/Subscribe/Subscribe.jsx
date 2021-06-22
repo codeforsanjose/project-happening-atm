@@ -12,20 +12,12 @@ import {
   validateEmail,
 } from './validation';
 import { convertQueryStringToServerFormat } from './subscribeQueryString';
+import { useMutation } from '@apollo/client';
+import { CREATE_SUBSCRIPTIONS } from './../../graphql/graphql';
+import { getUserEmail } from './../../utils/verifyToken';
 
 /**
  * This is the component for community member subscribe page.
- *
- * props:
- *    createSubscriptions
- *      The function that creates a subscription (or subscriptions) on the server
- *    isLoading
- *      A boolean values that indicates whether the communication with the server is in progress
- *    error
- *      An error object returned from the server if there is any error
- *    subscriptions
- *      Newly created subscriptions (response from the server)
- *
  *
  * state:
  *    isFormSubmitted
@@ -38,23 +30,35 @@ import { convertQueryStringToServerFormat } from './subscribeQueryString';
  *      A validation error for phone
  *    emailError
  *      A validation error for email
+ *    subscriptions
+ *      Newly created subscriptions (response from the server)
+ *    createSubscriptions
+ *      The function that creates a subscription (or subscriptions) on the server
+ *    loading
+ *      A boolean values that indicates whether the communication with the server is in progress
+ *    error
+ *      An error object returned from the server if there is any error
  */
 
-function Subscribe({
-  createSubscriptions,
-  isLoading,
-  error,
-  subscriptions,
-}) {
+function Subscribe() {
   const { t } = useTranslation();
 
   const history = useHistory();
   const queryString = useLocation().search;
   const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(getUserEmail());
   const [phoneError, setPhoneError] = useState(null);
   const [emailError, setEmailError] = useState(null);
+  const [subscriptions, setSubscriptions] = useState(null);
+
+  const [createSubscriptions, { loading, error }] = useMutation(
+    CREATE_SUBSCRIPTIONS,
+    {
+      onCompleted: data => data && data.createSubscriptions ?
+        setSubscriptions(data.createSubscriptions) : setSubscriptions(null)
+    }
+  );
 
   const handlePhoneChanged = (e) => {
     setPhone(e.target.value);
@@ -68,8 +72,8 @@ function Subscribe({
     setFormSubmitted(true);
     setPhoneError(null);
     setEmailError(null);
-    const phoneValidationError = validatePhone(phone);
-    const emailValidationError = validateEmail(email);
+    const phoneValidationError = phone ? validatePhone(phone) : null;
+    const emailValidationError = email ? validateEmail(email) : null;
     if (phoneValidationError !== null || emailValidationError !== null) {
       if (phoneValidationError) {
         setPhoneError(phoneValidationError);
@@ -143,11 +147,11 @@ function Subscribe({
             <div className="row">
               <button
                 type="button"
-                disabled={!phone || !email}
+                disabled={!phone && !email}
                 onClick={handleSubmit}
               >
-                {isLoading && <Spinner />}
-                {`Subscrib${isLoading ? 'ing...' : 'e'}`}
+                {loading && <Spinner />}
+                {`Subscrib${loading ? 'ing...' : 'e'}`}
               </button>
             </div>
           </form>
