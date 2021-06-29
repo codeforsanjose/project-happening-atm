@@ -74,11 +74,10 @@
                     font-weight:600;
                     font-size:1.5rem;
                 }
-            }
-
-            .google-microsoft-login:hover{
-                background:$cityBronze;
-                filter: brightness(70%);
+                &:hover{
+                    background:$cityBronze;
+                    filter: brightness(70%);
+                }
             }
 
             .or{
@@ -131,10 +130,9 @@
                         font-size:calc(0.75rem + 1.25vw);
                     }
 
-                }
-
-                .google-microsoft-login:hover{
-                    width:90vw;
+                    &:hover{
+                        width:90vw;
+                    }
 
                 }
 
@@ -197,10 +195,10 @@
                     margin-right:auto;
                     font-weight:600;
                     cursor:pointer;
-                }
 
-                .signInButton:hover{
-                    filter: brightness(70%);
+                    &:hover{
+                        filter: brightness(70%);
+                    }
                 }
 
                 .mobileView{
