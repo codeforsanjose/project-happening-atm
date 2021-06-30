@@ -29,6 +29,7 @@ The City of San Jose is interested in this service, but this is a project that c
 - [Google Drive](https://drive.google.com/drive/folders/1LAloOcCLCf4Mi-ulkx1ofZw1iIip2T0s)
 - [Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
 - [List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
+- [User Stories Board](https://miro.com/app/board/o9J_leAd8y8=/)
 
 # Setup
 
