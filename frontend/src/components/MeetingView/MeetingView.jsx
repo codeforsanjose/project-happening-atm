@@ -28,7 +28,7 @@ const OPTIONS = {
   refreshTimer: 1000, // ms to refresh meetingWithItems after clicking participate
 };
 
-const createMeetings = (data, setMeetingWithItems) => {
+const createMeeting = (data, setMeetingWithItems) => {
   const meeting = { ...data.getMeetingWithItems.meeting };
   meeting.items = data.getMeetingWithItems.items;
   setMeetingWithItems(meeting);
@@ -53,8 +53,8 @@ function MeetingView() {
   const [loadingAgendaView, setLoadingAgendaView] = useState(false);
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
-    fetchPolicy: 'network-only',
-    onCompleted: (d) => { createMeetings(d, setMeetingWithItems); },
+    fetchPolicy: 'cache-and-network',
+    onCompleted: (d) => { createMeeting(d, setMeetingWithItems); },
   });
 
   function handleToggle() {
@@ -64,7 +64,7 @@ function MeetingView() {
   // this handles the initial query only
   useEffect(() => {
     if (data) {
-      createMeetings(data, setMeetingWithItems);
+      createMeeting(data, setMeetingWithItems);
     }
   }, [data]);
 

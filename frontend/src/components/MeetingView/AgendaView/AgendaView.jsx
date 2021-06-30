@@ -145,9 +145,6 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
   const onDragOverArgs = { setAgendaGroups, setSelectedItems, selectedItems };
 
-  // regular function props
-  const createRenderGroupsArgs = { agendaGroups, showCompleted };
-
   // DragOverlayhandler props
   const dragOverlayProps = {
     agendaGroups, activeId, handleAgendaItemSelection, selectedItems,
@@ -155,7 +152,7 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
 
   // Necessary as the createRenderedGroups function returns renderedAgendaGroups
   // of which prevents the DND kit from moving items between completed and pending groups
-  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(createRenderGroupsArgs);
+  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
 
   return (
     <div className="AgendaView">
