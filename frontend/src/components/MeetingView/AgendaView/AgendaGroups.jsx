@@ -49,7 +49,7 @@ const options = {
 };
 
 function AgendaGroups({
-  agendaGroups, selectedItems, handleAgendaItemSelection, isAdmin,
+  agendaGroups, selectedItems, handleAgendaItemSelection, admin,
 }) {
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
@@ -61,7 +61,7 @@ function AgendaGroups({
           />
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
-            isAdmin={isAdmin}
+            admin={admin}
             agendaGroup={parent}
             selectedItems={selectedItems}
             handleItemSelection={handleAgendaItemSelection}
@@ -91,7 +91,7 @@ function AgendaGroupHeader({ agendaGroup }) {
 }
 
 function AgendaGroupBody({
-  agendaGroup, selectedItems, handleItemSelection, isAdmin,
+  agendaGroup, selectedItems, handleItemSelection, admin,
 }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
@@ -104,7 +104,7 @@ function AgendaGroupBody({
 
   return (
     <SortableContext
-      items={isAdmin ? agendaGroup.items.map((item) => item.id) : []}
+      items={admin ? agendaGroup.items.map((item) => item.id) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">

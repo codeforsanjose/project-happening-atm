@@ -63,8 +63,7 @@
       margin-bottom: 2.5em;
     }
 
-    .saveStatus 
-
+    .saveStatus{
       .saveStatusButton{
         background-color:$cityBlue;
         color:white;
@@ -79,6 +78,7 @@
         border-style:outset;
         border-width:2px;
       }
+    }
 
     .hide {
       // TODO

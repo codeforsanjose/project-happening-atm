@@ -31,7 +31,7 @@ import groupMeetingItems from './agendaViewFunctions/groupMeetingItems';
 import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
 import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
-import getAdminStatus from '../../../utils/getAdminStatus';
+import isAdmin from '../../../utils/isAdmin';
 
 // graphql
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
@@ -85,8 +85,10 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
     groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix),
   );
   const [activeId, setActiveId] = useState(null);
-  const [isAdmin] = useState(getAdminStatus);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
+
+  // regular variables
+  const admin = isAdmin();
 
   useEffect(
     () => {
@@ -171,20 +173,20 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
       <DndContext
         sensors={sensors}
         collisionDetection={rectIntersection}
-        onDragStart={isAdmin ? (e) => { handleDragStart(e, onDragStartArgs); } : null}
-        onDragEnd={isAdmin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
-        onDragOver={isAdmin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
+        onDragStart={admin ? (e) => { handleDragStart(e, onDragStartArgs); } : null}
+        onDragEnd={admin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
+        onDragOver={admin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
           <AgendaGroups
-            isAdmin={isAdmin}
+            admin={admin}
             agendaGroups={displayAgenda}
             selectedItems={selectedItems}
             handleAgendaItemSelection={handleAgendaItemSelection}
           />
         </Accordion>
 
-        {isAdmin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
+        {admin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
       </DndContext>
 
       { Object.keys(selectedItems).length > 0
