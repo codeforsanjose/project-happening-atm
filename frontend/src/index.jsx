@@ -1,4 +1,5 @@
 import React, { Suspense, useState } from 'react';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -11,7 +12,6 @@ import {
   ApolloProvider,
   useQuery,
   useMutation,
-  createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import './index.scss';
@@ -37,8 +37,9 @@ import LocalStorageTerms from './constants/LocalStorageTerms';
 import verifyToken from './utils/verifyToken';
 import './i18n';
 
-const httpLink = createHttpLink({
+const httpLink = new BatchHttpLink({
   uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  batchMax: 100,
 });
 
 //
