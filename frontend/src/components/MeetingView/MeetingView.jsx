@@ -24,10 +24,6 @@ import Spinner from '../Spinner/Spinner';
  *    navToggled
  *      A boolean value indicating if the header nav component is open
  */
-const OPTIONS = {
-  refreshTimer: 1000, // ms to refresh meetingWithItems after clicking participate
-};
-
 const createMeeting = (data, setMeetingWithItems) => {
   const meeting = { ...data.getMeetingWithItems.meeting };
   meeting.items = data.getMeetingWithItems.items;
@@ -50,7 +46,9 @@ function MeetingView() {
   const [navToggled, setNavToggled] = useState(false);
   // flag to indicate meeting items need to be saved
   const [saveMeetingItems, setSaveMeetingItems] = useState(false);
-  const [loadingAgendaView, setLoadingAgendaView] = useState(false);
+  // flag to indicate meeting items were updated by mutators
+  const [meetingItemsUpdated, setMeetingItemsUpdated] = useState(false);
+  const [disableParticipateViewButton, setDisableParticipateViewButton] = useState(false);
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
     fetchPolicy: 'cache-and-network',
@@ -68,20 +66,23 @@ function MeetingView() {
     }
   }, [data]);
 
-  // grabs the meeting data when user leaves particpate to and returns to agenda
-  // neccesarray to ensure accurate data displayed
+  // disabled participate view while mutators are being processed by backend
   useEffect(() => {
-    if (!showAgendaView) {
-      setLoadingAgendaView(true); // displays spinner while data loading and in agendaView
-      // timer necessary to ensure the query is called after the database has been updated
-      window.setTimeout(() => {
-        getMeetingWithItems({
-          variables: { id: parseInt(id, 10) },
-        });
-        setLoadingAgendaView(false);
-      }, OPTIONS.refreshTimer);
+    if (saveMeetingItems) {
+      setDisableParticipateViewButton(true);
     }
-  }, [showAgendaView, id, getMeetingWithItems]);
+  }, [saveMeetingItems]);
+
+  // once mutators finish fetch the new data
+  useEffect(() => {
+    if (meetingItemsUpdated) {
+      getMeetingWithItems({
+        variables: { id: parseInt(id, 10) },
+      });
+      setMeetingItemsUpdated(false);
+      setDisableParticipateViewButton(false);
+    }
+  }, [meetingItemsUpdated, id, getMeetingWithItems]);
 
   return (
     <div className="meeting-view">
@@ -106,24 +107,23 @@ function MeetingView() {
           <button
             type="button"
             onClick={() => setShowAgendaView(false)}
+            disabled={disableParticipateViewButton}
           >
             {t('meeting.tabs.participate.label')}
           </button>
         </div>
       </div>
       {loading && <Spinner />}
-      {showAgendaView && loadingAgendaView && <Spinner />}
       {!(loading || error) && data && 'items' in meetingWithItems
         && (
           showAgendaView
             ? (
-              !loadingAgendaView && (
               <AgendaView
                 meeting={meetingWithItems}
                 saveMeetingItems={saveMeetingItems}
                 setSaveMeetingItems={setSaveMeetingItems}
+                setMeetingItemsUpdated={setMeetingItemsUpdated}
               />
-              )
             )
             : <ParticipateView meeting={meetingWithItems} />
         )}

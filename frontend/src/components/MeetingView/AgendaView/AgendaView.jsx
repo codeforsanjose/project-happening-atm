@@ -77,7 +77,9 @@ const OPTIONS = {
 
 // These are the event handlers for the DndContext
 
-function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
+function AgendaView({
+  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated,
+}) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
@@ -85,10 +87,13 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
     groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix),
   );
   const [activeId, setActiveId] = useState(null);
-  const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM);
+  const [itemsUpdated, setItemsUpdated] = useState(0);
+  const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
+    { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
 
   // regular variables
   const admin = isAdmin();
+  const nItems = meeting.items.length - agendaGroups.length;
 
   useEffect(
     () => {
@@ -104,6 +109,15 @@ function AgendaView({ meeting, saveMeetingItems, setSaveMeetingItems }) {
   useEffect(() => {
     setAgendaGroups(groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix));
   }, [meeting]);
+
+  // once all items have been sucessfully updated the parent component is notified thru the
+  // meetingItemsUpdated flag and items updated reseted to 0
+  useEffect(() => {
+    if (itemsUpdated === nItems) {
+      setMeetingItemsUpdated(true);
+      setItemsUpdated(0);
+    }
+  }, [itemsUpdated, nItems, setMeetingItemsUpdated]);
 
   // required for dndKit
   const sensors = useSensors(
