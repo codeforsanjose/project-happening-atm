@@ -66,7 +66,6 @@ module.exports = (logger) => {
 
     input meetingInput {
         meeting_item_id: Int
-        meeting_id: Int
     }
 
     type meeting_with_items {

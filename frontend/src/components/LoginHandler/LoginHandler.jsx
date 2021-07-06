@@ -73,7 +73,7 @@ function LoginHandler() {
             {t('login.body.header.cityCouncil')}
           </p>
 
-          <hr className="introTextSeperator" />
+          <hr className="introTextSeparator" />
 
           <div className="google-microsoft-login googleLogin">
             <img
@@ -116,7 +116,7 @@ function LoginHandler() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <a className="passAnchor" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
+            <a className="passAnchor desktopView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
             <button
               className="signInButton"
               type="button"
@@ -125,6 +125,7 @@ function LoginHandler() {
             >
               {t('navbar.sign-in')}
             </button>
+            <a className="passAnchor mobileView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
           </div>
 
         </div>

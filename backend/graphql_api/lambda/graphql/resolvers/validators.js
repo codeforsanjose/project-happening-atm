@@ -212,16 +212,21 @@ module.exports = (logger) => {
   module.validateCreateSubscriptions = (args) => {
     const context = 'createSubscriptions';
 
-    // TODO: Handle meeting_item_id, meeting_id validation
-    // I'd like to enforce these records only having one of these
-    // values, but I need to verify requirements
-
     const {
       phone_number, email_address,
     } = args;
 
-    validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
-    validateEmail(email_address, 'email_address', context);
+    // Check that at least one method is specified.
+    if (phone_number === '' && email_address === '') {
+      const msg = `Either phone number or email address is required.`;
+      throwUserInputError(msg, context);      
+    }
+    if (phone_number !== '') {
+      validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+    }
+    if (email_address !== '') {
+      validateEmail(email_address, 'email_address', context);
+    }
   };
 
   module.validateCreateAccount = (args) => {

@@ -15,3 +15,8 @@ const verifyToken = () => {
 };
 
 export default verifyToken;
+
+export function getUserEmail() {
+  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
+  return parseJwt(token).email;
+}
