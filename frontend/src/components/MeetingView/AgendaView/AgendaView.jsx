@@ -88,20 +88,22 @@ function AgendaView({
   );
   const [activeId, setActiveId] = useState(null);
   const [itemsUpdated, setItemsUpdated] = useState(0);
+  const [itemsToUpdate, setItemsToUpdate] = useState(0);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
 
   // regular variables
   const admin = isAdmin();
-  const nItems = meeting.items.length - agendaGroups.length;
 
+  // performs the save when user clicks the button to save, then resets flag
   useEffect(
     () => {
       if (saveMeetingItems) {
         setSaveMeetingItems(false);
-        saveReOrder(agendaGroups, updateMeetingItem);
+        saveReOrder(agendaGroups, meeting, updateMeetingItem, setItemsToUpdate);
       }
-    },
+    }, [meeting, saveMeetingItems, agendaGroups,
+      updateMeetingItem, setItemsToUpdate, setSaveMeetingItems],
   );
 
   // updates agendaGroups if the meeting data changes,
@@ -113,11 +115,12 @@ function AgendaView({
   // once all items have been sucessfully updated the parent component is notified thru the
   // meetingItemsUpdated flag and items updated reseted to 0
   useEffect(() => {
-    if (itemsUpdated === nItems) {
+    if (itemsUpdated >= itemsToUpdate && itemsToUpdate > 0) {
       setMeetingItemsUpdated(true);
       setItemsUpdated(0);
+      setItemsToUpdate(0);
     }
-  }, [itemsUpdated, nItems, setMeetingItemsUpdated]);
+  }, [itemsUpdated, itemsToUpdate, setItemsToUpdate, setMeetingItemsUpdated]);
 
   // required for dndKit
   const sensors = useSensors(
