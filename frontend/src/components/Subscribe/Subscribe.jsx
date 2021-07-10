@@ -3,18 +3,20 @@ import { useTranslation } from 'react-i18next';
 import './Subscribe.scss';
 import classnames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import BackNavigation from '../BackNavigation/BackNavigation';
 import Spinner from '../Spinner/Spinner';
 import CustomInput from '../CustomInput/CustomInput';
 import SubscribeConfirmation from './SubscribeConfirmation';
 import {
   validatePhone,
+  getPhoneDigits,
   validateEmail,
 } from './validation';
 import { convertQueryStringToServerFormat } from './subscribeQueryString';
-import { useMutation } from '@apollo/client';
-import { CREATE_SUBSCRIPTIONS } from './../../graphql/graphql';
-import { getUserEmail } from './../../utils/verifyToken';
+
+import { CREATE_SUBSCRIPTIONS } from '../../graphql/graphql';
+import { getUserEmail } from '../../utils/verifyToken';
 
 /**
  * This is the component for community member subscribe page.
@@ -55,12 +57,32 @@ function Subscribe() {
   const [createSubscriptions, { loading, error }] = useMutation(
     CREATE_SUBSCRIPTIONS,
     {
-      onCompleted: data => setSubscriptions(data?.createSubscriptions ?? null)
-    }
+      onCompleted: (data) => setSubscriptions(data?.createSubscriptions ?? null),
+    },
   );
 
   const handlePhoneChanged = (e) => {
-    setPhone(e.target.value);
+    // Uses only digits of the input value to construct a phone number string
+    // in the form of '+1 (234) 567-8910'.
+    const digits = getPhoneDigits(e.target.value);
+    const oldDigits = getPhoneDigits(phone);
+
+    let newPhone = digits.length > 0 ? '+1' : '';
+    if (digits.length > 1 && digits.length <= 4) {
+      newPhone += ` (${digits.substring(1)}`;
+      if (digits.length === 4 && oldDigits.length < digits.length) {
+        newPhone += ') ';
+      }
+    } else if (digits.length > 4 && digits.length <= 7) {
+      newPhone += ` (${digits.substring(1, 4)}) ${digits.substring(4)}`;
+      if (digits.length === 7 && oldDigits.length < digits.length) {
+        newPhone += '-';
+      }
+    } else if (digits.length > 7) {
+      newPhone += ` (${digits.substring(1, 4)}) ${digits.substring(4, 7)}-${digits.substring(7, 11)}`;
+    }
+
+    setPhone(newPhone);
   };
 
   const handleEmailChanged = (e) => {
@@ -87,7 +109,7 @@ function Subscribe() {
 
     createSubscriptions({
       variables: {
-        phone_number: phone,
+        phone_number: getPhoneDigits(phone),
         email_address: email,
         meetings: convertQueryStringToServerFormat(queryString),
       },
@@ -118,6 +140,7 @@ function Subscribe() {
                 value={phone}
                 onChange={handlePhoneChanged}
                 errorMessage={phoneError}
+                inputNote={t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.us-support-note')}
               />
             </div>
             <div className="input-group">

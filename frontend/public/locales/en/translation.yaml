@@ -154,6 +154,7 @@ meeting:
               sms:
                 label: Subscribe to text notifications
                 placeholder: Enter phone number
+                us-support-note: We support only US phone numbers (ex. +1 (234) 567-8910)
               email:
                 label: Subscribe to email notifications
                 placeholder: Enter email address
