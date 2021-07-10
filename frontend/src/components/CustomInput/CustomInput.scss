@@ -23,6 +23,10 @@
       border: 2px solid $red;
     }
   }
+  small {
+    font-size: 0.7em;
+    color: $darkGray;
+  }
   .input-error {
     font-size: 0.8em;
     color: $red;
