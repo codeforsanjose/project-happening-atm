@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 
+// agenda items below
+// getters
 export const GET_ALL_MEETINGS = gql`
   query {
     getAllMeetings {
@@ -60,6 +62,38 @@ export const GET_MEETING_WITH_ITEMS = gql`
     }
   }
 `;
+
+// setters
+
+export const UPDATE_MEETING_ITEM = gql`
+  mutation UpdateMeetingItem(
+    $id: Int,
+    $order_number: Int!,
+    $status: String,
+    $content_categories: String!,
+    $item_start_timestamp: String,
+    $item_end_timestamp: String,
+    $description_loc_key: String,
+    $title_loc_key: String,
+    $parent_meeting_item_id:Int,
+  ) {
+    updateMeetingItem(
+      id:$id,
+      order_number:$order_number,
+      status:$status,
+      item_start_timestamp:$item_start_timestamp,
+      item_end_timestamp:$item_end_timestamp,
+      content_categories:$content_categories,
+      description_loc_key:$description_loc_key,
+      title_loc_key:$title_loc_key,
+      parent_meeting_item_id:$parent_meeting_item_id
+    ) {
+      id
+    }
+}
+`;
+
+// agenda items ended
 
 export const CREATE_SUBSCRIPTIONS = gql`
   mutation CreateSubscriptions(

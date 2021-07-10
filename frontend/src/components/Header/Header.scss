@@ -63,6 +63,23 @@
       margin-bottom: 2.5em;
     }
 
+    .saveStatus{
+      .saveStatusButton{
+        background-color:$cityBlue;
+        color:white;
+        border-style:inset;
+        margin-left:0.7rem;
+        padding-right:1.4rem;
+        text-align: left;
+        cursor:pointer;
+      }
+
+      .saveStatusButton:active{
+        border-style:outset;
+        border-width:2px;
+      }
+    }
+
     .hide {
       // TODO
     }
