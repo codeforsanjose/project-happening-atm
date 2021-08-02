@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import './MeetingListItem.scss';
+import isAdmin from '../../utils/isAdmin';
 
 // Component imports
 import {
@@ -33,12 +34,9 @@ function MeetingListItem({ item }) {
   const time = toTimeString(meeting_start_timestamp);
   const isInProgress = status === 'IN PROGRESS';
 
-  // Determine which set of item links to use based on meeting status and role
-  // TODO: Integrate with auth to determine user role
-  // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
-  const role = 'USER'; // TEMP
+  const isCurrentUserAdmin = isAdmin();
   const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
-  const MeetingItemLinks = role === 'ADMIN' ? AdminMeetingItemLinks : PublicLinks;
+  const MeetingItemLinks = isCurrentUserAdmin ? AdminMeetingItemLinks : PublicLinks;
 
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
