@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -10,9 +11,8 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
-  useMutation,
 } from '@apollo/client';
-
+import { setContext } from '@apollo/client/link/context';
 import './index.scss';
 
 import classnames from 'classnames';
@@ -24,16 +24,39 @@ import Subscribe from './components/Subscribe/Subscribe';
 import AdminView from './components/AdminView/AdminView';
 import EmailConfirmPage from './components/EmailConfirmPage/EmailConfirmPage';
 import Footer from './components/Footer/Footer';
+import LoginHandler from './components/LoginHandler/LoginHandler';
+import AuthRoute from './components/AuthRoute/AuthRoute';
+import LoginContext from './components/LoginContext/LoginContext';
 
 import * as serviceWorker from './serviceWorker';
 
-import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/graphql';
+import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
 import AdminPaths from './constants/AdminPaths';
-
+import LocalStorageTerms from './constants/LocalStorageTerms';
+import verifyToken from './utils/verifyToken';
 import './i18n';
 
+const httpLink = new BatchHttpLink({
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  batchMax: 100,
+});
+
+//
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
+
+  // if the token is valid use it, else attach no token  to header
+  return {
+    headers: {
+      ...headers,
+      authorization: verifyToken() ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: `http://${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -51,42 +74,44 @@ function SampleQuery() {
   return null;
 }
 
-function SubscriptionPage() {
-  const [createSubscriptions, { loading, error, data }] = useMutation(CREATE_SUBSCRIPTIONS);
+const initializeSignIn = () => {
+  const tokenSignedIn = window.localStorage.getItem(LocalStorageTerms.SIGNED_IN);
 
-  return (
-    <Subscribe
-      createSubscriptions={createSubscriptions}
-      isLoading={loading}
-      error={error}
-      subscriptions={data && data.createSubscriptions}
-    />
-  );
-}
+  // provides verification to the front-end the login status
+  const loggedIn = verifyToken() && tokenSignedIn;
+  window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, loggedIn);
+
+  return loggedIn;
+};
 
 function App() {
   const { t } = useTranslation();
+  const [signedIn, setSignedIn] = useState(initializeSignIn);
 
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <div className={classnames('app-root')}>
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <MeetingListView />
-              </Route>
-              <Route path="/subscribe">
-                <SubscriptionPage />
-              </Route>
-              <Route path="/meeting/:id">
-                <MeetingView />
-              </Route>
-              <Route path="/confirm/:token/:action">
-                <EmailConfirmPage />
-              </Route>
+        <LoginContext.Provider value={{ setSignedIn, signedIn }}>
+          <div className={classnames('app-root')}>
+            <Router>
+              <Switch>
+                <AuthRoute exact path="/" signedIn={signedIn}>
+                  <MeetingListView />
+                </AuthRoute>
+                <AuthRoute path="/subscribe" signedIn={signedIn}>
+                  <Subscribe />
+                </AuthRoute>
+                <AuthRoute path="/meeting/:id" signedIn={signedIn}>
+                  <MeetingView />
+                </AuthRoute>
+                <AuthRoute path="/confirm/:token/:action" signedIn={signedIn}>
+                  <EmailConfirmPage />
+                </AuthRoute>
+                <Route path="/login">
+                  <LoginHandler />
+                </Route>
 
-              {/* <Route exact path="/participate/join">
+                {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
                 </Route>
                 <Route exact path="/participate/watch">
@@ -99,24 +124,25 @@ function App() {
                   <ParticipatePage Component={ParticipateRequest} />
                 </Route> */}
 
-              <Route path={`${AdminPaths.EDIT_MEETING}/:id`}>
-                <AdminView
-                  headerText={t('meeting.actions.edit-info.label')}
-                  component={() => <div>Placeholder for Edit Meeting</div>}
-                />
-              </Route>
+                <AuthRoute path={`${AdminPaths.EDIT_MEETING}/:id`} signedIn={signedIn}>
+                  <AdminView
+                    headerText={t('meeting.actions.edit-info.label')}
+                    component={() => <div>Placeholder for Edit Meeting</div>}
+                  />
+                </AuthRoute>
 
-              <Route path={`${AdminPaths.EDIT_AGENDA}/:id`}>
-                <AdminView
-                  headerText="Edit Agenda Items"
-                  component={AgendaTable}
-                />
-              </Route>
-            </Switch>
-          </Router>
-          <Footer />
-          <SampleQuery />
-        </div>
+                <AuthRoute path={`${AdminPaths.EDIT_AGENDA}/:id`} signedIn={signedIn}>
+                  <AdminView
+                    headerText="Edit Agenda Items"
+                    component={AgendaTable}
+                  />
+                </AuthRoute>
+              </Switch>
+            </Router>
+            <Footer />
+            <SampleQuery />
+          </div>
+        </LoginContext.Provider>
       </ApolloProvider>
     </React.StrictMode>
   );

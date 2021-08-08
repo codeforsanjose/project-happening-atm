@@ -2,9 +2,7 @@
 // I'm disabling this error because we're using variable names from the schema
 // that use snake_case since they're referencing values in our DB that also uses snake_case
 
-// This environment variable is only set in AWS. Local development shouldn't have it.
-const isLambda = process.env.IS_LAMBDA;
-const { UserInputError, ForbiddenError } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
+const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
 const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED'];
@@ -214,16 +212,21 @@ module.exports = (logger) => {
   module.validateCreateSubscriptions = (args) => {
     const context = 'createSubscriptions';
 
-    // TODO: Handle meeting_item_id, meeting_id validation
-    // I'd like to enforce these records only having one of these
-    // values, but I need to verify requirements
-
     const {
       phone_number, email_address,
     } = args;
 
-    validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
-    validateEmail(email_address, 'email_address', context);
+    // Check that at least one method is specified.
+    if (phone_number === '' && email_address === '') {
+      const msg = `Either phone number or email address is required.`;
+      throwUserInputError(msg, context);      
+    }
+    if (phone_number !== '') {
+      validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+    }
+    if (email_address !== '') {
+      validateEmail(email_address, 'email_address', context);
+    }
   };
 
   module.validateCreateAccount = (args) => {

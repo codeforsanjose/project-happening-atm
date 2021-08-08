@@ -43,7 +43,11 @@ module.exports = (logger) => {
     let res;
     try {
       res = await dbClient.createMeeting(
-        args.meeting_type, args.meeting_start_timestamp, args.virtual_meeting_url, args.status,
+        args.meeting_type, args.meeting_start_timestamp,
+        args.virtual_meeting_url, args.status, args.virtual_meeting_id,
+        args.call_in_information, args.email_before_meeting,
+        args.email_during_meeting, args.eComment, args.city_of_san_jose_meeting,
+        args.youtube_link
       );
     } catch (e) {
       logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
@@ -79,6 +83,7 @@ module.exports = (logger) => {
       res = await dbClient.createMeetingItem(
         args.meeting_id, args.order_number, args.item_start_timestamp, args.item_end_timestamp,
         args.status, args.content_categories, args.description_loc_key, args.title_loc_key,
+        args.parent_meeting_item_id,
       );
     } catch (e) {
       logger.error(`createMeetingItem resolver error - dbClient.createMeetingItem: ${e}`);
@@ -95,7 +100,7 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  module.createSubscriptions = async (dbClient, args) => {
+  module.createSubscriptions = async (dbClient, args, context) => {
     validator.validateUser(context);
     validator.validateCreateSubscriptions(args);
 
@@ -130,7 +135,7 @@ module.exports = (logger) => {
       res = await dbClient.updateMeetingItem(
         args.id, args.order_number, args.status, args.item_start_timestamp,
         args.item_end_timestamp, args.content_categories, args.description_loc_key,
-        args.title_loc_key,
+        args.title_loc_key, args.parent_meeting_item_id,
       );
     } catch (e) {
       logger.error(`updateMeetingItem resolver error - dbClient.updateMeetingItem: ${e}`);
@@ -185,6 +190,9 @@ module.exports = (logger) => {
       res = await dbClient.updateMeeting(
         args.id, args.status, args.meeting_type, args.virtual_meeting_url,
         args.meeting_start_timestamp, args.meeting_end_timestamp,
+        args.virtual_meeting_id, args.call_in_information,
+        args.email_before_meeting, args.email_during_meeting, args.eComment,
+        args.city_of_san_jose_meeting, args.youtube_link
       );
     } catch (e) {
       logger.error(`updateMeeting resolver error - dbClient.updateMeeting: ${e}`);
@@ -220,6 +228,18 @@ module.exports = (logger) => {
       throw e;
     }
     return res.rows[0];
+  };
+
+  module.deleteMeeting = async (dbClient, args, context) => {
+    validator.validateAuthorization(context);
+
+    try {
+      await dbClient.deleteMeeting(args.id);
+    } catch (e) {
+      logger.error(`deleteMeeting resolver error - dbClient.deleteMeeting: ${e}`);
+      throw e;
+    }
+    return true;
   };
 
   module.createAccount = async (dbClient, args, context) => {

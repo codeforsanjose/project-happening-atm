@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
+import {
+  useMutation,
+} from '@apollo/client';
+
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  rectIntersection,
+} from '@dnd-kit/core';
+import {
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable';
 
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
-import AgendaGroup from './AgendaGroup';
+
+// components used by this component
+import AgendaGroups from './AgendaGroups';
 import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
-import MeetingItemStates from '../../../constants/MeetingItemStates';
+
+// functions used by this component
+import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
+import groupMeetingItems from './agendaViewFunctions/groupMeetingItems';
+import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
+import saveReOrder from './agendaViewFunctions/saveReOrder';
+import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
+import isAdmin from '../../../utils/isAdmin';
+
+// graphql
+import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -25,16 +52,88 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
  *      {
  *        [meeting_id]: { [meeting_item_id]}
  *      }
+ *    agendaGroups
+ *      The meeting prop transformed into an array of objects.
+ *  Each of these objects holds the information
+ *      for the main container, and an array of items under the group
+ *    activeId
+ *      This represents the current agenda item or parent of the agenda items being moved
+ *    oNumStart
+ *      This is the starting order-number, can be set in the const OPTIONS object
+ *    isAdmin
+ *      Flag to indicate user is admin or not
+ *    updateMeetingItem
+ *      Graphql mutation to save the new order after drag and dropping
+ *
+ *
+ *
+ *
  */
 
-function AgendaView({ meeting }) {
+const OPTIONS = {
+  dropIdPostfix: 'Drop', // This is used to create a unique ID for the droppable containers within AgendaGroupBody
+  oNumStart: 1, // This is the starting index of a group of item's order number
+};
+
+// These are the event handlers for the DndContext
+
+function AgendaView({
+  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated,
+}) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [selectedItems, setSelectedItems] = useState({});
+  const [agendaGroups, setAgendaGroups] = useState(
+    groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix),
+  );
+  const [activeId, setActiveId] = useState(null);
+  const [itemsUpdated, setItemsUpdated] = useState(0);
+  const [itemsToUpdate, setItemsToUpdate] = useState(0);
+  const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
+    { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
 
-  const handleSelectionCancel = () => {
-    setSelectedItems({});
-  };
+  // regular variables
+  const admin = isAdmin();
+
+  // performs the save when user clicks the button to save, then resets flag
+  useEffect(
+    () => {
+      if (saveMeetingItems) {
+        setSaveMeetingItems(false);
+        saveReOrder(agendaGroups, meeting, updateMeetingItem, setItemsToUpdate);
+      }
+    }, [meeting, saveMeetingItems, agendaGroups,
+      updateMeetingItem, setItemsToUpdate, setSaveMeetingItems],
+  );
+
+  // updates agendaGroups if the meeting data changes,
+  // ensures changes made to order are displayed correctly
+  useEffect(() => {
+    setAgendaGroups(groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix));
+  }, [meeting]);
+
+  // once all items have been sucessfully updated the parent component is notified thru the
+  // meetingItemsUpdated flag and items updated reseted to 0
+  useEffect(() => {
+    if (itemsUpdated >= itemsToUpdate && itemsToUpdate > 0) {
+      setMeetingItemsUpdated(true);
+      setItemsUpdated(0);
+      setItemsToUpdate(0);
+    }
+  }, [itemsUpdated, itemsToUpdate, setItemsToUpdate, setMeetingItemsUpdated]);
+
+  // required for dndKit
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      // This requies the user to click and hold to initiate a drag
+      activationConstraint: {
+        distance: 0,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
     if (isChecked && !(meetingId in selectedItems)) {
@@ -59,38 +158,24 @@ function AgendaView({ meeting }) {
     }
   };
 
-  const groupMeetingItems = (meetingItems) => {
-    // Groups all the meeting items by `parent_meeting_item_id`.
-    // Returns a hash table with keys as agenda items id (the ones without `parent_meeting_item_id`)
-    // and values as the items themselves. Inside such items there can be a property `items` which
-    // is an array of agenda items whose `parent_meeting_item_id` is equal to the corresponding key.
-    const itemsWithNoParent = meetingItems.filter((item) => item.parent_meeting_item_id === null);
-    const itemsWithParent = meetingItems.filter((item) => item.parent_meeting_item_id !== null);
+  // These are the props for various functions, and components in object form
+  // Event handler functions
+  const onDragStartArgs = { setActiveId };
+  const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
+  const onDragOverArgs = { setAgendaGroups, setSelectedItems, selectedItems };
 
-    const agendaGroups = {};
-    itemsWithNoParent.forEach((item) => {
-      agendaGroups[item.id] = { ...item };
-      agendaGroups[item.id].items = [];
-    });
-
-    itemsWithParent.forEach((item) => {
-      // If the parent meeting item is not in the list of the meeting items,
-      // the data is invalid but we ignore it here.
-      if (item.parent_meeting_item_id in agendaGroups) {
-        agendaGroups[item.parent_meeting_item_id].items.push(item);
-      }
-    });
-
-    return agendaGroups;
+  // DragOverlayhandler props
+  const dragOverlayProps = {
+    agendaGroups, activeId, handleAgendaItemSelection, selectedItems,
   };
 
-  const renderedItems = showCompleted
-    ? meeting.items
-    : meeting.items.filter((item) => item.status !== MeetingItemStates.COMPLETED);
-  const agendaGroups = groupMeetingItems(renderedItems);
+  // Necessary as the createRenderedGroups function returns renderedAgendaGroups
+  // of which prevents the DND kit from moving items between completed and pending groups
+  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
 
   return (
     <div className="AgendaView">
+
       <Search />
 
       <button
@@ -102,27 +187,30 @@ function AgendaView({ meeting }) {
         <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
       </button>
 
-      <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
-        {renderedItems.map((meetingItem) => {
-          if (meetingItem.id in agendaGroups) {
-            return (
-              <AgendaGroup
-                key={meetingItem.id}
-                agendaGroup={agendaGroups[meetingItem.id]}
-                selectedItems={selectedItems}
-                handleItemSelection={handleAgendaItemSelection}
-              />
-            );
-          }
-          return null;
-        })}
-      </Accordion>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={rectIntersection}
+        onDragStart={admin ? (e) => { handleDragStart(e, onDragStartArgs); } : null}
+        onDragEnd={admin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
+        onDragOver={admin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
+      >
+        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+          <AgendaGroups
+            admin={admin}
+            agendaGroups={displayAgenda}
+            selectedItems={selectedItems}
+            handleAgendaItemSelection={handleAgendaItemSelection}
+          />
+        </Accordion>
+
+        {admin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
+      </DndContext>
 
       { Object.keys(selectedItems).length > 0
         && (
           <MultipleSelectionBox
             selectedItems={selectedItems}
-            handleCancel={handleSelectionCancel}
+            handleCancel={() => setSelectedItems({})}
           />
         )}
     </div>

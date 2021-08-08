@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
 
-// This environment variable is only set in AWS. Local development shouldn't have it.
-const isLambda = process.env.IS_LAMBDA;
-const { ApolloServer, gql } = isLambda ? require('apollo-server-lambda') : require('apollo-server');
+const { ApolloServer, gql } = require('apollo-server');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
@@ -31,18 +29,18 @@ module.exports = (logger) => {
         loginLocal(email_address: String!, password: String!): auth_data
         loginGoogle: auth_data
         loginMicrosoft: auth_data
-        
+
         # TODO: Need to add verify token query
-        
+
         # TODO: Need to add reset password query
     }
 
     type Mutation {
-        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String): meeting
-        updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String): meeting
+        createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String, virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
+        updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String, , virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
 
-        createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
-        updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String): meeting_item
+        createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
+        updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
 
         createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
 
@@ -50,6 +48,8 @@ module.exports = (logger) => {
         unconfirmEmail(token: String): Boolean
 
         createAccount(first_name: String, last_name: String, email_address: String, password: String): auth_data
+
+        deleteMeeting(id: Int!): String
 
         # TODO: Need to add update user info mutation
     }
@@ -66,7 +66,6 @@ module.exports = (logger) => {
 
     input meetingInput {
         meeting_item_id: Int
-        meeting_id: Int
     }
 
     type meeting_with_items {
@@ -83,6 +82,13 @@ module.exports = (logger) => {
         meeting_start_timestamp: String
         meeting_end_timestamp: String
         virtual_meeting_url: String
+        virtual_meeting_id: String
+        call_in_information: String
+        email_before_meeting: String
+        email_during_meeting: String
+        ecomment: String
+        city_of_san_jose_meeting: String
+        youtube_link: String
     }
 
     type meeting_item {
@@ -107,7 +113,7 @@ module.exports = (logger) => {
       unsubscribe_token: String
       email_address: String
       phone_number: String
-      phone_number_subscribed: Boolean 
+      phone_number_subscribed: Boolean
       email_address_subscribed: Boolean
       password: String
       password_reset_token: String
@@ -121,7 +127,7 @@ module.exports = (logger) => {
       ADMIN
       USER
     }
-  
+
 
     type auth_data {
       token: String!
@@ -207,6 +213,10 @@ module.exports = (logger) => {
       updateMeeting: async (_parent, args, context) => {
         logger.info('Initiating UpdateMeeting Mutation resolver');
         return resolverHandler(mutationResolver.updateMeeting, args, context);
+      },
+      deleteMeeting: async (_parent, args, context) => {
+        logger.info('Initiating DeleteMeeting Mutation resolver');
+        return resolverHandler(mutationResolver.deleteMeeting, args, context);
       },
       createMeetingItem: async (_parent, args, context) => {
         logger.info('Initiating CreateMeetingItem Mutation resolver');

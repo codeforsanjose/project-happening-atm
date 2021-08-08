@@ -21,6 +21,8 @@ import classnames from 'classnames';
   *      The function that handles the input's changes event
   *    errorMessage
   *      A string with error message if there are any errors associated with this input element
+  *    inputNote
+  *      An optional note under this input field
   */
 
 function CustomInput({
@@ -31,6 +33,7 @@ function CustomInput({
   value,
   onChange,
   errorMessage,
+  inputNote,
 }) {
   return (
     <div className={classnames('custom-input-wrapper')}>
@@ -42,6 +45,10 @@ function CustomInput({
         value={value}
         onChange={onChange}
       />
+      { inputNote
+        && (
+          <small>{ inputNote }</small>
+        )}
       { errorMessage
         && (
           <div className="input-error">
