@@ -49,7 +49,10 @@ function CreateMeetingModal({
   const [createSuccessful, setCreateSuccessful] = useState(false);
 
   //date picker functionality
-  const [date, setDate] = useState(new Date());
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const [date, setDate] = useState(tomorrow);
+
   const handleChange = (date) => {
     setDate(date);
   };
@@ -59,6 +62,12 @@ function CreateMeetingModal({
     const selectedDate = new Date(time);
     return currentDate.getTime() < selectedDate.getTime();
   };
+
+  const getMinDate = () => {
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  }
 
   /* component internationalized texts */
   const title = "meeting.list.new-meeting.modal.title";
@@ -140,7 +149,7 @@ function CreateMeetingModal({
             <p className="date-time-title">{t(dateInput)}</p>
               <DatePicker
               selected={date}
-              minDate={new Date()}
+              minDate={getMinDate()}
               showPopperArrow={false}
               placeholderText="mm/dd/yyyy"
               onChange={handleChange}
@@ -155,10 +164,11 @@ function CreateMeetingModal({
               selected={date}
               onChange={handleChange}
               showPopperArrow={false}
-              value={date.setMinutes(Math.ceil(date.getMinutes() / 30) * 30)}
+              value={(date.setHours(7,0))}
+              // value={date.setMinutes(Math.ceil(date.getMinutes() / 30) * 30)}
               filterTime={filterPassedTime}
               minTime={(new Date()).setHours(7,0)}
-              maxTime={(new Date()).setHours(18,0)}
+              maxTime={(new Date()).setHours(22,0)}
               showTimeSelect
               showTimeSelectOnly
               timeIntervals={30}
