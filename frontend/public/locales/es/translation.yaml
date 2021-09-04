@@ -90,8 +90,9 @@ meeting:
           date: Fecha
           time: Tiempo
         buttons:
-          create-meeting: Crear Nueva Reunión
+          create-meeting: Crear
           creating-meeting: Creando Nueva Reunión
+          cancel: Cancelar          
     delete-meeting:
       button: Borrar Reunión
       modal:
