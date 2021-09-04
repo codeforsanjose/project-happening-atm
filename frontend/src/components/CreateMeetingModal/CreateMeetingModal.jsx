@@ -57,11 +57,11 @@ function CreateMeetingModal({
     setDate(date);
   };
   
-  const filterPassedTime = (time) => {
-    const currentDate = new Date();
-    const selectedDate = new Date(time);
-    return currentDate.getTime() < selectedDate.getTime();
-  };
+  // const filterPassedTime = (time) => {
+  //   const currentDate = new Date();
+  //   const selectedDate = new Date(time);
+  //   return currentDate.getTime() < selectedDate.getTime();
+  // };
 
   const getMinDate = () => {
     var tomorrow = new Date();
@@ -164,9 +164,9 @@ function CreateMeetingModal({
               selected={date}
               onChange={handleChange}
               showPopperArrow={false}
-              value={(date.setHours(7,0))}
+              value={date.setMinutes(Math.ceil(date.getMinutes() / 30) * 30)}
               // value={date.setMinutes(Math.ceil(date.getMinutes() / 30) * 30)}
-              filterTime={filterPassedTime}
+              // filterTime={filterPassedTime}
               minTime={(new Date()).setHours(7,0)}
               maxTime={(new Date()).setHours(22,0)}
               showTimeSelect
