@@ -32,9 +32,41 @@
       margin: 0;
       font-size: 1.2em;
     }
+    .meeting-links {
+      a {
+        color: $lightBlue;
+        text-decoration: none;
+      }
+    }
+    button {
+      display: flex;
+      align-items: center;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      padding: 0.75em;
+      padding-left: 1.25em;
+      padding-right: 1.25em;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: $lightBronze;
+      color: $lightBlue;
+      font-size: 1rem;
+      font-weight: 600;
+      // cursor: pointer;
+
+      p {
+        margin: 0;
+        margin-left: 0.4em;
+      }
+      &:hover {
+        background-color: $cityBronze;
+      }
+
+    }
 
     @media only screen and (min-device-width: 812px) {
       margin: 0 8em;
+      padding-left: 4.5em;
 
       .logo {
         display: none;
@@ -64,7 +96,7 @@
       border: none;
       font-size: 1em;
       background-color: transparent;
-      cursor: pointer;
+      // cursor: pointer;
 
       p {
         margin: 0 0.5em;

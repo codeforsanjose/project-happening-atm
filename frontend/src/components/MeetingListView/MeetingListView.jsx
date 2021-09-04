@@ -4,10 +4,12 @@ import { useQuery } from '@apollo/client';
 import { Accordion } from 'react-accessible-accordion';
 import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHelper';
 import { GET_ALL_MEETINGS } from '../../graphql/graphql';
+import isAdmin from '../../utils/isAdmin';
 import './MeetingListView.scss';
 
 // Component imports
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import { AdminMeetingListViewLinks } from './MeetingListViewLinks';
 import MeetingListGroup from './MeetingListGroup';
 import Spinner from '../Spinner/Spinner';
 
@@ -34,11 +36,12 @@ function MeetingListView() {
   const [navToggled, setNavToggled] = useState(false);
   const [meetings, setMeetings] = useState([]);
   const [showPastMeetings, setShowPastMeetings] = useState(false);
+  const isCurrentUserAdmin = isAdmin();
 
   function handleToggle() {
     setNavToggled(!navToggled);
   }
-
+  
   useEffect(() => {
     if (data) {
       setMeetings(data.getAllMeetings);
@@ -58,6 +61,7 @@ function MeetingListView() {
         <img className="logo" src={cityLogo} alt="logo" />
         <p className="sub-header">{t('header.my-city-agenda')}</p>
         <h2>{t('header.city-council-meetings')}</h2>
+        { isCurrentUserAdmin ? <AdminMeetingListViewLinks /> : null }
       </div>
 
       <div className="meeting-list-content">
