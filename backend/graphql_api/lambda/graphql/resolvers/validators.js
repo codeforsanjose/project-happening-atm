@@ -151,10 +151,6 @@ module.exports = (logger) => {
     } = args;
 
     validateFutureTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
-    // following  are not required for creating a meeting, hence validation not appropriate:
-    // validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
-    // validateType(meeting_type, 'meeting_type', context);
-    // validateStatus(status, 'status', context);
   };
 
   module.validateUpdateMeeting = (args) => {
