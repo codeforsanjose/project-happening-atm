@@ -163,30 +163,31 @@ module.exports = async (logger) => {
 
   module.createSubscriptions = async (phoneNumber, emailAddress, meetings) => {
     logger.info('dbClient: createSubscriptions');
-    const values = [];
 
     // Aggregate meetings into an array so we can INSERT in a single query.
-    meetings.forEach((meeting) => {
-      values.push([phoneNumber,
-        emailAddress,
-        meeting.meeting_item_id,
-        meeting.meeting_id,
-      ]);
-    });
+    const itemIds = meetings.map(meeting => parseInt(meeting.meeting_item_id, 10));
 
-    const queryString = format(`
+    let paramIndex = 3;
+    let idParams = itemIds.map(itemId => `\$${paramIndex++}`);
+    const queryString = `
       INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id)
-      VALUES %L
-      RETURNING id;`,
-      values);
+      (SELECT $1 AS phone_number, $2 AS email_address, id AS meeting_item_id, meeting_id AS meeting_id 
+        FROM meeting_item WHERE id IN (${idParams.join(', ')}))
+      RETURNING id;`;
 
-    return query(queryString);
+    return query(queryString, [
+      phoneNumber,
+      emailAddress,
+      ...itemIds
+    ]);
   };
 
   module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
-    const queryString = 'SELECT * FROM subscription WHERE id IN $1'
-    return query(queryString, [ids]);
+    let paramIndex = 1;
+    let idParams = ids.map(id => `\$${paramIndex++}`);    
+    const queryString = `SELECT * FROM subscription WHERE id IN (${idParams.join(', ')})`;
+    return query(queryString, [...ids]);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {

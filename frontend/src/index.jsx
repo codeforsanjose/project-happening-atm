@@ -1,4 +1,5 @@
 import React, { Suspense, useState } from 'react';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -10,8 +11,6 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
-  useMutation,
-  createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import './index.scss';
@@ -25,45 +24,33 @@ import Subscribe from './components/Subscribe/Subscribe';
 import AdminView from './components/AdminView/AdminView';
 import EmailConfirmPage from './components/EmailConfirmPage/EmailConfirmPage';
 import Footer from './components/Footer/Footer';
-
-import * as serviceWorker from './serviceWorker';
-
-import { GET_ALL_MEETINGS_WITH_ITEMS, CREATE_SUBSCRIPTIONS } from './graphql/graphql';
-import AdminPaths from './constants/AdminPaths';
 import LoginHandler from './components/LoginHandler/LoginHandler';
 import AuthRoute from './components/AuthRoute/AuthRoute';
 import LoginContext from './components/LoginContext/LoginContext';
+
+import * as serviceWorker from './serviceWorker';
+
+import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/graphql';
+import AdminPaths from './constants/AdminPaths';
+import LocalStorageTerms from './constants/LocalStorageTerms';
+import verifyToken from './utils/verifyToken';
 import './i18n';
 
-const httpLink = createHttpLink({
+const httpLink = new BatchHttpLink({
   uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  batchMax: 100,
 });
-
-// this will decode a token into a usable json object, allows the access of the json properties
-const parseJwt = (token) => {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
-    return null;
-  }
-};
 
 //
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token');
-  const tokenObj = parseJwt(token);
+  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
 
-  // get the seconds since epoch
-  const seconds = new Date() / 1000;
-
-  // return the headers to the context so httpLink can read them
-  // token must have correct issuer, and not be expired
-
+  // if the token is valid use it, else attach no token  to header
   return {
     headers: {
       ...headers,
-      authorization: tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds ? `Bearer ${token}` : '',
+      authorization: verifyToken() ? `Bearer ${token}` : '',
     },
   };
 });
@@ -87,26 +74,12 @@ function SampleQuery() {
   return null;
 }
 
-function SubscriptionPage() {
-  const [createSubscriptions, { loading, error, data }] = useMutation(CREATE_SUBSCRIPTIONS);
-
-  return (
-    <Subscribe
-      createSubscriptions={createSubscriptions}
-      isLoading={loading}
-      error={error}
-      subscriptions={data && data.createSubscriptions}
-    />
-  );
-}
-
 const initializeSignIn = () => {
-  const seconds = new Date() / 1000;
-  const token = localStorage.getItem('token');
-  const tokenObj = parseJwt(token);
+  const tokenSignedIn = window.localStorage.getItem(LocalStorageTerms.SIGNED_IN);
+
   // provides verification to the front-end the login status
-  const loggedIn = tokenObj != null && tokenObj.iss === 'ADD-ISSUER-DOMAIN' && tokenObj.exp > seconds && window.localStorage.getItem('signedIn');
-  window.localStorage.setItem('signedIn', loggedIn);
+  const loggedIn = verifyToken() && tokenSignedIn;
+  window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, loggedIn);
 
   return loggedIn;
 };
@@ -126,7 +99,7 @@ function App() {
                   <MeetingListView />
                 </AuthRoute>
                 <AuthRoute path="/subscribe" signedIn={signedIn}>
-                  <SubscriptionPage />
+                  <Subscribe />
                 </AuthRoute>
                 <AuthRoute path="/meeting/:id" signedIn={signedIn}>
                   <MeetingView />

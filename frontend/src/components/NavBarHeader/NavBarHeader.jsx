@@ -7,14 +7,15 @@ import HamburgerIcon from './HamburgerIcon';
 import NavLinks from './NavLinks';
 import './NavBarHeader.scss';
 import LoginContext from '../LoginContext/LoginContext';
+import LocalStorageTerms from '../../constants/LocalStorageTerms';
 
 function Header({ toggled, handleToggle }) {
   const { t } = useTranslation();
   const loginContext = React.useContext(LoginContext);
 
   const signOut = () => {
-    window.localStorage.setItem('token', '');
-    window.localStorage.setItem('signedIn', false);
+    window.localStorage.setItem(LocalStorageTerms.TOKEN, '');
+    window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, false);
     loginContext.setSignedIn(false);
   };
 
@@ -26,7 +27,7 @@ function Header({ toggled, handleToggle }) {
           <a href="/" rel="noopener noreferrer">
             {t('header.my-city-agenda')}
           </a>
-          <button className="sign-out" type="button" onClick={signOut}>Sign Out</button>
+          <button className="sign-out" type="button" onClick={signOut}>{t('navbar.sign-out')}</button>
           <HamburgerIcon onClick={handleToggle} toggled={toggled} />
         </div>
         <NavLinks toggled={toggled} className="nav-links" />

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import useCSVUpload from '../../hooks/useCSVUpload';
+import useDeleteMeeting from '../../hooks/useDeleteMeeting';
 
 // Asset imports
 import {
@@ -14,9 +15,10 @@ import {
   DeleteIcon,
 } from '../../utils/_icons';
 
-function AdminMeetingItemLinks({ meetingId }) {
+function AdminMeetingItemLinks({ meeting }) {
   const { t } = useTranslation();
-  const [openModal, renderUploadModal] = useCSVUpload(meetingId);
+  const [openUploadModal, UploadModal] = useCSVUpload(meeting);
+  const [openDeleteModal, DeleteModal] = useDeleteMeeting(meeting);
 
   return (
     <div className="meeting-links">
@@ -24,19 +26,25 @@ function AdminMeetingItemLinks({ meetingId }) {
         <button
           type="button"
           className="link"
-          onClick={openModal}
+          onClick={openUploadModal}
         >
           <ViewAgendaIcon />
           <p>{t('meeting.actions.upload-new-agenda')}</p>
         </button>
       </Link>
       <Link to="#">
-        <div className="link">
+        <button
+          type="button"
+          className="link"
+          onClick={openDeleteModal}
+        >
           <DeleteIcon />
           <p>{t('meeting.list.delete-meeting.button')}</p>
-        </div>
+        </button>
       </Link>
-      {renderUploadModal()}
+
+      <UploadModal />
+      <DeleteModal />
     </div>
   );
 }
@@ -62,7 +70,7 @@ function PastMeetingItemLinks() {
   );
 }
 
-function PendingMeetingItemLinks({ meetingId, isInProgress }) {
+function PendingMeetingItemLinks({ meeting, isInProgress }) {
   const { t } = useTranslation();
 
   return (
@@ -73,7 +81,7 @@ function PendingMeetingItemLinks({ meetingId, isInProgress }) {
           <p>{t('meeting.list.calendar-export.button')}</p>
         </div>
       </Link>
-      <Link to={`meeting/${meetingId}`}>
+      <Link to={`meeting/${meeting.id}`}>
         <div className="link">
           <ViewAgendaIcon />
           <p>{t('meeting.list.agenda.button')}</p>

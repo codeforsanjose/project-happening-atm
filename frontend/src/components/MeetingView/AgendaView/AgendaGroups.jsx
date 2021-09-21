@@ -16,9 +16,8 @@ import {
 import {
   SortableContext,
   verticalListSortingStrategy,
-  useSortable,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
 
@@ -49,49 +48,33 @@ const options = {
   minHeightAgendaContainer: '60px',
 };
 
-function AgendaGroups({ agendaGroups, selectedItems, handleAgendaItemSelection }) {
-  const parentItems = agendaGroups.map((parent) => parent.id);
-
+function AgendaGroups({
+  agendaGroups, selectedItems, handleAgendaItemSelection, admin,
+}) {
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
-    <SortableContext
-      items={parentItems}
-      strategy={verticalListSortingStrategy}
-    >
+    <>
       {agendaGroups.map((parent) => (
         <AccordionItem className="AgendaGroup" key={`${parent.id}accord`}>
           <AgendaGroupHeader
-            key={parent.id}
             agendaGroup={parent}
           />
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
+            admin={admin}
             agendaGroup={parent}
             selectedItems={selectedItems}
             handleItemSelection={handleAgendaItemSelection}
           />
         </AccordionItem>
       ))}
-    </SortableContext>
+    </>
   );
 }
 
 function AgendaGroupHeader({ agendaGroup }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: agendaGroup.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div>
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className="group-button">
           <div className="button-text">
@@ -107,7 +90,9 @@ function AgendaGroupHeader({ agendaGroup }) {
   );
 }
 
-function AgendaGroupBody({ agendaGroup, selectedItems, handleItemSelection }) {
+function AgendaGroupBody({
+  agendaGroup, selectedItems, handleItemSelection, admin,
+}) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
   });
@@ -117,11 +102,9 @@ function AgendaGroupBody({ agendaGroup, selectedItems, handleItemSelection }) {
     minHeight: options.minHeightAgendaContainer,
   };
 
-  const agendaItemIds = agendaGroup.items.map((item) => item.id);
-
   return (
     <SortableContext
-      items={agendaItemIds}
+      items={admin ? agendaGroup.items.map((item) => item.id) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">

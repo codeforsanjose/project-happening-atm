@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext } from 'react';
 
 // This component is used to allow the passing of the signedIn and setSignedIn props
 // to the NavBarHeader component accross the application
-const LoginContext = React.createContext();
+const LoginContext = createContext();
 export default LoginContext;

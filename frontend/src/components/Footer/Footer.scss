@@ -18,6 +18,8 @@ footer {
   width: 100%;
   padding: 3em 2.5vw 3em;
   background-color: $cityBlue;
+  /* prevent unintended horizontal scroll */
+  box-sizing: border-box;  
   .languages {
     display: flex;
     justify-content: center;

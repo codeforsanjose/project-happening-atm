@@ -4,9 +4,11 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import './MeetingListItem.scss';
+import isAdmin from '../../utils/isAdmin';
 
 // Component imports
 import {
+  AdminMeetingItemLinks,
   PastMeetingItemLinks,
   PendingMeetingItemLinks,
 } from './MeetingListItemLinks';
@@ -32,10 +34,9 @@ function MeetingListItem({ item }) {
   const time = toTimeString(meeting_start_timestamp);
   const isInProgress = status === 'IN PROGRESS';
 
-  // Determine which set of item links to use based on meeting status
-  const MeetingItemLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
-  // TODO: Implement admin links
-  // https://github.com/codeforsanjose/gov-agenda-notifier/issues/164
+  const isCurrentUserAdmin = isAdmin();
+  const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  const MeetingItemLinks = isCurrentUserAdmin ? AdminMeetingItemLinks : PublicLinks;
 
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
@@ -48,7 +49,7 @@ function MeetingListItem({ item }) {
       <Link to={`meeting/${id}`} className="meeting-time">
         <div>{time}</div>
       </Link>
-      <MeetingItemLinks meetingId={id} isInProgress={isInProgress} />
+      <MeetingItemLinks meeting={item} isInProgress={isInProgress} />
     </div>
   );
 }

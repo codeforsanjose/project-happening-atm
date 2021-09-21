@@ -13,10 +13,15 @@ import {
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
 
+// functions used by this component
+import isAdmin from '../../utils/isAdmin';
+
 const MEETING_RELATIVE_TIME_LOC_KEY_PREFIX = 'meeting.status.relative.long.';
 const PAST_MEETING_STATUS_LOC_KEY = 'meeting.status.long.ended';
 
-function Header({ loading, meeting }) {
+function Header({
+  loading, meeting, setSaveMeetingItems, showUpdateStatus,
+}) {
   const { t } = useTranslation();
 
   const getRelativeTimeLocKey = () => {
@@ -62,6 +67,20 @@ function Header({ loading, meeting }) {
               <div className="status">
                 {t(getRelativeTimeLocKey())}
               </div>
+
+              {
+              isAdmin() && showUpdateStatus && (
+                <>
+                  <div className="saveStatus">
+                    {t('meeting.status.label')}
+                    :
+                    <button className="saveStatusButton" type="button" onClick={() => { setSaveMeetingItems(true); }}>
+                      {t('meeting.status.short.default-option')}
+                    </button>
+                  </div>
+                </>
+              )
+              }
             </>
           )}
         </div>

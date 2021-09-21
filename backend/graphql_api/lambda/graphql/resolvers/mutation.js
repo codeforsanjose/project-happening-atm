@@ -100,7 +100,7 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
-  module.createSubscriptions = async (dbClient, args) => {
+  module.createSubscriptions = async (dbClient, args, context) => {
     validator.validateUser(context);
     validator.validateCreateSubscriptions(args);
 
@@ -233,14 +233,13 @@ module.exports = (logger) => {
   module.deleteMeeting = async (dbClient, args, context) => {
     validator.validateAuthorization(context);
 
-    let res;
     try {
-      res = await dbClient.deleteMeeting(args.id);
+      await dbClient.deleteMeeting(args.id);
     } catch (e) {
       logger.error(`deleteMeeting resolver error - dbClient.deleteMeeting: ${e}`);
       throw e;
     }
-    return res;
+    return true;
   };
 
   module.createAccount = async (dbClient, args, context) => {
