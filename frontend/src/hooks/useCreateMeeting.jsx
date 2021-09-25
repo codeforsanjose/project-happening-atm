@@ -12,22 +12,18 @@ import CreateMeetingModal from '../components/CreateMeetingModal/CreateMeetingMo
  *    Modal component
  */
 
- const useCreateMeeting = () => {
-    const [showModal, setShowModal] = useState(false);
-    const closeModal = () => { setShowModal(false); };
-    const openModal = () => { setShowModal(true); };
-  
-    const CreateModal = () => (
-      showModal
-        ? (
-          <CreateMeetingModal
-            isOpen={showModal}
-            closeModal={closeModal}
-          />
-        ) : null
-    );
-  
-    return [openModal, CreateModal];
-  };
-  
-  export default useCreateMeeting;
+const useCreateMeeting = () => {
+	const [ showModal, setShowModal ] = useState(false);
+	const closeModal = () => {
+		setShowModal(false);
+	};
+	const openModal = () => {
+		setShowModal(true);
+	};
+
+	const CreateModal = () => (showModal ? <CreateMeetingModal isOpen={showModal} closeModal={closeModal} /> : null);
+
+	return [ openModal, CreateModal ];
+};
+
+export default useCreateMeeting;
