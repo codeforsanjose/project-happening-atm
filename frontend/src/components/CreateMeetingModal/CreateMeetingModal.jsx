@@ -34,7 +34,6 @@ import { CalendarBlueIcon, ScheduleBlueIcon } from '../../utils/_icons';
  *    createSuccessful
  *      Boolean indicating if success modal is shown
  */
-
 function CreateMeetingModal({ isOpen, closeModal }) {
 	const history = useHistory();
 	const { t } = useTranslation();
