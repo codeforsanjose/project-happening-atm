@@ -7,27 +7,42 @@ import {
 import {
   useLazyQuery,
 } from '@apollo/client';
+import { GoogleLogin } from 'react-google-login';
 
-import { LOGIN_LOCAL } from '../../graphql/graphql';
+import { LOGIN_LOCAL, LOGIN_GOOGLE } from '../../graphql/graphql';
 import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
 
+// global constant options
+const OPTIONS = {
+  googleClientID: '794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com',
+};
+
 function LoginHandler() {
   const { t } = useTranslation();
 
-  const [login, { data, error }] = useLazyQuery(LOGIN_LOCAL);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const [badLoginAttempt, setBadLoginAttempt] = useState(false);
   const [otherError, setOtherError] = useState(false);
   const loginContext = useContext(LoginContext); // holds setSignIn, and signIn props
+  const loginLocal = useLazyQuery(LOGIN_LOCAL,
+    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
+  const loginGoogle = useLazyQuery(LOGIN_GOOGLE,
+    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
 
   // This function makes the query call to perform the login
   const signInHandler = () => {
-    login({
+    loginLocal[0]({
       variables: {
         email_address: userName,
         password,
@@ -35,12 +50,20 @@ function LoginHandler() {
     });
   };
 
+  const googleHandler = (response) => {
+    window.localStorage.setItem('token', response.tokenId);
+    console.log(window.localStorage.getItem('token'));
+    console.log('test');
+    loginGoogle[0]();
+  };
+
   useEffect(() => {
     // Successful sign in
     if (data) {
       window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
-      window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
-      loginContext.setSignedIn(true);
+      // window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
+      console.log('TOKEN', data.loginLocal.token);
+      // loginContext.setSignedIn(true);
     }
     if (error) {
       // extracted error message
@@ -75,14 +98,22 @@ function LoginHandler() {
 
           <hr className="introTextSeparator" />
 
-          <div className="google-microsoft-login googleLogin">
-            <img
-              src={googleIcon}
-              alt="googleLogin"
-            />
-            <span>{t('login.body.oauth.google')}</span>
-
-          </div>
+          <GoogleLogin
+            clientId={OPTIONS.googleClientID}
+            render={(renderProps) => (
+              <button className="google-microsoft-login googleLogin" type="button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                <img
+                  src={googleIcon}
+                  alt="googleLogin"
+                />
+                <span>Sign In with Google</span>
+              </button>
+            )}
+            buttonText="Login"
+            onSuccess={googleHandler}
+            onFailure={responseGoogle}
+            cookiePolicy="single_host_origin"
+          />
           <div className="google-microsoft-login">
             <img
               src={microsoftIcon}
@@ -127,7 +158,6 @@ function LoginHandler() {
             </button>
             <a className="passAnchor mobileView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
           </div>
-
         </div>
       </div>
     </div>
