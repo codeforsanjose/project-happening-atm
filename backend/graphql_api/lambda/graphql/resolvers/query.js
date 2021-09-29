@@ -150,9 +150,8 @@ module.exports = (logger) => {
   };
 
   const loginGoogle = async (dbClient, googleToken) => {
-    //console.log(context.token);
-    console.log(googleToken);
     let token;
+    
     try {
       const user = await authentication.verifyGoogleToken(dbClient, googleToken);
       validator.validateAuthType(user.rows[0].auth_type, "Google");

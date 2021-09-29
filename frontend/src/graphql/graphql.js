@@ -123,8 +123,10 @@ export const LOGIN_LOCAL = gql`
 `;
 
 export const LOGIN_GOOGLE = gql`
-  query LoginGoogle {
-    loginGoogle{
+  query LoginGoogle($googleToken: String!) {
+    loginGoogle(
+      googleToken:$googleToken
+    ){
       token
     }
   }

@@ -51,10 +51,11 @@ function LoginHandler() {
   };
 
   const googleHandler = (response) => {
-    window.localStorage.setItem('token', response.tokenId);
-    console.log(window.localStorage.getItem('token'));
-    console.log('test');
-    loginGoogle[0]();
+    loginGoogle[0]({
+      variables: {
+        googleToken: response.tokenId,
+      },
+    });
   };
 
   useEffect(() => {
