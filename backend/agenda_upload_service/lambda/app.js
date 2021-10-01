@@ -8,8 +8,13 @@ module.exports = (logger) => {
   const app = express();
   const routes = getRoutes(logger);
 
-  // CORs for allowing cross origin requests
-  app.use(cors())
+  /** 
+  * CORs for allowing requests from main app
+  * for prod, change origin to prod app url
+   */
+  app.use(cors({
+    origin: 'http://localhost:3001'
+  }));
 
   app.use(upload());
   app.use(routes);
