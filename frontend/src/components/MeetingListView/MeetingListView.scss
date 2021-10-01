@@ -33,7 +33,7 @@
       font-size: 1.2em;
     }
 
-    @media only screen and (min-device-width: 812px) {
+    @media only screen and (min-width: 812px) {
       margin: 0 8em;
 
       .logo {
@@ -52,7 +52,7 @@
   }
 
   .meeting-list-content {
-    padding: 1.25em;
+    padding: 1.25em 10px;
     flex-grow: 1;
     background-color: $blueSky;
 
@@ -71,7 +71,7 @@
       }
     }
 
-    @media only screen and (min-device-width: 812px) {
+    @media only screen and (min-width: 812px) {
       padding: 1.25em 200px;
     }
   }
