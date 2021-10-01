@@ -15,7 +15,6 @@ function AdminMeetingListViewLinks() {
 
   return (
     <div className="meeting-links">
-      {/* <Link to="#"> */}
         <button
           type="button"
           className="create-meeting"
@@ -24,7 +23,6 @@ function AdminMeetingListViewLinks() {
           <JoinMeetingIcon/>
           <p>{t(buttonText)}</p>
         </button>
-      {/* </Link> */}
       <CreateModal />
     </div>
   );
