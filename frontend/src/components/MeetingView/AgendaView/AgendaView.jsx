@@ -22,8 +22,8 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 
 // components used by this component
 import AgendaGroups from './AgendaGroups';
-import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
+//import Search from '../../Header/Search';
 
 // functions used by this component
 import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
@@ -176,7 +176,8 @@ function AgendaView({
   return (
     <div className="AgendaView">
 
-      <Search />
+      {/* Hide/Remove Search */}
+      {/* <Search />  */}
 
       <button
         type="button"
