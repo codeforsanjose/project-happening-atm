@@ -9,7 +9,7 @@ import LoginContext from '../LoginContext/LoginContext';
 import UserRoles from '../../constants/UserRoles';
 import { InfoIcon } from '../../utils/_icons';
 import {
-  isNullOrEmpty, validUSPhoneNumber, validEmail, isPasswordValid,
+  isNullOrEmpty, isNumericString, validEmail, isPasswordValid,
 } from '../../utils/validations';
 
 function AccountCreate() {
@@ -114,7 +114,15 @@ function AccountCreate() {
     const currentErrors = { ...fieldErrors };
     const { phone_number } = userInfo;
     if (!isNullOrEmpty(phone_number)) {
-      if (!validUSPhoneNumber(phone_number)) currentErrors.phone_number = 'We support only US phone numbers ex. +1(234)567-8910';
+      if(!isNumericString(phone_number)){
+        currentErrors.phone_number = 'Phone number not numeric';
+      }
+      else if(phone_number.charAt(0) !== '1'){
+        currentErrors.phone_number = 'Country code is required to be 1';
+      }
+      else if (phone_number.length !== 11) {
+        currentErrors.phone_number = 'We support only US phone numbers ex. +1(234)567-8910';
+      }
       else {
         delete currentErrors.phone_number;
       }
