@@ -19,8 +19,13 @@ import { CREATE_SUBSCRIPTIONS } from '../../graphql/graphql';
 import { getUserEmail } from '../../utils/verifyToken';
 
 /**
+ * 10.2021 Update: Per product team direction, this component has
+ * been retired. Users will instead subscribe with the initial
+ * subscribe button, that now triggers subscriptions to be sent
+ * directly to the registered contact info associated to their account.
+ * 
  * This is the component for community member subscribe page.
- *
+ * 
  * state:
  *    isFormSubmitted
  *      A boolean value that indicates whether the form has been submitted
@@ -107,6 +112,9 @@ function Subscribe() {
     }
     e.preventDefault();
 
+    console.log('queryString:', queryString);
+    console.log('convertedQueryString:', convertQueryStringToServerFormat(queryString));
+    
     createSubscriptions({
       variables: {
         phone_number: getPhoneDigits(phone),
