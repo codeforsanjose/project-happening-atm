@@ -6,6 +6,11 @@ import { Link } from 'react-router-dom';
 import MeetingItemStates from '../../constants/MeetingItemStates';
 import useMeetingItemIcon from '../../hooks/useMeetingItemIcon';
 
+/** 
+ * 10/2/2021: JY observation that this component appears to be outdated
+ * Suggest deprecation as it doesn't appear to be used anywhere.
+*/
+
 function MeetingItem({
   title = '2.1 Approval of Unemployment Insurance Appropriation Ordinance Adjustments to Increase Payment of Claims and Access to Reserves',
   meetingItemState = MeetingItemStates.PENDING,
