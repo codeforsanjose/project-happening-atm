@@ -1,35 +1,43 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // Necessary as dnd sort uses prop spreading for its listeners and props
-import React, { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { forwardRef, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from '@apollo/client';
+import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
+import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
+
 import './AgendaItem.scss';
+import { CREATE_SUBSCRIPTIONS } from '../../../graphql/graphql';
+import Spinner from '../../Spinner/Spinner';
+
 import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { buildSubscriptionQueryString } from '../../Subscribe/subscribeQueryString';
+import { buildSubscriptionQueryString, convertQueryStringToServerFormat } from '../../Subscribe/subscribeQueryString';
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import { NotificationsIcon, ShareIcon, AddIcon } from '../../../utils/_icons';
 
 const itemLinks = [
-  {
-    getPath: (item) => `/subscribe?${buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })}`,
-    Icon: NotificationsIcon,
-    text: 'Subscribe',
-    isDisabled: (item) => item.status === MeetingItemStates.IN_PROGRESS
-      || item.status === MeetingItemStates.COMPLETED,
-  },
+  // {
+  //   getPath: (item) => `/subscribe?${buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })}`,
+  //   Icon: NotificationsIcon,
+  //   text: 'meeting.tabs.agenda.list.subscribe.button.do',
+  //   isDisabled: (item) => item.status === MeetingItemStates.IN_PROGRESS
+  //     || item.status === MeetingItemStates.COMPLETED,
+  // },
   {
     getPath: () => '/',
     Icon: ShareIcon,
-    text: 'Share',
+    text: 'meeting.tabs.agenda.list.share.button',
     isDisabled: () => false,
   },
   {
     getPath: () => '/',
     Icon: AddIcon,
-    text: 'More Info',
+    text: 'meeting.tabs.agenda.list.more-info.button',
     isDisabled: () => false,
   },
 ];
@@ -79,6 +87,8 @@ function AgendaItem({ item, isSelected, handleSelection }) {
     transition,
   };
 
+
+
   return (
     <RenderedAgendaItem
       {...attributes}
@@ -94,10 +104,11 @@ function AgendaItem({ item, isSelected, handleSelection }) {
 }
 
 function AgendaItemActionLink({ link }) {
+  const { t } = useTranslation();
   return (
     <div className="link">
       <link.Icon />
-      <p>{link.text}</p>
+      <p>{t(link.text)}</p>
     </div>
   );
 }
@@ -105,10 +116,49 @@ function AgendaItemActionLink({ link }) {
 const RenderedAgendaItem = forwardRef(({
   handleSelection, isSelected, item, id, ...props
 }, ref) => {
+  const [email, setEmail] = useState(getUserEmail());
+  // const [phone, setPhone] = useState(getUserPhone(null));
+  const [isFormSubmitted, setFormSubmitted] = useState(false);
+  // const [phoneError, setPhoneError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [subscriptions, setSubscriptions] = useState(null);
+  const { t } = useTranslation();
+
+  const [createSubscriptions, { loading, error }] = useMutation(
+    CREATE_SUBSCRIPTIONS,
+    {
+      onCompleted: (data) => setSubscriptions(data?.createSubscriptions ?? null),
+    },
+  );
+  const history = useHistory();
+
   const handleCheck = (evt) => {
     if (evt.target) {
       handleSelection(item.parent_meeting_item_id, item.id, evt.target.checked);
     }
+  };
+  
+  const closeConfirmation = () => {
+    history.goBack();
+  };
+
+  const subscriptionQueryString = convertQueryStringToServerFormat(buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } }));
+  //console.log("subscriptionQueryString:", subscriptionQueryString);
+
+  const handleSubmit = (e) => {
+    setFormSubmitted(true);
+    // setPhoneError(null);
+    setEmailError(null);
+
+    e.preventDefault();
+
+    createSubscriptions({
+      variables: {
+         phone_number: '15106487794',
+        email_address: email,
+        meetings: subscriptionQueryString,
+      },
+    });
   };
 
   // The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
@@ -124,8 +174,35 @@ const RenderedAgendaItem = forwardRef(({
         <h4>{item.title_loc_key}</h4>
       </div>
       <p>{item.description_loc_key}</p>
+      { subscriptions && subscriptions.length > 0
+              && (
+                <SubscribeConfirmation
+                  numberOfSubscriptions={subscriptions.length}
+                  onClose={closeConfirmation}
+                />
+              )}
+            { error
+              && (
+                <div className="form-error">{ error.message }</div>
+              )}              
+      {/* <div className="item-links">
 
+            </div> */}
       <div className="item-links">
+      <a href="/"
+                // disabled={!phone && !email}
+                onClick={handleSubmit}
+              >
+                <div class="link">
+                  <NotificationsIcon/>
+                  <p>
+                {loading && <Spinner />}
+                
+                {t('meeting.tabs.agenda.list.subscribe.button.do')}
+                {/* {`Subscrib${loading ? 'ing...' : 'e'}`} */}
+                </p>
+                </div>
+              </a>
         {
             itemLinks.map((link) => {
               if (link.isDisabled(item)) {
