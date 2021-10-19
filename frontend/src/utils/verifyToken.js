@@ -33,5 +33,5 @@ export function getUserPhone() {
   if (phone){
     return phone;
   }
-  else return null;
+  else return '';
 }
