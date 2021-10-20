@@ -27,7 +27,7 @@ module.exports = (logger) => {
         getAllSubscriptions: [subscription]
 
         loginLocal(email_address: String!, password: String!): auth_data
-        loginGoogle(googleToken: String!): auth_data
+        loginGoogle: auth_data
         loginMicrosoft: auth_data
 
         # TODO: Need to add verify token query
@@ -196,9 +196,9 @@ module.exports = (logger) => {
         logger.info('Initiating LoginLocal Query resolver');
         return resolverHandler(queryResolver.loginLocal, args.email_address, args.password);
       },
-      loginGoogle: async (_parent, args) => {
+      loginGoogle: async (_parent, args, context) => {
         logger.info('Initiating LoginGoogle Query resolver');
-        return resolverHandler(queryResolver.loginGoogle, args.googleToken);
+        return resolverHandler(queryResolver.loginGoogle, context);
       },
       loginMicrosoft: async (_parent, args, context) => {
         logger.info('Initiating LoginMicrosoft Query resolver');

@@ -6,6 +6,11 @@ import {
 } from 'react-router-dom';
 import {
   useLazyQuery,
+  ApolloLink,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+
 } from '@apollo/client';
 import { GoogleLogin } from 'react-google-login';
 
@@ -29,7 +34,6 @@ function LoginHandler() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [badLoginAttempt, setBadLoginAttempt] = useState(false);
-  const [emailExistsOauth, setEmailExistsOauth] = useState(false);
   const [otherError, setOtherError] = useState(false);
   const loginContext = useContext(LoginContext); // holds setSignIn, and signIn props
   const loginLocal = useLazyQuery(LOGIN_LOCAL,
@@ -37,7 +41,10 @@ function LoginHandler() {
   const loginGoogle = useLazyQuery(LOGIN_GOOGLE,
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
 
+  const httpLink = new HttpLink({ uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql` });
+  console.log(httpLink);
   const responseGoogle = (response) => {
+    console.log('response');
     console.log(response);
   };
 
@@ -52,19 +59,18 @@ function LoginHandler() {
   };
 
   const googleHandler = (response) => {
-    loginGoogle[0]({
-      variables: {
-        googleToken: response.tokenId,
-      },
-    });
+    console.log(response.tokenId);
+    localStorage.setItem(LocalStorageTerms.TOKEN, response.tokenId);
+    loginGoogle[0]();
   };
 
   useEffect(() => {
     // Successful sign in
     if (data) {
       window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
-      window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
-      loginContext.setSignedIn(true);
+      // window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
+      console.log('TOKEN', data.loginLocal.token);
+      // loginContext.setSignedIn(true);
     }
     if (error) {
       // extracted error message
@@ -74,21 +80,13 @@ function LoginHandler() {
       const noEmail = new RegExp(ErrorMessagesGraphQL.BAD_EMAIL);
       const noPass = new RegExp(ErrorMessagesGraphQL.NO_PASSWORD);
       const noEmailPass = new RegExp(ErrorMessagesGraphQL.BAD_EMAIL_PASS);
-      const localExists = new RegExp(ErrorMessagesGraphQL.LOCAL_EXISTS);
 
       // setting flags for the type of error
       if (noPass.test(eM) || noEmailPass.test(eM) || noEmail.test(eM)) {
         setBadLoginAttempt(true);
-        setEmailExistsOauth(false);
-        setOtherError(false);
-      } else if (localExists.test(eM)) {
-        setEmailExistsOauth(true);
-        setBadLoginAttempt(false);
-        setOtherError(false);
       } else {
-        setOtherError(true);
         setBadLoginAttempt(false);
-        setEmailExistsOauth(false);
+        setOtherError(true);
       }
     }
   }, [data, loginContext, error]);
@@ -140,8 +138,6 @@ function LoginHandler() {
           <div className="inputWrapper">
             {badLoginAttempt
               ? <p className="inputError">{t('standard.errors.badEmailPass')}</p> : ''}
-            {emailExistsOauth
-              ? <p className="inputError">{t('Email is associated with an account')}</p> : ''}
             {otherError
               ? <p className="inputError">{t('standard.errors.something-went-wrong')}</p> : ''}
             <input

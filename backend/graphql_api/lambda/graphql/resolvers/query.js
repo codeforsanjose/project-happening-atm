@@ -149,11 +149,10 @@ module.exports = (logger) => {
     return { token: token }
   };
 
-  const loginGoogle = async (dbClient, googleToken) => {
+  const loginGoogle = async (dbClient, context) => {
     let token;
-    
     try {
-      const user = await authentication.verifyGoogleToken(dbClient, googleToken);
+      const user = await authentication.verifyGoogleToken(dbClient, context.token);
       validator.validateAuthType(user.rows[0].auth_type, "Google");
       token = await authentication.createJWT(user);
     } catch (e) {

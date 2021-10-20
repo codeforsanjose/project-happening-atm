@@ -243,6 +243,8 @@ module.exports = (logger) => {
   };
 
   module.createAccount = async (dbClient, args, context) => {
+    console.log(context.token);
+    console.log("line 247, mutation.js create account");
     let res;
     let user;
     if (context.token === null) {
