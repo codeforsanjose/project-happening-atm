@@ -3,6 +3,7 @@ const { OAuth2Client } = require('google-auth-library');
 const bcrypt = require('bcrypt');
 const jwksClient = require('jwks-rsa');
 const crypto = require('crypto');
+const { Console } = require('console');
 
 
 module.exports = (logger) => {

@@ -6,11 +6,6 @@ import {
 } from 'react-router-dom';
 import {
   useLazyQuery,
-  ApolloLink,
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-
 } from '@apollo/client';
 import { GoogleLogin } from 'react-google-login';
 
@@ -20,6 +15,7 @@ import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
+import verifyToken from '../../utils/verifyToken';
 
 // global constant options
 const OPTIONS = {
@@ -41,13 +37,17 @@ function LoginHandler() {
   const loginGoogle = useLazyQuery(LOGIN_GOOGLE,
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
 
-  const httpLink = new HttpLink({ uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql` });
-  console.log(httpLink);
+  // Response if the google connection attempt failed
   const responseGoogle = (response) => {
     console.log('response');
     console.log(response);
   };
+  const j = {
+    rows: [],
+  };
+  j.rows.push(1);
 
+  console.log(j);
   // This function makes the query call to perform the login
   const signInHandler = () => {
     loginLocal[0]({
@@ -67,9 +67,11 @@ function LoginHandler() {
   useEffect(() => {
     // Successful sign in
     if (data) {
-      window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+      console.log(data);
+      console.log(verifyToken(data.token));
+      // window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
       // window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
-      console.log('TOKEN', data.loginLocal.token);
+      // console.log('TOKEN', data.loginLocal.token);
       // loginContext.setSignedIn(true);
     }
     if (error) {
