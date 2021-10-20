@@ -22,7 +22,6 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 
 // components used by this component
 import AgendaGroups from './AgendaGroups';
-import Search from '../../Header/Search';
 import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 
 // functions used by this component
@@ -175,8 +174,6 @@ function AgendaView({
 
   return (
     <div className="AgendaView">
-
-      <Search />
 
       <button
         type="button"
