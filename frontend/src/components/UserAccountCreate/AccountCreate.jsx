@@ -33,7 +33,6 @@ function AccountCreate() {
     email_address: null,
     password: null,
     confirmPassword: null,
-    // phone_number: null,
     tos: null,
     captcha_check: null,
   });
