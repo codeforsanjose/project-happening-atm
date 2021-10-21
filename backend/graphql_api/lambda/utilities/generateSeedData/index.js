@@ -1,6 +1,6 @@
 const path = require("path");
 
-const generateMeetingData = require(path.join(__dirname, 'generateSeedData.js'));
+const generateMeetingData = require(path.join(__dirname, 'generateMeetingData.js'));
 
 const meetings = require(`./assets/meetings.json`);
 

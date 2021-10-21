@@ -81,9 +81,9 @@ async function generateMeetingData(meetings) {
                 }
                 const { rows: meetingItem } = res;
 
-                await meetingItem.forEach(async ({ id, order_number, parent_meeting_item_id, created_timestamp }) => {
+                await meetingItem.forEach(async ({ meeting_id, id, order_number, parent_meeting_item_id, created_timestamp }) => {
                     logger.info(
-                        `meeting item ${id}, order number ${order_number}, parent_meeting_item_id ${parent_meeting_item_id} successfully created. ` +
+                        `meeting item ${id} of meeting ${meeting_id}, order number ${order_number}, parent_meeting_item_id ${parent_meeting_item_id} successfully created. ` +
                         `meeting created at ${created_timestamp}`
                     )
                     if (nestedMeetingItems) {
