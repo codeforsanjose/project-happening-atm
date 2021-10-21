@@ -28,6 +28,7 @@
     "react-dom": "^16.14.0",
     "react-i18next": "^11.8.5",
     "react-modal": "^3.12.1",
+    "react-responsive": "^9.0.0-beta.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-sortable-hoc": "^1.11.0",

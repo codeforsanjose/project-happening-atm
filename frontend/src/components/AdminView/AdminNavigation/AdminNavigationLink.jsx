@@ -11,14 +11,15 @@ import './AdminNavigationLink.scss';
  *  path - url path of the link
  */
 
-function AdminNavigationLink({ Icon, linkText, path }) {
+function AdminNavigationLink({ Icon,Icon2, linkText, path }) {
   return (
     <li className="admin-nav-link">
       <NavLink activeClassName="button-active" to={path}>
         <div className="button-group">
           <div className="button-group-inner">
-            <Icon className="button-icon" />
+            {Icon}
             <span className="button-text">{linkText}</span>
+            {Icon2 ? Icon2 : ""}
           </div>
         </div>
       </NavLink>

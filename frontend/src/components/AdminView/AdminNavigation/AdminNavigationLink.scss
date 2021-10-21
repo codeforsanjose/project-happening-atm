@@ -20,7 +20,7 @@
       display: flex;
 
       .button-group-inner {
-        padding: 0 2em;
+        padding: 0 1em;
       }
     }
 
@@ -29,17 +29,16 @@
     }
   }
 
-
   .button-icon {
     vertical-align: middle;
     fill: $black;
   }
 
   .button-text {
-    margin-left: 1em;
-    font-size: 18px;
+    margin-left: 12px;
+    font-size: 16px;
     vertical-align: middle;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .button-active {
