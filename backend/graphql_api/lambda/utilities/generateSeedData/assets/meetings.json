@@ -1,0 +1,91 @@
+[
+  {
+    "meeting_type": "'Hybrid'",
+    "meeting_start_timestamp": "'2021-10-14'",
+    "virtual_meeting_url": "'zoom.us / kjsdl'",
+    "status": "'Ongoing'",
+    "virtual_meeting_id": 12,
+    "call_in_information": "''",
+    "email_before_meeting": "''",
+    "email_during_meeting": "''",
+    "ecomment": "'TEST Data: Order of Adjournment'",
+    "city_of_san_jose_meeting": "''",
+    "youtube_link": "''",
+    "meetingItems": [
+      {
+        "orderNumber": 0,
+        "itemStartTimestamp": "'2021-10-14'",
+        "itemEndTimestamp": "'2021-10-14'",
+        "status": "'ongoing'",
+        "descriptionLocKey": "'desc loc key'",
+        "contentCategories": "'content categories'",
+        "titleLocKey": "'test loc key'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-10-14'",
+            "itemEndTimestamp": "'2021-10-14'",
+            "status": "'ongoing-nested'",
+            "descriptionLocKey": "'desc loc key - nested'",
+            "contentCategories": "'content categories - nested'",
+            "titleLocKey": "'test loc key nested'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-10-14'",
+            "itemEndTimestamp": "'2021-10-14'",
+            "status": "'ongoing-nested-2'",
+            "descriptionLocKey": "'desc loc key - nested-2'",
+            "contentCategories": "'content categories - nested-2'",
+            "titleLocKey": "'test loc key nested-2'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 1,
+        "itemStartTimestamp": "'2021-10-14'",
+        "itemEndTimestamp": "'2021-10-14'",
+        "status": "'ongoing'",
+        "descriptionLocKey": "'desc loc key'",
+        "contentCategories": "'content categories'",
+        "titleLocKey": "'test loc key'"
+      },
+      {
+        "orderNumber": 2,
+        "itemStartTimestamp": "'2021-10-14'",
+        "itemEndTimestamp": "'2021-10-14'",
+        "status": "'ongoing'",
+        "descriptionLocKey": "'desc loc key'",
+        "contentCategories": "'content categories'",
+        "titleLocKey": "'test loc key'"
+      }
+    ]
+  },
+  {
+    "meeting_type": "'Hybrid'",
+    "meeting_start_timestamp": "'2021-10-15'",
+    "virtual_meeting_url": "'zoom.us / kjsdl'",
+    "status": "'Ongoing'",
+    "virtual_meeting_id": 12,
+    "call_in_information": "''",
+    "email_before_meeting": "''",
+    "email_during_meeting": "''",
+    "ecomment": "'TEST DATA: Order of Adjournment'",
+    "city_of_san_jose_meeting": "''",
+    "youtube_link": "''"
+  },
+  {
+    "meeting_type": "'Hybrid'",
+    "meeting_start_timestamp": "'2021-10-16'",
+    "virtual_meeting_url": "'zoom.us / kjsdl'",
+    "status": "'Ongoing'",
+    "virtual_meeting_id": 12,
+    "call_in_information": "''",
+    "email_before_meeting": "''",
+    "email_during_meeting": "''",
+    "ecomment": "'TEST DATA: Order of Adjournment'",
+    "city_of_san_jose_meeting": "''",
+    "youtube_link": "''"
+  }
+]
