@@ -163,7 +163,7 @@ function AccountCreate() {
         },
       });
     }
-  }, [signupSuccess]);
+  }, [signupSuccess, login, userInfo.email_address, userInfo.password]);
 
   useEffect(() => {
     // Successful sign in
