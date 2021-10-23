@@ -12,6 +12,7 @@
     "aws-sdk": "^2.830.0",
     "bcrypt": "^5.0.1",
     "classnames": "^2.2.6",
+    "date-fns": "^2.25.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "google-auth-library": "^6.1.6",
