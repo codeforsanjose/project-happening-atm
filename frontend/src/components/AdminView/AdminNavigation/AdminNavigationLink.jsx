@@ -17,7 +17,7 @@ function AdminNavigationLink({ Icon, linkText, path }) {
       <NavLink activeClassName="button-active" to={path}>
         <div className="button-group">
           <div className="button-group-inner">
-            <Icon className="button-icon" />
+            {Icon}
             <span className="button-text">{linkText}</span>
           </div>
         </div>
