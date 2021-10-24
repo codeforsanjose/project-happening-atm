@@ -13,7 +13,9 @@ import {
 } from '../../utils/validations';
 
 function AccountCreate() {
-  const RECAPTCHA_SITE_KEY = '6LdJyWQcAAAAAGkAO6anijYePWUr2AFfzqvt8hOF';
+
+  // TODO: Add Site key.
+  const RECAPTCHA_SITE_KEY = '';
   const PASSWORD_TEXT = 'Passwords must have 6 characters, a uppercase, a lowercase, a number and a special character ';
 
   // User specific variables to be sent to backend.
