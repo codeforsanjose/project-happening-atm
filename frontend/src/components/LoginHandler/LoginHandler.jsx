@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './LoginHandler.scss';
 import {
-  Redirect,
+  Redirect, NavLink
 } from 'react-router-dom';
 import {
   useLazyQuery,
@@ -127,7 +127,9 @@ function LoginHandler() {
             </button>
             <a className="passAnchor mobileView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
           </div>
-
+          <div className="create-account-container">
+            <span>{t('Don\'t have an account')}?</span><NavLink className="nav-account-create" to="/account-create/">{t('Create Account')}</NavLink>
+          </div>     
         </div>
       </div>
     </div>

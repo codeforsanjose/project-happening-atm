@@ -27,6 +27,7 @@ import Footer from './components/Footer/Footer';
 import LoginHandler from './components/LoginHandler/LoginHandler';
 import AuthRoute from './components/AuthRoute/AuthRoute';
 import LoginContext from './components/LoginContext/LoginContext';
+import AccountCreate from './components/UserAccountCreate/AccountCreate';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -109,6 +110,9 @@ function App() {
                 </AuthRoute>
                 <Route path="/login">
                   <LoginHandler />
+                </Route>
+                <Route path="/account-create">
+                  <AccountCreate />
                 </Route>
 
                 {/* <Route exact path="/participate/join">
