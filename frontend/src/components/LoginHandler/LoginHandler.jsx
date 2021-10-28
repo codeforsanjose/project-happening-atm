@@ -35,19 +35,13 @@ function LoginHandler() {
   const loginLocal = useLazyQuery(LOGIN_LOCAL,
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
   const loginGoogle = useLazyQuery(LOGIN_GOOGLE,
-    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
+    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
 
   // Response if the google connection attempt failed
   const responseGoogle = (response) => {
-    console.log('response');
     console.log(response);
   };
-  const j = {
-    rows: [],
-  };
-  j.rows.push(1);
 
-  console.log(j);
   // This function makes the query call to perform the login
   const signInHandler = () => {
     loginLocal[0]({
@@ -59,7 +53,6 @@ function LoginHandler() {
   };
 
   const googleHandler = (response) => {
-    console.log(response.tokenId);
     localStorage.setItem(LocalStorageTerms.TOKEN, response.tokenId);
     loginGoogle[0]();
   };
@@ -67,12 +60,9 @@ function LoginHandler() {
   useEffect(() => {
     // Successful sign in
     if (data) {
-      console.log(data);
-      console.log(verifyToken(data.token));
-      // window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
-      // window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
-      // console.log('TOKEN', data.loginLocal.token);
-      // loginContext.setSignedIn(true);
+      window.localStorage.setItem(LocalStorageTerms.TOKEN, data.token);
+      window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
+      loginContext.setSignedIn(true);
     }
     if (error) {
       // extracted error message
