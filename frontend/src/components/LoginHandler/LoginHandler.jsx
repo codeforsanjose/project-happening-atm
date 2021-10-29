@@ -60,8 +60,14 @@ function LoginHandler() {
   useEffect(() => {
     // Successful sign in
     if (data) {
-      window.localStorage.setItem(LocalStorageTerms.TOKEN, data.token);
+      if (data.hasOwnProperty('loginGoogle')) {
+        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
+      }
+      if (data.hasOwnProperty('loginLocal')) {
+        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+      }
       window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
+
       loginContext.setSignedIn(true);
     }
     if (error) {
