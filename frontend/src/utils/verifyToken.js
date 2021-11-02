@@ -10,8 +10,8 @@ const verifyToken = () => {
   // get the seconds since epoch
   const seconds = new Date() / 1000;
 
-  return tokenObj != null && tokenObj.iss === process.env.REACT_APP_JWT_ISSUER
-   && tokenObj.exp > seconds;
+  return tokenObj != null && tokenObj.iss === process.env.REACT_APP_JWT_ISSUER &&
+    tokenObj.exp > seconds;
 };
 
 export default verifyToken;
@@ -25,13 +25,12 @@ export function getUserEmail() {
  * Dependent on WIP effort for account creation functionality:
  * Currently, user account records only include email, but pending updates
  * for account creation functionality will add phone
-*/
+ */
 
 export function getUserPhone() {
   const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
   const phone = parseJwt(token).phone;
-  if (phone){
+  if (phone) {
     return phone;
-  }
-  else return '';
+  } else return '';
 }
