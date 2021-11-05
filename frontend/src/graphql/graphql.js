@@ -95,6 +95,37 @@ export const UPDATE_MEETING_ITEM = gql`
 
 // agenda items ended
 
+export const CREATE_MEETING = gql`
+  mutation CreateMeeting(
+    $meeting_start_timestamp: String!
+    $meeting_type: String
+    $status: String
+    $virtual_meeting_url: String
+    $virtual_meeting_id: String
+    $call_in_information: String
+    $email_before_meeting: String
+    $email_during_meeting: String
+    $eComment: String
+    $city_of_san_jose_meeting: String
+    $youtube_link: String
+  ) {
+    createMeeting(
+      meeting_start_timestamp: $meeting_start_timestamp
+      meeting_type: $meeting_type
+      status: $status
+      virtual_meeting_url: $virtual_meeting_url
+      virtual_meeting_id: $virtual_meeting_id
+      call_in_information: $call_in_information
+      email_before_meeting: $email_before_meeting
+      email_during_meeting: $email_during_meeting
+      eComment: $eComment
+      city_of_san_jose_meeting: $city_of_san_jose_meeting
+      youtube_link: $youtube_link) {
+        id
+      }
+  }
+`;
+
 export const CREATE_SUBSCRIPTIONS = gql`
   mutation CreateSubscriptions(
     $phone_number: String,

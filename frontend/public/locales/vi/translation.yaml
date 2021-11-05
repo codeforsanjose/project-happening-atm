@@ -90,8 +90,9 @@ meeting:
           date: Ngày
           time: Thời gian
         buttons:
-          create-meeting: Tạo cuộc họp mới
+          create-meeting: Tạo
           creating-meeting: Tạo cuộc họp mới
+          cancel: Huỷ
     delete-meeting:
       button: Xoá cuộc họp
       modal:
