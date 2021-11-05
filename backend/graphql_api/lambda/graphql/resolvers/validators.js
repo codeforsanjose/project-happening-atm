@@ -228,10 +228,10 @@ module.exports = (logger) => {
 
   module.validateCreateAccount = (args) => {
     const context = 'createAccount';
-    // TODO: Add any protections for bad user input
-    const { email_address } = args;
+    const { email_address, phone_number } = args;
 
     validateEmail(email_address, 'email_address', context);
+    if (phone_number && phone_number.length > 0) validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
   };
 
   return module;

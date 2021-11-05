@@ -1,4 +1,4 @@
-@import '../../utils/_colors.scss';
+@import "../../utils/_colors.scss";
 
 .no-select {
   /* prevent blue highlighting */
@@ -30,7 +30,7 @@ header {
     * {
       color: $offWhite;
       cursor: pointer;
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
     }
     a {
       text-decoration: none;
@@ -58,7 +58,7 @@ header {
         padding: 0;
         margin: 0;
       }
-      .sign-out{
+      .sign-out {
         color: black;
         background: $lightBronze;
         background-color: $lightBronze;
@@ -67,7 +67,7 @@ header {
         width: 112px;
         height: 31px;
         padding: 0;
-        font-size:1rem;
+        font-size: 1rem;
       }
     }
 
@@ -78,16 +78,34 @@ header {
       box-sizing: border-box;
       background-color: $cityBlue;
       position: absolute;
-      top: calc(1.08em - 0.05vw + 0.5em + 0.3em);
+      top: 4em;
       left: 0;
       z-index: 1;
       padding: 8vh 5vw 0vh;
       transform: translateY(-111%);
       transition: 0.2s;
     }
+
+    .nav-link-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
 
 .nav-links-active {
   transform: translateY(0) !important;
+}
+
+@media (min-width: 1296px) {
+  .home-button-icon {
+    margin-right: auto;
+  }
+  .nav-link-group {
+    margin-left: auto;
+  }
+  .sign-out {
+    margin-left: 3em;
+  }
 }

@@ -63,6 +63,25 @@ export const GET_MEETING_WITH_ITEMS = gql`
   }
 `;
 
+// Get existing email_address for create account validations
+export const GET_ALL_ACCOUNT_EMAILS = gql`
+  query {
+    getAllAccountEmails {
+      id,
+      email_address
+     }
+  }
+`;
+
+// Get account details by email address
+
+export const GET_ACCOUNT_BY_EMAIL = gql`
+  query GetAccountByEmail($email_address: String) {
+    getAccountByEmail(email_address: $email_address){
+      id
+    }
+  }
+`;
 // setters
 
 export const UPDATE_MEETING_ITEM = gql`
@@ -176,3 +195,23 @@ export const DELETE_MEETING = gql`
     deleteMeeting(id: $id)
   }
 `;
+
+// New mutation for creating a new account. 
+// Mutation corresponds to existing backend "createAccount" mutation.
+export const CREATE_ACCOUNT = gql`
+  mutation CreateAccount(
+    $email_address: String,
+    $password: String,
+    $phone_number: String,
+    $roles: roles
+  ){
+    createAccount(
+      email_address: $email_address,
+      password: $password,
+      phone_number: $phone_number,
+      roles: $roles
+  ){
+    token
+  }
+  }
+`; 
