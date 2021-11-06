@@ -124,15 +124,15 @@ module.exports = (logger) => {
     const isAdmin = context.user.roles.includes('ADMIN');
     if (!isAdmin) {
       logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without admin credentials`);
-      throw new ForbiddenError('No admin credentials provided.')
-    };
+      throw new ForbiddenError('No admin credentials provided.');
+    }
   };
 
   module.validateUser = (context) => {
     const isUser = context.user.roles.includes('USER');
     if (!isUser) {
       logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without user credentials`);
-      throw new ForbiddenError('No user credentials provided. Please log in.')
+      throw new ForbiddenError('No user credentials provided. Please log in.');
     }
   };
 
@@ -140,7 +140,7 @@ module.exports = (logger) => {
     const isMatch = authType === loginMethod;
     if (!isMatch) {
       logger.debug(`Incorrect login type: User auth type is ${authType} and tried to login with ${loginMethod} type.`);
-      throw new ForbiddenError('Incorrect authentication type')
+      throw new ForbiddenError('Incorrect authentication type');
     }
   };
 
@@ -151,9 +151,6 @@ module.exports = (logger) => {
     } = args;
 
     validateFutureTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
-    validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
-    validateType(meeting_type, 'meeting_type', context);
-    validateStatus(status, 'status', context);
   };
 
   module.validateUpdateMeeting = (args) => {
@@ -218,8 +215,8 @@ module.exports = (logger) => {
 
     // Check that at least one method is specified.
     if (phone_number === '' && email_address === '') {
-      const msg = `Either phone number or email address is required.`;
-      throwUserInputError(msg, context);      
+      const msg = 'Either phone number or email address is required.';
+      throwUserInputError(msg, context);
     }
     if (phone_number !== '') {
       validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
@@ -230,11 +227,11 @@ module.exports = (logger) => {
   };
 
   module.validateCreateAccount = (args) => {
-    const context = 'createAccount'
-    // TODO: Add any protections for bad user input 
-    const { email_address } = args;
+    const context = 'createAccount';
+    const { email_address, phone_number } = args;
 
     validateEmail(email_address, 'email_address', context);
+    if (phone_number && phone_number.length > 0) validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
   };
 
   return module;

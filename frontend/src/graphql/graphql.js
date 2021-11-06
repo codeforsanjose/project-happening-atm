@@ -63,6 +63,25 @@ export const GET_MEETING_WITH_ITEMS = gql`
   }
 `;
 
+// Get existing email_address for create account validations
+export const GET_ALL_ACCOUNT_EMAILS = gql`
+  query {
+    getAllAccountEmails {
+      id,
+      email_address
+     }
+  }
+`;
+
+// Get account details by email address
+
+export const GET_ACCOUNT_BY_EMAIL = gql`
+  query GetAccountByEmail($email_address: String) {
+    getAccountByEmail(email_address: $email_address){
+      id
+    }
+  }
+`;
 // setters
 
 export const UPDATE_MEETING_ITEM = gql`
@@ -94,6 +113,37 @@ export const UPDATE_MEETING_ITEM = gql`
 `;
 
 // agenda items ended
+
+export const CREATE_MEETING = gql`
+  mutation CreateMeeting(
+    $meeting_start_timestamp: String!
+    $meeting_type: String
+    $status: String
+    $virtual_meeting_url: String
+    $virtual_meeting_id: String
+    $call_in_information: String
+    $email_before_meeting: String
+    $email_during_meeting: String
+    $eComment: String
+    $city_of_san_jose_meeting: String
+    $youtube_link: String
+  ) {
+    createMeeting(
+      meeting_start_timestamp: $meeting_start_timestamp
+      meeting_type: $meeting_type
+      status: $status
+      virtual_meeting_url: $virtual_meeting_url
+      virtual_meeting_id: $virtual_meeting_id
+      call_in_information: $call_in_information
+      email_before_meeting: $email_before_meeting
+      email_during_meeting: $email_during_meeting
+      eComment: $eComment
+      city_of_san_jose_meeting: $city_of_san_jose_meeting
+      youtube_link: $youtube_link) {
+        id
+      }
+  }
+`;
 
 export const CREATE_SUBSCRIPTIONS = gql`
   mutation CreateSubscriptions(
@@ -153,3 +203,23 @@ export const DELETE_MEETING = gql`
     deleteMeeting(id: $id)
   }
 `;
+
+// New mutation for creating a new account. 
+// Mutation corresponds to existing backend "createAccount" mutation.
+export const CREATE_ACCOUNT = gql`
+  mutation CreateAccount(
+    $email_address: String,
+    $password: String,
+    $phone_number: String,
+    $roles: roles
+  ){
+    createAccount(
+      email_address: $email_address,
+      password: $password,
+      phone_number: $phone_number,
+      roles: $roles
+  ){
+    token
+  }
+  }
+`; 
