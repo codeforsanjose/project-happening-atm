@@ -10,7 +10,6 @@ const verifyToken = () => {
   // console.log(token.iss);
   // Don't bother verifying a google or microsoft token, just return true
   if (tokenObj !== null && tokenObj.iss === 'accounts.google.com') {
-    console.log('true');
     return true;
   }
 
