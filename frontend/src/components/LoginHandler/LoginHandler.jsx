@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './LoginHandler.scss';
 import {
-  Redirect, NavLink
+  Redirect, NavLink,
 } from 'react-router-dom';
 import {
   useLazyQuery,
@@ -15,7 +15,6 @@ import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
-import verifyToken from '../../utils/verifyToken';
 
 // global constant options
 const OPTIONS = {
@@ -39,6 +38,8 @@ function LoginHandler() {
 
   // Response if the google connection attempt failed
   const responseGoogle = (response) => {
+    // for debuging
+    // eslint-disable-next-line no-console
     console.log(response);
   };
 
@@ -60,10 +61,10 @@ function LoginHandler() {
   useEffect(() => {
     // Successful sign in
     if (data) {
-      if (data.hasOwnProperty('loginGoogle')) {
+      if (Object.prototype.hasOwnProperty.call(data, 'loginGoogle')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
       }
-      if (data.hasOwnProperty('loginLocal')) {
+      if (Object.prototype.hasOwnProperty.call(data, 'loginLocal')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
       }
       window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
@@ -164,8 +165,12 @@ function LoginHandler() {
             <a className="passAnchor mobileView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
           </div>
           <div className="create-account-container">
-            <span>{t('Don\'t have an account')}?</span><NavLink className="nav-account-create" to="/account-create/">{t('Create Account')}</NavLink>
-          </div>     
+            <span>
+              {t('Don\'t have an account')}
+              ?
+            </span>
+            <NavLink className="nav-account-create" to="/account-create/">{t('Create Account')}</NavLink>
+          </div>
         </div>
       </div>
     </div>
