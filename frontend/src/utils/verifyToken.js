@@ -6,7 +6,7 @@ const verifyToken = () => {
   // get the authentication token from local storage if it exists
   const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
   const tokenObj = parseJwt(token);
-  console.log(token);
+
   // console.log(token.iss);
   // Don't bother verifying a google or microsoft token, just return true
   if (tokenObj !== null && tokenObj.iss === 'accounts.google.com') {
