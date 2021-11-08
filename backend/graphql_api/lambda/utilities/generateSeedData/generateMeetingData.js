@@ -31,14 +31,11 @@ async function generateMeetingData(meetings) {
 
                 const { rows: meeting } = res;
 
-                await meeting.forEach(async ({ id: meetingId, meeting_type, created_timestamp }) => {
-                    logger.info(
-                        `meeting of id ${meetingId}, type ${meeting_type} was successfully created.` +
-                        `meeting created at ${created_timestamp}`
-                    )
+                await meeting.forEach(async ({ id }) => {
+                    logger.info(`meeting ${id} created`)
 
                     if (meetingItems) {
-                        await createMeetingItems(meetingId, meetingItems);
+                        await createMeetingItems(id, meetingItems);
                     }
                 }
                 );
@@ -81,10 +78,9 @@ async function generateMeetingData(meetings) {
                 }
                 const { rows: meetingItem } = res;
 
-                await meetingItem.forEach(async ({ meeting_id, id, order_number, parent_meeting_item_id, created_timestamp }) => {
+                await meetingItem.forEach(async ({ meeting_id, id, order_number, parent_meeting_item_id }) => {
                     logger.info(
-                        `meeting item ${id} of meeting ${meeting_id}, order number ${order_number}, parent_meeting_item_id ${parent_meeting_item_id} successfully created. ` +
-                        `meeting created at ${created_timestamp}`
+                        `meeting_item ${id}-${order_number} with parent_meeting_item ${parent_meeting_item_id || 'n/a'} of meeting ${meeting_id} created.`
                     )
                     if (nestedMeetingItems) {
                         const parentMeetingItemId = meetingItem[0].id

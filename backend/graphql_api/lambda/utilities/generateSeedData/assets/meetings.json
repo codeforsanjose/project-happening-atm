@@ -1,91 +1,742 @@
 [
   {
     "meeting_type": "'Hybrid'",
-    "meeting_start_timestamp": "'2021-10-14'",
-    "virtual_meeting_url": "'zoom.us / kjsdl'",
-    "status": "'Ongoing'",
+    "meeting_start_timestamp": "'2021-11-16 09:30'",
+    "virtual_meeting_url": "'https://sanjoseca.zoom.us/j/93052835954'",
+    "status": "'Final'",
     "virtual_meeting_id": 12,
     "call_in_information": "''",
     "email_before_meeting": "''",
     "email_during_meeting": "''",
-    "ecomment": "'TEST Data: Order of Adjournment'",
+    "ecomment": "''",
     "city_of_san_jose_meeting": "''",
     "youtube_link": "''",
     "meetingItems": [
       {
         "orderNumber": 0,
-        "itemStartTimestamp": "'2021-10-14'",
-        "itemEndTimestamp": "'2021-10-14'",
-        "status": "'ongoing'",
-        "descriptionLocKey": "'desc loc key'",
-        "contentCategories": "'content categories'",
-        "titleLocKey": "'test loc key'",
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'CEREMONIAL ITEMS'",
         "parentMeetingItemId": "''",
         "meetingItems": [
           {
             "orderNumber": 0,
-            "itemStartTimestamp": "'2021-10-14'",
-            "itemEndTimestamp": "'2021-10-14'",
-            "status": "'ongoing-nested'",
-            "descriptionLocKey": "'desc loc key - nested'",
-            "contentCategories": "'content categories - nested'",
-            "titleLocKey": "'test loc key nested'"
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Presentation of a Commendation to the Lairon Food Pantry for their tireless work in supporting the Seven Trees community during the unprecedented crisis caused by COVID-19.'"
           },
           {
             "orderNumber": 1,
-            "itemStartTimestamp": "'2021-10-14'",
-            "itemEndTimestamp": "'2021-10-14'",
-            "status": "'ongoing-nested-2'",
-            "descriptionLocKey": "'desc loc key - nested-2'",
-            "contentCategories": "'content categories - nested-2'",
-            "titleLocKey": "'test loc key nested-2'"
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Presentation of a Proclamation recognizing United Against Hate Week.'"
           }
         ]
       },
       {
         "orderNumber": 1,
-        "itemStartTimestamp": "'2021-10-14'",
-        "itemEndTimestamp": "'2021-10-14'",
-        "status": "'ongoing'",
-        "descriptionLocKey": "'desc loc key'",
-        "contentCategories": "'content categories'",
-        "titleLocKey": "'test loc key'"
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "'Notice to the public: There will be no separate discussion of Consent Calendar items as they are considered to be routine by the City Council and will be adopted by one motion. '",
+        "contentCategories": "''",
+        "titleLocKey": "'CONSENT CALENDAR'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Approval of City Council Minutes.'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Final Adoption of Ordinances.'"
+          },
+          {
+            "orderNumber": 2,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Approval of Council Committee Minutes.'"
+          },
+          {
+            "orderNumber": 3,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Mayor and Council Excused Absence Requests.'"
+          },
+          {
+            "orderNumber": 4,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'City Council Travel Reports.'"
+          },
+          {
+            "orderNumber": 5,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Report from the Council Liaison to the Retirement Boards.'"
+          },
+          {
+            "orderNumber": 6,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Amendment to the Ground Lease Agreement Between the City of San José and Our City Forest.'"
+          },
+          {
+            "orderNumber": 7,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Actions Related to the Agreements for Leased Premises of Ancillary and Office Support Space for Food and Beverage Concessionaires at the Norman Y. Mineta San José International Airport.'"
+          },
+          {
+            "orderNumber": 8,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Settlement of Jean-Marie White, et. al. v. Santa Clara Valley Water District (SCVWD) and City of San José.'"
+          },
+          {
+            "orderNumber": 9,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Extension of AB 361 Implementation to Allow Teleconferenced Public Meetings to Continue through December 16, 2021 During Governor’s Proclaimed COVID State of Emergency.'"
+          },
+          {
+            "orderNumber": 10,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Retroactive Approval of City Hall Rotunda Free Use for a Community Vaccination Event.'"
+          },
+          {
+            "orderNumber": 11,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Actions Related to the Purchase Orders for Radio Communication System Upgrades at the Airport and Regional Wastewater Facility.'"
+          },
+          {
+            "orderNumber": 12,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Actions Related to the Purchase Order with DFC, Inc. for Inspection, Maintenance and Repair Services for Police Helicopter.'"
+          },
+          {
+            "orderNumber": 13,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Grant Agreement with San José Public Library Foundation for Library Programs.'"
+          },
+          {
+            "orderNumber": 14,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'2021 Santa Clara County Multi-Jurisdictional Program for Public Information.'"
+          },
+          {
+            "orderNumber": 15,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Amendment to Title 27 of the San José Municipal Code Related to the Issuance of Public Works Change Orders.'"
+          },
+          {
+            "orderNumber": 16,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Actions Related to the Construction Contract for 9700 - Police E-Lot Fencing Project Re-Bid at the Southwest Corner of West Mission Street and North San Pedro Street for the Police Department.'"
+          }
+        ]
       },
       {
         "orderNumber": 2,
-        "itemStartTimestamp": "'2021-10-14'",
-        "itemEndTimestamp": "'2021-10-14'",
-        "status": "'ongoing'",
-        "descriptionLocKey": "'desc loc key'",
-        "contentCategories": "'content categories'",
-        "titleLocKey": "'test loc key'"
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'STRATEGIC SUPPORT'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Report of the City Manager, Jennifer Maguire (Verbal Report)'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Labor Negotiations Update.'"
+          },
+          {
+            "orderNumber": 2,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Appeals Hearing Board Interview.'"
+          },
+          {
+            "orderNumber": 3,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Municipal Water Billing and Customer Service Audit Report.'"
+          },
+          {
+            "orderNumber": 4,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'An Ordinance To Amend San José Municipal Code Chapter 12.06 Related to Disclosures on Campaign Advertisements.'"
+          },
+          {
+            "orderNumber": 5,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Options for Campaign Finance Regulations Related to Public Financing, Foreign Influence in Elections, and Other Limits on Corporations and Other Entities.'"
+          },
+          {
+            "orderNumber": 6,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'City Roadmap First Quarter 2021 Update.'"
+          },
+          {
+            "orderNumber": 7,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Agreement with Standard Insurance Company for Group Basic Life and Accidental Death and Dismemberment, Supplemental Life, Dependent Life and Matching Accidental Death and Dismemberment Insurance.'"
+          },
+          {
+            "orderNumber": 8,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Agreement with Standard Insurance Company for Long-Term Disability Insurance.'"
+          },
+          {
+            "orderNumber": 9,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Agreement with New York Life Group Benefit Solutions for Accidental Death and Dismemberment Voluntary Insurance.'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 3,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'PUBLIC SAFETY SERVICES'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 4,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'TRANSPORTATION & AVIATION SERVICES'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Actions Related to the Direct Lease Concession Loan Policy and Amendments to the Agreements with Elevate Gourmet Brands-SFO Group and WSE Group, Inc. - RECOMMEND DEFERRAL'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 5,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'ENVIRONMENTAL & UTILITY SERVICES'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 6,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'NEIGHBORHOOD SERVICES'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 7,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'COMMUNITY & ECONOMIC DEVELOPMENT'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 8,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'REDEVELOPMENT – SUCCESSOR AGENCY'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 9,
+        "itemStartTimestamp": "'2021-11-16 09:30'",
+        "itemEndTimestamp": "'2021-11-16 13:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "'Notice to the public: There will be no separate discussion of Land Use Consent Calendar (Item 10.1) as they are considered to be routine by the City Council and will be adopted by one motion...'",
+        "contentCategories": "''",
+        "titleLocKey": "'LAND USE'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "'No Land Use items on Consent Calendar.'",
+            "contentCategories": "''",
+            "titleLocKey": "'Land Use on Consent Calendar'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'CP19-031 & SP20-016 - Conforming Rezoning and Special Use Permit for Property Located at 1212 South Winchester Boulevard.'"
+          },
+          {
+            "orderNumber": 2,
+            "itemStartTimestamp": "'2021-11-16 09:30'",
+            "itemEndTimestamp": "'2021-11-16 13:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Changes to the General Plan Land Use Transportation Diagram, Zoning Map and Municipal Code for properties within North, Mid- and South Coyote Valley associated with the Envision San José 2040 General Plan Four-Year Review.'"
+          }
+        ]
       }
     ]
   },
   {
     "meeting_type": "'Hybrid'",
-    "meeting_start_timestamp": "'2021-10-15'",
-    "virtual_meeting_url": "'zoom.us / kjsdl'",
-    "status": "'Ongoing'",
+    "meeting_start_timestamp": "'2021-11-09 13:30'",
+    "virtual_meeting_url": "'https://sanjoseca.zoom.us/j/93052835954'",
+    "status": "'Final'",
     "virtual_meeting_id": 12,
     "call_in_information": "''",
     "email_before_meeting": "''",
     "email_during_meeting": "''",
-    "ecomment": "'TEST DATA: Order of Adjournment'",
+    "ecomment": "''",
     "city_of_san_jose_meeting": "''",
-    "youtube_link": "''"
-  },
-  {
-    "meeting_type": "'Hybrid'",
-    "meeting_start_timestamp": "'2021-10-16'",
-    "virtual_meeting_url": "'zoom.us / kjsdl'",
-    "status": "'Ongoing'",
-    "virtual_meeting_id": 12,
-    "call_in_information": "''",
-    "email_before_meeting": "''",
-    "email_during_meeting": "''",
-    "ecomment": "'TEST DATA: Order of Adjournment'",
-    "city_of_san_jose_meeting": "''",
-    "youtube_link": "''"
+    "youtube_link": "''",
+    "meetingItems": [
+      {
+        "orderNumber": 0,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'CEREMONIAL ITEMS'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Presentation of a Commendation to Sergeant Doug Tran in recognition of his being named the National Asian Pacific Islander Prosecutors Association Officer of the Year. (Esparza)'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Presentation of a Proclamation recognizing National Prematurity Awareness Month. (Arenas)'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Presentation of a Proclamation declaring November 15, 2021 as America Recycles Day. (Mayor)'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 1,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "'Notice to the public: There will be no separate discussion of Consent Calendar items as they are considered to be routine by the City Council and will be adopted by one motion.'",
+        "contentCategories": "''",
+        "titleLocKey": "'CONSENT CALENDAR'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Approval of City Council Minutes.'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Final Adoption of Ordinances.'"
+          },
+          {
+            "orderNumber": 2,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Approval of Council Committee Minutes.'"
+          },
+          {
+            "orderNumber": 3,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Mayor and Council Excused Absence Requests.'"
+          },
+          {
+            "orderNumber": 4,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'City Council Travel Reports.'"
+          },
+          {
+            "orderNumber": 5,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Report from the Council Liaison to the Retirement Boards.'"
+          },
+          {
+            "orderNumber": 6,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Actions Related to the Construction Contract for 9700 - Police E-Lot Fencing Project Re-Bid at the Southwest Corner of West Mission Street and North San Pedro Street for the Police Department. - DEFERRED'"
+          },
+          {
+            "orderNumber": 7,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Downtown San José Property-Based Improvement District Annual Financial Report.'"
+          },
+          {
+            "orderNumber": 8,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Retroactive Approval of Foxdale Movie Night Sponsored by Council District 5 as a City Council Sponsored Special Event to Expend City Funds and Accept Donations of Materials and Services for the Event.'"
+          },
+          {
+            "orderNumber": 9,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Reproductive Freedom Resolution.'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 2,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'STRATEGIC SUPPORT'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Report of the City Manager, Jennifer Maguire (Verbal Report)'"
+          },
+          {
+            "orderNumber": 1,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Labor Negotiations Update.'"
+          },
+          {
+            "orderNumber": 2,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Acceptance of Retirement Plans’ Comprehensive Annual Investment Fee Reports for Calendar Year 2020.'"
+          },
+          {
+            "orderNumber": 3,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Definition of Racial Equity.'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 3,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'PUBLIC SAFETY SERVICES'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 4,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'TRANSPORTATION & AVIATION SERVICES'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 5,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'ENVIRONMENTAL & UTILITY SERVICES'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'San José Clean Energy Application to Become a Scheduling Coordinator with the California Independent System Operator.'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 6,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'NEIGHBORHOOD SERVICES'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Long-Term Use Agreement for the Operation of a Six Acre Portion of Emma Prusch Farm Park.'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 7,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'COMMUNITY & ECONOMIC DEVELOPMENT'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "''",
+            "contentCategories": "''",
+            "titleLocKey": "'Thomas Fallon Statue Deaccession.'"
+          }
+        ]
+      },
+      {
+        "orderNumber": 8,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "''",
+        "contentCategories": "''",
+        "titleLocKey": "'REDEVELOPMENT – SUCCESSOR AGENCY'",
+        "parentMeetingItemId": "''"
+      },
+      {
+        "orderNumber": 9,
+        "itemStartTimestamp": "'2021-11-09 13:30'",
+        "itemEndTimestamp": "'2021-11-09 18:30'",
+        "status": "'Final'",
+        "descriptionLocKey": "'Notice to the public: There will be no separate discussion of Land Use Consent Calendar (Item 10.1) as they are considered to be routine by the City Council and will be adopted by one motion.'",
+        "contentCategories": "''",
+        "titleLocKey": "'LAND USE'",
+        "parentMeetingItemId": "''",
+        "meetingItems": [
+          {
+            "orderNumber": 0,
+            "itemStartTimestamp": "'2021-11-09 13:30'",
+            "itemEndTimestamp": "'2021-11-09 18:30'",
+            "status": "'Final'",
+            "descriptionLocKey": "'No Land Use items on Consent Calendar.'",
+            "contentCategories": "''",
+            "titleLocKey": "'Land Use on Consent Calendar'"
+          }
+        ]
+      }
+    ]
   }
 ]
