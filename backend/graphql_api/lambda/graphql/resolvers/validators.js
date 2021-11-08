@@ -128,8 +128,10 @@ module.exports = (logger) => {
     }
   };
 
+  // (10.12.2021) JYip:added 'ADMIN' in order to support subscriptions for admin users as well
   module.validateUser = (context) => {
-    const isUser = context.user.roles.includes('USER');
+    const roles = ['USER', 'ADMIN'];
+    const isUser = context.user.roles.some((role) => roles.includes(role));
     if (!isUser) {
       logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without user credentials`);
       throw new ForbiddenError('No user credentials provided. Please log in.');
