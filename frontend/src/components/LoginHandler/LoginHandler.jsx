@@ -41,6 +41,7 @@ function LoginHandler() {
     // for debuging
     // eslint-disable-next-line no-console
     console.log(response);
+    setOtherError(true);
   };
 
   // This function makes the query call to perform the login
