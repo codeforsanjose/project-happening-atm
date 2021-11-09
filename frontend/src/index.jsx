@@ -28,6 +28,7 @@ import LoginHandler from './components/LoginHandler/LoginHandler';
 import AuthRoute from './components/AuthRoute/AuthRoute';
 import LoginContext from './components/LoginContext/LoginContext';
 import AccountCreate from './components/UserAccountCreate/AccountCreate';
+import ForgotPassword from './components/ForgotPassword/ForgotPasswordRequest';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -113,6 +114,9 @@ function App() {
                 </Route>
                 <Route path="/account-create">
                   <AccountCreate />
+                </Route>
+                <Route path="/forgot-password">
+                  <ForgotPassword />
                 </Route>
 
                 {/* <Route exact path="/participate/join">

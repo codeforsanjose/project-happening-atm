@@ -15,7 +15,7 @@ import {
 function AccountCreate() {
 
   // TODO: Add Site key.
-  const RECAPTCHA_SITE_KEY = '';
+  const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
   const PASSWORD_TEXT = 'Passwords must have 6 characters, a uppercase, a lowercase, a number and a special character ';
 
   // User specific variables to be sent to backend.

@@ -12,6 +12,32 @@ header:
   city-council-meetings: Các Cuộc họp của Hội đồng Thành phố
   city-council-meeting-agenda: Cuộc họp nghị sự của Hội đồng Thành phố
 
+createAccount:
+  span: vi - Don't have an account?
+  link: vi - Create Account
+
+forgotPassword:
+  header:
+    resetPassword: vi - Reset your password
+  body:
+    heading1: vi - Enter your account's email address and
+    heading2: vi - we will send you a password reset link.
+    button:
+      sendemail: vi - Send password reset email
+    link:  
+      signIn: vi - Sign In
+    input:
+      email: vi - Email  
+setNewPassword:
+  header: vi - Change password
+  body:
+    heading1: vi - Enter your new password
+    input:
+      newPassword: vi - New password
+      confirmNewPassword: vi - Confirm new password
+    button:
+      changePassword: vi - Change password   
+
 meeting:
   start-time: Giờ Bắt đầu
   actions:

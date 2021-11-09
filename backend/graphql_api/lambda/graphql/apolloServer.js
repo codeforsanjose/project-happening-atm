@@ -55,6 +55,8 @@ module.exports = (logger) => {
 
         deleteMeeting(id: Int!): String
 
+        forgotPassword(emailAddress: String): ID
+
         # TODO: Need to add update user info mutation
     }
 
@@ -257,6 +259,10 @@ module.exports = (logger) => {
       createAccount: async (_parent, args, context) => {
         logger.info('Initiating CreateAccount Mutation resolver');
         return resolverHandler(mutationResolver.createAccount, args, context);
+      },
+      forgotPassword: async (_parent, args, context) => {
+        logger.info('Initiating ForgotPassword Mutation resolver');
+        return resolverHandler(mutationResolver.forgotPassword, args, context);
       },
     },
   };

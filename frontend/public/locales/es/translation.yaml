@@ -12,6 +12,33 @@ header:
   city-council-meetings: Reuniones del Consejo de la Ciudad
   city-council-meeting-agenda: Agenda de la Reunión del Consejo de la Ciudad
 
+createAccount:
+  span: es - Don't have an account?
+  link: es - Create Account  
+
+forgotPassword:
+  header:
+    resetPassword: es - Reset your password 
+  body:
+    heading1: es - Enter your account's email address and
+    heading2: es - we will send you a password reset link.
+    button:
+      sendemail: es - Send password reset email
+    link:
+      signIn: es - Sign In
+    input:
+      email: es - Email
+setNewPassword:
+  header: es - Change password
+  body:
+    heading1: es - Enter your new password
+    input:
+      newPassword: es - New password
+      confirmNewPassword: es - Confirm new password
+    button:
+      changePassword: es - Change password
+
+
 meeting:
   start-time: Hora de Inicio
   actions:

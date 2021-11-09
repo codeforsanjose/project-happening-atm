@@ -214,4 +214,14 @@ export const CREATE_ACCOUNT = gql`
     token
   }
   }
-`; 
+`;
+
+export const FORGOT_PASSWORD = gql`
+mutation ForgotPassword(
+  $emailAddress: String
+){
+  forgotPassword(
+    emailAddress: $emailAddress,
+)
+}
+`;

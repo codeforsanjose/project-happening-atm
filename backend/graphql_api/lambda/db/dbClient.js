@@ -337,6 +337,14 @@ module.exports = async (logger) => {
     return query(`SELECT * FROM account WHERE id = ${id}`);
   };
 
+  module.updatePasswordResetTokenForAccount = async (userId, passwordResetToken) => {
+    logger.info('dbClient: updatePasswordResetTokenForAccount');
+    const queryString = `UPDATE account SET password_reset_token='${passwordResetToken}'
+    WHERE id = ${userId}
+    RETURNING id;`;
+    return query(queryString);
+  };
+
 
   return module;
 };
