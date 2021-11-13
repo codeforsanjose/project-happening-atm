@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // Necessary as dnd sort uses prop spreading for its listeners and props
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client";
@@ -27,12 +27,6 @@ const subscribeDisabled = (item) =>
   item.status === MeetingItemStates.COMPLETED;
 
 const itemLinks = [
-  {
-    getPath: () => "/",
-    Icon: ShareIcon,
-    text: "meeting.tabs.agenda.list.share.button",
-    isDisabled: () => false,
-  },
   {
     getPath: () => "/",
     Icon: AddIcon,
@@ -110,12 +104,23 @@ function AgendaItem({ item, isSelected, handleSelection }) {
   );
 }
 
-function AgendaItemActionLink({ link }) {
-  const { t } = useTranslation();
+function AgendaItemActionLink({ t,loading,handleSubmit,subscribed }) {
+  if (subscribed) {
+    return (
+      <div className="link">
+        <p className="disabled">
+          {t("meeting.tabs.agenda.list.subscribe.button.done")}
+        </p>
+      </div>
+    )
+  } 
   return (
-    <div className="link">
-      <link.Icon />
-      <p>{t(link.text)}</p>
+    <div className="link" onClick={handleSubmit}>
+      <p className={loading? "notify-me subscribing" : "notify-me"}>
+        {loading
+          ? t("meeting.tabs.agenda.list.subscribe.button.doing")
+          : t("meeting.tabs.agenda.list.subscribe.button.do")}
+      </p>
     </div>
   );
 }
@@ -123,13 +128,17 @@ function AgendaItemActionLink({ link }) {
 const RenderedAgendaItem = forwardRef(
   ({ handleSelection, isSelected, item, id, ...props }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
+    const [subscribed, setSubscribed] = useState(false);
+    const modalRef = useRef(null);
     const { t } = useTranslation();
-    const history = useHistory();
+
     const [createSubscriptions, { loading, error }] = useMutation(
       CREATE_SUBSCRIPTIONS,
       {
-        onCompleted: (data) =>
-          setSubscriptions(data?.createSubscriptions ?? null),
+        onCompleted: (data) => {
+          setSubscribed(true);
+          setSubscriptions(data?.createSubscriptions ?? null)
+        }
       }
     );
 
@@ -160,7 +169,7 @@ const RenderedAgendaItem = forwardRef(
     };
 
     const closeConfirmation = () => {
-      history.go(0);
+      modalRef.current && modalRef.current.portal.close();
     };
 
     // The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
@@ -187,39 +196,34 @@ const RenderedAgendaItem = forwardRef(
           <SubscribeConfirmation
             numberOfSubscriptions={subscriptions.length}
             onClose={closeConfirmation}
+            ref={modalRef}
           />
         )}
         {error && <div className="form-error">{error.message}</div>}
         <div className="item-links">
-          <Link
-            to="/"
-            className={classnames({ disabled: subscribeDisabled(item) })}
-            onClick={handleSubmit}
-          >
+          <div className="link">
+            <p><span>+</span>{t("meeting.tabs.agenda.list.more-info.button")}</p>
+          </div>
+          {/* if Item status is completed, it will show completed; 
+              if Item status is deferred, it will show deferred;
+              if Item statu is not subscribed, it will show notify me;
+              if Item status is subscribed/subscribing it will show that */}
+         
+          {item.status === MeetingItemStates.COMPLETED ? (
             <div className="link">
-              <NotificationsIcon />
-              {loading && <Spinner />}
-              <p>
-                {loading
-                  ? t("meeting.tabs.agenda.list.subscribe.button.doing")
-                  : t("meeting.tabs.agenda.list.subscribe.button.do")}
+              <p className="disabled">
+                {t("meeting.tabs.agenda.status.options.completed")}
               </p>
             </div>
-          </Link>
-          {itemLinks.map((link) => {
-            if (link.isDisabled(item)) {
-              return (
-                <div className="disabled" key={`${item.id}link`}>
-                  <AgendaItemActionLink link={link} />
-                </div>
-              );
-            }
-            return (
-              <Link to={link.getPath(item)} key={link.text}>
-                <AgendaItemActionLink link={link} />
-              </Link>
-            );
-          })}
+          ) : item.status === MeetingItemStates.MOVED ? (
+            <div className="link">
+              <p className="deferred">
+                {t("meeting.tabs.agenda.status.options.deferred")}
+              </p>
+            </div>
+            ) : (<AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed}/>
+          )}
+              
         </div>
       </div>
     );

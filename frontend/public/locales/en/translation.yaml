@@ -145,7 +145,7 @@ meeting:
             did: Saved and Published
         subscribe:
           button:
-            do: Subscribe
+            do: Notify Me
             doing: Subscribing...
             done: Subscribed
           page:
