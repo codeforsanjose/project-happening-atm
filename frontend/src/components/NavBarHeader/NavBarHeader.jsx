@@ -18,7 +18,7 @@ function Header({ toggled, handleToggle }) {
   const loginContext = React.useContext(LoginContext);
 
   const signOut = () => {
-    window.localStorage.setItem(LocalStorageTerms.TOKEN, '');
+    window.localStorage.removeItem(LocalStorageTerms.TOKEN);
     window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, false);
     loginContext.setSignedIn(false);
   };

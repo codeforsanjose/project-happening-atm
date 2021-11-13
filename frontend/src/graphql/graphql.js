@@ -172,6 +172,14 @@ export const LOGIN_LOCAL = gql`
   }
 `;
 
+export const LOGIN_GOOGLE = gql`
+  query LoginGoogle {
+    loginGoogle{
+      token
+    }
+  }
+`;
+
 export const CONFIRM_EMAIL = gql`
   mutation confirmEmail(
     $token: String
