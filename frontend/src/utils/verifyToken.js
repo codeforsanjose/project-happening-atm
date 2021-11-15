@@ -9,7 +9,7 @@ const verifyToken = () => {
 
   // console.log(token.iss);
   // Don't bother verifying a google or microsoft token, just return true
-  if (tokenObj !== null && tokenObj.iss === 'accounts.google.com') {
+  if (tokenObj !== null && (tokenObj.iss === 'accounts.google.com' || tokenObj.iss === 'https://login.microsoftonline.com/49669b17-fa33-4ae3-8ecc-3cf116b790e5/v2.0')) {
     return true;
   }
 

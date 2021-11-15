@@ -95,12 +95,10 @@ module.exports = (logger) => {
 
     const verifyMicrosoftToken = async (dbClient, token) => {
         let user;
-
         const validateOptions = {
             audience: process.env.MICROSOFT_CLIENT_ID,
             issuer: process.env.MICROSOFT_AUTHORITY + "/v2.0"
         };
-
         const getSigningKeys = (header, callback) => {
             const client = jwksClient({
                 jwksUri: 'https://login.microsoftonline.com/common/discovery/keys'
@@ -116,15 +114,15 @@ module.exports = (logger) => {
         };
 
         try {
-            const payload = jwt.verify(token, getSigningKeys, validateOptions, (e, result) => {
-                if (e) {
-                    logger.error(`Cannot validate Microsoft Id Token: ${e}`);
-                    throw new Error(e);
-                }
-                return result;
-            });
-
-            const { email, name, exp } = payload;
+            const payload = new Promise((resolve,reject)=>{
+                (jwt.verify(token, getSigningKeys, validateOptions, (e, result) => {
+                    if (e) {
+                        logger.error(`Cannot validate Microsoft Id Token: ${e}`);
+                        throw new Error(e);
+                    }
+                    resolve(result);
+            }))});
+            let { email, name, exp } = await payload;
             //TODO: Need to work on how to split full name this approach may not work for all names
             name = name.split(" ")
             const first_name = name[0];
