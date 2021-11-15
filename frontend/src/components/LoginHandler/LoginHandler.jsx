@@ -23,6 +23,10 @@ const OPTIONS = {
   microsoftClientID: 'd2dbfc8f-325c-46bf-a3c2-d1f2da795d9f',
 };
 
+function MicrosoftButton(){
+  return(<div>test</div>)
+}
+
 function LoginHandler() {
   const { t } = useTranslation();
 
@@ -40,6 +44,7 @@ function LoginHandler() {
   const loginMicrosoft = useLazyQuery(LOGIN_MICROSOFT,
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
 
+  //needed to fix an infinite looping problem with microsoft oauth and microsoft-react-login
   const { sessionStorage } = window;
   sessionStorage.clear();
 
@@ -140,15 +145,16 @@ function LoginHandler() {
             onFailure={responseGoogle}
             cookiePolicy="single_host_origin"
           />
-          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={authHandler} />
-          <div className="google-microsoft-login">
-            <img
-              src={microsoftIcon}
-              alt="microsoftLogin"
-            />
-            <span>{t('login.body.oauth.microsoft')}</span>
-          </div>
-
+          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={authHandler}>
+            <button className="google-microsoft-login microsoftLogin" type="button">
+              <img
+                src={microsoftIcon}
+                alt="microsoftLogin"
+              />
+              <span>{t('login.body.oauth.microsoft')}</span>
+            </button>
+          </MicrosoftLogin>
+           
           <div className="or">
             <hr />
             <span>{t('login.body.or')}</span>
