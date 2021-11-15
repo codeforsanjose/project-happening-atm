@@ -100,7 +100,7 @@ module.exports = (logger) => {
             audience: process.env.MICROSOFT_CLIENT_ID,
             issuer: process.env.MICROSOFT_AUTHORITY + "/v2.0"
         };
-        
+
         const getSigningKeys = (header, callback) => {
             const client = jwksClient({
                 jwksUri: 'https://login.microsoftonline.com/common/discovery/keys'
