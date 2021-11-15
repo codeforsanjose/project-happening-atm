@@ -23,10 +23,6 @@ const OPTIONS = {
   microsoftClientID: 'd2dbfc8f-325c-46bf-a3c2-d1f2da795d9f',
 };
 
-function MicrosoftButton(){
-  return(<div>test</div>)
-}
-
 function LoginHandler() {
   const { t } = useTranslation();
 
@@ -56,12 +52,14 @@ function LoginHandler() {
     setOtherError(true);
   };
 
-  const authHandler = (err, response) => {
-    console.log(err, response);
-    console.log(response.idToken.rawIdToken);
+  const microsoftHandler = (err, response) => {
 
-    localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
-    loginMicrosoft[0]();
+    if(err === null){
+      localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
+      loginMicrosoft[0]();
+    }else{
+      setOtherError(true);
+    }
   };
 
   // This function makes the query call to perform the login
@@ -145,7 +143,7 @@ function LoginHandler() {
             onFailure={responseGoogle}
             cookiePolicy="single_host_origin"
           />
-          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={authHandler}>
+          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={microsoftHandler}>
             <button className="google-microsoft-login microsoftLogin" type="button">
               <img
                 src={microsoftIcon}
