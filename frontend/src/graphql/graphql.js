@@ -212,7 +212,7 @@ export const DELETE_MEETING = gql`
   }
 `;
 
-// New mutation for creating a new account.
+// New mutation for creating a new account. 
 // Mutation corresponds to existing backend "createAccount" mutation.
 export const CREATE_ACCOUNT = gql`
   mutation CreateAccount(
@@ -230,4 +230,4 @@ export const CREATE_ACCOUNT = gql`
     token
   }
   }
-`;
+`; 

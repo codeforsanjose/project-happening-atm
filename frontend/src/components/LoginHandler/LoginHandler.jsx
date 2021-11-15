@@ -46,9 +46,6 @@ function LoginHandler() {
 
   // Response if the google connection attempt failed
   const responseGoogle = (response) => {
-    // for debuging
-    // eslint-disable-next-line no-console
-    console.log(response);
     setOtherError(true);
   };
 
@@ -80,7 +77,6 @@ function LoginHandler() {
   useEffect(() => {
     // Successful sign in
     if (data) {
-      console.log(data);
       if (Object.prototype.hasOwnProperty.call(data, 'loginGoogle')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
       }
