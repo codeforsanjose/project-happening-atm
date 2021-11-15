@@ -95,10 +95,12 @@ module.exports = (logger) => {
 
     const verifyMicrosoftToken = async (dbClient, token) => {
         let user;
+
         const validateOptions = {
             audience: process.env.MICROSOFT_CLIENT_ID,
             issuer: process.env.MICROSOFT_AUTHORITY + "/v2.0"
         };
+        
         const getSigningKeys = (header, callback) => {
             const client = jwksClient({
                 jwksUri: 'https://login.microsoftonline.com/common/discovery/keys'
