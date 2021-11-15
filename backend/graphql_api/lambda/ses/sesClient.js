@@ -57,6 +57,14 @@ Please click the button below to confirm you want to receive email from us.
     sendEmail(recipientEmailAddress, body, subject);
   };
 
+  module.sendForgotPasswordEmail = (recipientEmailAddress, link) => {
+    const subject = 'Password Reset Request';
+    // TBD: Pending email format design decisions.
+    const body = `Please click the link below to reset your password.
+   <a href="${link}">Reset Password</a>`;
+    sendEmail(recipientEmailAddress, body, subject);
+  };
+
   module.sendEmail = sendEmail;
 
   return module;

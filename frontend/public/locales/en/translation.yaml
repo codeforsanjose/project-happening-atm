@@ -294,6 +294,33 @@ login:
       userName: Username
       password: Password
       forgotPass: Forgot Password?
+
+createAccount:
+  span: Don't have an account?
+  link: Create Account
+        
+forgotPassword:
+  header:
+    resetPassword: Reset your password
+  body:
+    heading1: Enter your account's email address and
+    heading2: we will send you a password reset link
+    button:
+      sendemail: Send password reset email
+    input:
+      email: Email  
+    link:
+      signIn: Sign In    
+
+setNewPassword:
+  header: Change password   
+  body:
+    heading1: Enter your new password
+    button:
+      changePassword: Change Password
+    input:
+      newPassword: New Password
+      confirmNewPassword: Confirm Password    
       
 footer:
   language:
