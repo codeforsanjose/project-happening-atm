@@ -58,17 +58,6 @@ header {
         padding: 0;
         margin: 0;
       }
-      .sign-out {
-        color: black;
-        background: $lightBronze;
-        background-color: $lightBronze;
-        border: none;
-        border-radius: 8px;
-        width: 112px;
-        height: 31px;
-        padding: 0;
-        font-size: 1rem;
-      }
     }
 
     .nav-links {
@@ -107,5 +96,14 @@ header {
   }
   .sign-out {
     margin-left: 3em;
+  }
+}
+
+@media (max-width: 991px) {
+  button.sign-out {
+    margin-top: auto;
+  }
+  .nav-links-scroll {
+    margin-bottom: auto;
   }
 }
