@@ -8,9 +8,9 @@ import parseJwt from '../../utils/parseJwt';
 import {
     isNullOrEmpty, isPasswordValid,
   } from '../../utils/validations';
-  import { RESET_PASSWORD, GET_RESET_PASSWORD_TOKEN } from '../../graphql/graphql';
+import { RESET_PASSWORD, GET_RESET_PASSWORD_TOKEN } from '../../graphql/graphql';
 
-  import './ForgotPasswordRequest.scss';
+import './ForgotPasswordRequest.scss';
 
 function SetNewPassword (){
     const { t } = useTranslation();
@@ -31,35 +31,35 @@ function SetNewPassword (){
     const [resetPassword, {data: resetPasswordData, error: resetPasswordError}] = useMutation(RESET_PASSWORD);
 
     const eraseFieldError = (element) => {
-    const currentErrors = { ...fieldErrors };
-    if (element in currentErrors) delete currentErrors[element];
-    setFieldErrors(currentErrors);
-  };
+        const currentErrors = { ...fieldErrors };
+        if (element in currentErrors) delete currentErrors[element];
+        setFieldErrors(currentErrors);
+    };
 
-  // Confirm Password validation
-  const validateConfirmPassword = () => {
-    const currentErrors = { ...fieldErrors };
-    if (password !== confirmPassword) {
-      currentErrors.confirmPassword = 'Passwords do not match';
-    } else {
-      delete currentErrors.confirmPassword;
-    }
-    setFieldErrors(currentErrors);
-  };
+    // Confirm Password validation
+    const validateConfirmPassword = () => {
+        const currentErrors = { ...fieldErrors };
+        if (password !== confirmPassword) {
+        currentErrors.confirmPassword = 'Passwords do not match';
+        } else {
+        delete currentErrors.confirmPassword;
+        }
+        setFieldErrors(currentErrors);
+    };
 
-  // Password validation
-  const verifyPasswordFormat = () => {
-    const currentErrors = { ...fieldErrors };
-    if (isNullOrEmpty(password) || !isPasswordValid(password)) {
-      currentErrors.password = PASSWORD_TEXT;
-    } else {
-      delete currentErrors.password;
-    }
-    setFieldErrors(currentErrors);
-    if (confirmPassword) {
-      validateConfirmPassword();
-    }
-  };
+    // Password validation
+    const verifyPasswordFormat = () => {
+        const currentErrors = { ...fieldErrors };
+        if (isNullOrEmpty(password) || !isPasswordValid(password)) {
+        currentErrors.password = PASSWORD_TEXT;
+        } else {
+        delete currentErrors.password;
+        }
+        setFieldErrors(currentErrors);
+        if (confirmPassword) {
+        validateConfirmPassword();
+        }
+    };
 
     const changePasswordHandler = () => {
         resetPassword({
@@ -114,26 +114,25 @@ function SetNewPassword (){
 
     return(
         <div className="mainHandler">
-             <div className="mainHeader">
+            <div className="mainHeader">
                 <p>
                     {t('setNewPassword.header')}
                 </p>
                 <hr className="introTextSeparator" />
-                </div>
-                <div className="mainBody">
-                    {resetSuccess ?
-                        <div className="innerWrapper">
-                            <p>
-                            Password reset successfully. 
-                            </p>
-                            <p>Please Login.</p>
-    
-                            <div className="inputWrapper">
-                                <NavLink className="navlink" to="/login/">{t('forgotPassword.body.link.signIn')}</NavLink>
-                            </div>
+            </div>
+            <div className="mainBody">
+                {resetSuccess ?
+                    <div className="innerWrapper">
+                        <p>
+                        Password reset successfully. 
+                        </p>
+                        <p>Please Login.</p>
+                        <div className="inputWrapper">
+                            <NavLink className="navlink" to="/login/">{t('forgotPassword.body.link.signIn')}</NavLink>
                         </div>
+                    </div>
                     :              
-                        <div>
+                    <div>
                         {invalidError ?
                             <div className="innerWrapper">
                                 <div className="inputWrapper">
@@ -144,7 +143,7 @@ function SetNewPassword (){
                         :
                         <div className="innerWrapper">
                             <p>
-                            {t('setNewPassword.body.heading1')}
+                                {t('setNewPassword.body.heading1')}
                             </p> 
                             <div className="inputWrapper">
                                 <input 
@@ -184,13 +183,13 @@ function SetNewPassword (){
                                 </button>
                                 <NavLink className="navlink" to="/login/">{t('forgotPassword.body.link.signIn')}</NavLink>
                             </div>
-                            </div>
-                        }
-                    </div>
+                        </div>
                     }
-                </div>    
+                    </div>
+                }
+            </div>    
         </div>
-    )
+        )
     }
 
 export default SetNewPassword;

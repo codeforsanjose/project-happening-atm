@@ -3,11 +3,9 @@ import {NavLink} from 'react-router-dom';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { GET_ACCOUNT_BY_EMAIL, FORGOT_PASSWORD } from '../../graphql/graphql';
-import {
-    isNullOrEmpty, validEmail
-  } from '../../utils/validations';
+import {isNullOrEmpty, validEmail} from '../../utils/validations';
 
-  import './ForgotPasswordRequest.scss';
+import './ForgotPasswordRequest.scss';
 
 function ForgotPassword() {
     const { t } = useTranslation();
@@ -58,9 +56,9 @@ function ForgotPassword() {
         }
     }
 
-      const eraseFieldError = () => {
+    const eraseFieldError = () => {
         setEmailError([]);
-      }
+    }
     
     return(
         <div className="mainHandler">
@@ -69,34 +67,34 @@ function ForgotPassword() {
                     {t('forgotPassword.header.resetPassword')}
                 </p>
                 <hr className="introTextSeparator" />
-                </div>
-                <div className="mainBody">
-                    {emailSuccess ?
-                        <div className="innerWrapper">
-                            <p>Password reset email sent.</p>
-                            <span>Please check your inbox.</span>
-                            <div className="inputWrapper">
-                                <NavLink className="navlink" to="/login/">{t('forgotPassword.body.link.signIn')}</NavLink>
-                            </div>   
-                        </div>
+            </div>
+            <div className="mainBody">
+                {emailSuccess ?
+                    <div className="innerWrapper">
+                        <p>Password reset email sent.</p>
+                        <span>Please check your inbox.</span>
+                        <div className="inputWrapper">
+                            <NavLink className="navlink" to="/login/">{t('forgotPassword.body.link.signIn')}</NavLink>
+                        </div>   
+                    </div>
                     :    
-                        <div className="innerWrapper">
-                            <p>
-                                {t('forgotPassword.body.heading1')}
-                            </p>
-                            <span>   
-                                {t('forgotPassword.body.heading2')}
-                            </span>
-                            <div className="inputWrapper">
-                                <input
-                                    className={emailError ? 'input-error' : 'input-valid'}
-                                    type="text"
-                                    placeholder={t('forgotPassword.body.input.email')}
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    onFocus={eraseFieldError}
-                                />
-                                {emailError?
+                    <div className="innerWrapper">
+                        <p>
+                            {t('forgotPassword.body.heading1')}
+                        </p>
+                        <span>   
+                            {t('forgotPassword.body.heading2')}
+                        </span>
+                        <div className="inputWrapper">
+                            <input
+                                className={emailError ? 'input-error' : 'input-valid'}
+                                type="text"
+                                placeholder={t('forgotPassword.body.input.email')}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                onFocus={eraseFieldError}
+                            />
+                            {emailError?
                                 <p className="inline-error">{emailError}</p> : ''}
                                 <button
                                     className="signInButton"
@@ -107,11 +105,10 @@ function ForgotPassword() {
                                 {t('forgotPassword.body.button.sendemail')}
                                 </button>
                                 <NavLink className="navlink" to="/login/">{t('forgotPassword.body.link.signIn')}</NavLink>
-                            </div>
                         </div>
-                    }
-
-                </div>    
+                    </div>
+                }
+            </div>    
         </div>
     )
 }
