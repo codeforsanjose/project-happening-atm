@@ -37,6 +37,8 @@ module.exports = (logger) => {
         # TODO: Need to add verify token query
 
         # TODO: Need to add reset password query
+
+        getResetPasswordToken(id: Int): account
     }
 
     type Mutation {
@@ -54,6 +56,9 @@ module.exports = (logger) => {
         createAccount(email_address: String, password: String, phone_number: String, roles: roles): auth_data
 
         deleteMeeting(id: Int!): String
+
+        forgotPassword(emailAddress: String): ID
+        resetPassword(id: Int, password: String ): ID
 
         # TODO: Need to add update user info mutation
     }
@@ -219,6 +224,10 @@ module.exports = (logger) => {
       loginMicrosoft: async (_parent, args, context) => {
         logger.info('Initiating LoginMicrosoft Query resolver');
         return resolverHandler(queryResolver.loginMicrosoft, context);
+      },
+      getResetPasswordToken: async (_parent, args) => {
+        logger.info('Initiating GetResetPasswordToken Query resolver: args: ', args.id);
+        return resolverHandler(queryResolver.getResetPasswordToken, args.id);
       }
     },
     Mutation: {
@@ -258,6 +267,14 @@ module.exports = (logger) => {
         logger.info('Initiating CreateAccount Mutation resolver');
         return resolverHandler(mutationResolver.createAccount, args, context);
       },
+      forgotPassword: async (_parent, args, context) => {
+        logger.info('Initiating ForgotPassword Mutation resolver');
+        return resolverHandler(mutationResolver.forgotPassword, args, context);
+      },
+      resetPassword: async (_parent, args, context) => {
+        logger.info('Initiating ResetPassword Mutation resolver');
+        return resolverHandler(mutationResolver.resetPassword, args, context);
+      }
     },
   };
 

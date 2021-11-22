@@ -207,6 +207,12 @@ module.exports = async (logger) => {
     return query('SELECT * FROM subscription');
   };
 
+  module.getResetPasswordToken = async (id) => {
+    logger.info('dbClient: getResetPasswordToken');
+    const queryString = `SELECT password_reset_token FROM account where id=${id}`;
+    return query(queryString);
+  };
+
   module.updateMeetingItem = async (id, orderNumber, status, itemStartTimestamp,
     itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey, parentMeetingItemId) => {
     logger.info('dbClient: updateMeetingItem');
@@ -336,6 +342,24 @@ module.exports = async (logger) => {
     logger.info('dbClient: getAccountById ');
     return query(`SELECT * FROM account WHERE id = ${id}`);
   };
+
+  module.updatePasswordResetTokenForAccount = async (userId, passwordResetToken) => {
+    logger.info('dbClient: updatePasswordResetTokenForAccount');
+    const queryString = `UPDATE account SET password_reset_token='${passwordResetToken}'
+    WHERE id = ${userId}
+    RETURNING id;`;
+    return query(queryString);
+  };
+
+  module.resetPassword = async (id, password) => {
+    logger.info('dbClient: resetPassword');
+    const queryString = `UPDATE account SET password='${password}'
+    WHERE id = ${id}
+    RETURNING id;`;
+    return query(queryString);
+  };
+
+
 
 
   return module;

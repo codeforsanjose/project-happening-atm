@@ -30,6 +30,7 @@ The City of San Jose is interested in this service, but this is a project that c
 - [Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
 - [Latest Kanban ToDo list](https://trello.com/b/pfECjOgE/happening-atm)
 - [(old) List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
+
 - [User Stories Board](https://miro.com/app/board/o9J_leAd8y8=/)
 
 # Setup
