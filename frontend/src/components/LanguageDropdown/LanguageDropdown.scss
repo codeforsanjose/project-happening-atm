@@ -6,7 +6,7 @@
   .language-menu {
     position: relative;
     left: 30px;
-    width: 100px;
+    width: 163px;
   }
   .language-menu-list {
     width: 100%;
@@ -39,5 +39,11 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 991px) {
+  .language-dropdown-wrapper {
+    width: 100%;
   }
 }
