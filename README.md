@@ -28,7 +28,9 @@ The City of San Jose is interested in this service, but this is a project that c
 - Slack Channel: #proj-happening-atm-eng
 - [List of To Do Items: Trello](https://trello.com/b/pfECjOgE/happening-atm)
 - [Google Drive](https://drive.google.com/drive/folders/1LAloOcCLCf4Mi-ulkx1ofZw1iIip2T0s)
-- [Links to Visual Design Mocks](https://www.figma.com/file/MEBv8hZLr4MICzKCVXADjg/Happening-ATM?node-id=195%3A17719)
+- [Links to Visual Design Mocks](https://docs.google.com/document/d/1Jcdsw6d8MMXWaU_PTPcMVtoTtBxtx4A7d0VfhMH7K5M/edit)
+- [List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
+
 - [User Stories Board](https://miro.com/app/board/o9J_leAd8y8=/)
 
 # Setup
