@@ -98,12 +98,11 @@ module.exports = (logger) => {
 
         const validateOptions = {
             audience: process.env.MICROSOFT_CLIENT_ID,
-            issuer: process.env.MICROSOFT_AUTHORITY + "/v2.0"
         };
 
         const getSigningKeys = (header, callback) => {
             const client = jwksClient({
-                jwksUri: 'https://login.microsoftonline.com/common/discovery/keys'
+                jwksUri: 'https://login.microsoftonline.com/common/discovery/v2.0/keys'
             });
 
             client.getSigningKey(header.kid, function (e, key) {
@@ -125,10 +124,14 @@ module.exports = (logger) => {
                     resolve(result);
             }))});
             let { email, name, exp } = await payload;
-            //TODO: Need to work on how to split full name this approach may not work for all names
-            name = name.split(" ")
-            const first_name = name[0];
-            const last_name = name[0];
+            
+            //Microsoft Accounts don't require a personal name, this assigns default first and last name in that case
+            if(typeof name !== "undefined"){
+                name = name.split(" ");
+            }
+            const last_name = typeof name === "undefined" ? "Last Name" : name[0];
+            const first_name = typeof name === "undefined" ? "First Name" : name[name.length - 1];
+
             //TODO: Need to find way to verify email
             if (exp < new Date().getTime() / 1000) {
                 logger.error('Microsoft Id Token is Expired');

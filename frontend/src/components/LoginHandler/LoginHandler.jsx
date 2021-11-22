@@ -50,7 +50,6 @@ function LoginHandler() {
   };
 
   const microsoftHandler = (err, response) => {
-
     if(err === null){
       localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
       loginMicrosoft[0]();
