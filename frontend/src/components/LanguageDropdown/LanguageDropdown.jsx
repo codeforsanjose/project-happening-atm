@@ -36,7 +36,7 @@ function LanguageDropdown() {
     return (
         <div className="language-dropdown-wrapper" ref={myRef}>
         
-        <li className="admin-nav-link" onClick={handleExpand}>
+        <li className="header-nav-link" onClick={handleExpand}>
             <NavLink activeClassName="button-active" to="#">
                 <div className="button-group">
                     <div className="button-group-inner">

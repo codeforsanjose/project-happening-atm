@@ -154,7 +154,7 @@ function LoginHandler() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <a className="passAnchor desktopView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
+            <NavLink className="passAnchor desktopView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
             <button
               className="signInButton"
               type="button"
@@ -163,15 +163,11 @@ function LoginHandler() {
             >
               {t('navbar.sign-in')}
             </button>
-            <a className="passAnchor mobileView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
+            <NavLink className="passAnchor mobileView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
           </div>
           <div className="create-account-container">
-            <span>
-              {t('Don\'t have an account')}
-              ?
-            </span>
-            <NavLink className="nav-account-create" to="/account-create/">{t('Create Account')}</NavLink>
-          </div>
+            <span>{t('createAccount.span')}</span><NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+          </div>     
         </div>
       </div>
     </div>
