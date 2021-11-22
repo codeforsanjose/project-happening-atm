@@ -5,6 +5,9 @@ const getSubscriptionController = require('../../controllers/subscriptionsContro
 const getValidator = require('./validators');
 const getAuthentication = require('./authentication');
 const getsesClient = require('../../ses/sesClient');
+const jwt = require('jsonwebtoken');
+const JWTSecret = process.env.JWT_SECRET; 
+const CLIENT_URL = process.env.CLIENT_URL; 
 
 module.exports = (logger) => {
   const subscriptionController = getSubscriptionController(logger);
@@ -253,7 +256,6 @@ module.exports = (logger) => {
       );
       const roles = isAdmin ? '{ADMIN}' : '{USER}';
       const pd = await authentication.hashPassword(password);
-      logger.info(pd);
       const token = await authentication.randomToken();
       user = {
         email_address,
@@ -307,5 +309,59 @@ module.exports = (logger) => {
     return { token: res };
   };
 
-  return module;
+  module.forgotPassword = async (
+    dbClient, { emailAddress }, context,
+  ) => {
+    logger.info(`Backend: Inside forgotPassword mutation resolver ${emailAddress}`);
+    try {
+      const lowerCaseEMailAddress = emailAddress.toLowerCase().trim();
+      // Verify if user exists in the system.
+      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress);
+      if (dbResponse.rows.length == 0) {
+          logger.error('This user is not registered in our system.');
+          throw new Error('This user is not registered in our system.');   
+      } 
+      const password = dbResponse.rows[0].password;
+      const id = dbResponse.rows[0].id;
+
+      // Step 1: Create a jwt token with expiry time 
+      const token = jwt.sign(
+          {_id:id}, JWTSecret, { expiresIn: '20m' });
+
+      /* Step 2: Call DB Client.
+          Update account table for that accountID, set password_reset_token to token       
+      */
+      const dbUpdateResponse = await dbClient.updatePasswordResetTokenForAccount(id, token);
+
+      // Step 3: Generate password reset link.
+      const link = `${CLIENT_URL}/reset-password?token=${token}`;
+      logger.info(`Backend: Reset Password Link: ${link}`);
+        
+      // Step 4: Call Send email
+      sesClient.sendForgotPasswordEmail(emailAddress, link);
+        return link;
+    } catch (e) {
+    logger.error(`forgotPassword mutation resolver error -  ${e}`);
+    throw new Error(e);
+    }  
+}
+
+module.resetPassword = async (
+  dbClient, { id, password }, context,
+) => {
+  logger.info(`Backend: Inside resetPassword mutation resolver for id ${id}`);
+  const pd = await authentication.hashPassword(password);
+  let res;
+  try {
+    res = await dbClient.resetPassword(id, pd);
+    if (res != null) {
+      return res.rows[0].id;
+    }
+  } catch (e) {
+  logger.error(`resetPassword mutation resolver error -  ${e}`);
+  throw new Error(e);
+  }  
+}
+return module;
 };
+

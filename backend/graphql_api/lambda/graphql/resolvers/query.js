@@ -215,6 +215,19 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
+  const getResetPasswordToken = async (dbClient, id) => {
+    let res;
+    try {
+      logger.info(`getResetPasswordToken for id ${id}`);
+      res = await dbClient.getResetPasswordToken(id);
+    } catch (e) {
+      logger.error(`getResetPasswordToken resolver error - dbClient.getResetPasswordToken: ${e}`);
+      throw e;
+    }
+    logger.info(`getResetPasswordToken: ${res.rows[0]}`);
+    return res.rows[0];
+  };
+
   module.getAllMeetings = getAllMeetings;
   module.getMeeting = getMeeting;
   module.getAllMeetingItems = getAllMeetingItems;
@@ -230,6 +243,6 @@ module.exports = (logger) => {
   module.loginGoogle = loginGoogle;
   module.loginMicrosoft = loginMicrosoft;
   module.verifyToken = verifyToken;
-
+  module.getResetPasswordToken = getResetPasswordToken;
   return module;
 };
