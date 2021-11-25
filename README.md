@@ -27,7 +27,7 @@ The City of San Jose is interested in this service, but this is a project that c
 
 - Slack Channel: #proj-happening-atm-eng
 - [Google Drive](https://drive.google.com/drive/folders/1a89AKh3Kia3BGYeMUF7ishE4avblFIYu?usp=sharing)
-- [Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
+- [Links to Visual Design Mocks](https://docs.google.com/document/d/1Jcdsw6d8MMXWaU_PTPcMVtoTtBxtx4A7d0VfhMH7K5M/edit)
 - [Latest Kanban ToDo list](https://trello.com/b/pfECjOgE/happening-atm)
 - [(old) List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
@@ -123,7 +123,7 @@ This method is deprecated as of 4/21 and will soon be removed. Please use Option
       npm start
       ```
 
-## To Begin Work on the Backend / Serve Backend
+### To Begin Work on the Backend / Serve Backend
 
 Frontend specific development doesn't require these steps. Setting up the DB is only necessary if you'll be wanting to interact with the entire web app, including the backend API.
 
