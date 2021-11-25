@@ -13,7 +13,7 @@ function DragOverlayHandler(props) {
   // deconstructing all the props, had to disable deconstructing rule
   // so that I can deconstruct as an object
   const {
-    agendaGroups, activeId, handleAgendaItemSelection, selectedItems,
+    agendaGroups, activeId
     // eslint-disable-next-line react/destructuring-assignment
   } = props.dragOverlayProps;
 
@@ -38,11 +38,6 @@ function DragOverlayHandler(props) {
       <RenderedAgendaItem
         id={activeId}
         item={activeItem}
-        isSelected={selectedItems[agendaGroups[parentContainerIndex].id] !== undefined
-        // disabling eslint below because length is 101, not going to rewrite for 1 extra character
-                // eslint-disable-next-line max-len
-                && selectedItems[agendaGroups[parentContainerIndex].id][activeItem.id] !== undefined}
-        handleSelection={handleAgendaItemSelection}
       />
     </DragOverlay>
   );
