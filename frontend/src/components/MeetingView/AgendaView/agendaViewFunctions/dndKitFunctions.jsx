@@ -52,7 +52,7 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
 
 // called when the user drags the dragOverlay on top of a agenda item or the group header
 // This function will handle the swapping of items between the agenda containers
-export const handleDragOver = (event, { setAgendaGroups, setSelectedItems, selectedItems }) => {
+export const handleDragOver = (event, { setAgendaGroups}) => {
   const { active, over } = event;
 
   setAgendaGroups((parents) => {
@@ -95,33 +95,6 @@ export const handleDragOver = (event, { setAgendaGroups, setSelectedItems, selec
       // entered when the dragOverlay has entered a new agenda group
       if (activeContainerIndex !== overContainerIndex) {
         const overIsDropId = newParents.filter((parent) => parent.dropID === over.id).length > 0;
-
-        // This makes sure the selected items are in the correct object containers
-        setSelectedItems(() => {
-          const deepCopy = JSON.parse(JSON.stringify(selectedItems));
-          const activeContainerKey = String(newParents[activeContainerIndex].id);
-          const overContainerKey = String(newParents[overContainerIndex].id);
-          let needToSwap = false;
-
-          const keyIsUndefined = typeof deepCopy[activeContainerKey] === 'undefined';
-
-          if (!keyIsUndefined && deepCopy[activeContainerKey][active.id]) {
-            needToSwap = true;
-            delete deepCopy[activeContainerKey][active.id];
-          }
-
-          // entered only if a swap is needed
-          if (needToSwap) {
-            // entered when no object already assigned, prevents erasing previously checked items
-            // in the agenda container that the dragged item is moving to
-            if (!Object.prototype.hasOwnProperty.call(deepCopy, overContainerKey)) {
-              deepCopy[newParents[overContainerIndex].id] = {};
-            }
-            deepCopy[newParents[overContainerIndex].id][active.id] = true;
-          }
-
-          return deepCopy;
-        });
 
         // entered when the dragOverlay is not on top of the header
         if (!overIsDropId) {
