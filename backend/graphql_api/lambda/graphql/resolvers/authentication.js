@@ -26,6 +26,7 @@ module.exports = (logger) => {
 
     const comparePassword = async (password, hash) => {
         const passwordMatch = await bcrypt.compare(password, hash);
+        console.log('our pw and hash', password, hash, passwordMatch)
         return passwordMatch;
     };
 
@@ -69,6 +70,7 @@ module.exports = (logger) => {
             };
             //Check if user in database
             const dbUser = await dbClient.getAccountByEmail(email);
+            console.log('dbUser', dbUser)
             if (dbUser.rowCount !== 0) {
                 user = dbUser;
             } else {
@@ -167,11 +169,13 @@ module.exports = (logger) => {
         try {
 
             const dbUser = await dbClient.getAccountByEmail(email_address);
+            console.log('testtestestes', dbUser)
             if (dbUser.rows.length === 0) {
                 logger.error('Email does not match our records please sign up');
                 throw new Error('Email does not match our records please sign up');
             }
             const dbPassword = dbUser.rows[0].password;
+            console.log('our two passwords', password, dbPassword)
             const isAuthenticated = await comparePassword(password, dbPassword);
             if (!isAuthenticated) {
                 logger.error('Email and Password do not match');
