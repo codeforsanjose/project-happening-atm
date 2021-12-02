@@ -102,7 +102,7 @@ When running with docker-compose, a separate persistent volume is created for Po
 
 ### To be able to Login using a Google Account
  1. To login with a Google account a Google API client ID must be provided to the front and backend.
- 1. A Google API Client ID can be obtained by registering an APP here `https://console.developers.google.com/`.
+ 1. A Google API Client ID can be obtained by registering an APP here https://console.developers.google.com/.
  1. As an alternative this Google API Client ID can be used for now `794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com`
  1. In the `.env` file located in `/backend/graphql_api/lambda`, replace `NEED-TO-REGISTER-APP` for `GOOGLE_CLIENT_ID` with a valid Google API Client ID. Then located in the file `\frontend\src\constants\OauthClientID` put the Google API Client ID into the empty Google String. 
 
