@@ -22,7 +22,6 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icon
 
 // components used by this component
 import AgendaGroups from './AgendaGroups';
-import MultipleSelectionBox from '../../MultipleSelectionBox/MultipleSelectionBox';
 
 // functions used by this component
 import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
@@ -46,11 +45,6 @@ import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
  * state:
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
- *    selectedItems
- *      Agenda items selected by user. It is an object (has a dictionary structure) like
- *      {
- *        [meeting_id]: { [meeting_item_id]}
- *      }
  *    agendaGroups
  *      The meeting prop transformed into an array of objects.
  *  Each of these objects holds the information
@@ -63,9 +57,6 @@ import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
  *      Flag to indicate user is admin or not
  *    updateMeetingItem
  *      Graphql mutation to save the new order after drag and dropping
- *
- *
- *
  *
  */
 
@@ -81,7 +72,6 @@ function AgendaView({
 }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
-  const [selectedItems, setSelectedItems] = useState({});
   const [agendaGroups, setAgendaGroups] = useState(
     groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix),
   );
@@ -134,38 +124,15 @@ function AgendaView({
     }),
   );
 
-  const handleAgendaItemSelection = (meetingId, itemId, isChecked) => {
-    if (isChecked && !(meetingId in selectedItems)) {
-      selectedItems[meetingId] = {};
-    }
-
-    const selectedAgendaItems = selectedItems[meetingId];
-    if (isChecked) {
-      selectedAgendaItems[itemId] = isChecked;
-    } else {
-      delete selectedAgendaItems[itemId];
-    }
-    if (Object.keys(selectedAgendaItems).length === 0) {
-      // There are no more selected items with meeting id equal to `meetingId`.
-      // We delete the whole entry from `selectedItems` then.
-      const newSelectedItems = { ...selectedItems };
-      delete newSelectedItems[meetingId];
-      setSelectedItems(newSelectedItems);
-    } else {
-      const newSelectedItems = { ...selectedItems, [meetingId]: selectedAgendaItems };
-      setSelectedItems(newSelectedItems);
-    }
-  };
-
   // These are the props for various functions, and components in object form
   // Event handler functions
   const onDragStartArgs = { setActiveId };
   const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
-  const onDragOverArgs = { setAgendaGroups, setSelectedItems, selectedItems };
+  const onDragOverArgs = { setAgendaGroups};
 
   // DragOverlayhandler props
   const dragOverlayProps = {
-    agendaGroups, activeId, handleAgendaItemSelection, selectedItems,
+    agendaGroups, activeId
   };
 
   // Necessary as the createRenderedGroups function returns renderedAgendaGroups
@@ -195,21 +162,11 @@ function AgendaView({
           <AgendaGroups
             admin={admin}
             agendaGroups={displayAgenda}
-            selectedItems={selectedItems}
-            handleAgendaItemSelection={handleAgendaItemSelection}
           />
         </Accordion>
 
         {admin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
       </DndContext>
-
-      { Object.keys(selectedItems).length > 0
-        && (
-          <MultipleSelectionBox
-            selectedItems={selectedItems}
-            handleCancel={() => setSelectedItems({})}
-          />
-        )}
     </div>
   );
 }

@@ -34,22 +34,14 @@ import AgendaItem from './AgendaItem';
  *        status: String status of group
  *        items: An array of agenda group's sub items
  *      }
- *    selectedItems
- *      Agenda items selected by user. It is an object (has a dictionary structure) like
- *      {
- *        [meeting_id]: { [meeting_item_id]}
- *      }
- *    handleAgendaItemSelection
- *      A handler for agenda item selection
  */
 
 // Necessary to allow the dragging of an item into an empty group
 const options = {
   minHeightAgendaContainer: '60px',
 };
-
 function AgendaGroups({
-  agendaGroups, selectedItems, handleAgendaItemSelection, admin,
+  agendaGroups, admin,
 }) {
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
@@ -63,8 +55,6 @@ function AgendaGroups({
             key={`${parent.id}agendaGroup`}
             admin={admin}
             agendaGroup={parent}
-            selectedItems={selectedItems}
-            handleItemSelection={handleAgendaItemSelection}
           />
         </AccordionItem>
       ))}
@@ -91,7 +81,7 @@ function AgendaGroupHeader({ agendaGroup }) {
 }
 
 function AgendaGroupBody({
-  agendaGroup, selectedItems, handleItemSelection, admin,
+  agendaGroup, admin,
 }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
@@ -113,9 +103,6 @@ function AgendaGroupBody({
             <AgendaItem
               key={item.id}
               item={item}
-              isSelected={selectedItems[agendaGroup.id] !== undefined
-                  && selectedItems[agendaGroup.id][item.id] !== undefined}
-              handleSelection={handleItemSelection}
             />
           ))}
         </div>
