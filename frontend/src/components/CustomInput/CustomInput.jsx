@@ -3,6 +3,11 @@ import './CustomInput.scss';
 import classnames from 'classnames';
 
 /**
+  * 10.2021 Update: Per product team direction, this component has
+  * been retired. Users will instead subscribe with the initial
+  * subscribe button, that now triggers subscriptions to be sent
+  * directly to the registered contact info associated to their account.
+  * 
   * The component for the custom input component.
   *
   * props:

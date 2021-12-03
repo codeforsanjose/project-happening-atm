@@ -26,6 +26,10 @@ module.exports = (logger) => {
         getSubscription(id: Int!): subscription
         getAllSubscriptions: [subscription]
 
+        getAllAccounts: [account]
+        getAccountByEmail(email_address: String): account
+        getAccountById(id: Int): account
+
         loginLocal(email_address: String!, password: String!): auth_data
         loginGoogle: auth_data
         loginMicrosoft: auth_data
@@ -33,6 +37,8 @@ module.exports = (logger) => {
         # TODO: Need to add verify token query
 
         # TODO: Need to add reset password query
+
+        getResetPasswordToken(id: Int): account
     }
 
     type Mutation {
@@ -47,9 +53,12 @@ module.exports = (logger) => {
         confirmEmail(token: String): Boolean
         unconfirmEmail(token: String): Boolean
 
-        createAccount(first_name: String, last_name: String, email_address: String, password: String): auth_data
+        createAccount(email_address: String, password: String, phone_number: String, roles: roles): auth_data
 
         deleteMeeting(id: Int!): String
+
+        forgotPassword(emailAddress: String): ID
+        resetPassword(id: Int, password: String ): ID
 
         # TODO: Need to add update user info mutation
     }
@@ -192,6 +201,18 @@ module.exports = (logger) => {
         logger.info('Initiating GetAllSubscriptions Query resolver');
         return resolverHandler(queryResolver.getAllSubscriptions, args, context);
       },
+      getAllAccounts: async () => {
+        logger.info('Initiating getAllAccounts Query resolver');
+        return resolverHandler(queryResolver.getAllAccounts);
+      },
+      getAccountById: async (_parent, args) => {
+        logger.info('Initiating GetAccountById Query resolver: args: ', args);
+        return resolverHandler(queryResolver.getAccountById, args.id);
+      },
+      getAccountByEmail: async (_parent, args) => {
+        logger.info('Initiating GetAccountByEmail Query resolver: args: ', args.email_address);
+        return resolverHandler(queryResolver.getAccountByEmail, args.email_address);
+      },
       loginLocal: async (_parent, args) => {
         logger.info('Initiating LoginLocal Query resolver');
         return resolverHandler(queryResolver.loginLocal, args.email_address, args.password);
@@ -203,6 +224,10 @@ module.exports = (logger) => {
       loginMicrosoft: async (_parent, args, context) => {
         logger.info('Initiating LoginMicrosoft Query resolver');
         return resolverHandler(queryResolver.loginMicrosoft, context);
+      },
+      getResetPasswordToken: async (_parent, args) => {
+        logger.info('Initiating GetResetPasswordToken Query resolver: args: ', args.id);
+        return resolverHandler(queryResolver.getResetPasswordToken, args.id);
       }
     },
     Mutation: {
@@ -242,6 +267,14 @@ module.exports = (logger) => {
         logger.info('Initiating CreateAccount Mutation resolver');
         return resolverHandler(mutationResolver.createAccount, args, context);
       },
+      forgotPassword: async (_parent, args, context) => {
+        logger.info('Initiating ForgotPassword Mutation resolver');
+        return resolverHandler(mutationResolver.forgotPassword, args, context);
+      },
+      resetPassword: async (_parent, args, context) => {
+        logger.info('Initiating ResetPassword Mutation resolver');
+        return resolverHandler(mutationResolver.resetPassword, args, context);
+      }
     },
   };
 

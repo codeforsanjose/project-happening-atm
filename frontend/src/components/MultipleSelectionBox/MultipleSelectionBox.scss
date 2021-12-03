@@ -34,6 +34,11 @@
     font-weight: 600;
   }
 
+  .form-error {
+    color: $red;
+    font-size: 0.8em;
+  }
+
   button {
     cursor: pointer;
     background-color: $cityBronze;

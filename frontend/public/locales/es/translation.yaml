@@ -278,6 +278,33 @@ meeting:
               title: Envíe un correo electrónico a city.clerk@sanjoseca.gov antes de las 10:00 a.m. del día de la reunión.
               subtitle: Por favor, identifique el número de artículo de la agenda del calendario en la línea de asunto de su correo electrónico
 
+createAccount:
+  span: es - Don't have an account?
+  link: es - Create Account
+
+forgotPassword:
+  header:
+    resetPassword: es - Reset your password
+  body:
+    heading1: es - Enter your account's email address and
+    heading2: es - we will send you a password reset link
+    button:
+      sendemail: es - Send password reset email
+    input:
+      email: es - Email  
+    link:
+      signIn: es - Sign In 
+
+setNewPassword:
+  header: es - Change password   
+  body:
+    heading1: es - Enter your new password
+    button:
+      changePassword: es - Change Password
+    input:
+      newPassword: es - New Password
+      confirmNewPassword: es - Confirm Password          
+
 footer:
   language:
     change:

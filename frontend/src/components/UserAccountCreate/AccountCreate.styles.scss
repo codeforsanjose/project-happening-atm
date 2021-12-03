@@ -1,0 +1,214 @@
+@import '../../utils/_colors.scss';
+
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-container {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    background-color: $blueSky;
+    .page-header {
+       min-height:6rem;
+       width:100vw;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.0rem;
+        h1,p{
+            margin: 0.1rem;
+        }   
+        hr{
+            width:9rem;
+            height:0rem;
+            height: 0.15rem;
+            border: none;
+            background-color:$cityBronze;
+        }  
+    }         
+    .form-wrapper{     
+        width: 60vw;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        .form-fields{
+            display:flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            input::placeholder {
+                color: red;
+                font-size: 1.2rem;
+                float: right;
+            }
+            .inline-error{
+                font-size:1.0rem;
+                margin:0;
+                padding: 0.2rem;
+                color:#ff5f54;
+            }
+            .input-error{
+                border: 1px solid red;
+                margin-bottom: 0;
+            }
+            .form-check{
+                display:flex;
+                padding-left: 0;
+                input{
+                    margin-top: 0.3rem;
+                    padding-top: 0;
+                    margin-left: 0;
+                }
+                label{
+                    margin-top: 0;
+                    padding-top: 0;
+                    padding-left: 0.5rem;
+                }
+            }
+            .phone-mark{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .tooltip-wrapper{
+                    position: relative;
+                    display: inline-block;
+                    border-bottom: 1px dotted black;
+                    .tooltiptext{
+                        visibility: hidden;      
+                        width: auto;
+                        font-size: 0.8rem;
+                        background-color:cadetblue;
+                        text-align: center;
+                        border-radius: 0.1rem;
+                        padding: 0 0.2rem;                           
+                        position: absolute;
+                        z-index: 1;
+                        background-color: $cityBlue;
+                        color: $offWhite;
+                        top: 180%;
+                        left: -1000%;
+                    }
+                    &:hover {
+                        .tooltiptext{
+                            visibility: visible;
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+            .g-recaptcha{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            button{
+                width:15rem;
+                height:3.0rem;
+                border:none;
+                border-radius: 0.5rem;
+                font-size:1.5rem;
+                background-color:$lightBronze;
+                margin-left:auto;
+                margin-top:0;
+                margin-right:auto;
+                cursor:pointer;
+                &:hover{
+                    filter: brightness(70%);
+                }
+            }
+          }        
+        }
+    }
+
+    @media(max-width: 600px){
+        .main-container {
+            display: flex;
+            .form-wrapper{
+                width: 60vw;
+                justify-content: center;
+                align-items: center;
+                .form-fields{
+                    margin-bottom: 0.1rem;
+                    padding: 0.2rem;
+                    input{
+                        font-size:1.0rem;
+                        line-height: 140%;
+                        margin-bottom: 1.0rem;
+                    }            
+                    .inline-error{
+                        font-size:0.8rem;
+                        margin:0;
+                        padding: 0.2rem;
+                        color:#ff5f54;
+                    }                    
+                    .g-recaptcha{    
+                        transform:scale(0.70);
+                        -webkit-transform:scale(0.70);
+                    }
+                    button{       
+                        width:12rem;
+                        height:2.5rem;
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+        }
+    }
+
+    @media(max-width: 365px){
+        .main-container {
+            .page-header {
+                font-size: 0.8rem;
+                h1{
+                    font-size: 1.0rem;  
+                    font-weight: 600;
+                }
+            }
+            .form-wrapper{
+                .form-fields{       
+                    input{             
+                        margin-bottom: 0.5rem;
+                    }
+                    label{
+                        font-size: 0.7rem;
+                    }      
+                    .inline-error{
+                        font-size:0.7rem;
+                        margin:0;
+                        padding: 0.2rem;
+                        color:#ff5f54;
+                    }
+                    .phone-mark{
+                        .tooltip-wrapper{
+                            .tooltiptext{   
+                                width: 12rem;                       
+                                font-size: 0.6rem;
+                                right: 50%;
+                            }
+                        }
+                    }
+                    .g-recaptcha{  
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;  
+                        transform:scale(0.50);
+                        -webkit-transform:scale(0.50);
+                    }
+                    button{
+                        width:10rem;
+                        height:2.0rem;
+                        margin-top: 0.1rem;
+                        font-size:1.2rem;
+                    }
+                }
+            }
+        }
+    }
+
+           
+

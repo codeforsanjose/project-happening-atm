@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import './Subscribe.scss';
-import classnames from 'classnames';
-import { useLocation, useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
-import BackNavigation from '../BackNavigation/BackNavigation';
-import Spinner from '../Spinner/Spinner';
-import CustomInput from '../CustomInput/CustomInput';
-import SubscribeConfirmation from './SubscribeConfirmation';
-import {
-  validatePhone,
-  getPhoneDigits,
-  validateEmail,
-} from './validation';
-import { convertQueryStringToServerFormat } from './subscribeQueryString';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import "./Subscribe.scss";
+import classnames from "classnames";
+import { useLocation, useHistory } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import BackNavigation from "../BackNavigation/BackNavigation";
+import Spinner from "../Spinner/Spinner";
+import CustomInput from "../CustomInput/CustomInput";
+import SubscribeConfirmation from "./SubscribeConfirmation";
+import { validatePhone, getPhoneDigits, validateEmail } from "./validation";
+import { convertQueryStringToServerFormat } from "./subscribeQueryString";
 
-import { CREATE_SUBSCRIPTIONS } from '../../graphql/graphql';
-import { getUserEmail } from '../../utils/verifyToken';
+import { CREATE_SUBSCRIPTIONS } from "../../graphql/graphql";
+import { getUserEmail } from "../../utils/verifyToken";
 
 /**
+ * 10.2021 Update: Per product team direction, this component has
+ * been retired. Users will instead subscribe with the initial
+ * subscribe button, that now triggers subscriptions to be sent
+ * directly to the registered contact info associated to their account.
+ *
  * This is the component for community member subscribe page.
  *
  * state:
@@ -48,7 +49,7 @@ function Subscribe() {
   const history = useHistory();
   const queryString = useLocation().search;
   const [isFormSubmitted, setFormSubmitted] = useState(false);
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState(getUserEmail());
   const [phoneError, setPhoneError] = useState(null);
   const [emailError, setEmailError] = useState(null);
@@ -57,8 +58,9 @@ function Subscribe() {
   const [createSubscriptions, { loading, error }] = useMutation(
     CREATE_SUBSCRIPTIONS,
     {
-      onCompleted: (data) => setSubscriptions(data?.createSubscriptions ?? null),
-    },
+      onCompleted: (data) =>
+        setSubscriptions(data?.createSubscriptions ?? null),
+    }
   );
 
   const handlePhoneChanged = (e) => {
@@ -67,19 +69,22 @@ function Subscribe() {
     const digits = getPhoneDigits(e.target.value);
     const oldDigits = getPhoneDigits(phone);
 
-    let newPhone = digits.length > 0 ? '+1' : '';
+    let newPhone = digits.length > 0 ? "+1" : "";
     if (digits.length > 1 && digits.length <= 4) {
       newPhone += ` (${digits.substring(1)}`;
       if (digits.length === 4 && oldDigits.length < digits.length) {
-        newPhone += ') ';
+        newPhone += ") ";
       }
     } else if (digits.length > 4 && digits.length <= 7) {
       newPhone += ` (${digits.substring(1, 4)}) ${digits.substring(4)}`;
       if (digits.length === 7 && oldDigits.length < digits.length) {
-        newPhone += '-';
+        newPhone += "-";
       }
     } else if (digits.length > 7) {
-      newPhone += ` (${digits.substring(1, 4)}) ${digits.substring(4, 7)}-${digits.substring(7, 11)}`;
+      newPhone += ` (${digits.substring(1, 4)}) ${digits.substring(
+        4,
+        7
+      )}-${digits.substring(7, 11)}`;
     }
 
     setPhone(newPhone);
@@ -121,33 +126,43 @@ function Subscribe() {
   };
 
   return (
-    <div className={classnames('subscribe-view')}>
+    <div className={classnames("subscribe-view")}>
       <BackNavigation />
       <div className="wrapper">
         <div className="text">
-          <h3>{t('meeting.tabs.agenda.list.subscribe.page.title')}</h3>
-          <p>
-            {t('meeting.tabs.agenda.list.subscribe.page.description')}
-          </p>
+          <h3>{t("meeting.tabs.agenda.list.subscribe.page.title")}</h3>
+          <p>{t("meeting.tabs.agenda.list.subscribe.page.description")}</p>
           <form className="form">
             <div className="input-group">
-              <span>{t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.label')}</span>
+              <span>
+                {t("meeting.tabs.agenda.list.subscribe.page.inputs.sms.label")}
+              </span>
               <CustomInput
                 type="tel"
-                placeholder={t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.placeholder')}
+                placeholder={t(
+                  "meeting.tabs.agenda.list.subscribe.page.inputs.sms.placeholder"
+                )}
                 isRequired
                 isSubmitted={isFormSubmitted}
                 value={phone}
                 onChange={handlePhoneChanged}
                 errorMessage={phoneError}
-                inputNote={t('meeting.tabs.agenda.list.subscribe.page.inputs.sms.us-support-note')}
+                inputNote={t(
+                  "meeting.tabs.agenda.list.subscribe.page.inputs.sms.us-support-note"
+                )}
               />
             </div>
             <div className="input-group">
-              <span>{t('meeting.tabs.agenda.list.subscribe.page.inputs.email.label')}</span>
+              <span>
+                {t(
+                  "meeting.tabs.agenda.list.subscribe.page.inputs.email.label"
+                )}
+              </span>
               <CustomInput
                 type="email"
-                placeholder={t('meeting.tabs.agenda.list.subscribe.page.inputs.email.placeholder')}
+                placeholder={t(
+                  "meeting.tabs.agenda.list.subscribe.page.inputs.email.placeholder"
+                )}
                 isRequired
                 isSubmitted={isFormSubmitted}
                 value={email}
@@ -155,17 +170,13 @@ function Subscribe() {
                 errorMessage={emailError}
               />
             </div>
-            { subscriptions && subscriptions.length > 0
-              && (
-                <SubscribeConfirmation
-                  numberOfSubscriptions={subscriptions.length}
-                  onClose={closeConfirmation}
-                />
-              )}
-            { error
-              && (
-                <div className="form-error">{ error.message }</div>
-              )}
+            {subscriptions && subscriptions.length > 0 && (
+              <SubscribeConfirmation
+                numberOfSubscriptions={subscriptions.length}
+                onClose={closeConfirmation}
+              />
+            )}
+            {error && <div className="form-error">{error.message}</div>}
             <div className="row">
               <button
                 type="button"
@@ -173,7 +184,7 @@ function Subscribe() {
                 onClick={handleSubmit}
               >
                 {loading && <Spinner />}
-                {`Subscrib${loading ? 'ing...' : 'e'}`}
+                {`Subscrib${loading ? "ing..." : "e"}`}
               </button>
             </div>
           </form>

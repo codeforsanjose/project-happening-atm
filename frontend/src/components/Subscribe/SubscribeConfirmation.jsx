@@ -15,13 +15,11 @@ import { ConfirmationIcon } from '../../utils/_icons';
  *      A function/callback which is called when the window is being closed
  */
 
-function SubscribeConfirmation({
-  numberOfSubscriptions,
-  onClose,
-}) {
+const SubscribeConfirmation = React.forwardRef((props, ref) => {
+  const { numberOfSubscriptions, onClose } = props;
   const { t } = useTranslation();
-
   Modal.setAppElement('#root');
+  
   return (
     <Modal
       isOpen
@@ -33,6 +31,7 @@ function SubscribeConfirmation({
         }
       }
       className={classnames('subscribe-confirmation')}
+      ref={ref}
     >
       <div className="modal-header">
         <ConfirmationIcon />
@@ -58,6 +57,6 @@ function SubscribeConfirmation({
       </div>
     </Modal>
   );
-}
+});
 
 export default SubscribeConfirmation;

@@ -207,6 +207,12 @@ module.exports = async (logger) => {
     return query('SELECT * FROM subscription');
   };
 
+  module.getResetPasswordToken = async (id) => {
+    logger.info('dbClient: getResetPasswordToken');
+    const queryString = `SELECT password_reset_token FROM account where id=${id}`;
+    return query(queryString);
+  };
+
   module.updateMeetingItem = async (id, orderNumber, status, itemStartTimestamp,
     itemEndTimestamp, contentCategories, descriptionLocKey, titleLocKey, parentMeetingItemId) => {
     logger.info('dbClient: updateMeetingItem');
@@ -310,16 +316,21 @@ module.exports = async (logger) => {
     return query(queryString, [toogleBoolean, token]);
   };
 
-  module.createAccount = async (first_name, last_name, email_address, roles, auth_type, password, token) => {
+  module.createAccount = async (email_address, phone_number, password, roles, auth_type, token) => {
     logger.info('dbClient: createAccount');
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
     const queryString = `
-        INSERT INTO account(first_name,last_name, email_address, roles, password, auth_type, token, created_timestamp, updated_timestamp)
-        VALUES ('${first_name}','${last_name}', '${email_address}', '${roles}', '${password}', '${auth_type}', '${token}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
+        INSERT INTO account(email_address, phone_number, password, roles, auth_type, token, created_timestamp, updated_timestamp)
+        VALUES ('${email_address}', '${phone_number}', '${password}', '${roles}', '${auth_type}', '${token}', to_timestamp(${createdTimestamp}), to_timestamp(${updatedTimestamp}) )
         RETURNING id;`;
     return query(queryString);
+  };
+
+  module.getAllAccounts = async () => {
+    logger.info('dbClient: getAllAccounts');
+    return query('SELECT * FROM account');
   };
 
   module.getAccountByEmail = async (email) => {
@@ -331,6 +342,25 @@ module.exports = async (logger) => {
     logger.info('dbClient: getAccountById ');
     return query(`SELECT * FROM account WHERE id = ${id}`);
   };
+
+  module.updatePasswordResetTokenForAccount = async (userId, passwordResetToken) => {
+    logger.info('dbClient: updatePasswordResetTokenForAccount');
+    const queryString = `UPDATE account SET password_reset_token='${passwordResetToken}'
+    WHERE id = ${userId}
+    RETURNING id;`;
+    return query(queryString);
+  };
+
+  module.resetPassword = async (id, password) => {
+    logger.info('dbClient: resetPassword');
+    const queryString = `UPDATE account SET password='${password}'
+    WHERE id = ${id}
+    RETURNING id;`;
+    return query(queryString);
+  };
+
+
+
 
   return module;
 };

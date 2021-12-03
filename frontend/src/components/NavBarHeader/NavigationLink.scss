@@ -1,7 +1,8 @@
-@import "../../../utils/_colors.scss";
-@import "../margin";
+@import "../../utils/_colors.scss";
 
-.admin-nav-link {
+$navMargin: 2.5em;
+
+.header-nav-link {
   list-style-type: none;
 
   a {

@@ -152,7 +152,10 @@ module.exports = (logger) => {
   const loginGoogle = async (dbClient, context) => {
     let token;
     try {
-      const user = await authentication.verifyGoogleToken(dbClient, context.token);
+      const user = {
+        rows:[]
+      };
+      user.rows.push(await authentication.verifyGoogleToken(dbClient, context.token));
       validator.validateAuthType(user.rows[0].auth_type, "Google");
       token = await authentication.createJWT(user);
     } catch (e) {
@@ -177,7 +180,53 @@ module.exports = (logger) => {
 
   const verifyToken = async (dbClient, context) => {
     //TODO: add logic to verify a token if sent to the server
-  }
+  };
+
+  const getAllAccounts = async (dbClient) => {
+    let res;
+    try {
+      res = await dbClient.getAllAccounts();
+    } catch (e) {
+      logger.error(`getAllAccounts resolver error - dbClient.getAllAccounts: ${e}`);
+      throw e;
+    }
+    return res.rows;
+  };
+
+  const getAccountById = async (dbClient, id) => {
+    let res;
+    try {
+      res = await dbClient.getAccountById(id);
+    } catch (e) {
+      logger.error(`getAccountById resolver error - dbClient.getAccountById: ${e}`);
+      throw e;
+    }
+    return res.rows[0];
+  };
+
+  const getAccountByEmail = async (dbClient, email) => {
+    let res;
+    try {
+      res = await dbClient.getAccountByEmail(email);
+    } catch (e) {
+      logger.error(`getAccountByEmail resolver error - dbClient.getAccountByEmail: ${e}`);
+      throw e;
+    }
+    return res.rows[0];
+  };
+
+  const getResetPasswordToken = async (dbClient, id) => {
+    let res;
+    try {
+      logger.info(`getResetPasswordToken for id ${id}`);
+      res = await dbClient.getResetPasswordToken(id);
+    } catch (e) {
+      logger.error(`getResetPasswordToken resolver error - dbClient.getResetPasswordToken: ${e}`);
+      throw e;
+    }
+    logger.info(`getResetPasswordToken: ${res.rows[0]}`);
+    return res.rows[0];
+  };
 
   module.getAllMeetings = getAllMeetings;
   module.getMeeting = getMeeting;
@@ -187,10 +236,13 @@ module.exports = (logger) => {
   module.getAllMeetingsWithItems = getAllMeetingsWithItems;
   module.getSubscription = getSubscription;
   module.getAllSubscriptions = getAllSubscriptions;
+  module.getAllAccounts = getAllAccounts;
+  module.getAccountById = getAccountById;
+  module.getAccountByEmail = getAccountByEmail;
   module.loginLocal = loginLocal;
   module.loginGoogle = loginGoogle;
   module.loginMicrosoft = loginMicrosoft;
   module.verifyToken = verifyToken;
-
+  module.getResetPasswordToken = getResetPasswordToken;
   return module;
 };

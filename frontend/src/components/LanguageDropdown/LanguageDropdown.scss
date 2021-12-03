@@ -1,0 +1,49 @@
+@import "../../utils/_colors.scss";
+
+.language-dropdown-wrapper {
+  height: 30px;
+  max-height: 30px;
+  .language-menu {
+    position: relative;
+    left: 30px;
+    width: 163px;
+  }
+  .language-menu-list {
+    width: 100%;
+    list-style: none;
+    padding: 20px 30px 10px 30px;
+    background: $cityBlue;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    transform-origin: top center;
+    animation: slideDown 400ms ease-in-out forwards;
+    li:not(:last-child) {
+      border-bottom: 1px solid white;
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+  .button-dropdown-carat {
+    width: 14px;
+    margin-left: 12px;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 991px) {
+  .language-dropdown-wrapper {
+    width: 100%;
+  }
+}
