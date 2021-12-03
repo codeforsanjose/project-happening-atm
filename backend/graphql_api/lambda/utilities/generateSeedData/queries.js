@@ -1,14 +1,13 @@
-const { format } = require('date-fns')
+const { format } = require("date-fns");
 
-const DATE_FORMAT = 'yyyy-MM-dd'
+const DATE_FORMAT = "yyyy-MM-dd";
 // TODO: find library that has more readable string replacement
 
 // similar code to query & dbClient, but didn't re-use since dbClient was graphql specific
 // could have tried to create through graphql but wanted something separated from it, so could be reusable/used as is
-const getMeetingQuery = (
-  meeting
-) => {
-  const { meeting_type,
+const getMeetingQuery = (meeting) => {
+  const {
+    meeting_type,
     meeting_start_timestamp,
     virtual_meeting_url,
     status,
@@ -18,7 +17,8 @@ const getMeetingQuery = (
     email_during_meeting,
     ecomment,
     city_of_san_jose_meeting,
-    youtube_link } = meeting;
+    youtube_link,
+  } = meeting;
 
   return `INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status, virtual_meeting_id, call_in_information, email_before_meeting, email_during_meeting, ecomment, city_of_san_jose_meeting, youtube_link)
     VALUES (
@@ -38,9 +38,7 @@ const getMeetingQuery = (
     ) RETURNING id, meeting_type, created_timestamp;`;
 };
 
-const getMeetingItemQuery = (
-  meetingItem
-) => {
+const getMeetingItemQuery = (meetingItem) => {
   const {
     meetingId, // get from parent
     orderNumber,
@@ -52,7 +50,7 @@ const getMeetingItemQuery = (
     titleLocKey,
     // if meeting_item is nested, reference parent meeting_item
     parentMeetingItemId,
-  } = meetingItem
+  } = meetingItem;
   const now = Date.now();
   const createdTimestamp = format(now, DATE_FORMAT);
   const updatedTimestamp = format(now, DATE_FORMAT);
@@ -62,9 +60,23 @@ const getMeetingItemQuery = (
     title_loc_key, parent_meeting_item_id)
   VALUES (${meetingId}, ${orderNumber}, '${createdTimestamp}', '${updatedTimestamp}', ${itemStartTimestamp}, ${itemEndTimestamp},
     ${status}, ${contentCategories}, ${descriptionLocKey}, ${titleLocKey}, ${parentMeetingItemId})
-  RETURNING id, meeting_id, order_number, parent_meeting_item_id, created_timestamp;`};
+  RETURNING id, meeting_id, order_number, parent_meeting_item_id, created_timestamp;`;
+};
+
+const getAccountQuery = (accountItem) => {
+  const { firstName, lastName, emailAddress, phoneNumber, password: hashedPassword, authType, token } =
+    accountItem;
+  return `INSERT INTO account(first_name, last_name, email_address, phone_number, password, auth_type, token) values('${firstName}', '${lastName}', '${emailAddress}', '${phoneNumber}', '${hashedPassword}', '${authType}', '${token}');`;
+};
+
+// email address is used as username
+const getAdminQuery = (emailAddress) => {
+  return `INSERT INTO admin(email_address) values('${emailAddress}')`
+}
 
 module.exports = {
   getMeetingQuery,
-  getMeetingItemQuery
-}
+  getMeetingItemQuery,
+  getAccountQuery,
+  getAdminQuery
+};
