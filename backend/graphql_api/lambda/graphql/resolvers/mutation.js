@@ -5,6 +5,9 @@ const getSubscriptionController = require('../../controllers/subscriptionsContro
 const getValidator = require('./validators');
 const getAuthentication = require('./authentication');
 const getsesClient = require('../../ses/sesClient');
+const jwt = require('jsonwebtoken');
+const JWTSecret = process.env.JWT_SECRET; 
+const CLIENT_URL = process.env.CLIENT_URL; 
 
 module.exports = (logger) => {
   const subscriptionController = getSubscriptionController(logger);
@@ -242,48 +245,50 @@ module.exports = (logger) => {
     return true;
   };
 
-  module.createAccount = async (dbClient, args, context) => {
+  module.createAccount = async (
+    dbClient, { email_address, password, phone_number, captcha_value }, context,
+  ) => {
     let res;
     let user;
     if (context.token === null) {
-      const isAdmin = await authentication.verifyAdmin(dbClient, args.email_address.toLowerCase().trim());
+      const isAdmin = await authentication.verifyAdmin(
+        dbClient, email_address.toLowerCase().trim(),
+      );
       const roles = isAdmin ? '{ADMIN}' : '{USER}';
-      const password = await authentication.hashPassword(args.password);
+      const pd = await authentication.hashPassword(password);
       const token = await authentication.randomToken();
       user = {
-        first_name: args.first_name,
-        last_name: args.last_name,
-        email_address: args.email_address,
-        roles: roles,
-        password: password,
-        auth_type: "Local",
-        token: token
-      }
+        email_address,
+        phone_number,
+        roles,
+        pd,
+        auth_type: 'Local',
+        token,
+      };
     } else {
       const issuer = await authentication.identifyTokenIssuer(context.token);
       // Creating account for Google Auth
-      if (issuer === "accounts.google.com") {
+      if (issuer === 'accounts.google.com') {
         user = await authentication.verifyGoogleToken(dbClient, context.token);
       }
-      //TODO: Need to add Microsoft Issuer namer
-      if (issuer === "NEED TO ADD MICROSOFT ISSUER") {
+      // TODO: Need to add Microsoft Issuer namer
+      if (issuer === 'NEED TO ADD MICROSOFT ISSUER') {
         user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       }
     }
     // Creating Account in DB
     try {
-      // TODO: Need to add more to this validator
       validator.validateCreateAccount(user);
       // Formatting email address
       const lowerCaseEMailAddress = user.email_address.toLowerCase().trim();
       // Looking to see if email already in use
-      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress)
+      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress);
       if (dbResponse.rows.length > 0) {
-        logger.error('Email already signed up. Please login.')
-        throw new Error('Email already signed up. Please login.')
+        logger.error('Email already signed up. Please login.');
+        throw new Error('Email already signed up. Please login.');
       } else {
         res = await dbClient.createAccount(
-          user.first_name, user.last_name, lowerCaseEMailAddress, user.roles, user.auth_type, user.password, user.token
+          lowerCaseEMailAddress, user.phone_number, user.pd, user.roles, user.auth_type, user.token,
         );
       }
     } catch (e) {
@@ -304,6 +309,59 @@ module.exports = (logger) => {
     return { token: res };
   };
 
+  module.forgotPassword = async (
+    dbClient, { emailAddress }, context,
+  ) => {
+    logger.info(`Backend: Inside forgotPassword mutation resolver ${emailAddress}`);
+    try {
+      const lowerCaseEMailAddress = emailAddress.toLowerCase().trim();
+      // Verify if user exists in the system.
+      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress);
+      if (dbResponse.rows.length == 0) {
+          logger.error('This user is not registered in our system.');
+          throw new Error('This user is not registered in our system.');   
+      } 
+      const password = dbResponse.rows[0].password;
+      const id = dbResponse.rows[0].id;
 
-  return module;
+      // Step 1: Create a jwt token with expiry time 
+      const token = jwt.sign(
+          {_id:id}, JWTSecret, { expiresIn: '20m' });
+
+      /* Step 2: Call DB Client.
+          Update account table for that accountID, set password_reset_token to token       
+      */
+      const dbUpdateResponse = await dbClient.updatePasswordResetTokenForAccount(id, token);
+
+      // Step 3: Generate password reset link.
+      const link = `${CLIENT_URL}/reset-password?token=${token}`;
+      logger.info(`Backend: Reset Password Link: ${link}`);
+        
+      // Step 4: Call Send email
+      sesClient.sendForgotPasswordEmail(emailAddress, link);
+        return link;
+    } catch (e) {
+    logger.error(`forgotPassword mutation resolver error -  ${e}`);
+    throw new Error(e);
+    }  
+}
+
+module.resetPassword = async (
+  dbClient, { id, password }, context,
+) => {
+  logger.info(`Backend: Inside resetPassword mutation resolver for id ${id}`);
+  const pd = await authentication.hashPassword(password);
+  let res;
+  try {
+    res = await dbClient.resetPassword(id, pd);
+    if (res != null) {
+      return res.rows[0].id;
+    }
+  } catch (e) {
+  logger.error(`resetPassword mutation resolver error -  ${e}`);
+  throw new Error(e);
+  }  
+}
+return module;
 };
+

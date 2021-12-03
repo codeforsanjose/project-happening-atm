@@ -4,6 +4,7 @@ import { ReactComponent as CalendarTodayIcon } from '../assets/icons/calendar_to
 import { ReactComponent as CalendarBlueIcon } from '../assets/icons/calendar_blue-24px.svg';
 import { ReactComponent as CallIcon } from '../assets/icons/call-24px.svg';
 import { ReactComponent as CancelIcon } from '../assets/icons/cancel-24px.svg';
+import { ReactComponent as CaratDownIcon } from '../assets/icons/carat_down.svg';
 import { ReactComponent as UncheckedCheckboxIcon } from '../assets/icons/check_box_outline_blank-24px.svg';
 import { ReactComponent as CheckedCheckboxIcon } from '../assets/icons/check_box-24px.svg';
 import { ReactComponent as CheckedCheckboxWithInnerShadowIcon } from '../assets/icons/check-boxes-1.svg';
@@ -17,8 +18,12 @@ import { ReactComponent as DeleteIcon } from '../assets/icons/delete-24px.svg';
 import { ReactComponent as DoneOutlineIcon } from '../assets/icons/done_outline-24px.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit-24px.svg';
 import { ReactComponent as EmailIcon } from '../assets/icons/email-24px.svg';
+import { ReactComponent as FaqIcon} from '../assets/icons/faq.svg';
 import { ReactComponent as FeedbackIcon } from '../assets/icons/feedback-24px.svg';
 import { ReactComponent as FormatListNumberedIcon } from '../assets/icons/format_list_numbered-24px.svg';
+import { ReactComponent as GlobeIcon } from '../assets/icons/globe.svg';
+import { ReactComponent as HappeningATMIcon } from '../assets/icons/happening-atm-logo.svg';
+import { ReactComponent as HomeIcon } from '../assets/icons/home-mobile-24px.svg';
 import { ReactComponent as ImportExportIcon } from '../assets/icons/import_export-24px.svg';
 import { ReactComponent as InfoIcon } from '../assets/icons/info-24px.svg';
 import { ReactComponent as ExpandedItemGroupIcon } from '../assets/icons/item-group-1.svg';
@@ -33,6 +38,7 @@ import { ReactComponent as NotificationsIcon } from '../assets/icons/notificatio
 import { ReactComponent as OnDemandVideoIcon } from '../assets/icons/ondemand_video-24px.svg';
 import { ReactComponent as PlayWithCircleOutlineIcon } from '../assets/icons/play_circle_outline-24px(1).svg';
 import { ReactComponent as PublishIcon } from '../assets/icons/publish-24px.svg';
+import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg';
 import { ReactComponent as RemoveIcon } from '../assets/icons/remove-24px.svg';
 import { ReactComponent as ScheduleIcon } from '../assets/icons/schedule-24px.svg';
 import { ReactComponent as ScheduleBlueIcon } from '../assets/icons/schedule_blue-24px.svg';
@@ -50,6 +56,7 @@ export {
   CalendarBlueIcon,
   CallIcon,
   CancelIcon,
+  CaratDownIcon,
   UncheckedCheckboxIcon,
   CheckedCheckboxIcon,
   CheckedCheckboxWithInnerShadowIcon,
@@ -63,8 +70,12 @@ export {
   DoneOutlineIcon,
   EditIcon,
   EmailIcon,
+  FaqIcon,
   FeedbackIcon,
   FormatListNumberedIcon,
+  GlobeIcon,
+  HappeningATMIcon,
+  HomeIcon,
   ImportExportIcon,
   InfoIcon,
   ExpandedItemGroupIcon,
@@ -78,6 +89,7 @@ export {
   NotificationsIcon,
   OnDemandVideoIcon,
   PlayWithCircleOutlineIcon,
+  ProfileIcon,
   PublishIcon,
   RemoveIcon,
   ScheduleIcon,

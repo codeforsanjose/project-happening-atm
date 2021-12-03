@@ -1,0 +1,21 @@
+@import "../../utils/_colors.scss";
+
+button.sign-out {
+  color: black;
+  background: $lightBronze;
+  background-color: $lightBronze;
+  border: none;
+  border-radius: 8px;
+  width: 112px;
+  height: 31px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 991px) {
+  button.sign-out {
+    align-self: center;
+    font-weight: bold;
+    color: $cityBlue;
+  }
+}

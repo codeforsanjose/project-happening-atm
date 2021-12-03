@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './AdminNavigationLink.scss';
+import './NavigationLink.scss';
 
 /**
  * Navigation button link component for the AdminNavigation component.
@@ -11,9 +11,9 @@ import './AdminNavigationLink.scss';
  *  path - url path of the link
  */
 
-function AdminNavigationLink({ Icon, linkText, path }) {
+function NavigationLink({ Icon, linkText, path }) {
   return (
-    <li className="admin-nav-link">
+    <li className="header-nav-link">
       <NavLink activeClassName="button-active" to={path}>
         <div className="button-group">
           <div className="button-group-inner">
@@ -26,4 +26,4 @@ function AdminNavigationLink({ Icon, linkText, path }) {
   );
 }
 
-export default AdminNavigationLink;
+export default NavigationLink;
