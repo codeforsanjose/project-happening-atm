@@ -15,10 +15,11 @@ import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
+import CLIENT_ID from '../../constants/OauthClientID';
 
 // global constant options
 const OPTIONS = {
-  googleClientID: '794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com',
+  googleClientID: CLIENT_ID.GOOGLE,
 };
 
 function LoginHandler() {
