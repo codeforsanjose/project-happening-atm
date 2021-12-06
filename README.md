@@ -72,6 +72,8 @@ When running with docker-compose, a separate persistent volume is created for Po
 
    GOOGLE_CLIENT_ID=NEED-TO-REGISTER-APP
    GOOGLE_CLIENT_SECRET=NEED-TO-REGISTER-APP
+
+   MICROSOFT_CLIENT_ID=NEED-TO-REGISTER-APP
    ```
 
    - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
@@ -114,6 +116,25 @@ When running with docker-compose, a separate persistent volume is created for Po
    \frontend\src\constants\OauthClientID
    const CLIENT_ID = {
     GOOGLE:"794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com",
+   }
+   
+   ```
+
+### To be able to Login using a Microsoft Account
+ 1. To login with a Microsoft account a Microsoft API client ID must be provided to the front and backend.
+ 1. A Google API Client ID can be obtained by registering an APP here https://azure.microsoft.com/en-us/features/azure-portal/. Then search for Azure Active Directory. In the scroll bar on the left under manage select App registrations to register your App.
+ 1. As an alternative this Microsoft API Client ID can be used for now `d2dbfc8f-325c-46bf-a3c2-d1f2da795d9f`
+ 1. In the `.env` file located in `/backend/graphql_api/lambda`, replace `NEED-TO-REGISTER-APP` for `MICROSOFT_CLIENT_ID` with a valid Microsoft API Client ID. Then located in the file `\frontend\src\constants\OauthClientID` put the Google API Client ID into the empty Google String. 
+
+   Example
+   ```
+   /backend/graphql_api/lambda\.env
+   MICROSOFT_CLIENT_ID=d2dbfc8f-325c-46bf-a3c2-d1f2da795d9f
+
+   \frontend\src\constants\OauthClientID
+   const CLIENT_ID = {
+    GOOGLE:"",
+    MICROSOFT:"d2dbfc8f-325c-46bf-a3c2-d1f2da795d9f"
    }
    
    ```
