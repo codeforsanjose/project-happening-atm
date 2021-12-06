@@ -21,7 +21,7 @@ import CLIENT_ID from '../../constants/OauthClientID';
 // global constant options
 const OPTIONS = {
   googleClientID: CLIENT_ID.GOOGLE,
-  microsoftClientID: 'd2dbfc8f-325c-46bf-a3c2-d1f2da795d9f'
+  microsoftClientID: CLIENT_ID.MICROSOFT,
 };
 
 function LoginHandler() {
@@ -41,7 +41,7 @@ function LoginHandler() {
   const loginMicrosoft = useLazyQuery(LOGIN_MICROSOFT,
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
 
-  //needed to fix an infinite looping problem with microsoft oauth and microsoft-react-login
+  // needed to fix an infinite looping problem with microsoft oauth and microsoft-react-login
   const { sessionStorage } = window;
   sessionStorage.clear();
 
@@ -51,10 +51,10 @@ function LoginHandler() {
   };
 
   const microsoftHandler = (err, response) => {
-    if(err === null){
+    if (err === null) {
       localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
       loginMicrosoft[0]();
-    }else{
+    } else {
       setOtherError(true);
     }
   };
@@ -148,7 +148,7 @@ function LoginHandler() {
               <span>{t('login.body.oauth.microsoft')}</span>
             </button>
           </MicrosoftLogin>
-           
+
           <div className="or">
             <hr />
             <span>{t('login.body.or')}</span>
@@ -186,8 +186,9 @@ function LoginHandler() {
             <NavLink className="passAnchor mobileView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
           </div>
           <div className="create-account-container">
-            <span>{t('createAccount.span')}</span><NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
-          </div>     
+            <span>{t('createAccount.span')}</span>
+            <NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+          </div>
         </div>
       </div>
     </div>
