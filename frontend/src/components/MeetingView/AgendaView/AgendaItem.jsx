@@ -49,10 +49,7 @@ const itemLinks = [
  *        description:  String description of item
  *        status: String status of item
  *      }
- *    isSelected
- *      A boolean value representing if this agenda item is selected (checked) by user
- *    handleSelection
- *      A handler for agenda item selection
+
  *    dragOverlayActive
  *      Indicates an item is being dragged
  *
@@ -81,7 +78,7 @@ const itemLinks = [
  */
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
-function AgendaItem({ item, isSelected, handleSelection }) {
+function AgendaItem({ item}) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
 
@@ -98,8 +95,6 @@ function AgendaItem({ item, isSelected, handleSelection }) {
       style={style}
       id={item.id}
       item={item}
-      isSelected={isSelected}
-      handleSelection={handleSelection}
     />
   );
 }
@@ -126,7 +121,7 @@ function AgendaItemActionLink({ t,loading,handleSubmit,subscribed }) {
 }
 
 const RenderedAgendaItem = forwardRef(
-  ({ handleSelection, isSelected, item, id, ...props }, ref) => {
+  ({ item, id, ...props }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(false);
     const modalRef = useRef(null);
@@ -141,16 +136,6 @@ const RenderedAgendaItem = forwardRef(
         }
       }
     );
-
-    const handleCheck = (evt) => {
-      if (evt.target) {
-        handleSelection(
-          item.parent_meeting_item_id,
-          item.id,
-          evt.target.checked
-        );
-      }
-    };
 
     const handleSubmit = (e) => {
       const phone = getUserPhone();
@@ -180,15 +165,8 @@ const RenderedAgendaItem = forwardRef(
         {item.status !== MeetingItemStates.PENDING && (
           <div className="item-status">{item.status}</div>
         )}
-
         <div className="row">
-          {item.status === MeetingItemStates.PENDING && (
-            <input
-              type="checkbox"
-              checked={isSelected}
-              onChange={handleCheck}
-            />
-          )}
+          {item.status === MeetingItemStates.PENDING}
           <h4>{item.title_loc_key}</h4>
         </div>
         <p>{item.description_loc_key}</p>

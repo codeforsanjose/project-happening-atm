@@ -16,11 +16,12 @@ import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
+import CLIENT_ID from '../../constants/OauthClientID';
 
 // global constant options
 const OPTIONS = {
-  googleClientID: '794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com',
-  microsoftClientID: 'd2dbfc8f-325c-46bf-a3c2-d1f2da795d9f',
+  googleClientID: CLIENT_ID.GOOGLE,
+  microsoftClientID: 'd2dbfc8f-325c-46bf-a3c2-d1f2da795d9f'
 };
 
 function LoginHandler() {
@@ -173,7 +174,7 @@ function LoginHandler() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <a className="passAnchor desktopView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
+            <NavLink className="passAnchor desktopView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
             <button
               className="signInButton"
               type="button"
@@ -182,15 +183,11 @@ function LoginHandler() {
             >
               {t('navbar.sign-in')}
             </button>
-            <a className="passAnchor mobileView" href="#passAnchor">{t('login.body.textSignIn.forgotPass')}</a>
+            <NavLink className="passAnchor mobileView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
           </div>
           <div className="create-account-container">
-            <span>
-              {t('Don\'t have an account')}
-              ?
-            </span>
-            <NavLink className="nav-account-create" to="/account-create/">{t('Create Account')}</NavLink>
-          </div>
+            <span>{t('createAccount.span')}</span><NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+          </div>     
         </div>
       </div>
     </div>

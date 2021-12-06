@@ -278,6 +278,33 @@ meeting:
               title: Gửi email đến city.clerk@sanjoseca.gov vào lúc 10:00 a.m. cùng ngày với cuộc họp
               subtitle: Vui lòng ghi rõ Số hiệu của Chủ đề nghị sự thuộc Danh sách các Chủ đề nghị sự trong tiêu đề của email.
 
+createAccount:
+  span: vi - Don't have an account?
+  link: vi - Create Account
+
+forgotPassword:
+  header:
+    resetPassword: vi - Reset your password
+  body:
+    heading1: vi - Enter your account's email address and
+    heading2: vi - we will send you a password reset link
+    button:
+      sendemail: vi - Send password reset email
+    input:
+      email: vi - Email  
+    link:
+      signIn: vi - Sign In 
+
+setNewPassword:
+  header: vi - Change password   
+  body:
+    heading1: vi - Enter your new password
+    button:
+      changePassword: vi - Change Password
+    input:
+      newPassword: vi - New Password
+      confirmNewPassword: vi - Confirm Password          
+
 footer:
   language:
     change:

@@ -82,6 +82,19 @@ export const GET_ACCOUNT_BY_EMAIL = gql`
     }
   }
 `;
+
+
+export const GET_RESET_PASSWORD_TOKEN = gql`
+query GetResetPasswordToken(
+  $id: Int
+){
+  getResetPasswordToken(
+    id: $id
+){
+  password_reset_token
+}
+}
+`;
 // setters
 
 export const UPDATE_MEETING_ITEM = gql`
@@ -230,4 +243,26 @@ export const CREATE_ACCOUNT = gql`
     token
   }
   }
-`; 
+`;
+
+export const FORGOT_PASSWORD = gql`
+mutation ForgotPassword(
+  $emailAddress: String
+){
+  forgotPassword(
+    emailAddress: $emailAddress,
+)
+}
+`;
+
+export const RESET_PASSWORD = gql`
+mutation ResetPassword(
+  $id: Int,
+  $password: String
+){
+  resetPassword(
+    id: $id,
+    password: $password
+)
+}
+`;
