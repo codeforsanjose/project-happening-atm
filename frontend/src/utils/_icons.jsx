@@ -18,7 +18,7 @@ import { ReactComponent as DeleteIcon } from '../assets/icons/delete-24px.svg';
 import { ReactComponent as DoneOutlineIcon } from '../assets/icons/done_outline-24px.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit-24px.svg';
 import { ReactComponent as EmailIcon } from '../assets/icons/email-24px.svg';
-import { ReactComponent as FaqIcon} from '../assets/icons/faq.svg';
+import { ReactComponent as FaqIcon } from '../assets/icons/faq.svg';
 import { ReactComponent as FeedbackIcon } from '../assets/icons/feedback-24px.svg';
 import { ReactComponent as FormatListNumberedIcon } from '../assets/icons/format_list_numbered-24px.svg';
 import { ReactComponent as GlobeIcon } from '../assets/icons/globe.svg';
@@ -40,6 +40,9 @@ import { ReactComponent as PlayWithCircleOutlineIcon } from '../assets/icons/pla
 import { ReactComponent as PublishIcon } from '../assets/icons/publish-24px.svg';
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg';
 import { ReactComponent as RemoveIcon } from '../assets/icons/remove-24px.svg';
+import { ReactComponent as StatusCompleted } from '../assets/icons/status-completed.svg';
+import { ReactComponent as StatusInProgress } from '../assets/icons/status-in-progress.svg';
+import { ReactComponent as StatusDeferred } from '../assets/icons/status-deferred.svg';
 import { ReactComponent as ScheduleIcon } from '../assets/icons/schedule-24px.svg';
 import { ReactComponent as ScheduleBlueIcon } from '../assets/icons/schedule_blue-24px.svg';
 import { ReactComponent as SearchIcon } from '../assets/icons/search-24px.svg';
@@ -62,6 +65,9 @@ export {
   CheckedCheckboxWithInnerShadowIcon,
   UncheckedCheckboxWithInnerShadowIcon,
   UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon,
+  StatusCompleted,
+  StatusInProgress,
+  StatusDeferred,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,

@@ -1,39 +1,25 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // Necessary as dnd sort uses prop spreading for its listeners and props
-import React, { forwardRef, useState, useRef } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useMutation } from "@apollo/client";
-import classnames from "classnames";
+import React, { forwardRef, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from '@apollo/client';
 
-import { getUserEmail, getUserPhone } from "../../../utils/verifyToken";
-import SubscribeConfirmation from "../../Subscribe/SubscribeConfirmation";
-import "./AgendaItem.scss";
-import { CREATE_SUBSCRIPTIONS } from "../../../graphql/graphql";
-import Spinner from "../../Spinner/Spinner";
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
+import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
+import './AgendaItem.scss';
+import { CREATE_SUBSCRIPTIONS } from '../../../graphql/graphql';
 
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import {
   buildSubscriptionQueryString,
   convertQueryStringToServerFormat,
-} from "../../Subscribe/subscribeQueryString";
-import MeetingItemStates from "../../../constants/MeetingItemStates";
+} from '../../Subscribe/subscribeQueryString';
+import MeetingItemStates from '../../../constants/MeetingItemStates';
 
-import { NotificationsIcon, ShareIcon, AddIcon } from "../../../utils/_icons";
-
-const subscribeDisabled = (item) =>
-  item.status === MeetingItemStates.IN_PROGRESS ||
-  item.status === MeetingItemStates.COMPLETED;
-
-const itemLinks = [
-  {
-    getPath: () => "/",
-    Icon: AddIcon,
-    text: "meeting.tabs.agenda.list.more-info.button",
-    isDisabled: () => false,
-  },
-];
+import {
+  NotificationsIcon, StatusCompleted, StatusDeferred, StatusInProgress,
+} from '../../../utils/_icons';
 
 /**
  *
@@ -78,9 +64,10 @@ const itemLinks = [
  */
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
-function AgendaItem({ item}) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+function AgendaItem({ item }) {
+  const {
+    attributes, listeners, setNodeRef, transform, transition,
+  } = useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -99,22 +86,24 @@ function AgendaItem({ item}) {
   );
 }
 
-function AgendaItemActionLink({ t,loading,handleSubmit,subscribed }) {
+function AgendaItemActionLink({
+  t, loading, handleSubmit, subscribed,
+}) {
   if (subscribed) {
     return (
       <div className="link">
         <p className="disabled">
-          {t("meeting.tabs.agenda.list.subscribe.button.done")}
+          {t('meeting.tabs.agenda.list.subscribe.button.done')}
         </p>
       </div>
-    )
-  } 
+    );
+  }
   return (
     <div className="link" onClick={handleSubmit}>
-      <p className={loading? "notify-me subscribing" : "notify-me"}>
+      <p className={loading ? 'notify-me subscribing' : 'notify-me'}>
         {loading
-          ? t("meeting.tabs.agenda.list.subscribe.button.doing")
-          : t("meeting.tabs.agenda.list.subscribe.button.do")}
+          ? t('meeting.tabs.agenda.list.subscribe.button.doing')
+          : t('meeting.tabs.agenda.list.subscribe.button.do')}
       </p>
     </div>
   );
@@ -132,9 +121,9 @@ const RenderedAgendaItem = forwardRef(
       {
         onCompleted: (data) => {
           setSubscribed(true);
-          setSubscriptions(data?.createSubscriptions ?? null)
-        }
-      }
+          setSubscriptions(data?.createSubscriptions ?? null);
+        },
+      },
     );
 
     const handleSubmit = (e) => {
@@ -142,7 +131,7 @@ const RenderedAgendaItem = forwardRef(
       const email = getUserEmail();
       e.preventDefault();
       const subscriptionQueryString = convertQueryStringToServerFormat(
-        buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })
+        buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } }),
       );
       createSubscriptions({
         variables: {
@@ -162,12 +151,17 @@ const RenderedAgendaItem = forwardRef(
     // Without this the dragOverlay prevented the pressing of the checkbox
     return (
       <div {...props} ref={ref} className="AgendaItem">
-        {item.status !== MeetingItemStates.PENDING && (
-          <div className="item-status">{item.status}</div>
-        )}
+
         <div className="row">
           {item.status === MeetingItemStates.PENDING}
           <h4>{item.title_loc_key}</h4>
+          <div className="item-status">
+            {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
+            {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
+            {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
+            {subscribed && (<NotificationsIcon />)}
+          </div>
+
         </div>
         <p>{item.description_loc_key}</p>
         {subscriptions && subscriptions.length > 0 && (
@@ -180,32 +174,42 @@ const RenderedAgendaItem = forwardRef(
         {error && <div className="form-error">{error.message}</div>}
         <div className="item-links">
           <div className="link">
-            <p><span>+</span>{t("meeting.tabs.agenda.list.more-info.button")}</p>
+            <p>
+              <span>+</span>
+              {t('meeting.tabs.agenda.list.more-info.button')}
+            </p>
           </div>
-          {/* if Item status is completed, it will show completed; 
+          {/* if Item status is completed, it will show completed;
               if Item status is deferred, it will show deferred;
               if Item statu is not subscribed, it will show notify me;
               if Item status is subscribed/subscribing it will show that */}
-         
-          {item.status === MeetingItemStates.COMPLETED ? (
+
+          {item.status === MeetingItemStates.COMPLETED && (
             <div className="link">
               <p className="disabled">
-                {t("meeting.tabs.agenda.status.options.completed")}
+                {t('meeting.tabs.agenda.status.options.completed')}
               </p>
             </div>
-          ) : item.status === MeetingItemStates.MOVED ? (
-            <div className="link">
-              <p className="deferred">
-                {t("meeting.tabs.agenda.status.options.deferred")}
-              </p>
-            </div>
-            ) : (<AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed}/>
           )}
-              
+
+          {item.status === MeetingItemStates.DEFERRED && (
+          <div className="link">
+            <p className="deferred">
+              {t('meeting.tabs.agenda.status.options.deferred')}
+            </p>
+          </div>
+          )}
+
+          {(item.status !== MeetingItemStates.COMPLETED)
+          && (item.status !== MeetingItemStates.DEFERRED)
+          && (item.status !== MeetingItemStates.IN_PROGRESS)
+          && (
+            <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
+          )}
         </div>
       </div>
     );
-  }
+  },
 );
 
 // must export RenderedAgendaItem so that the dragOverlay can use it

@@ -12,17 +12,19 @@
     padding: 1.4em;
   }
 
-  .item-status {
-    text-align: right;
-    font-weight: 600;
-  }
-
   .row {
+    display:flex;
+    justify-content: space-between;
     margin-top: 5px;
     h4 {
       margin: 0;
       display: inline-block;
       font-weight: 500;
+    }
+
+    .item-status {
+      text-align: right;
+      font-weight: 600;
     }
 
     input[type="checkbox"] {
@@ -42,7 +44,8 @@
 
   .item-links {
     display: flex;
-
+    justify-content: space-between;
+    
     .disabled .link {
       fill: $cloudy;
       color: $cloudy;
@@ -83,7 +86,7 @@
         margin-left: 0.2em;
 
         @media only screen and (min-device-width: 812px) {
-          margin: 0.5em;
+          margin: 0.5em 0 0.5em 0;
           font-size: 1em;
         }
       }
