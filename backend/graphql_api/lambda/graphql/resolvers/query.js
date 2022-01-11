@@ -123,7 +123,7 @@ module.exports = (logger) => {
     validator.validateUser(context);
     let res;
     try{
-      res = await dbClient.getSubscriptionsByEmailAndMeetingID(args.email_address, args.meeting_id);
+      res = await dbClient.getSubscriptionsByEmailAndMeetingID(args.phone_number, args.email_address, args.meeting_id);
     }catch (e) {
       loginGoogle.error(`getSubscriptionsByEmailAndMeetingID resolver error -dbClient.getSubscriptionsByEmailAndMeetingID: ${e}`);
       throw e;
