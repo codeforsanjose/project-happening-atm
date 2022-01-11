@@ -24,6 +24,7 @@ module.exports = (logger) => {
         getAllMeetingsWithItems: [meeting_with_items]
 
         getSubscription(id: Int!): subscription
+        getSubscriptionsByEmailAndMeetingID(email_address: String!, meeting_id: Int!): [subscription]
         getAllSubscriptions: [subscription]
 
         getAllAccounts: [account]
@@ -196,6 +197,10 @@ module.exports = (logger) => {
       getSubscription: async (_parent, args, context) => {
         logger.info('Initiating GetSubscription Query resolver');
         return resolverHandler(queryResolver.getSubscription, args.id, context);
+      },
+      getSubscriptionsByEmailAndMeetingID: async (_parent, args, context) => {
+        logger.info('Initiating getSubscriptionsByEmailAndMeetingID Query resolver');
+        return resolverHandler(queryResolver.getSubscriptionsByEmailAndMeetingID, args, context);
       },
       getAllSubscriptions: async (_parent, args, context) => {
         logger.info('Initiating GetAllSubscriptions Query resolver');

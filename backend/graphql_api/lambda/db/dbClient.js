@@ -202,6 +202,12 @@ module.exports = async (logger) => {
     return query(queryString, [id]);
   };
 
+  module.getSubscriptionsByEmailAndMeetingID = async (email_address, meeting_id) => {
+    logger.info('dbClient: getSubscriptsByEmailAndMeetingID');
+    const queryString = 'SELECT * FROM subscription WHERE email_address = $1 AND meeting_id = $2'
+    return query(queryString, [email_address, meeting_id]);
+  }
+
   module.getAllSubscriptions = async () => {
     logger.info('dbClient: getAllSubscriptions');
     return query('SELECT * FROM subscription');
