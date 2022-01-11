@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // Necessary as dnd sort uses prop spreading for its listeners and props
-import React, { forwardRef, useState, useRef } from 'react';
+import React, {
+  forwardRef, useState, useRef, useEffect,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
 
@@ -64,7 +66,7 @@ import {
  */
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
-function AgendaItem({ item }) {
+function AgendaItem({ item, subStatus, refetchSubs }) {
   const {
     attributes, listeners, setNodeRef, transform, transition,
   } = useSortable({ id: item.id });
@@ -82,6 +84,8 @@ function AgendaItem({ item }) {
       style={style}
       id={item.id}
       item={item}
+      subStatus={subStatus}
+      refetchSubs={refetchSubs}
     />
   );
 }
@@ -110,11 +114,23 @@ function AgendaItemActionLink({
 }
 
 const RenderedAgendaItem = forwardRef(
-  ({ item, id, ...props }, ref) => {
+  ({
+    item, id, subStatus, refetchSubs, dragOverlay = false, ...props
+  }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
-    const [subscribed, setSubscribed] = useState(false);
+    const [subscribed, setSubscribed] = useState(subStatus);
+
     const modalRef = useRef(null);
     const { t } = useTranslation();
+
+    useEffect(() => {
+      if (subStatus) {
+        setSubscribed(subStatus);
+      }
+      if (dragOverlay) {
+        setSubscribed(subStatus);
+      }
+    }, [subStatus, dragOverlay]);
 
     const [createSubscriptions, { loading, error }] = useMutation(
       CREATE_SUBSCRIPTIONS,
@@ -122,6 +138,7 @@ const RenderedAgendaItem = forwardRef(
         onCompleted: (data) => {
           setSubscribed(true);
           setSubscriptions(data?.createSubscriptions ?? null);
+          refetchSubs();
         },
       },
     );

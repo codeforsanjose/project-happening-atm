@@ -41,7 +41,7 @@ const options = {
   minHeightAgendaContainer: '60px',
 };
 function AgendaGroups({
-  agendaGroups, admin,
+  agendaGroups, admin, subbedItems, refetchSubs,
 }) {
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
@@ -55,6 +55,8 @@ function AgendaGroups({
             key={`${parent.id}agendaGroup`}
             admin={admin}
             agendaGroup={parent}
+            subbedItems={subbedItems}
+            refetchSubs={refetchSubs}
           />
         </AccordionItem>
       ))}
@@ -81,7 +83,7 @@ function AgendaGroupHeader({ agendaGroup }) {
 }
 
 function AgendaGroupBody({
-  agendaGroup, admin,
+  agendaGroup, admin, subbedItems, refetchSubs,
 }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
@@ -103,6 +105,12 @@ function AgendaGroupBody({
             <AgendaItem
               key={item.id}
               item={item}
+              subStatus={
+                subbedItems.some(
+                  (sub) => (sub.meeting_item_id === item.id),
+                )
+              }
+              refetchSubs={refetchSubs}
             />
           ))}
         </div>
