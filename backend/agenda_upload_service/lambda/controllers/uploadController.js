@@ -33,7 +33,6 @@ module.exports = (logger) => {
     jsonValue.forEach((row) => {
       const title = row.Title;
       const agendaNumber = row['Agenda #'];
-      console.log(row);
 
       // We split the Agenda Number string to facilitate the storage of sub items
       // Agenda Numbers are formatted in the following way:
@@ -77,11 +76,9 @@ module.exports = (logger) => {
         let subTitle = subItems.get(subItemNumber);
         subTitle = (subTitle.length > 250) ? subTitle.substring(0,247) + '...' : subTitle;
         logger.debug(`Creating nested meeting item: ${subTitle}`);
-        console.log('subtitle:', subTitle);
 
         // This is a nested item
         amendedTitle = `${rootItemNumber}${subItemNumber} ${subTitle}`; //${title}`;
-        console.log('amendedTitle', amendedTitle);
         // eslint-disable-next-line no-await-in-loop
         const res = await dbClient.createMeetingItem(
           meetingId, rootMeetingItemId, orderNumber, null, null,
