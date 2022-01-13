@@ -20,7 +20,7 @@ import {
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import {
-  NotificationsIcon, StatusCompleted, StatusDeferred, StatusInProgress,
+  NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress,
 } from '../../../utils/_icons';
 
 /**
@@ -176,7 +176,7 @@ const RenderedAgendaItem = forwardRef(
             {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
             {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
             {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
-            {subscribed && (<NotificationsIcon />)}
+            {subscribed && (<NotificationFilledIcon />)}
           </div>
 
         </div>

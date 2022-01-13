@@ -35,6 +35,7 @@ import { ReactComponent as LibraryAddCheckIcon } from '../assets/icons/library_a
 import { ReactComponent as MenuIcon } from '../assets/icons/menu-24px.svg';
 import { ReactComponent as NewReleasesIcon } from '../assets/icons/new_releases-24px.svg';
 import { ReactComponent as NotificationsIcon } from '../assets/icons/notifications-24px.svg';
+import { ReactComponent as NotificationFilledIcon } from '../assets/icons/notifications filled.svg';
 import { ReactComponent as OnDemandVideoIcon } from '../assets/icons/ondemand_video-24px.svg';
 import { ReactComponent as PlayWithCircleOutlineIcon } from '../assets/icons/play_circle_outline-24px(1).svg';
 import { ReactComponent as PublishIcon } from '../assets/icons/publish-24px.svg';
@@ -93,6 +94,7 @@ export {
   MenuIcon,
   NewReleasesIcon,
   NotificationsIcon,
+  NotificationFilledIcon,
   OnDemandVideoIcon,
   PlayWithCircleOutlineIcon,
   ProfileIcon,
