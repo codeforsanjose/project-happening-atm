@@ -81,6 +81,7 @@ function AgendaView({
   const [itemsUpdated, setItemsUpdated] = useState(0);
   const [itemsToUpdate, setItemsToUpdate] = useState(0);
   const [subbedItems, setSubbedItems] = useState([]);
+  const [admin] = useState(isAdmin());
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
   const { data, refetch } = useQuery(GET_SUB_BY_EMAIL_MEETINGID,
@@ -91,9 +92,6 @@ function AgendaView({
         meeting_id: agendaGroups[0].meeting_id,
       },
     });
-
-  // regular variables
-  const admin = isAdmin();
 
   // performs the save when user clicks the button to save, then resets flag
   useEffect(
@@ -124,10 +122,10 @@ function AgendaView({
 
   // gets the subscription dataset
   useEffect(() => {
-    if (data) {
+    if (data && !admin) {
       setSubbedItems(data.getSubscriptionsByEmailAndMeetingID);
     }
-  }, [data]);
+  }, [data, admin]);
 
   // required for dndKit
   const sensors = useSensors(

@@ -12,6 +12,7 @@ import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
 import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
 import './AgendaItem.scss';
 import { CREATE_SUBSCRIPTIONS } from '../../../graphql/graphql';
+import isAdmin from '../../../utils/isAdmin';
 
 import {
   buildSubscriptionQueryString,
@@ -119,18 +120,18 @@ const RenderedAgendaItem = forwardRef(
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
-
+    const [admin] = useState(isAdmin());
     const modalRef = useRef(null);
     const { t } = useTranslation();
 
     useEffect(() => {
-      if (subStatus) {
+      if (subStatus && !admin) {
         setSubscribed(subStatus);
       }
-      if (dragOverlay) {
+      if (dragOverlay && !admin) {
         setSubscribed(subStatus);
       }
-    }, [subStatus, dragOverlay]);
+    }, [subStatus, dragOverlay, admin]);
 
     const [createSubscriptions, { loading, error }] = useMutation(
       CREATE_SUBSCRIPTIONS,
@@ -220,6 +221,7 @@ const RenderedAgendaItem = forwardRef(
           {(item.status !== MeetingItemStates.COMPLETED)
           && (item.status !== MeetingItemStates.DEFERRED)
           && (item.status !== MeetingItemStates.IN_PROGRESS)
+          && !admin
           && (
             <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
           )}
