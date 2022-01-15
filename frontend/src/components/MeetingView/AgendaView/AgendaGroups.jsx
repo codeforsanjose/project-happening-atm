@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // Necessary as dnd sort uses prop spreading for its listeners and props
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AccordionItem,
   AccordionItemHeading,
@@ -40,16 +40,33 @@ import AgendaItem from './AgendaItem';
 const options = {
   minHeightAgendaContainer: '60px',
 };
+
+// setter function
+const setActiveGroups = (agendaGroups) => {
+  const activeG = [];
+  agendaGroups.forEach((group, i) => {
+    const progressFlag = group.items.some((item) => item.status === MeetingItemStates.IN_PROGRESS);
+    if (progressFlag) {
+      activeG.push(i);
+    }
+  });
+  return activeG;
+};
+
 function AgendaGroups({
   agendaGroups, admin,
 }) {
+  // array of indexes to indicate which group has an active member
+  const [activeGroups] = useState(setActiveGroups(agendaGroups));
+
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
     <>
-      {agendaGroups.map((parent) => (
+      {agendaGroups.map((parent, i) => (
         <AccordionItem className="AgendaGroup" key={`${parent.id}accord`}>
           <AgendaGroupHeader
             agendaGroup={parent}
+            active={activeGroups.some((aGroup) => aGroup === i)}
           />
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
@@ -62,11 +79,11 @@ function AgendaGroups({
   );
 }
 
-function AgendaGroupHeader({ agendaGroup }) {
+function AgendaGroupHeader({ agendaGroup, active }) {
   return (
     <div>
       <AccordionItemHeading className="group-header">
-        <AccordionItemButton className="group-button">
+        <AccordionItemButton className={active ? 'group-button active' : 'group-button'}>
           <div className="button-text">
             <div className="group-title">{agendaGroup.title_loc_key}</div>
             <div className="group-status">

@@ -3,16 +3,15 @@
 .AgendaGroup {
   .group-header {
     margin-bottom: 0.8em;
-
     .group-button {
       padding: 1em;
       border-radius: 4px;
-      background-color: $cityBlue;
-      color: #fff;
+      background-color: $pastGray;
+      color: $darkGrayX;
       cursor: pointer;
 
       &:hover {
-        background-color: $lightBlue;
+        background-color: $lightGray;
       }
 
       .group-title {
@@ -46,6 +45,13 @@
         .group-status {
           font-weight: 600;
         }
+      }
+    }
+    .active{
+      background-color: $cityBlue;
+      color:#fff;
+      &:hover{
+        background-color: $lightBlue;
       }
     }
   }
