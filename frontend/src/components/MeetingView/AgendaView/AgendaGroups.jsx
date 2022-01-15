@@ -18,6 +18,10 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
+import {
+  StatusInProgress,
+} from '../../../utils/_icons';
+
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
 
