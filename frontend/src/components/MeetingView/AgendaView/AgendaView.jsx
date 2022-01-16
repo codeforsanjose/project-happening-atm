@@ -78,6 +78,7 @@ function AgendaView({
   const [activeId, setActiveId] = useState(null);
   const [itemsUpdated, setItemsUpdated] = useState(0);
   const [itemsToUpdate, setItemsToUpdate] = useState(0);
+  const [expandedAcordians, setExpandedAcordians] = useState([]);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
 
@@ -128,11 +129,11 @@ function AgendaView({
   // Event handler functions
   const onDragStartArgs = { setActiveId };
   const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
-  const onDragOverArgs = { setAgendaGroups};
+  const onDragOverArgs = { setAgendaGroups };
 
   // DragOverlayhandler props
   const dragOverlayProps = {
-    agendaGroups, activeId
+    agendaGroups, activeId,
   };
 
   // Necessary as the createRenderedGroups function returns renderedAgendaGroups
@@ -158,10 +159,11 @@ function AgendaView({
         onDragEnd={admin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
         onDragOver={admin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
       >
-        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda" onChange={(expanded) => setExpandedAcordians(expanded)}>
           <AgendaGroups
             admin={admin}
             agendaGroups={displayAgenda}
+            expandedAcordians={expandedAcordians}
           />
         </Accordion>
 

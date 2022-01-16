@@ -19,7 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 
 import {
-  StatusInProgress,
+  StatusInProgress, AddIcon, RemoveIcon,
 } from '../../../utils/_icons';
 
 import MeetingItemStates from '../../../constants/MeetingItemStates';
@@ -58,19 +58,22 @@ const setActiveGroups = (agendaGroups) => {
 };
 
 function AgendaGroups({
-  agendaGroups, admin,
+  agendaGroups, expandedAcordians, admin,
 }) {
   // array of indexes to indicate which group has an active member
   const [activeGroups] = useState(setActiveGroups(agendaGroups));
+  // prefix for the uuid
+  const groupId = 'group-id';
 
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
     <>
       {agendaGroups.map((parent, i) => (
-        <AccordionItem className="AgendaGroup" key={`${parent.id}accord`}>
+        <AccordionItem className="AgendaGroup" key={`${parent.id}accord`} uuid={groupId + parent.id}>
           <AgendaGroupHeader
             agendaGroup={parent}
             active={activeGroups.some((aGroup) => aGroup === i)}
+            expanded={expandedAcordians.some((elem) => elem === groupId + parent.id)}
           />
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
@@ -83,15 +86,24 @@ function AgendaGroups({
   );
 }
 
-function AgendaGroupHeader({ agendaGroup, active }) {
+function AgendaGroupHeader({ agendaGroup, active, expanded }) {
   return (
     <div>
       <AccordionItemHeading className="group-header">
         <AccordionItemButton className={active ? 'group-button active' : 'group-button'}>
           <div className="button-text">
-            <div className="group-title">{agendaGroup.title_loc_key}</div>
-            <div className="group-status">
-              {agendaGroup.status === MeetingItemStates.PENDING ? '' : agendaGroup.status}
+            <div className="group-title">
+              {agendaGroup.title_loc_key}
+              <br />
+              {active && (
+              <span className="groupStatus">
+                <StatusInProgress />
+                In Progress
+              </span>
+              )}
+            </div>
+            <div className={active ? 'group-in-progress' : 'group-not-in-progress'}>
+              {!expanded ? <AddIcon /> : <RemoveIcon />}
             </div>
           </div>
         </AccordionItemButton>
