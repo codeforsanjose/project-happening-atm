@@ -49,6 +49,7 @@ function MeetingView() {
   // flag to indicate meeting items were updated by mutators
   const [meetingItemsUpdated, setMeetingItemsUpdated] = useState(false);
   const [disableParticipateViewButton, setDisableParticipateViewButton] = useState(false);
+  const [progressStatus, setProgressStatus] = useState(false);
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
     fetchPolicy: 'cache-and-network',
@@ -92,6 +93,7 @@ function MeetingView() {
         meeting={meetingWithItems}
         setSaveMeetingItems={setSaveMeetingItems}
         showUpdateStatus={showAgendaView}
+        progressStatus={progressStatus}
       />
 
       <div className="view-toggle">
@@ -123,6 +125,7 @@ function MeetingView() {
                 saveMeetingItems={saveMeetingItems}
                 setSaveMeetingItems={setSaveMeetingItems}
                 setMeetingItemsUpdated={setMeetingItemsUpdated}
+                setProgressStatus={setProgressStatus}
               />
             )
             : <ParticipateView meeting={meetingWithItems} />

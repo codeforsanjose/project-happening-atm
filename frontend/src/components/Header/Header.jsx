@@ -12,6 +12,9 @@ import {
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
+import {
+  StatusInProgress,
+} from '../../utils/_icons';
 
 // functions used by this component
 import isAdmin from '../../utils/isAdmin';
@@ -20,7 +23,7 @@ const MEETING_RELATIVE_TIME_LOC_KEY_PREFIX = 'meeting.status.relative.long.';
 const PAST_MEETING_STATUS_LOC_KEY = 'meeting.status.long.ended';
 
 function Header({
-  loading, meeting, setSaveMeetingItems, showUpdateStatus,
+  loading, meeting, setSaveMeetingItems, showUpdateStatus, progressStatus,
 }) {
   const { t } = useTranslation();
 
@@ -43,6 +46,7 @@ function Header({
         <div className="meeting-info">
           <div className="title">
             {t('header.city-council-meeting-agenda')}
+            {progressStatus && <span className="statusInProgress"><StatusInProgress /></span>}
           </div>
 
           <div className="details-title">

@@ -30,9 +30,10 @@ import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
 import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
-
+import getProgressStatus from './agendaViewFunctions/getProgressStatus';
 // graphql
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -68,7 +69,7 @@ const OPTIONS = {
 // These are the event handlers for the DndContext
 
 function AgendaView({
-  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated,
+  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated, setProgressStatus,
 }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
@@ -84,6 +85,13 @@ function AgendaView({
 
   // regular variables
   const admin = isAdmin();
+
+  // sets the in progress flag for the wrapping component
+  useEffect(
+    () => {
+      setProgressStatus(getProgressStatus(agendaGroups));
+    }, [setProgressStatus, agendaGroups],
+  );
 
   // performs the save when user clicks the button to save, then resets flag
   useEffect(
