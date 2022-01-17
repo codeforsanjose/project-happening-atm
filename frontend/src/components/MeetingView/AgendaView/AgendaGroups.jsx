@@ -45,26 +45,29 @@ const options = {
   minHeightAgendaContainer: '60px',
 };
 
-// setter function
-const setActiveGroups = (agendaGroups) => {
-  const activeG = [];
+const setNextIndex = (agendaGroups, setNextIndex) => {
+  let nextFound = false;
+  let next = null;
   agendaGroups.forEach((group, i) => {
-    const progressFlag = group.items.some((item) => item.status === MeetingItemStates.IN_PROGRESS);
-    if (progressFlag) {
-      activeG.push(i);
+    if (group.status === MeetingItemStates.PENDING || group.status === MeetingItemStates.IN_PROGRESS) {
+      if (!nextFound) {
+        next = i;
+        nextFound = true;
+      }
     }
   });
-  return activeG;
+  console.log(agendaGroups);
+  console.log(next);
+  return next;
 };
 
 function AgendaGroups({
   agendaGroups, expandedAcordians, admin,
 }) {
-  // array of indexes to indicate which group has an active member
-  const [activeGroups] = useState(setActiveGroups(agendaGroups));
+  const [nextIndex] = useState(setNextIndex(agendaGroups));
   // prefix for the uuid
   const groupId = 'group-id';
-
+  console.log(agendaGroups);
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
     <>
@@ -72,7 +75,8 @@ function AgendaGroups({
         <AccordionItem className="AgendaGroup" key={`${parent.id}accord`} uuid={groupId + parent.id}>
           <AgendaGroupHeader
             agendaGroup={parent}
-            active={activeGroups.some((aGroup) => aGroup === i)}
+            active={parent.status === MeetingItemStates.IN_PROGRESS}
+            next={i === nextIndex}
             expanded={expandedAcordians.some((elem) => elem === groupId + parent.id)}
           />
           <AgendaGroupBody
@@ -86,11 +90,13 @@ function AgendaGroups({
   );
 }
 
-function AgendaGroupHeader({ agendaGroup, active, expanded }) {
+function AgendaGroupHeader({
+  agendaGroup, active, expanded, next,
+}) {
   return (
     <div>
       <AccordionItemHeading className="group-header">
-        <AccordionItemButton className={active ? 'group-button active' : 'group-button'}>
+        <AccordionItemButton className={active || next ? 'group-button active' : 'group-button'}>
           <div className="button-text">
             <div className="group-title">
               {agendaGroup.title_loc_key}
@@ -102,7 +108,7 @@ function AgendaGroupHeader({ agendaGroup, active, expanded }) {
               </span>
               )}
             </div>
-            <div className={active ? 'group-in-progress' : 'group-not-in-progress'}>
+            <div className={active || next ? 'group-in-progress' : 'group-not-in-progress'}>
               {!expanded ? <AddIcon /> : <RemoveIcon />}
             </div>
           </div>
