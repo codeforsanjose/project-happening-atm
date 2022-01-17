@@ -6,21 +6,22 @@
     .group-button {
       padding: 1em;
       border-radius: 4px;
-      background-color: $pastGray;
-      color: $darkGrayX;
+      background-color: $pendingBlueBackground;
+      color: $darkBlue;
       cursor: pointer;
 
-      &:hover {
-        background-color: $lightGray;
-      }
+      //not sure what color we want to use here
+      // &:hover {
+      //   background-color: $lightBlue;
+      // }
 
       .group-title {
         margin-left: 20px;
         position: relative;
-
+        display:flex;
+        
         .groupStatus{
           font-size:0.875em;
-          margin-left:0.95em;
           color:$lightGreen;
           svg{
             position:relative;
@@ -34,16 +35,40 @@
         display: flex;
         justify-content: space-between;
 
-        .group-in-progress{
-          fill:#fff;
-        }
-        .group-not-in-progress{
-          fill:$darkGrayX;
+        .group-icon{
+          .expansionIcon{
+            fill:$darkBlue;
+            position:relative;
+            z-index:1;
+          }
+          .expansionIconStatus{
+            position: relative;
+            right: 1.25em;
+            bottom: 0.2em;
+
+            .baseIcon{
+              transform:scale(1.25);
+            }
+
+            .nextIcon{
+              fill:$lightGreen;
+            }
+
+            .completedIcon{
+              fill:#fff;
+            }
+          }
         }
       }
     }
+    .completedClass{
+      background-color: $pastGray;
+      &:hover{
+        background-color: $lightGray;
+      }
+    }
 
-    .active{
+    .nextItem{
       background-color: $cityBlue;
       color:#fff;
       &:hover{

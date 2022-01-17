@@ -75,6 +75,7 @@ function AgendaGroups({
         <AccordionItem className="AgendaGroup" key={`${parent.id}accord`} uuid={groupId + parent.id}>
           <AgendaGroupHeader
             agendaGroup={parent}
+            completed={parent.status === MeetingItemStates.COMPLETED}
             active={parent.status === MeetingItemStates.IN_PROGRESS}
             next={i === nextIndex}
             expanded={expandedAcordians.some((elem) => elem === groupId + parent.id)}
@@ -90,26 +91,84 @@ function AgendaGroups({
   );
 }
 
+// helper functions for the AgendaGroupHeader
+const buildAccordianClass = (active, next, completed) => {
+  const buttonBaseClass = 'group-button';
+  const nextClass = ' nextItem';
+  const completedClass = ' completedClass';
+
+  let accordianItemClass = buttonBaseClass;
+  if (active || next) {
+    accordianItemClass += nextClass;
+  } else if (completed) {
+    accordianItemClass += completedClass;
+  }
+  return accordianItemClass;
+};
+
+const buildIconClass = (active, next, completed) => {
+  const baseIconClass = 'baseIcon';
+  const nextIcon = ' nextIcon';
+  const completedIcon = ' completedIcon';
+  let iconClass = baseIconClass;
+  if (active || next) {
+    iconClass += nextIcon;
+  } else if (!completed) {
+    iconClass += completedIcon;
+  }
+
+  return iconClass;
+};
+
+const splitTitle = (title) => {
+  const splitT = title.split(' ');
+  let titleNumber = '';
+  let titleText = '';
+
+  splitT.forEach((elem, i) => {
+    if (i === 0) {
+      titleNumber = elem;
+    } else if (i === 1) {
+      titleText = elem;
+    } else {
+      titleText += ` ${elem}`;
+    }
+  });
+
+  return {
+    titleText,
+    titleNumber,
+  };
+};
+
 function AgendaGroupHeader({
-  agendaGroup, active, expanded, next,
+  agendaGroup, active, expanded, next, completed,
 }) {
+  console.log(splitTitle(agendaGroup.title_loc_key));
   return (
     <div>
       <AccordionItemHeading className="group-header">
-        <AccordionItemButton className={active || next ? 'group-button active' : 'group-button'}>
+        <AccordionItemButton className={buildAccordianClass(active, next, completed)}>
           <div className="button-text">
             <div className="group-title">
-              {agendaGroup.title_loc_key}
-              <br />
-              {active && (
-              <span className="groupStatus">
-                <StatusInProgress />
-                In Progress
-              </span>
-              )}
+              <div className="title-number">
+                {splitTitle(agendaGroup.title_loc_key).titleNumber}
+              </div>
+              <div className="title-text">
+                {splitTitle(agendaGroup.title_loc_key).titleText}
+                <br />
+                {active && (
+                <span className="groupStatus">
+                  In Progress
+                </span>
+                )}
+              </div>
             </div>
-            <div className={active || next ? 'group-in-progress' : 'group-not-in-progress'}>
-              {!expanded ? <AddIcon /> : <RemoveIcon />}
+            <div className="group-icon">
+              <span className="expansionIcon">
+                {!expanded ? <AddIcon /> : <RemoveIcon />}
+              </span>
+              <span className="expansionIconStatus"><StatusInProgress className={buildIconClass(active, next, completed)} /></span>
             </div>
           </div>
         </AccordionItemButton>
