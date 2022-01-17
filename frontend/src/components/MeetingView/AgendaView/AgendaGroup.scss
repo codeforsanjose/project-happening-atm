@@ -42,10 +42,9 @@
             z-index:1;
           }
           .expansionIconStatus{
-            position: relative;
-            right: 1.25em;
-            bottom: 0.2em;
-
+            position: absolute;
+            right: 2.5em;
+            margin-top:0.2em;
             .baseIcon{
               transform:scale(1.25);
             }
@@ -56,6 +55,14 @@
 
             .completedIcon{
               fill:#fff;
+            }
+          }
+
+          @media screen and (min-width:812px){
+            .expansionIconStatus{
+              right:15.05em;
+              margin-top:0.25em;
+              
             }
           }
         }
