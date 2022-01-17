@@ -13,8 +13,8 @@ env:
   AWS_SHARED_CLUSTER: multi-tenant-prod
   AWS_APP_NAME: happening-atm-api
   AWS_REGION: us-west-2
-  DOCKERFILE: backend/graphql_api/Dockerfile
-  DOCKER_PATH: backend/graphql_api/
+  DOCKERFILE: backend/graphql_api/lambda/Dockerfile
+  DOCKER_PATH: backend/graphql_api/lambda
 jobs:
   setup_env:
     name: Set-up environment 
