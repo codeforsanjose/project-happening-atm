@@ -144,7 +144,6 @@ const splitTitle = (title) => {
 function AgendaGroupHeader({
   agendaGroup, active, expanded, next, completed,
 }) {
-  console.log(splitTitle(agendaGroup.title_loc_key));
   return (
     <div>
       <AccordionItemHeading className="group-header">
@@ -155,6 +154,7 @@ function AgendaGroupHeader({
                 {splitTitle(agendaGroup.title_loc_key).titleNumber}
               </div>
               <div className="title-text">
+                {'\u00A0'}
                 {splitTitle(agendaGroup.title_loc_key).titleText}
                 <br />
                 {active && (
