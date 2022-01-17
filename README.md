@@ -250,11 +250,6 @@ To create a new migration:
 
 When adding or updating fields that are used in the Graphql mutations, be sure to update `backend/graphql_api/lambda/graphql/apolloServer.js`.
 
-# AWS Secrets
- PGHOST                = "multi-tenant-prod.cb8kqqo8h891.us-west-2.rds.amazonaws.com"
-    PGUSER                = "happening_atm_stage"
-    PGPASSWORD            = "MvnMfJ6UQrur8SY5"
-    PGDATABASE            = "happening_atm_stage"
 
 # Workflow
 
