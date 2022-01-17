@@ -37,7 +37,7 @@
     "serverless-pseudo-parameters": "^2.5.0"
   },
   "scripts": {
-    "start": "nodemon handler"
+    "start": "nodemon -L handler"
   },
   "eslintConfig": {
     "extends": "react-app"
