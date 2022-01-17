@@ -159,6 +159,7 @@ function AgendaGroupHeader({
                 <br />
                 {active && (
                 <span className="groupStatus">
+                  {'\u00A0'}
                   In Progress
                 </span>
                 )}
