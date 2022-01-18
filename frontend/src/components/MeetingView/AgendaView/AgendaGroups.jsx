@@ -45,7 +45,7 @@ const options = {
   minHeightAgendaContainer: '60px',
 };
 
-const setNextIndex = (agendaGroups, setNextIndex) => {
+const setNextIndex = (agendaGroups) => {
   let nextFound = false;
   let next = null;
   agendaGroups.forEach((group, i) => {
@@ -56,18 +56,18 @@ const setNextIndex = (agendaGroups, setNextIndex) => {
       }
     }
   });
-  console.log(agendaGroups);
-  console.log(next);
   return next;
 };
 
 function AgendaGroups({
   agendaGroups, expandedAcordians, admin,
 }) {
+  // This is the index of the next meeting up on the agenda
+  // Can be either In Progress or Pending
   const [nextIndex] = useState(setNextIndex(agendaGroups));
   // prefix for the uuid
   const groupId = 'group-id';
-  console.log(agendaGroups);
+
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
     <>
@@ -92,6 +92,7 @@ function AgendaGroups({
 }
 
 // helper functions for the AgendaGroupHeader
+// Outputs the classname for the accordian
 const buildAccordianClass = (active, next, completed) => {
   const buttonBaseClass = 'group-button';
   const nextClass = ' nextItem';
@@ -106,6 +107,7 @@ const buildAccordianClass = (active, next, completed) => {
   return accordianItemClass;
 };
 
+// outputs the class name for the icon
 const buildIconClass = (active, next, completed) => {
   const baseIconClass = 'baseIcon';
   const nextIcon = ' nextIcon';
@@ -120,6 +122,7 @@ const buildIconClass = (active, next, completed) => {
   return iconClass;
 };
 
+// splits the title between the numerical portion and its text
 const splitTitle = (title) => {
   const splitT = title.split(' ');
   let titleNumber = '';
