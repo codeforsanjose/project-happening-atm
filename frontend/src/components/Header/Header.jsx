@@ -57,10 +57,15 @@ function Header({
 
           {!loading && (
             <>
-              <div className="date">
-                {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
+              <div className="date-wrapper">
+                <div className="date">
+                  {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
+                </div>
+                <div className={progressStatus ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
+                  {progressStatus ? <span className="in-progress-header">In Progress</span> : <span className="not-started">Not Started</span>}
+                  {progressStatus && <StatusInProgress className="status-icon" />}
+                </div>
               </div>
-
               <div className="time">
                 {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
                 {t('meeting.start-time')}:
