@@ -15,10 +15,6 @@ services:
       - "/usr/src/app/node_modules"
     depends_on:
       - backend_pg
-    links:
-      - "backend_pg:gov-agenda-notifier_backend_pg_1"
-    networks:
-      - my_network
   backend_pg:
     build: "./backend/docker_for_local_dev_db"
     # this is for debugging; graphql connects to PG via internal docker network
@@ -27,8 +23,6 @@ services:
     volumes:
       - ./backend/docker_for_local_dev_db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres-data:/var/lib/postgresql/data
-    networks:
-      - my_network
   backend_upload:
     image: "node:14"
     entrypoint:
@@ -45,10 +39,6 @@ services:
     depends_on:
       - backend_pg
       - frontend
-    links:
-      - "backend_pg:gov-agenda-notifier_backend_pg_1"
-    networks:
-      - my_network
   frontend:
     # node-sass 4* needs node version 14
     image: "node:14"
@@ -69,13 +59,5 @@ services:
     environment:
       - REACT_APP_GRAPHQL_URL=http://localhost:3000
       - REACT_APP_JWT_ISSUER=ADD-ISSUER-DOMAIN
-    links:
-      - "backend_pg:gov-agenda-notifier_backend_pg_1"
-    networks:
-      - my_network
 volumes:
   postgres-data:
-networks:
-  my_network:
-    name: my_network
-    driver: bridge
