@@ -89,9 +89,12 @@ function CreateMeetingModal({ isOpen, closeModal }) {
       if (date < new Date()) {
         alert('Warning: Meeting start time is in the past.  Please select a different start time.');
       }
+      // ToDo: meeting url hardcoded for now, requires zoom api to trigger new url automatically upon mtg creation (?)
+      // https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate
       await createMeeting({
         variables: {
-          meeting_start_timestamp: `${timestamp}`
+          meeting_start_timestamp: `${timestamp}`,
+          virtual_meeting_url: 'https://zoom.us/join'
         }
       });
       setCreateSuccessful(true);
