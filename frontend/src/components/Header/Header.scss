@@ -34,8 +34,8 @@
       line-height: 1.5em;
       margin-bottom: 1.7em;
 
-      .statusInProgress{
-        margin-left:0.3em;
+      .statusInProgress {
+        margin-left: 0.3em;
       }
     }
 
@@ -50,27 +50,27 @@
       border-bottom: 2px $cityBronze solid;
     }
 
-    .date-wrapper{
-      display:flex;
+    .date-wrapper {
+      display: flex;
       justify-content: space-between;
-      .progress-wrapper{
-        background:$pendingBlueBackground;
-        color:$darkBlue;
-        border-radius:3px;
-        padding:0.4em 1em;
+      .progress-wrapper {
+        background: $pendingBlueBackground;
+        color: $darkBlue;
+        border-radius: 3px;
+        padding: 0.4em 1em;
 
-        .status-icon{
-          fill:$lightGreen;
-          margin-left:0.2em;
+        .status-icon {
+          fill: $lightGreen;
+          margin-left: 0.2em;
           position: relative;
           top: 0.15em;
           transform: scale(0.85);
         }
       }
-      .progress-wrapper-started{
-        background:$darkBlue;
-        color:$alertGreen;
-        padding:0.4em 0.7em;
+      .progress-wrapper-started {
+        background: $darkBlue;
+        color: $alertGreen;
+        padding: 0.4em 0.7em;
       }
       .date, .time {
         margin-bottom: 0.3em;
@@ -91,20 +91,20 @@
       margin-bottom: 2.5em;
     }
 
-    .saveStatus{
-      .saveStatusButton{
-        background-color:$cityBlue;
-        color:white;
-        border-style:inset;
-        margin-left:0.7rem;
-        padding-right:1.4rem;
+    .saveStatus {
+      .saveStatusButton {
+        background-color: $cityBlue;
+        color: white;
+        border-style: inset;
+        margin-left: 0.7rem;
+        padding-right: 1.4rem;
         text-align: left;
-        cursor:pointer;
+        cursor: pointer;
       }
 
-      .saveStatusButton:active{
-        border-style:outset;
-        border-width:2px;
+      .saveStatusButton:active {
+        border-style: outset;
+        border-width: 2px;
       }
     }
 

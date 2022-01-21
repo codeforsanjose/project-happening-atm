@@ -18,16 +18,16 @@
       .group-title {
         margin-left: 20px;
         position: relative;
-        display:flex;
+        display: flex;
 
-        .groupStatus{
-          font-size:0.875em;
-          color:$lightGreen;
-          svg{
-            position:relative;
-            width:0.875em;
-            top:0.25em;
-            margin-right:0.389em;
+        .groupStatus {
+          font-size: 0.875em;
+          color: $lightGreen;
+          svg {
+            position: relative;
+            width: 0.875em;
+            top: 0.25em;
+            margin-right: 0.389em;
           }
         }
       }
@@ -35,49 +35,49 @@
         display: flex;
         justify-content: space-between;
 
-        .group-icon{
-          .expansionIcon{
-            fill:$darkBlue;
-            position:relative;
-            bottom:0.22em;
-            z-index:1;
+        .group-icon {
+          .expansionIcon {
+            fill: $darkBlue;
+            position: relative;
+            bottom: 0.22em;
+            z-index: 1;
           }
-          .expansionIconStatus{
+          .expansionIconStatus {
             position: absolute;
             right: 2.5em;
             
-            .baseIcon{
-              transform:scale(1.25);
+            .baseIcon {
+              transform: scale(1.25);
             }
 
-            .nextIcon{
-              fill:$lightGreen;
+            .nextIcon {
+              fill: $lightGreen;
             }
 
-            .completedIcon{
-              fill:#fff;
+            .completedIcon {
+              fill: #fff;
             }
           }
 
-          @media screen and (min-width:812px){
-            .expansionIconStatus{
-              right:15.05em;      
+          @media screen and (min-width:812px) {
+            .expansionIconStatus {
+              right: 15.05em;      
             }
           }
         }
       }
     }
-    .completedClass{
+    .completedClass {
       background-color: $pastGray;
-      &:hover{
+      &:hover {
         background-color: $lightGray;
       }
     }
 
-    .nextItem{
+    .nextItem {
       background-color: $cityBlue;
-      color:#fff;
-      &:hover{
+      color: #fff;
+      &:hover {
         background-color: $lightBlue;
       }
     }
