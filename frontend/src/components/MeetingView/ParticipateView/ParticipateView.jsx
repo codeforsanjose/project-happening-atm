@@ -8,6 +8,15 @@ import {
   VoiceChatIcon, OnDemandVideoIcon, EmailIcon, NewReleasesIcon,
 } from '../../../utils/_icons';
 
+
+/**
+ * Update 01/2022: Per latest designs, the Participant View tab corresponding to this component (ParticipateView.jsx)
+ * and it's accompanying stylesheet ParticipateView.scss has been largely retired.
+ * However code is not yet being deleted as there is functionality contained therein that
+ * may be migrated elsewhere (e.g. zoom meeting/live broadcast links etc. viewable on Meeting view page) 
+ * Hence, retaining code in order to re-use it as necessary before deleting files
+ */
+
 function JoinTheVirtualMeetingPanel({ meeting }) {
   const { t } = useTranslation();
 
@@ -30,6 +39,7 @@ function JoinTheVirtualMeetingPanel({ meeting }) {
             target="_blank"
             rel="noopener noreferrer"
           >
+            {/* retain button  */}
             <button type="button">{t('meeting.tabs.participate.section.join.description.number-2.button')}</button>
           </a>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
