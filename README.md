@@ -250,6 +250,7 @@ To create a new migration:
 
 When adding or updating fields that are used in the Graphql mutations, be sure to update `backend/graphql_api/lambda/graphql/apolloServer.js`.
 
+
 # Workflow
 
 1. Go to the issues page to find something to work on: https://github.com/codeforsanjose/gov-agenda-notifier/issues. If you're not sure, ping #proj-happening-atm-eng in slack for help.

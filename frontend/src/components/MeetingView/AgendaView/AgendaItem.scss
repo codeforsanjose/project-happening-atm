@@ -25,6 +25,10 @@
     .item-status {
       text-align: right;
       font-weight: 600;
+
+      svg {
+        fill: $lightGreen;
+      }
     }
 
     input[type="checkbox"] {

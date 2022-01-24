@@ -32,7 +32,7 @@ import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
 import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
-
+import getProgressStatus from './agendaViewFunctions/getProgressStatus';
 // graphql
 import { UPDATE_MEETING_ITEM, GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/graphql';
 
@@ -70,7 +70,7 @@ const OPTIONS = {
 // These are the event handlers for the DndContext
 
 function AgendaView({
-  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated,
+  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated, setProgressStatus,
 }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
@@ -82,6 +82,7 @@ function AgendaView({
   const [itemsToUpdate, setItemsToUpdate] = useState(0);
   const [subbedItems, setSubbedItems] = useState([]);
   const [admin] = useState(isAdmin());
+  const [expandedAcordians, setExpandedAcordians] = useState([]);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
   const { data, refetch } = useQuery(GET_SUB_BY_EMAIL_MEETINGID,
@@ -92,6 +93,13 @@ function AgendaView({
         meeting_id: agendaGroups[0].meeting_id,
       },
     });
+
+  // sets the in progress flag for the wrapping component
+  useEffect(
+    () => {
+      setProgressStatus(getProgressStatus(agendaGroups));
+    }, [setProgressStatus, agendaGroups],
+  );
 
   // performs the save when user clicks the button to save, then resets flag
   useEffect(
@@ -174,12 +182,13 @@ function AgendaView({
         onDragEnd={admin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
         onDragOver={admin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
       >
-        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda">
+        <Accordion allowZeroExpanded allowMultipleExpanded className="agenda" onChange={(expanded) => setExpandedAcordians(expanded)}>
           <AgendaGroups
             admin={admin}
             agendaGroups={displayAgenda}
             subbedItems={subbedItems}
             refetchSubs={refetch}
+            expandedAcordians={expandedAcordians}
           />
         </Accordion>
 
