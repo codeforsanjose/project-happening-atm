@@ -7,10 +7,10 @@ import {
 // called when the user lets go of the dragged item
 export const handleDragEnd = (event, { setAgendaGroups, oNumStart, completedIds }) => {
   const { active, over } = event;
-  const activeCompleted = completedIds.some((id) => id === active.id);
+  const activeOrOverComplted = completedIds.some((id) => id === active.id || id === over.id);
 
   // if statement only entered when the agendaitem is over a valid drop location
-  if (over != null && active.id !== over.id && !activeCompleted) {
+  if (over != null && active.id !== over.id && !activeOrOverComplted) {
     setAgendaGroups((parents) => {
       const newParents = JSON.parse(JSON.stringify(parents));
 
@@ -30,9 +30,9 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart, completedIds 
           }
         });
       });
-      if (completedIds.some((id) => id !== parents[parentIndex].items[newIndex].id)) {
-        newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
-      }
+
+      newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
+
       return newParents;
     });
   }
