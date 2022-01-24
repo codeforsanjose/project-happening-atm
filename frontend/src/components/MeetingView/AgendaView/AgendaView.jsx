@@ -31,9 +31,11 @@ import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
 import getProgressStatus from './agendaViewFunctions/getProgressStatus';
+import getCompletedIds from './agendaViewFunctions/getCompletedIds';
+
+import MeetingItemStates from '../../../constants/MeetingItemStates';
 // graphql
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
-import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -80,6 +82,7 @@ function AgendaView({
   const [itemsUpdated, setItemsUpdated] = useState(0);
   const [itemsToUpdate, setItemsToUpdate] = useState(0);
   const [expandedAcordians, setExpandedAcordians] = useState([]);
+  const [completedIds] = useState((getCompletedIds(agendaGroups)));
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
 
@@ -136,7 +139,7 @@ function AgendaView({
   // These are the props for various functions, and components in object form
   // Event handler functions
   const onDragStartArgs = { setActiveId };
-  const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
+  const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart, completedIds };
   const onDragOverArgs = { setAgendaGroups };
 
   // DragOverlayhandler props
@@ -175,7 +178,7 @@ function AgendaView({
           />
         </Accordion>
 
-        {admin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
+        {admin && null ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
       </DndContext>
     </div>
   );

@@ -196,7 +196,12 @@ function AgendaGroupBody({
 
   return (
     <SortableContext
-      items={admin ? agendaGroup.items.map((item) => item.id) : []}
+      items={admin ? agendaGroup.items.map((item) => {
+        if (item.status !== MeetingItemStates.COMPLETED) {
+          return item.id;
+        }
+        return [];
+      }) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">
