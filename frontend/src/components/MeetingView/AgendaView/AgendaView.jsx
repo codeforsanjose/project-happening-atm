@@ -90,7 +90,7 @@ function AgendaView({
       variables: {
         email_address: getUserEmail(),
         phone_number: getUserPhone(),
-        meeting_id: agendaGroups[0].meeting_id,
+        meeting_id: agendaGroups.length > 0 ? agendaGroups[0].meeting_id : null,
       },
     });
 
