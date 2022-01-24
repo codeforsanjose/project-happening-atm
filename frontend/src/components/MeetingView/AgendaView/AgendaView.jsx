@@ -85,7 +85,7 @@ function AgendaView({
   const [expandedAcordians, setExpandedAcordians] = useState([]);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
-  const { data, refetch } = useQuery(GET_SUB_BY_EMAIL_MEETINGID,
+  const { data, error, refetch } = useQuery(GET_SUB_BY_EMAIL_MEETINGID,
     {
       variables: {
         email_address: getUserEmail(),
@@ -189,6 +189,7 @@ function AgendaView({
             subbedItems={subbedItems}
             refetchSubs={refetch}
             expandedAcordians={expandedAcordians}
+            getSubError={error}
           />
         </Accordion>
 

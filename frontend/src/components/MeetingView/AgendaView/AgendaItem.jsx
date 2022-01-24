@@ -67,7 +67,9 @@ import {
  */
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
-function AgendaItem({ item, subStatus, refetchSubs }) {
+function AgendaItem({
+  item, subStatus, refetchSubs, getSubError,
+}) {
   const {
     attributes, listeners, setNodeRef, transform, transition,
   } = useSortable({ id: item.id });
@@ -87,6 +89,7 @@ function AgendaItem({ item, subStatus, refetchSubs }) {
       item={item}
       subStatus={subStatus}
       refetchSubs={refetchSubs}
+      getSubError={getSubError}
     />
   );
 }
@@ -116,7 +119,7 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, id, subStatus, refetchSubs, dragOverlay = false, ...props
+    item, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
@@ -190,6 +193,7 @@ const RenderedAgendaItem = forwardRef(
           />
         )}
         {error && <div className="form-error">{error.message}</div>}
+        {getSubError && <div className="form-error">{getSubError.message}</div>}
         <div className="item-links">
           <div className="link">
             <p>

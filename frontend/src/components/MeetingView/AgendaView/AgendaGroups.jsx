@@ -61,7 +61,7 @@ const setNextIndex = (agendaGroups) => {
 
 function AgendaGroups({
   agendaGroups, admin, subbedItems, refetchSubs,
-  expandedAcordians,
+  expandedAcordians, getSubError,
 }) {
   // This is the index of the next meeting up on the agenda
   // Can be either In Progress or Pending
@@ -87,6 +87,7 @@ function AgendaGroups({
             agendaGroup={parent}
             subbedItems={subbedItems}
             refetchSubs={refetchSubs}
+            getSubError={getSubError}
           />
         </AccordionItem>
       ))}
@@ -186,7 +187,7 @@ function AgendaGroupHeader({
 }
 
 function AgendaGroupBody({
-  agendaGroup, admin, subbedItems, refetchSubs,
+  agendaGroup, admin, subbedItems, refetchSubs, getSubError,
 }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
@@ -214,6 +215,7 @@ function AgendaGroupBody({
                 )
               }
               refetchSubs={refetchSubs}
+              getSubError={getSubError}
             />
           ))}
         </div>
