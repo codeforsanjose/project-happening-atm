@@ -11,9 +11,7 @@ import Header from "../Header/Header";
 //import ParticipateView from "./ParticipateView/ParticipateView";
 import AgendaView from "./AgendaView/AgendaView";
 import Spinner from "../Spinner/Spinner";
-import {
-  JoinMeetingIcon,
-} from '../../utils/_icons';
+import { JoinMeetingIcon } from "../../utils/_icons";
 /**
  * Component that displays a list of a meeting's agenda items.
  * Utilizes react-accessible-accordion to display groups of items.
@@ -102,14 +100,13 @@ function MeetingView() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <button 
-          type="button"
-          className="join-meeting"
-          >
-          <JoinMeetingIcon/>          
-            <p>{t(
-              "meeting.tabs.participate.section.join.description.number-2.button"
-            )}</p>
+          <button type="button" className="join-meeting">
+            <JoinMeetingIcon />
+            <p>
+              {t(
+                "meeting.tabs.participate.section.join.description.number-2.button"
+              )}
+            </p>
           </button>
         </a>
       )}
