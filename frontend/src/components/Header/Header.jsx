@@ -20,7 +20,7 @@ const MEETING_RELATIVE_TIME_LOC_KEY_PREFIX = 'meeting.status.relative.long.';
 const PAST_MEETING_STATUS_LOC_KEY = 'meeting.status.long.ended';
 
 function Header({
-  loading, meeting, setSaveMeetingItems, showUpdateStatus,
+  loading, meeting, setSaveMeetingItems
 }) {
   const { t } = useTranslation();
 
@@ -69,7 +69,7 @@ function Header({
               </div>
 
               {
-              isAdmin() && showUpdateStatus && (
+              isAdmin() && (
                 <>
                   <div className="saveStatus">
                     {t('meeting.status.label')}
