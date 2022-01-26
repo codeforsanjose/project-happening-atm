@@ -46,7 +46,9 @@ function MeetingView() {
   // flag to indicate meeting items were updated by mutators
   const [meetingItemsUpdated, setMeetingItemsUpdated] = useState(false);
   // const [disableParticipateViewButton, setDisableParticipateViewButton] =
-  //   useState(false);
+  // useState(false);
+  const [progressStatus, setProgressStatus] = useState(false);
+
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
     fetchPolicy: "cache-and-network",
@@ -91,6 +93,8 @@ function MeetingView() {
         loading={loading}
         meeting={meetingWithItems}
         setSaveMeetingItems={setSaveMeetingItems}
+
+        progressStatus={progressStatus}
       />
       {loading && <Spinner />}
       {!(loading || error) && data && "items" in meetingWithItems && (
@@ -116,6 +120,7 @@ function MeetingView() {
           saveMeetingItems={saveMeetingItems}
           setSaveMeetingItems={setSaveMeetingItems}
           setMeetingItemsUpdated={setMeetingItemsUpdated}
+          setProgressStatus={setProgressStatus}
         />
       )}
       {error && <p className="error">{error.message}</p>}

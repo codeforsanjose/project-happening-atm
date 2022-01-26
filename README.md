@@ -27,7 +27,7 @@ The City of San Jose is interested in this service, but this is a project that c
 
 - Slack Channel: #proj-happening-atm-eng
 - [Google Drive](https://drive.google.com/drive/folders/1a89AKh3Kia3BGYeMUF7ishE4avblFIYu?usp=sharing)
-- [Links to Visual Design Mocks](https://docs.google.com/document/d/1bsBU2OwlY0_BJ48z_6H8GPl-vv0a86lvGEPuGZqgvGo/edit)
+- [Links to Visual Design Mocks](https://docs.google.com/document/d/1Jcdsw6d8MMXWaU_PTPcMVtoTtBxtx4A7d0VfhMH7K5M/edit)
 - [Latest Kanban ToDo list](https://trello.com/b/pfECjOgE/happening-atm)
 - [(old) List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
@@ -100,6 +100,24 @@ When running with docker-compose, a separate persistent volume is created for Po
    docker-compose -p gov-agenda-notifier down --remove-orphans
    ```
 
+### To be able to Login using a Google Account
+ 1. To login with a Google account a Google API client ID must be provided to the front and backend.
+ 1. A Google API Client ID can be obtained by registering an APP here https://console.developers.google.com/.
+ 1. As an alternative this Google API Client ID can be used for now `794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com`
+ 1. In the `.env` file located in `/backend/graphql_api/lambda`, replace `NEED-TO-REGISTER-APP` for `GOOGLE_CLIENT_ID` with a valid Google API Client ID. Then located in the file `\frontend\src\constants\OauthClientID` put the Google API Client ID into the empty Google String. 
+
+   Example
+   ```
+   /backend/graphql_api/lambda\.env
+   GOOGLE_CLIENT_ID=794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com
+
+   \frontend\src\constants\OauthClientID
+   const CLIENT_ID = {
+    GOOGLE:"794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com",
+   }
+   
+   ```
+
 ## Option 2
 
 This method is deprecated as of 4/21 and will soon be removed. Please use Option 1.
@@ -123,7 +141,7 @@ This method is deprecated as of 4/21 and will soon be removed. Please use Option
       npm start
       ```
 
-## To Begin Work on the Backend / Serve Backend
+### To Begin Work on the Backend / Serve Backend
 
 Frontend specific development doesn't require these steps. Setting up the DB is only necessary if you'll be wanting to interact with the entire web app, including the backend API.
 
@@ -231,6 +249,7 @@ To create a new migration:
 1. Migrations will be automatically run on next request to the backend.
 
 When adding or updating fields that are used in the Graphql mutations, be sure to update `backend/graphql_api/lambda/graphql/apolloServer.js`.
+
 
 # Workflow
 

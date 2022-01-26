@@ -12,6 +12,9 @@ import {
 
 // Asset imports
 import cityLogo from "../../assets/SanJoseCityLogo.png";
+import {
+  StatusInProgress,
+} from '../../utils/_icons';
 
 // functions used by this component
 import isAdmin from "../../utils/isAdmin";
@@ -19,7 +22,10 @@ import isAdmin from "../../utils/isAdmin";
 const MEETING_RELATIVE_TIME_LOC_KEY_PREFIX = "meeting.status.relative.long.";
 const PAST_MEETING_STATUS_LOC_KEY = "meeting.status.long.ended";
 
-function Header({ loading, meeting, setSaveMeetingItems }) {
+
+function Header({
+  loading, meeting, setSaveMeetingItems, progressStatus,
+}) {
   const { t } = useTranslation();
 
   const getRelativeTimeLocKey = () => {
@@ -41,21 +47,26 @@ function Header({ loading, meeting, setSaveMeetingItems }) {
       <div className={classnames("header-content")}>
         <img className="logo" src={cityLogo} alt="logo" />
         <div className="meeting-info">
-          <div className="title">{t("header.city-council-meeting-agenda")}</div>
 
+          <div className="title">
+            {t('header.city-council-meeting-agenda')}
+            {progressStatus && <span className="statusInProgress"><StatusInProgress /></span>}
+          </div>
           <div className="details-title">Meeting Details</div>
 
           {loading && <Spinner />}
 
           {!loading && (
             <>
-              <div className="date">
-                {toDateString(
-                  meeting.meeting_start_timestamp,
-                  "dddd, MMMM D, YYYY"
-                )}
+              <div className="date-wrapper">
+                <div className="date">
+                  {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
+                </div>
+                <div className={progressStatus ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
+                  {progressStatus ? <span className="in-progress-header">In Progress</span> : <span className="not-started">Not Started</span>}
+                  {progressStatus && <StatusInProgress className="status-icon" />}
+                </div>
               </div>
-
               <div className="time">
                 {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
                 {t("meeting.start-time")}:{" "}

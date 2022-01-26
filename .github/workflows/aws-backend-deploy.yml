@@ -13,8 +13,8 @@ env:
   AWS_SHARED_CLUSTER: multi-tenant-prod
   AWS_APP_NAME: happening-atm-api
   AWS_REGION: us-west-2
-  DOCKERFILE: backend/graphql_api/Dockerfile
-  DOCKER_PATH: backend/graphql_api/
+  DOCKERFILE: backend/graphql_api/lambda/Dockerfile
+  DOCKER_PATH: backend/graphql_api/lambda
 jobs:
   setup_env:
     name: Set-up environment 
@@ -65,6 +65,7 @@ jobs:
         region: ${{ env.AWS_REGION }}
         tags: latest,${{ needs.setup_env.outputs.IMAGE_TAG }}
         dockerfile: ${{ env.DOCKERFILE }}
+        path: ${{ env.DOCKER_PATH }}
   deploy:
     name: Deploy to AWS ECS
     runs-on: ubuntu-latest

@@ -185,7 +185,7 @@ module.exports = async (logger) => {
   module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
     let paramIndex = 1;
-    let idParams = ids.map(id => `\$${paramIndex++}`);    
+    let idParams = ids.map(id => `\$${paramIndex++}`);
     const queryString = `SELECT * FROM subscription WHERE id IN (${idParams.join(', ')})`;
     return query(queryString, [...ids]);
   };
