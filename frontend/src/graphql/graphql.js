@@ -210,6 +210,14 @@ export const LOGIN_GOOGLE = gql`
   }
 `;
 
+export const LOGIN_MICROSOFT = gql`
+query LoginMicrosoft {
+  loginMicrosoft{
+    token
+  }
+}
+`;
+
 export const CONFIRM_EMAIL = gql`
   mutation confirmEmail(
     $token: String

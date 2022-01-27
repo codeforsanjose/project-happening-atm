@@ -180,7 +180,10 @@ module.exports = (logger) => {
   const loginMicrosoft = async (dbClient, context) => {
     let token;
     try {
-      const user = await authentication.verifyMicrosoftToken(dbClient, context.token);
+      const user = {
+        rows:[]
+      };
+      user.rows.push(await authentication.verifyMicrosoftToken(dbClient, context.token));
       validator.validateAuthType(user.rows[0].auth_type, "Microsoft");
       token = await authentication.createJWT(user);
     } catch (e) {

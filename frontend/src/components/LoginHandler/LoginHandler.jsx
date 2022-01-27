@@ -8,8 +8,9 @@ import {
   useLazyQuery,
 } from '@apollo/client';
 import { GoogleLogin } from 'react-google-login';
+import MicrosoftLogin from 'react-microsoft-login';
 
-import { LOGIN_LOCAL, LOGIN_GOOGLE } from '../../graphql/graphql';
+import { LOGIN_LOCAL, LOGIN_GOOGLE, LOGIN_MICROSOFT } from '../../graphql/graphql';
 import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
@@ -20,6 +21,7 @@ import CLIENT_ID from '../../constants/OauthClientID';
 // global constant options
 const OPTIONS = {
   googleClientID: CLIENT_ID.GOOGLE,
+  microsoftClientID: CLIENT_ID.MICROSOFT,
 };
 
 function LoginHandler() {
@@ -36,13 +38,25 @@ function LoginHandler() {
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
   const loginGoogle = useLazyQuery(LOGIN_GOOGLE,
     { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
+  const loginMicrosoft = useLazyQuery(LOGIN_MICROSOFT,
+    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
+
+  // needed to fix an infinite looping problem with microsoft oauth and microsoft-react-login
+  const { sessionStorage } = window;
+  sessionStorage.clear();
 
   // Response if the google connection attempt failed
   const responseGoogle = (response) => {
-    // for debuging
-    // eslint-disable-next-line no-console
-    console.log(response);
     setOtherError(true);
+  };
+
+  const microsoftHandler = (err, response) => {
+    if (err === null) {
+      localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
+      loginMicrosoft[0]();
+    } else {
+      setOtherError(true);
+    }
   };
 
   // This function makes the query call to perform the login
@@ -68,6 +82,9 @@ function LoginHandler() {
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginLocal')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+      }
+      if (Object.prototype.hasOwnProperty.call(data, 'loginMicrosoft')) {
+        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
       }
       window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
 
@@ -122,13 +139,15 @@ function LoginHandler() {
             onFailure={responseGoogle}
             cookiePolicy="single_host_origin"
           />
-          <div className="google-microsoft-login">
-            <img
-              src={microsoftIcon}
-              alt="microsoftLogin"
-            />
-            <span>{t('login.body.oauth.microsoft')}</span>
-          </div>
+          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={microsoftHandler}>
+            <button className="google-microsoft-login microsoftLogin" type="button">
+              <img
+                src={microsoftIcon}
+                alt="microsoftLogin"
+              />
+              <span>{t('login.body.oauth.microsoft')}</span>
+            </button>
+          </MicrosoftLogin>
 
           <div className="or">
             <hr />
@@ -167,8 +186,9 @@ function LoginHandler() {
             <NavLink className="passAnchor mobileView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
           </div>
           <div className="create-account-container">
-            <span>{t('createAccount.span')}</span><NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
-          </div>     
+            <span>{t('createAccount.span')}</span>
+            <NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+          </div>
         </div>
       </div>
     </div>

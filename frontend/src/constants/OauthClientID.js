@@ -1,7 +1,8 @@
-//Contains the client ids for Google and Microsoft
+// Contains the client ids for Google and Microsoft
 
 const CLIENT_ID = {
-    GOOGLE:"",
-}
+  GOOGLE: '',
+  MICROSOFT: '',
+};
 
 export default CLIENT_ID;
