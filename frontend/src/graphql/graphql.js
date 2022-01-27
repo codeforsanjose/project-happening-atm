@@ -83,7 +83,6 @@ export const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
-
 export const GET_RESET_PASSWORD_TOKEN = gql`
 query GetResetPasswordToken(
   $id: Int
@@ -95,6 +94,24 @@ query GetResetPasswordToken(
 }
 }
 `;
+
+export const GET_SUB_BY_EMAIL_MEETINGID = gql`
+query GetSubByEmailAndID(
+  $phone_number: String!, 
+  $meeting_id: Int!, 
+  $email_address: String!){
+    getSubscriptionsByEmailAndMeetingID(phone_number:$phone_number,
+      email_address: $email_address,
+      meeting_id: $meeting_id,){
+      id,
+      phone_number,
+      email_address,
+      meeting_item_id,
+      meeting_id,
+    }
+}
+`;
+
 // setters
 
 export const UPDATE_MEETING_ITEM = gql`
@@ -217,7 +234,7 @@ export const DELETE_MEETING = gql`
   }
 `;
 
-// New mutation for creating a new account. 
+// New mutation for creating a new account.
 // Mutation corresponds to existing backend "createAccount" mutation.
 export const CREATE_ACCOUNT = gql`
   mutation CreateAccount(

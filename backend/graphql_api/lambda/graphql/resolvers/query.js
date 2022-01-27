@@ -119,6 +119,18 @@ module.exports = (logger) => {
     return res.rows[0];
   };
 
+  module.getSubscriptionsByEmailAndMeetingID = async (dbClient, args, context) => {
+    validator.validateUser(context);
+    let res;
+    try{
+      res = await dbClient.getSubscriptionsByEmailAndMeetingID(args.phone_number, args.email_address, args.meeting_id);
+    }catch (e) {
+      loginGoogle.error(`getSubscriptionsByEmailAndMeetingID resolver error -dbClient.getSubscriptionsByEmailAndMeetingID: ${e}`);
+      throw e;
+    }
+    return res.rows;
+  }
+
   const getAllSubscriptions = async (dbClient, args, context) => {
     validator.validateAuthorization(context);
     let res;

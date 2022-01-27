@@ -13,7 +13,7 @@ function DragOverlayHandler(props) {
   // deconstructing all the props, had to disable deconstructing rule
   // so that I can deconstruct as an object
   const {
-    agendaGroups, activeId
+    agendaGroups, activeId, subbedItems,
     // eslint-disable-next-line react/destructuring-assignment
   } = props.dragOverlayProps;
 
@@ -38,6 +38,12 @@ function DragOverlayHandler(props) {
       <RenderedAgendaItem
         id={activeId}
         item={activeItem}
+        subStatus={
+          subbedItems.some(
+            (sub) => (sub.meeting_item_id === activeId),
+          )
+        }
+        dragOverlay
       />
     </DragOverlay>
   );

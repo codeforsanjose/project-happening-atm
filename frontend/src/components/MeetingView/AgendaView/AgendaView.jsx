@@ -4,6 +4,7 @@ import { Accordion } from 'react-accessible-accordion';
 import './AgendaView.scss';
 import {
   useMutation,
+  useQuery,
 } from '@apollo/client';
 
 import {
@@ -18,6 +19,7 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 
+import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 
 // components used by this component
@@ -32,8 +34,7 @@ import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
 import getProgressStatus from './agendaViewFunctions/getProgressStatus';
 // graphql
-import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
-import MeetingItemStates from '../../../constants/MeetingItemStates';
+import { UPDATE_MEETING_ITEM, GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/graphql';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -79,12 +80,19 @@ function AgendaView({
   const [activeId, setActiveId] = useState(null);
   const [itemsUpdated, setItemsUpdated] = useState(0);
   const [itemsToUpdate, setItemsToUpdate] = useState(0);
+  const [subbedItems, setSubbedItems] = useState([]);
+  const [admin] = useState(isAdmin());
   const [expandedAcordians, setExpandedAcordians] = useState([]);
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
-
-  // regular variables
-  const admin = isAdmin();
+  const { data, error, refetch } = useQuery(GET_SUB_BY_EMAIL_MEETINGID,
+    {
+      variables: {
+        email_address: getUserEmail(),
+        phone_number: getUserPhone(),
+        meeting_id: agendaGroups.length > 0 ? agendaGroups[0].meeting_id : null,
+      },
+    });
 
   // sets the in progress flag for the wrapping component
   useEffect(
@@ -120,6 +128,13 @@ function AgendaView({
     }
   }, [itemsUpdated, itemsToUpdate, setItemsToUpdate, setMeetingItemsUpdated]);
 
+  // gets the subscription dataset
+  useEffect(() => {
+    if (data && !admin) {
+      setSubbedItems(data.getSubscriptionsByEmailAndMeetingID);
+    }
+  }, [data, admin]);
+
   // required for dndKit
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -141,7 +156,7 @@ function AgendaView({
 
   // DragOverlayhandler props
   const dragOverlayProps = {
-    agendaGroups, activeId,
+    agendaGroups, activeId, subbedItems,
   };
 
   // Necessary as the createRenderedGroups function returns renderedAgendaGroups
@@ -171,7 +186,10 @@ function AgendaView({
           <AgendaGroups
             admin={admin}
             agendaGroups={displayAgenda}
+            subbedItems={subbedItems}
+            refetchSubs={refetch}
             expandedAcordians={expandedAcordians}
+            getSubError={error}
           />
         </Accordion>
 

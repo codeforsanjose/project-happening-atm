@@ -182,6 +182,12 @@ module.exports = async (logger) => {
     ]);
   };
 
+  module.deleteSubscription = async (phone_number, email_address, meeting_id, meeting_item_id) => {
+    logger.info('dbClient: deleteSubscription');
+    const queryString = `DELETE FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3 AND meeting_item_id = $4`;
+    return query(queryString, [phone_number,email_address,meeting_id,meeting_item_id]);
+  };
+
   module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
     let paramIndex = 1;
@@ -201,6 +207,12 @@ module.exports = async (logger) => {
     const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1'
     return query(queryString, [id]);
   };
+
+  module.getSubscriptionsByEmailAndMeetingID = async (phone_number, email_address, meeting_id) => {
+    logger.info('dbClient: getSubscriptsByEmailAndMeetingID');
+    const queryString = 'SELECT * FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3'
+    return query(queryString, [phone_number, email_address, meeting_id]);
+  }
 
   module.getAllSubscriptions = async () => {
     logger.info('dbClient: getAllSubscriptions');
