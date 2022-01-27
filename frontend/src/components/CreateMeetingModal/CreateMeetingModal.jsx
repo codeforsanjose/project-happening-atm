@@ -1,23 +1,23 @@
 /* eslint-disable no-console */
-import React, { useCallback, useState, forwardRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import Modal from 'react-modal';
-import { useTranslation } from 'react-i18next';
-import { useMutation } from '@apollo/client';
+import React, { useCallback, useState, forwardRef } from "react";
+import { useHistory } from "react-router-dom";
+import Modal from "react-modal";
+import { useTranslation } from "react-i18next";
+import { useMutation } from "@apollo/client";
 
 //date picker functionality
-import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import es from 'date-fns/locale/es';
-import vi from 'date-fns/locale/vi';
+import DatePicker from "react-datepicker";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import es from "date-fns/locale/es";
+import vi from "date-fns/locale/vi";
 
-import { CREATE_MEETING } from '../../graphql/graphql';
-import './CreateMeetingModal.scss';
-import Spinner from '../Spinner/Spinner';
+import { CREATE_MEETING } from "../../graphql/graphql";
+import "./CreateMeetingModal.scss";
+import Spinner from "../Spinner/Spinner";
 
 // Asset imports
-import { CalendarBlueIcon, ScheduleBlueIcon } from '../../utils/_icons';
+import { CalendarBlueIcon, ScheduleBlueIcon } from "../../utils/_icons";
 
 /**
  * A modal to create a new meeting.
@@ -37,17 +37,17 @@ import { CalendarBlueIcon, ScheduleBlueIcon } from '../../utils/_icons';
 function CreateMeetingModal({ isOpen, closeModal }) {
   const history = useHistory();
   const { t } = useTranslation();
-  registerLocale('es', es);
-  registerLocale('vi', vi);
-  const language = useTranslation('home').i18n.language;
+  registerLocale("es", es);
+  registerLocale("vi", vi);
+  const language = useTranslation("home").i18n.language;
   setDefaultLocale(language);
-  const [ createMeeting, { loading } ] = useMutation(CREATE_MEETING);
-  const [ createSuccessful, setCreateSuccessful ] = useState(false);
+  const [createMeeting, { loading }] = useMutation(CREATE_MEETING);
+  const [createSuccessful, setCreateSuccessful] = useState(false);
 
   //date picker functionality
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const [ date, setDate ] = useState(tomorrow);
+  const [date, setDate] = useState(tomorrow);
 
   const handleChange = (date) => {
     setDate(date);
@@ -60,39 +60,40 @@ function CreateMeetingModal({ isOpen, closeModal }) {
   };
 
   /* component internationalized texts */
-  const title = 'meeting.list.new-meeting.modal.title';
-  const subtitle = 'meeting.list.new-meeting.modal.subtitle';
-  const dateInput = 'meeting.list.new-meeting.modal.inputs.date';
-  const timeInput = 'meeting.list.new-meeting.modal.inputs.time';
-  const cancelButtonText = 'meeting.list.new-meeting.modal.buttons.cancel';
-  const createButtonText = 'meeting.list.new-meeting.modal.buttons.create-meeting';
-  const buttonClickedText = 'meeting.list.new-meeting.modal.buttons.creating-meeting';
+  const title = "meeting.list.new-meeting.modal.title";
+  const subtitle = "meeting.list.new-meeting.modal.subtitle";
+  const dateInput = "meeting.list.new-meeting.modal.inputs.date";
+  const timeInput = "meeting.list.new-meeting.modal.inputs.time";
+  const cancelButtonText = "meeting.list.new-meeting.modal.buttons.cancel";
+  const createButtonText =
+    "meeting.list.new-meeting.modal.buttons.create-meeting";
+  const buttonClickedText =
+    "meeting.list.new-meeting.modal.buttons.creating-meeting";
 
-  const clearAndCloseModal = useCallback(
-    () => {
-      setCreateSuccessful(false);
-      closeModal();
-    },
-    [ closeModal ]
-  );
+  const clearAndCloseModal = useCallback(() => {
+    setCreateSuccessful(false);
+    closeModal();
+  }, [closeModal]);
 
-  const refresh = useCallback(
-    () => {
-      history.go(0);
-    },
-    [ history ]
-  );
+  const refresh = useCallback(() => {
+    history.go(0);
+  }, [history]);
 
   const handleAction = async () => {
     try {
       const timestamp = date.getTime();
       if (date < new Date()) {
-        alert('Warning: Meeting start time is in the past.  Please select a different start time.');
+        alert(
+          "Warning: Meeting start time is in the past.  Please select a different start time."
+        );
       }
+      // ToDo: meeting url hardcoded for now, requires zoom api to trigger new url automatically upon mtg creation (?)
+      // https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate
       await createMeeting({
         variables: {
-          meeting_start_timestamp: `${timestamp}`
-        }
+          meeting_start_timestamp: `${timestamp}`,
+          virtual_meeting_url: "https://zoom.us/join",
+        },
       });
       setCreateSuccessful(true);
     } catch (e) {
@@ -101,22 +102,36 @@ function CreateMeetingModal({ isOpen, closeModal }) {
   };
 
   // custom input for calendar icon in date selector input field
-  const CustomCalendarInput = forwardRef(({ onChange, value, placeholderText, onClick }, ref) => (
-    <label>
-      <input placeholder={placeholderText} onChange={onChange} value={value} onClick={onClick} />
-      <CalendarBlueIcon className="calendar-icon" onChange={onChange} />
-    </label>
-  ));
+  const CustomCalendarInput = forwardRef(
+    ({ onChange, value, placeholderText, onClick }, ref) => (
+      <label>
+        <input
+          placeholder={placeholderText}
+          onChange={onChange}
+          value={value}
+          onClick={onClick}
+        />
+        <CalendarBlueIcon className="calendar-icon" onChange={onChange} />
+      </label>
+    )
+  );
 
   // custom input for clock icon (aka schedule icon) in time selector input field
-  const CustomTimeInput = forwardRef(({ onChange, value, placeholderText, onClick }, ref) => (
-    <label>
-      <input placeholder={placeholderText} onChange={onChange} value={value} onClick={onClick} />
-      <ScheduleBlueIcon className="calendar-icon" onChange={onChange} />
-    </label>
-  ));
+  const CustomTimeInput = forwardRef(
+    ({ onChange, value, placeholderText, onClick }, ref) => (
+      <label>
+        <input
+          placeholder={placeholderText}
+          onChange={onChange}
+          value={value}
+          onClick={onClick}
+        />
+        <ScheduleBlueIcon className="calendar-icon" onChange={onChange} />
+      </label>
+    )
+  );
 
-  Modal.setAppElement('#root');
+  Modal.setAppElement("#root");
 
   // load refreshed meeting list if meeting successfully created
   if (createSuccessful) {
@@ -170,7 +185,11 @@ function CreateMeetingModal({ isOpen, closeModal }) {
           </div>
         </div>
         <div className="modal-buttons">
-          <button type="button" className="cancel-button modal-button" onClick={clearAndCloseModal}>
+          <button
+            type="button"
+            className="cancel-button modal-button"
+            onClick={clearAndCloseModal}
+          >
             {t(cancelButtonText)}
           </button>
           <button
