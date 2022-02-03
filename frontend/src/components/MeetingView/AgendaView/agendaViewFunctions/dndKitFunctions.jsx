@@ -5,11 +5,12 @@ import {
 // This file will hold functions needed for the proper functioning of dnd kit with AgendaView.jsx
 
 // called when the user lets go of the dragged item
-export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
+export const handleDragEnd = (event, { setAgendaGroups, oNumStart, completedIds }) => {
   const { active, over } = event;
+  const activeOrOverComplted = completedIds.some((id) => id === active.id || (id === over?.id));
 
   // if statement only entered when the agendaitem is over a valid drop location
-  if (over != null && active.id !== over.id) {
+  if (over != null && active.id !== over.id && !activeOrOverComplted) {
     setAgendaGroups((parents) => {
       const newParents = JSON.parse(JSON.stringify(parents));
 
@@ -52,10 +53,11 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
 
 // called when the user drags the dragOverlay on top of a agenda item or the group header
 // This function will handle the swapping of items between the agenda containers
-export const handleDragOver = (event, { setAgendaGroups}) => {
+export const handleDragOver = (event, { setAgendaGroups }) => {
   const { active, over } = event;
 
   setAgendaGroups((parents) => {
+    console.log(parents);
     const newParents = JSON.parse(JSON.stringify(parents));
 
     // these are used in the conditional expressions

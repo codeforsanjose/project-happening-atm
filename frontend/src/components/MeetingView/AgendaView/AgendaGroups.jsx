@@ -24,7 +24,6 @@ import {
 
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
-import isAdmin from '../../../utils/isAdmin';
 
 /**
  * A group of agenda items in a collapsible accordion.
@@ -188,6 +187,7 @@ function AgendaGroupBody({
 }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
+    disabled: true,
   });
 
   // needed to ensure the dragable element can be placed when the container is empty
@@ -195,16 +195,14 @@ function AgendaGroupBody({
     minHeight: options.minHeightAgendaContainer,
   };
 
-  // returns true if the sort should be disabled
-  const disableSort = (item) => {
-    const disableStatus = [MeetingItemStates.COMPLETED, MeetingItemStates.IN_PROGRESS];
-
-    return disableStatus.some((elem) => item.status === elem);
-  };
-
   return (
     <SortableContext
-      items={agendaGroup.items.map((item) => item.id)}
+      items={admin ? agendaGroup.items.map((item) => {
+        if (item.status !== MeetingItemStates.COMPLETED) {
+          return item.id;
+        }
+        return [];
+      }) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">
@@ -213,7 +211,6 @@ function AgendaGroupBody({
             <AgendaItem
               key={item.id}
               item={item}
-              disabled={!isAdmin() || disableSort(item)}
             />
           ))}
         </div>
