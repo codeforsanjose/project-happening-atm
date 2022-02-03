@@ -24,6 +24,7 @@ module.exports = (logger) => {
         getAllMeetingsWithItems: [meeting_with_items]
 
         getSubscription(id: Int!): subscription
+        getSubscriptionsByEmailAndMeetingID(phone_number: String!, email_address: String!, meeting_id: Int!): [subscription]
         getAllSubscriptions: [subscription]
 
         getAllAccounts: [account]
@@ -49,6 +50,7 @@ module.exports = (logger) => {
         updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
 
         createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
+        deleteSubscription(phone_number: String!, email_address: String!, meeting_id: Int!, meeting_item_id: Int!): Boolean
 
         confirmEmail(token: String): Boolean
         unconfirmEmail(token: String): Boolean
@@ -197,6 +199,10 @@ module.exports = (logger) => {
         logger.info('Initiating GetSubscription Query resolver');
         return resolverHandler(queryResolver.getSubscription, args.id, context);
       },
+      getSubscriptionsByEmailAndMeetingID: async (_parent, args, context) => {
+        logger.info('Initiating getSubscriptionsByEmailAndMeetingID Query resolver');
+        return resolverHandler(queryResolver.getSubscriptionsByEmailAndMeetingID, args, context);
+      },
       getAllSubscriptions: async (_parent, args, context) => {
         logger.info('Initiating GetAllSubscriptions Query resolver');
         return resolverHandler(queryResolver.getAllSubscriptions, args, context);
@@ -255,6 +261,10 @@ module.exports = (logger) => {
         logger.info('Initiating CreateSubscriptions Mutation resolver');
         return resolverHandler(mutationResolver.createSubscriptions, args, context);
       },
+      deleteSubscription: async (_parent, args, context) => {
+        logger.info('Initiating deleteSubscription Mutation resolver');
+        return resolverHandler(mutationResolver.deleteSubscription, args, context);
+      },
       confirmEmail: async (_parent, args) => {
         logger.info('Initiating ConfirmEmail Mutation resolver');
         return resolverHandler(mutationResolver.confirmEmail, args);
@@ -274,7 +284,7 @@ module.exports = (logger) => {
       resetPassword: async (_parent, args, context) => {
         logger.info('Initiating ResetPassword Mutation resolver');
         return resolverHandler(mutationResolver.resetPassword, args, context);
-      }
+      },
     },
   };
 

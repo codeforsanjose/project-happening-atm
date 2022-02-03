@@ -10,42 +10,52 @@
     margin: 0 200px 0;
     padding-bottom: 3em;
   }
-
-  .view-toggle {
+  
+  
+  a {
+    text-decoration: none;
+  }
+  
+  .join-meeting{
+    color: $happeningBlue;
+    background-color: $lightGreen;
+    border-radius: 5px;
+    
+    /* custom edits */
+    border: none;
     display: flex;
-    background-color: #fff;
+    align-items: center;
+    margin: 1em;
+    margin-left: 2em; 
+    padding: 0.5em;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
 
-    div {
-      width: 50%;
+    p{
+      /* Join Zoom Meeting */
+      position: static;
+      width: 88px;
+      height: 36px;
+      right: 14px;
+      top: calc(50% - 36px/2);
+
+      //font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
       text-align: center;
 
-      button {
-        width: 80%;
-        margin: 1em auto;
-        padding: 0.5em;
-        border: none;
-        border-radius: 6px;
-        background-color: $lightBronze;
-        color: $black;
-        font-size: 18px;
-        font-weight: 900;
-        cursor: pointer;
+      /* happening blue: 1F2847 */
+      color: #1F2847;
 
-        &:hover {
-          background-color: $cityBronze;
-        }
-
-        @media only screen and (min-device-width: 812px) {
-          max-width: 200px;
-        }
-      }
-    }
-
-    .view-active {
-      background-color: $blueSky;
-      button {
-        background-color: $cityBronze;
-      }
+      /* Inside auto layout */
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+      margin: 0px 4px;
     }
   }
 

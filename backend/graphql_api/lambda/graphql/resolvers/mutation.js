@@ -129,6 +129,18 @@ module.exports = (logger) => {
     return res.rows;
   };
 
+  module.deleteSubscription = async (dbClient, args, context) => {
+    validator.validateUser(context);
+    let res;
+    try{
+      res = await dbClient.deleteSubscription(args.phone_number, args.email_address, args.meeting_id, args.meeting_item_id);
+    }catch (e) {
+      logger.error(`deleteSubscription resolver error -dbClient.deleteSubscription: ${e}`);
+      throw e;
+    }
+    return true;
+  }
+
   module.updateMeetingItem = async (dbClient, args, context) => {
     validator.validateAuthorization(context);
     validator.validateUpdateMeetingItem(args);

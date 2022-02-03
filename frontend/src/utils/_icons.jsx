@@ -35,12 +35,15 @@ import { ReactComponent as LibraryAddCheckIcon } from '../assets/icons/library_a
 import { ReactComponent as MenuIcon } from '../assets/icons/menu-24px.svg';
 import { ReactComponent as NewReleasesIcon } from '../assets/icons/new_releases-24px.svg';
 import { ReactComponent as NotificationsIcon } from '../assets/icons/notifications-24px.svg';
+import { ReactComponent as NotificationFilledIcon } from '../assets/icons/notifications filled.svg';
 import { ReactComponent as OnDemandVideoIcon } from '../assets/icons/ondemand_video-24px.svg';
 import { ReactComponent as PlayWithCircleOutlineIcon } from '../assets/icons/play_circle_outline-24px(1).svg';
 import { ReactComponent as PublishIcon } from '../assets/icons/publish-24px.svg';
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg';
 import { ReactComponent as RemoveIcon } from '../assets/icons/remove-24px.svg';
+import { ReactComponent as StatusCompleted } from '../assets/icons/status-completed.svg';
 import { ReactComponent as StatusInProgress } from '../assets/icons/status-in-progress.svg';
+import { ReactComponent as StatusDeferred } from '../assets/icons/status-deferred.svg';
 import { ReactComponent as ScheduleIcon } from '../assets/icons/schedule-24px.svg';
 import { ReactComponent as ScheduleBlueIcon } from '../assets/icons/schedule_blue-24px.svg';
 import { ReactComponent as SearchIcon } from '../assets/icons/search-24px.svg';
@@ -63,7 +66,9 @@ export {
   CheckedCheckboxWithInnerShadowIcon,
   UncheckedCheckboxWithInnerShadowIcon,
   UncheckedCheckboxWithInnerShadowAndBronzeBorderIcon,
+  StatusCompleted,
   StatusInProgress,
+  StatusDeferred,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,
@@ -89,6 +94,7 @@ export {
   MenuIcon,
   NewReleasesIcon,
   NotificationsIcon,
+  NotificationFilledIcon,
   OnDemandVideoIcon,
   PlayWithCircleOutlineIcon,
   ProfileIcon,

@@ -7,9 +7,12 @@ const verifyToken = () => {
   const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
   const tokenObj = parseJwt(token);
 
-  // console.log(token.iss);
+  //Reg Exp to test microsoft issuer
+  //https://login.microsoftoneline.com/???????-??????/v2.0
+  const microsoftRegExp = /https:\/\/login.microsoftonline.com\/[\w-]+\/v2.0/;
+
   // Don't bother verifying a google or microsoft token, just return true
-  if (tokenObj !== null && tokenObj.iss === 'accounts.google.com') {
+  if (tokenObj !== null && (tokenObj.iss === 'accounts.google.com' || microsoftRegExp.test(tokenObj.iss))) {
     return true;
   }
 
