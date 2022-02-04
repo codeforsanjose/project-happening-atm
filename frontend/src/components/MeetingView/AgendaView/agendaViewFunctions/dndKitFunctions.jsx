@@ -1,16 +1,16 @@
 import {
   arrayMove,
 } from '@dnd-kit/sortable';
+import StatusDontSort from '../../../../constants/StatusDontSort';
 
 // This file will hold functions needed for the proper functioning of dnd kit with AgendaView.jsx
 
 // called when the user lets go of the dragged item
-export const handleDragEnd = (event, { setAgendaGroups, oNumStart, completedIds }) => {
+export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
   const { active, over } = event;
-  const activeOrOverComplted = completedIds.some((id) => id === active.id || (id === over?.id));
 
   // if statement only entered when the agendaitem is over a valid drop location
-  if (over != null && active.id !== over.id && !activeOrOverComplted) {
+  if (over != null && active.id !== over.id) {
     setAgendaGroups((parents) => {
       const newParents = JSON.parse(JSON.stringify(parents));
 
@@ -31,8 +31,11 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart, completedIds 
         });
       });
 
-      newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
-
+      if (!StatusDontSort.ITEMS_DONT_SORT.some(
+        (elem) => elem === newParents[parentIndex].items[newIndex].status,
+      )) {
+        newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
+      }
       return newParents;
     });
   }
@@ -57,7 +60,6 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
   const { active, over } = event;
 
   setAgendaGroups((parents) => {
-    console.log(parents);
     const newParents = JSON.parse(JSON.stringify(parents));
 
     // these are used in the conditional expressions

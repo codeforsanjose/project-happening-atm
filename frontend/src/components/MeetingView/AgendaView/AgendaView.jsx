@@ -33,7 +33,6 @@ import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
 import getProgressStatus from './agendaViewFunctions/getProgressStatus';
-import getCompletedIds from './agendaViewFunctions/getCompletedIds';
 
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 // graphql
@@ -86,7 +85,6 @@ function AgendaView({
   const [subbedItems, setSubbedItems] = useState([]);
   const [admin] = useState(isAdmin());
   const [expandedAcordians, setExpandedAcordians] = useState([]);
-  const [completedIds] = useState((getCompletedIds(agendaGroups)));
   const [updateMeetingItem] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { setItemsUpdated(itemsUpdated + 1); } });
   const { data, error, refetch } = useQuery(GET_SUB_BY_EMAIL_MEETINGID,
@@ -155,8 +153,8 @@ function AgendaView({
   // These are the props for various functions, and components in object form
   // Event handler functions
   const onDragStartArgs = { setActiveId };
-  const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart, completedIds };
-  const onDragOverArgs = { setAgendaGroups };
+  const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
+  const onDragOverArgs = { setAgendaGroups, agendaGroups };
 
   // DragOverlayhandler props
   const dragOverlayProps = {
