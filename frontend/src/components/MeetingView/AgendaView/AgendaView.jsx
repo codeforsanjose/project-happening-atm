@@ -34,7 +34,6 @@ import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
 import getProgressStatus from './agendaViewFunctions/getProgressStatus';
 
-import MeetingItemStates from '../../../constants/MeetingItemStates';
 // graphql
 import { UPDATE_MEETING_ITEM, GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/graphql';
 
