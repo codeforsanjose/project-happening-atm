@@ -82,6 +82,7 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
       let overContainerIndex;
       let activeIndex;
       let overIndex;
+      let dontSort = false;
 
       // finding the values of the variables above
       newParents.forEach((parent, parentIndex) => {
@@ -96,15 +97,20 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
           }
         });
       });
+
+      dontSort = StatusDontSort.GROUP_DONT_SORT.some(
+        (elem) => elem === newParents[overContainerIndex]?.status,
+      );
+
       // entered when the dragOverlay has entered a new agenda group
-      if (activeContainerIndex !== overContainerIndex) {
+      if (activeContainerIndex !== overContainerIndex && !dontSort) {
         const overIsDropId = newParents.filter((parent) => parent.dropID === over.id).length > 0;
 
         // entered when the dragOverlay is not on top of the header
         if (!overIsDropId) {
           const itemToMove = newParents[activeContainerIndex].items.splice(activeIndex, 1)[0];
           itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
-          newParents[overContainerIndex].items.splice(overIndex + 1, 0, itemToMove);
+          newParents[overContainerIndex].items.splice(overIndex, 0, itemToMove);
         } else { // entered when the overlay is on top of the header
           newParents.forEach((parent, i) => {
             if (parent.dropID === over.id) {
