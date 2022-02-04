@@ -13,7 +13,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  rectIntersection,
+  closestCorners,
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates,
@@ -178,7 +178,7 @@ function AgendaView({
 
       <DndContext
         sensors={sensors}
-        collisionDetection={rectIntersection}
+        collisionDetection={closestCorners}
         onDragStart={admin ? (e) => { handleDragStart(e, onDragStartArgs); } : null}
         onDragEnd={admin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
         onDragOver={admin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
