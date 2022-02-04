@@ -32,14 +32,21 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
         });
       });
 
+      // Prevents dragging an unsortable item
       dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
         (elem) => elem === newParents[parentIndex].items[newIndex]?.status,
       );
 
+      // prevents putting another item onto the unsortable item
       if (!dontSort) {
         dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
           (elem) => elem === newParents[parentIndex].items[oldIndex]?.status,
         );
+      }
+
+      // ensures that sorting only happens when moving items within a group
+      if (!dontSort) {
+        dontSort = !newParents[parentIndex].items.some((elem) => elem.id === over.id);
       }
 
       if (!dontSort) {
