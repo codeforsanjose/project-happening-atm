@@ -17,6 +17,7 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
       let parentIndex; // index of the agendaGroup currently hovered over
       let oldIndex; // The old index of the agendaItem being moved
       let newIndex; // The new index of the agendaItem being moved
+      let dontSort = false;
 
       parents.forEach((parent, index) => {
         parent.items.forEach((item, itemIndex) => {
@@ -31,9 +32,17 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
         });
       });
 
-      if (!StatusDontSort.ITEMS_DONT_SORT.some(
-        (elem) => elem === newParents[parentIndex].items[newIndex].status,
-      )) {
+      dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
+        (elem) => elem === newParents[parentIndex].items[newIndex]?.status,
+      );
+
+      if (!dontSort) {
+        dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
+          (elem) => elem === newParents[parentIndex].items[oldIndex]?.status,
+        );
+      }
+
+      if (!dontSort) {
         newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
       }
       return newParents;
@@ -98,19 +107,32 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
         });
       });
 
+      // prevents sorting into containers that are not sortable
       dontSort = StatusDontSort.GROUP_DONT_SORT.some(
         (elem) => elem === newParents[overContainerIndex]?.status,
       );
 
+      // prevent moving unsortable items between containers
+      if (!dontSort) {
+        dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
+          (elem) => elem === newParents[activeContainerIndex].items[activeIndex]?.status,
+        );
+      }
+
       // entered when the dragOverlay has entered a new agenda group
       if (activeContainerIndex !== overContainerIndex && !dontSort) {
         const overIsDropId = newParents.filter((parent) => parent.dropID === over.id).length > 0;
+        // Moving a item to a group below it.
+        const sortingFromAbove = activeContainerIndex < overContainerIndex;
 
         // entered when the dragOverlay is not on top of the header
         if (!overIsDropId) {
           const itemToMove = newParents[activeContainerIndex].items.splice(activeIndex, 1)[0];
           itemToMove.parent_meeting_item_id = newParents[overContainerIndex].id;
-          newParents[overContainerIndex].items.splice(overIndex, 0, itemToMove);
+          // eslint-disable-next-line no-unused-expressions
+          sortingFromAbove
+            ? newParents[overContainerIndex].items.splice(overIndex, 0, itemToMove)
+            : newParents[overContainerIndex].items.splice(overIndex + 1, 0, itemToMove);
         } else { // entered when the overlay is on top of the header
           newParents.forEach((parent, i) => {
             if (parent.dropID === over.id) {
