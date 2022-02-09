@@ -187,15 +187,20 @@ function AgendaGroupHeader({
   );
 }
 
-const buildSortableItems = (items) => {
+const buildSortableItems = (agendaGroup) => {
   let returnArray = [];
+  const { items, status } = agendaGroup;
 
-  returnArray = items.filter((item) => {
-    if (!StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === item.status)) {
-      return true;
-    }
-    return false;
-  });
+  const dontSort = StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === status);
+
+  if (!dontSort) {
+    returnArray = items.filter((item) => {
+      if (!StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === item.status)) {
+        return true;
+      }
+      return false;
+    });
+  }
 
   return returnArray.map((item) => item.id);
 };
@@ -215,7 +220,7 @@ function AgendaGroupBody({
 
   return (
     <SortableContext
-      items={admin ? buildSortableItems(agendaGroup.items) : []}
+      items={admin ? buildSortableItems(agendaGroup) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">

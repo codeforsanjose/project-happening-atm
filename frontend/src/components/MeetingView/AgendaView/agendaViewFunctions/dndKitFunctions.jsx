@@ -49,6 +49,13 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
         dontSort = !newParents[parentIndex].items.some((elem) => elem.id === over.id);
       }
 
+      // prevents moving any items inside an unsortable group
+      if (!dontSort) {
+        dontSort = StatusDontSort.GROUP_DONT_SORT.some(
+          (elem) => elem === newParents[parentIndex]?.status,
+        );
+      }
+
       if (!dontSort) {
         newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
       }
@@ -123,6 +130,13 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
       if (!dontSort) {
         dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
           (elem) => elem === newParents[activeContainerIndex].items[activeIndex]?.status,
+        );
+      }
+
+      // prevent moving items out of a unsortable container
+      if (!dontSort) {
+        dontSort = StatusDontSort.GROUP_DONT_SORT.some(
+          (elem) => elem === newParents[activeContainerIndex]?.status,
         );
       }
 
