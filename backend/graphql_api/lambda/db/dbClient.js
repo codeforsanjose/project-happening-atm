@@ -198,13 +198,13 @@ module.exports = async (logger) => {
 
   module.getSubscriptionsByMeetingID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingID');
-    const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1'
+    const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1';
     return query(queryString, [id]);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingItemID');
-    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1'
+    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1';
     return query(queryString, [id]);
   };
 
@@ -312,8 +312,11 @@ module.exports = async (logger) => {
       }
     });
     idListString += ')';
-    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id in $1';
-    return query(queryString, [idListString]);
+    // fix for notifying next up agenda item:
+    return query(`SELECT * FROM subscription WHERE meeting_item_id IN ${[idListString]}`);
+    // orig code (not working):
+    // const queryString = 'SELECT * FROM subscription WHERE meeting_item_id IN $1';
+    // return query(queryString, [idListString]);
   };
 
   module.getAdminByEmail = async (email) => {
