@@ -43,7 +43,8 @@ module.exports = (logger) => {
             email: user.rows[0].email_address,
             first_name: user.rows[0].first_name,
             last_name: user.rows[0].last_name,
-            roles: user.rows[0].roles
+            roles: user.rows[0].roles,
+            phone_number: user.rows[0].phone_number, // add phone # for text notifications
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         return token;
