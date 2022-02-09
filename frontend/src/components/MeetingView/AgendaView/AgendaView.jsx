@@ -33,7 +33,6 @@ import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
 import getProgressStatus from './agendaViewFunctions/getProgressStatus';
-
 // graphql
 import { UPDATE_MEETING_ITEM, GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/graphql';
 
@@ -151,7 +150,7 @@ function AgendaView({
 
   // These are the props for various functions, and components in object form
   // Event handler functions
-  const onDragStartArgs = { setActiveId };
+  const onDragStartArgs = { setActiveId, agendaGroups };
   const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
   const onDragOverArgs = { setAgendaGroups, agendaGroups };
 
@@ -194,7 +193,7 @@ function AgendaView({
           />
         </Accordion>
 
-        {admin && null ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
+        {admin && activeId ? <DragOverlayHandler dragOverlayProps={dragOverlayProps} /> : null}
       </DndContext>
     </div>
   );

@@ -1,6 +1,8 @@
 import {
   arrayMove,
 } from '@dnd-kit/sortable';
+import { assertDirective } from 'graphql';
+import set from 'js-yaml/lib/type/set';
 import StatusDontSort from '../../../../constants/StatusDontSort';
 
 // This file will hold functions needed for the proper functioning of dnd kit with AgendaView.jsx
@@ -173,8 +175,32 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
 };
 
 // called when the user starts dragging
-export const handleDragStart = (event, { setActiveId }) => {
+export const handleDragStart = (event, { setActiveId, agendaGroups }) => {
   const { active } = event;
+  let activeItem;
+  let activeGroup;
+  let dontSort = false;
 
-  setActiveId(active.id);
+  // need to find out which agendaGroups and items are sortable,
+  // and then only set active those items that are sortable, and in a sortable container
+
+  activeGroup = agendaGroups.filter((group) => group.items.some((item) => item.id === active.id));
+  [activeGroup] = activeGroup;
+
+  activeItem = activeGroup.items.filter((item) => item.id === active.id);
+  [activeItem] = activeItem;
+
+  if (!dontSort) {
+    dontSort = StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === activeGroup.status);
+  }
+
+  if (!dontSort) {
+    dontSort = StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === activeItem.status);
+  }
+
+  if (!dontSort) {
+    setActiveId(active.id);
+  } else {
+    setActiveId(null);
+  }
 };
