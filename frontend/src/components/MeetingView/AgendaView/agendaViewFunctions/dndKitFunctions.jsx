@@ -1,8 +1,6 @@
 import {
   arrayMove,
 } from '@dnd-kit/sortable';
-import { assertDirective } from 'graphql';
-import set from 'js-yaml/lib/type/set';
 import StatusDontSort from '../../../../constants/StatusDontSort';
 
 // This file will hold functions needed for the proper functioning of dnd kit with AgendaView.jsx
