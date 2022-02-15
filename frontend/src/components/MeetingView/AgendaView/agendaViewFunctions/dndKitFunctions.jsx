@@ -5,6 +5,17 @@ import StatusDontSort from '../../../../constants/StatusDontSort';
 
 // This file will hold functions needed for the proper functioning of dnd kit with AgendaView.jsx
 
+// utility function
+const shouldItSort = (statusToCheck, itemToCheck) => {
+  let dontSort = false;
+
+  dontSort = statusToCheck.some(
+    (elem) => elem === itemToCheck?.status,
+  );
+
+  return !dontSort;
+};
+
 // called when the user lets go of the dragged item
 export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
   const { active, over } = event;
@@ -17,7 +28,7 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
       let parentIndex; // index of the agendaGroup currently hovered over
       let oldIndex; // The old index of the agendaItem being moved
       let newIndex; // The new index of the agendaItem being moved
-      let dontSort = false;
+      let sort = true;
 
       parents.forEach((parent, index) => {
         parent.items.forEach((item, itemIndex) => {
@@ -33,30 +44,24 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
       });
 
       // Prevents dragging an unsortable item
-      dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
-        (elem) => elem === newParents[parentIndex].items[newIndex]?.status,
-      );
+      sort = shouldItSort(StatusDontSort.ITEMS_DONT_SORT, newParents[parentIndex].items[newIndex]);
 
-      // prevents putting another item onto the unsortable item
-      if (!dontSort) {
-        dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
-          (elem) => elem === newParents[parentIndex].items[oldIndex]?.status,
-        );
+      // prevents putting another item into the unsortable item
+      if (sort) {
+        sort = shouldItSort(StatusDontSort.ITEMS_DONT_SORT,
+          newParents[parentIndex].items[oldIndex]);
       }
 
       // ensures that sorting only happens when moving items within a group
-      if (!dontSort) {
-        dontSort = !newParents[parentIndex].items.some((elem) => elem.id === over.id);
+      if (sort) {
+        sort = newParents[parentIndex].items.some((elem) => elem.id === over.id);
       }
-
       // prevents moving any items inside an unsortable group
-      if (!dontSort) {
-        dontSort = StatusDontSort.GROUP_DONT_SORT.some(
-          (elem) => elem === newParents[parentIndex]?.status,
-        );
+      if (sort) {
+        sort = shouldItSort(StatusDontSort.GROUP_DONT_SORT, newParents[parentIndex]);
       }
 
-      if (!dontSort) {
+      if (sort) {
         newParents[parentIndex].items = arrayMove(parents[parentIndex].items, oldIndex, newIndex);
       }
       return newParents;
@@ -105,7 +110,7 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
       let overContainerIndex;
       let activeIndex;
       let overIndex;
-      let dontSort = false;
+      let sort = true;
 
       // finding the values of the variables above
       newParents.forEach((parent, parentIndex) => {
@@ -122,26 +127,21 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
       });
 
       // prevents sorting into containers that are not sortable
-      dontSort = StatusDontSort.GROUP_DONT_SORT.some(
-        (elem) => elem === newParents[overContainerIndex]?.status,
-      );
+      sort = shouldItSort(StatusDontSort.GROUP_DONT_SORT, newParents[overContainerIndex]);
 
       // prevent moving unsortable items between containers
-      if (!dontSort) {
-        dontSort = StatusDontSort.ITEMS_DONT_SORT.some(
-          (elem) => elem === newParents[activeContainerIndex].items[activeIndex]?.status,
-        );
+      if (sort) {
+        sort = shouldItSort(StatusDontSort.ITEMS_DONT_SORT,
+          newParents[activeContainerIndex].items[activeIndex]);
       }
 
       // prevent moving items out of a unsortable container
-      if (!dontSort) {
-        dontSort = StatusDontSort.GROUP_DONT_SORT.some(
-          (elem) => elem === newParents[activeContainerIndex]?.status,
-        );
+      if (sort) {
+        sort = shouldItSort(StatusDontSort.GROUP_DONT_SORT, newParents[activeContainerIndex]);
       }
 
       // entered when the dragOverlay has entered a new agenda group
-      if (activeContainerIndex !== overContainerIndex && !dontSort) {
+      if (activeContainerIndex !== overContainerIndex && sort) {
         const overIsDropId = newParents.filter((parent) => parent.dropID === over.id).length > 0;
         // Moving a item to a group below it.
         const sortingFromAbove = activeContainerIndex < overContainerIndex;
@@ -177,7 +177,7 @@ export const handleDragStart = (event, { setActiveId, agendaGroups }) => {
   const { active } = event;
   let activeItem;
   let activeGroup;
-  let dontSort = false;
+  let sort = true;
 
   // need to find out which agendaGroups and items are sortable,
   // and then only set active those items that are sortable, and in a sortable container
@@ -188,15 +188,14 @@ export const handleDragStart = (event, { setActiveId, agendaGroups }) => {
   activeItem = activeGroup.items.filter((item) => item.id === active.id);
   [activeItem] = activeItem;
 
-  if (!dontSort) {
-    dontSort = StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === activeGroup.status);
+  if (sort) {
+    sort = shouldItSort(StatusDontSort.GROUP_DONT_SORT, activeGroup);
+  }
+  if (sort) {
+    sort = shouldItSort(StatusDontSort.ITEMS_DONT_SORT, activeItem);
   }
 
-  if (!dontSort) {
-    dontSort = StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === activeItem.status);
-  }
-
-  if (!dontSort) {
+  if (sort) {
     setActiveId(active.id);
   } else {
     setActiveId(null);
