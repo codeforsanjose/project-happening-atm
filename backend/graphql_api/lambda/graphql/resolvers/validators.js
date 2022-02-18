@@ -51,15 +51,17 @@ module.exports = (logger) => {
   const isNumericString = (string) => /^\d+$/.test(string);
 
   const validateTimestamp = (ts, fieldName, context) => {
-    const tsIsNumeric = isNumericString(ts);
-    if (!tsIsNumeric) {
-      const msg = `Invalid "${fieldName}" field. Timestamp is not numeric: ${ts}`;
-      throwUserInputError(msg, context);
-    }
-    const isValidDate = new Date(parseInt(ts, 10)).getTime() > 0;
-    if (!isValidDate) {
-      const msg = `Invalid "${fieldName}" field. Timestamp is not a valid date: ${ts}`;
-      throwUserInputError(msg, context);
+    if(ts != '0'){
+      const tsIsNumeric = isNumericString(ts);
+      if (!tsIsNumeric) {
+        const msg = `Invalid "${fieldName}" field. Timestamp is not numeric: ${ts}`;
+        throwUserInputError(msg, context);
+      }
+      const isValidDate = new Date(parseInt(ts, 10)).getTime() > 0;
+      if (!isValidDate) {
+        const msg = `Invalid "${fieldName}" field. Timestamp is not a valid date: ${ts}`;
+        throwUserInputError(msg, context);
+      }
     }
   };
 
