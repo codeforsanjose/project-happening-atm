@@ -126,7 +126,7 @@ module.exports = (logger) => {
           resolve(result);
         }));
       });
-      let { email, name, exp } = await payload;
+      const { email, name, exp } = await payload;
 
       // Microsoft Accounts don't require a personal name, this assigns default first and last name in that case
       if (typeof name !== 'undefined') {
