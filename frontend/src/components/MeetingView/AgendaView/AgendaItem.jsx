@@ -23,6 +23,7 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
 import {
   NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress,
 } from '../../../utils/_icons';
+import ChangeMeetingStatus from '../../ChangeMeetingStatus/ChangeMeetingStatus';
 
 /**
  *
@@ -70,9 +71,10 @@ import {
 function AgendaItem({
   item, subStatus, refetchSubs, getSubError,
 }) {
+  const [disableSort, setDisableSort] = useState(false);
   const {
     attributes, listeners, setNodeRef, transform, transition,
-  } = useSortable({ id: item.id });
+  } = useSortable({ id: item.id, disabled: disableSort });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -80,6 +82,7 @@ function AgendaItem({
   };
 
   return (
+
     <RenderedAgendaItem
       {...attributes}
       {...listeners}
@@ -90,6 +93,7 @@ function AgendaItem({
       subStatus={subStatus}
       refetchSubs={refetchSubs}
       getSubError={getSubError}
+      setDisableSort={setDisableSort}
     />
   );
 }
@@ -119,13 +123,26 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
+    item, notAModal = true, testValue, setDisableSort, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
+    const [dispalySetStatusModal, setDisplaySetStatusModal] = useState(false);
     const [admin] = useState(isAdmin());
+    const itemRef = useRef(null);
     const modalRef = useRef(null);
+    const dropDownRef = useRef(null);
     const { t } = useTranslation();
+    const args = {
+      item,
+      itemRef,
+      setDisableSort,
+      subStatus,
+      refetchSubs,
+      dragOverlay,
+      getSubError,
+      notAModal: false,
+    };
 
     useEffect(() => {
       if (subStatus && !admin) {
@@ -171,64 +188,94 @@ const RenderedAgendaItem = forwardRef(
     // This allows the smooth pressing of the checkbox and the ability to drag
     // Without this the dragOverlay prevented the pressing of the checkbox
     return (
-      <div {...props} ref={ref} className="AgendaItem">
+      <div ref={itemRef}>
+        <div {...props} ref={ref} className="AgendaItem">
 
-        <div className="row">
-          {item.status === MeetingItemStates.PENDING}
-          <h4>{item.title_loc_key}</h4>
-          <div className="item-status">
-            {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
-            {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
-            {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
-            {subscribed && (<NotificationFilledIcon />)}
+          <div className="row">
+            {item.status === MeetingItemStates.PENDING}
+            <h4>{item.title_loc_key}</h4>
+            <div className="item-status">
+              {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
+              {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
+              {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
+              {subscribed && (<NotificationFilledIcon />)}
+            </div>
+
           </div>
+          <p>{item.description_loc_key}</p>
+          {subscriptions && subscriptions.length > 0 && (
+            <SubscribeConfirmation
+              numberOfSubscriptions={subscriptions.length}
+              onClose={closeConfirmation}
+              ref={modalRef}
+            />
+          )}
+          {error && <div className="form-error">{error.message}</div>}
+          {getSubError && <div className="form-error">{getSubError.message}</div>}
 
-        </div>
-        <p>{item.description_loc_key}</p>
-        {subscriptions && subscriptions.length > 0 && (
-          <SubscribeConfirmation
-            numberOfSubscriptions={subscriptions.length}
-            onClose={closeConfirmation}
-            ref={modalRef}
+          {dispalySetStatusModal
+          && (
+          <ChangeMeetingStatus
+            args={args}
+            dropDownRef={dropDownRef}
+            itemRef={itemRef}
+            setDisableSort={setDisableSort}
+            setDisplaySetStatusModal={setDisplaySetStatusModal}
           />
-        )}
-        {error && <div className="form-error">{error.message}</div>}
-        {getSubError && <div className="form-error">{getSubError.message}</div>}
-        <div className="item-links">
-          <div className="link">
-            <p>
-              <span>+</span>
-              {t('meeting.tabs.agenda.list.more-info.button')}
-            </p>
-          </div>
-          {/* if Item status is completed, it will show completed;
-              if Item status is deferred, it will show deferred;
-              if Item statu is not subscribed, it will show notify me;
-              if Item status is subscribed/subscribing it will show that */}
-
-          {item.status === MeetingItemStates.COMPLETED && (
+          )}
+          <div className="item-links">
             <div className="link">
-              <p className="disabled">
-                {t('meeting.tabs.agenda.status.options.completed')}
+              <p>
+                <span>+</span>
+                {t('meeting.tabs.agenda.list.more-info.button')}
               </p>
             </div>
-          )}
+            {/* if Item status is completed, it will show completed;
+                if Item status is deferred, it will show deferred;
+                if Item statu is not subscribed, it will show notify me;
+                if Item status is subscribed/subscribing it will show that */}
 
-          {item.status === MeetingItemStates.DEFERRED && (
-          <div className="link">
-            <p className="deferred">
-              {t('meeting.tabs.agenda.status.options.deferred')}
-            </p>
+            {item.status === MeetingItemStates.COMPLETED && (
+              <div className="link">
+                <p className="disabled">
+                  {t('meeting.tabs.agenda.status.options.completed')}
+                </p>
+              </div>
+            )}
+
+            {item.status === MeetingItemStates.DEFERRED && (
+            <div className="link">
+              <p className="deferred">
+                {t('meeting.tabs.agenda.status.options.deferred')}
+              </p>
+            </div>
+            )}
+
+            {(item.status !== MeetingItemStates.COMPLETED)
+            && (item.status !== MeetingItemStates.DEFERRED)
+            && (item.status !== MeetingItemStates.IN_PROGRESS)
+            && !admin
+            && (
+              <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
+            )}
+
+            {admin && true && (
+              <ul className="buttonStyles">
+                <li>
+                  <input
+                    type="button"
+                    ref={dropDownRef}
+                    className="upComing"
+                    onClick={() => {
+                      setDisableSort(true);
+                      setDisplaySetStatusModal(true);
+                    }}
+                    value="Upcoming"
+                  />
+                </li>
+              </ul>
+            )}
           </div>
-          )}
-
-          {(item.status !== MeetingItemStates.COMPLETED)
-          && (item.status !== MeetingItemStates.DEFERRED)
-          && (item.status !== MeetingItemStates.IN_PROGRESS)
-          && !admin
-          && (
-            <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
-          )}
         </div>
       </div>
     );
