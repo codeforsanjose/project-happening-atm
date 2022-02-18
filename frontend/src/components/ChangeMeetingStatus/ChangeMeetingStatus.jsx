@@ -27,16 +27,47 @@ function buildItemStyle(itemRef) {
   };
 }
 
+function buildListStyle(dropDownRef) {
+  const rect = dropDownRef.getBoundingClientRect();
+  const xPos = rect.left;
+  const yPos = rect.top;
+  console.log(dropDownRef);
+  console.log(rect);
+  return {
+    width: `${dropDownRef.clientWidth}px`,
+    position: 'absolute',
+    left: `${xPos}px`,
+    top: `${yPos}px`,
+  };
+}
+
 const ChangeMeetingStatus = ({
   args, itemRef, dropDownRef, setDisplaySetStatusModal,
 }) => {
   Modal.setAppElement('#root');
   const [itemStyle, setItemStyle] = useState(buildItemStyle(itemRef.current));
-  console.log(dropDownRef);
+  const [listStyle, setListStyle] = useState(buildListStyle(dropDownRef.current));
+  console.log(dropDownRef.current.getBoundingClientRect());
+
+  const modalStyle = {
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgb(31, 40, 71, 0.65)',
+    },
+  };
+
   useEffect(() => {
     const eventListenerFunction = () => {
       setItemStyle(buildItemStyle(itemRef.current));
+      setListStyle(buildListStyle(dropDownRef.current));
     };
+
+    // blur background
+    document.querySelector('#root').style.filter = 'blur(20px)';
 
     window.addEventListener('scroll', eventListenerFunction);
     window.addEventListener('resize', eventListenerFunction);
@@ -45,20 +76,23 @@ const ChangeMeetingStatus = ({
       window.removeEventListener('scroll', eventListenerFunction);
       window.removeEventListener('resize', eventListenerFunction);
     };
-  }, [itemRef]);
+  }, [itemRef, dropDownRef]);
 
   return (
 
-    <Modal className="ChangeMeetingStatus" isOpen>
+    <Modal style={modalStyle} className="ChangeMeetingStatus" isOpen>
 
-      <div style={itemStyle}>
+      <div style={itemStyle} className="modalAgendaItemWrapper">
         <RenderedAgendaItem {...args} />
 
-        <ul className="buttonStyles">
-          <li><input className="upComing" type="button" value="Upcoming" /></li>
-        </ul>
-
       </div>
+      <ul className="listModalWrapper buttonStyles" style={listStyle}>
+        <li><input className="upComing" type="button" value="Upcoming" /></li>
+        <li><input className="inProgress" type="button" value="In Progress" /></li>
+        <li><input className="completed" type="button" value="Completed" /></li>
+        <li><input className="onHold" type="button" value="On Hold" /></li>
+        <li><input className="deffered" type="button" value="Deffered" /></li>
+      </ul>
 
     </Modal>
 

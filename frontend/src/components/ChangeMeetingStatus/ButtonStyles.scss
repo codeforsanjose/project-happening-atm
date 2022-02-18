@@ -2,18 +2,41 @@
 
 .buttonStyles{
     list-style:none;
-
+    padding:0;
+    margin:0;
     input{
-        padding:0 25px;
+        width:8.5rem;
         height:2rem;
         border:none;
         border-radius:8px;
         font-weight:700;
+        margin-bottom:0.4rem;
     }
     input:hover{
         cursor:pointer;
     }
+
     .upComing{
         background:$pendingBlueBackground;
+        color:$darkBlue;
     }
+    .inProgress{
+        background:$darkBlue;
+        color:$lightGreen;
+    }
+    .completed{
+        background:$pastGray;
+        color:$mediumGray;
+    }
+    .onHold{
+        background:$altWhite;
+        color:$darkBlue;
+        border:1px solid $pendingBlueBackground;
+    }
+    .deffered{
+        background:$white;
+        color:$errorRed;
+        border:1px solid $errorRed;
+    }
+
 }

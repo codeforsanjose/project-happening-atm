@@ -1,4 +1,12 @@
+@import '../../utils/colors';
+
 .ChangeMeetingStatus{
+    .modalAgendaItemWrapper{
+        
+        .AgendaItem{
+            border:solid 4px $darkBlue;
+        }
+    }
     @import './ButtonStyles.scss';
 
 }
