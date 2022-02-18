@@ -24,6 +24,7 @@ import {
 
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
+import StatusDontSort from '../../../constants/StatusDontSort';
 
 /**
  * A group of agenda items in a collapsible accordion.
@@ -186,11 +187,30 @@ function AgendaGroupHeader({
   );
 }
 
+const buildSortableItems = (agendaGroup) => {
+  let returnArray = [];
+  const { items, status } = agendaGroup;
+
+  const dontSort = StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === status);
+
+  if (!dontSort) {
+    returnArray = items.filter((item) => {
+      if (!StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === item.status)) {
+        return true;
+      }
+      return false;
+    });
+  }
+
+  return returnArray.map((item) => item.id);
+};
+
 function AgendaGroupBody({
   agendaGroup, admin, subbedItems, refetchSubs, getSubError,
 }) {
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
+    disabled: StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === agendaGroup.status),
   });
 
   // needed to ensure the dragable element can be placed when the container is empty
@@ -200,7 +220,7 @@ function AgendaGroupBody({
 
   return (
     <SortableContext
-      items={admin ? agendaGroup.items.map((item) => item.id) : []}
+      items={admin ? buildSortableItems(agendaGroup) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">
