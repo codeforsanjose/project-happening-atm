@@ -95,7 +95,13 @@ header {
     margin-left: auto;
   }
   .sign-out {
-    margin-left: 3em;
+    margin-left: 2em;
+  }
+}
+
+@media (max-width: 1300px) {
+  .nav-bar{
+    padding: 1em 2vw;
   }
 }
 
