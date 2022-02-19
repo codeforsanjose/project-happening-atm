@@ -1,11 +1,13 @@
 navbar:
   menu: Menu
   browse-meetings: Navegar Juntas
-  about: Nosotros
+  about: Sobre Nosotros
   faq: Preguntas Frecuentes
+  language: Idioma
   submit-feedback: Enviar Sugerencias
   sign-in: Iniciar Sesión
   sign-out: Cerrar Sesión 
+  profile: Perfil
 
 header:
   my-city-agenda: Agenda de Mi Ciudad

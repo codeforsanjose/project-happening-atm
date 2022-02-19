@@ -1,11 +1,13 @@
 navbar:
   menu: Menu
   browse-meetings: Browse Meetings
-  about: About
+  about: About ATM
   faq: FAQ
+  language: Language
   submit-feedback: Submit Feedback
   sign-in: Sign In
   sign-out: Sign Out
+  profile: Profile
 
 header:
   my-city-agenda: My City's Agenda
