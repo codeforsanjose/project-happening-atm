@@ -99,15 +99,21 @@ header {
   }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1440px) {
   header nav .nav-bar{
     padding: 1em 3vw;
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1375px) {
   header nav .nav-bar{
     padding: 1em 2vw;
+  }
+}
+
+@media (max-width: 1050px) {
+  header nav .nav-bar{
+    padding: 1em 0.8vw;
   }
 }
 
