@@ -43,7 +43,7 @@ $navMargin: 2.5em;
   }
 
   .button-active {
-    border-left: 8px solid $cityBlue;
+    border-left: 8px; // solid $cityBlue;
     background: $cityBlue10;
     color: $cityBlue;
     box-sizing: content-box;
