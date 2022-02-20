@@ -63,7 +63,7 @@
       }
     }
 
-    @media only screen and (min-width: 812px) {
+    @media only screen and (min-width: 991px){ //812px) {
       margin: 0 8em;
       padding-left: 4.5em;
 
@@ -101,9 +101,10 @@
       }
     }
 
-    @media only screen and (min-width: 812px) {
+    @media only screen and (min-width: 991px){ //812px) {
       padding: 1.25em 200px;
     }
+    
   }
 
   .loader {
