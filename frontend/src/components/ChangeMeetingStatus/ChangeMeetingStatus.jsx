@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
-// eslint-disable-next-line import/no-cycle
-import { RenderedAgendaItem } from '../MeetingView/AgendaView/AgendaItem';
 import './ChangeMeetingStatus.scss';
 
 import { CloseIcon } from '../../utils/_icons';
+
 /**
  * This is the component for subscribe confirmation modal window.
  *
@@ -51,11 +50,13 @@ function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
 }
 
 const ChangeMeetingStatus = ({
-  args, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
+  itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
 }) => {
   Modal.setAppElement('#root');
   const [itemStyle, setItemStyle] = useState(buildItemStyle(itemRef.current));
   const [listStyle, setListStyle] = useState(buildListStyle(dropDownRef.current));
+  const [cloneItem] = useState(itemRef.current.cloneNode(true));
+  const [contentRef, setContentRef] = useState(null);
 
   const modalStyle = {
     overlay: {
@@ -77,6 +78,7 @@ const ChangeMeetingStatus = ({
     // blur background
     document.querySelector('#root').style.filter = 'blur(20px)';
 
+    // setup responsiveness for the absolute positioned element
     window.addEventListener('scroll', eventListenerFunction);
     window.addEventListener('resize', eventListenerFunction);
 
@@ -84,15 +86,20 @@ const ChangeMeetingStatus = ({
       window.removeEventListener('scroll', eventListenerFunction);
       window.removeEventListener('resize', eventListenerFunction);
     };
-  }, [itemRef, dropDownRef]);
+  }, [itemRef, dropDownRef, cloneItem]);
 
+  // attach the cloned item
+  useEffect(() => {
+    if (contentRef != null) {
+      document.querySelector('#theChangeMeetingStatusModalWrapper').appendChild(cloneItem);
+    }
+  }, [contentRef, cloneItem]);
   return (
 
-    <Modal style={modalStyle} className="ChangeMeetingStatus" isOpen>
+    <Modal contentRef={(node) => { setContentRef(node); }} style={modalStyle} className="ChangeMeetingStatus" isOpen>
 
-      <div style={itemStyle} className="modalAgendaItemWrapper">
-        <RenderedAgendaItem {...args} />
-      </div>
+      {/* Use effect is attaching a cloned item to here */}
+      <div style={itemStyle} id="theChangeMeetingStatusModalWrapper" className="modalAgendaItemWrapper" />
 
       <div className="listModalWrapper" style={listStyle}>
         <div
