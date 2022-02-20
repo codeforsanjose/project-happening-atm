@@ -11,11 +11,11 @@ import { InfoIcon } from '../../utils/_icons';
 import {
   isNullOrEmpty, isNumericString, validEmail, isPasswordValid,
 } from '../../utils/validations';
+import RECAPTCHAS from '../../constants/Recaptchas';
 
 function AccountCreate() {
-
   // TODO: Add Site key.
-  const RECAPTCHA_SITE_KEY = '';
+  const RECAPTCHA_SITE_KEY = RECAPTCHAS.ACCOUNT_CREATION;
   const PASSWORD_TEXT = 'Passwords must have 6 characters, a uppercase, a lowercase, a number and a special character ';
 
   // User specific variables to be sent to backend.
@@ -115,16 +115,13 @@ function AccountCreate() {
     const currentErrors = { ...fieldErrors };
     const { phone_number } = userInfo;
     if (!isNullOrEmpty(phone_number)) {
-      if(!isNumericString(phone_number)){
+      if (!isNumericString(phone_number)) {
         currentErrors.phone_number = 'Phone number not numeric';
-      }
-      else if(phone_number.charAt(0) !== '1'){
+      } else if (phone_number.charAt(0) !== '1') {
         currentErrors.phone_number = 'Country code is required to be 1';
-      }
-      else if (phone_number.length !== 11) {
+      } else if (phone_number.length !== 11) {
         currentErrors.phone_number = 'We support only US phone numbers ex. +1(234)567-8910';
-      }
-      else {
+      } else {
         delete currentErrors.phone_number;
       }
     }
@@ -192,7 +189,6 @@ function AccountCreate() {
 
   // Handler for create new account button
   const createAccountHandler = () => {
-
     createAccount({
       variables: {
         email_address: userInfo.email_address,
@@ -316,7 +312,7 @@ function AccountCreate() {
               onBlur={(e) => verifyTosChecked(e.target)}
             />
             <label htmlFor="tos"> I have read, understood and agreed with your Terms of Service and Privacy Policy</label>
-            <label style={{ color:'red' }}>*</label>
+            <label style={{ color: 'red' }}>*</label>
           </div>
           {fieldErrors && fieldErrors.tos
             ? <p className="inline-error">{fieldErrors.tos}</p> : ''}
@@ -331,7 +327,7 @@ function AccountCreate() {
               sitekey={RECAPTCHA_SITE_KEY}
               onChange={handleCaptcha}
             />
-            <label style={{ color:'red' }}>*</label>
+            <label style={{ color: 'red' }}>*</label>
             {fieldErrors && fieldErrors.captcha_check
               ? <p className="inline-error">{fieldErrors.captcha_check}</p> : ''}
           </div>

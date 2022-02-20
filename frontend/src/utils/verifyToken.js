@@ -39,7 +39,7 @@ export function getUserEmail() {
 
 export function getUserPhone() {
   const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
-  const phone = parseJwt(token).phone;
+  const phone = parseJwt(token).phone_number;
   if (phone) {
     return phone;
   } else return '';
