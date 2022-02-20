@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
+// eslint-disable-next-line import/no-cycle
 import { RenderedAgendaItem } from '../MeetingView/AgendaView/AgendaItem';
 import './ChangeMeetingStatus.scss';
+
+import { CloseIcon } from '../../utils/_icons';
 /**
  * This is the component for subscribe confirmation modal window.
  *
@@ -31,8 +34,7 @@ function buildListStyle(dropDownRef) {
   const rect = dropDownRef.getBoundingClientRect();
   const xPos = rect.left;
   const yPos = rect.top;
-  console.log(dropDownRef);
-  console.log(rect);
+
   return {
     width: `${dropDownRef.clientWidth}px`,
     position: 'absolute',
@@ -41,13 +43,19 @@ function buildListStyle(dropDownRef) {
   };
 }
 
+function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
+  // remove blur effect
+  document.querySelector('#root').style.filter = 'none';
+  setDisableSort(false);
+  setDisplaySetStatusModal(false);
+}
+
 const ChangeMeetingStatus = ({
-  args, itemRef, dropDownRef, setDisplaySetStatusModal,
+  args, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
 }) => {
   Modal.setAppElement('#root');
   const [itemStyle, setItemStyle] = useState(buildItemStyle(itemRef.current));
   const [listStyle, setListStyle] = useState(buildListStyle(dropDownRef.current));
-  console.log(dropDownRef.current.getBoundingClientRect());
 
   const modalStyle = {
     overlay: {
@@ -84,15 +92,29 @@ const ChangeMeetingStatus = ({
 
       <div style={itemStyle} className="modalAgendaItemWrapper">
         <RenderedAgendaItem {...args} />
-
       </div>
-      <ul className="listModalWrapper buttonStyles" style={listStyle}>
-        <li><input className="upComing" type="button" value="Upcoming" /></li>
-        <li><input className="inProgress" type="button" value="In Progress" /></li>
-        <li><input className="completed" type="button" value="Completed" /></li>
-        <li><input className="onHold" type="button" value="On Hold" /></li>
-        <li><input className="deffered" type="button" value="Deffered" /></li>
-      </ul>
+
+      <div className="listModalWrapper" style={listStyle}>
+        <div
+          className="closeOutModal"
+          onClick={() => {
+            closeTheModal(setDisplaySetStatusModal, setDisableSort);
+          }}
+          onKeyPress={() => { closeTheModal(setDisplaySetStatusModal, setDisableSort); }}
+          role="button"
+          tabIndex={0}
+        >
+          <span className="closeOutText">Close</span>
+          <CloseIcon />
+        </div>
+        <ul className="buttonStyles">
+          <li><input className="upComing" type="button" value="Upcoming" /></li>
+          <li><input className="inProgress" type="button" value="In Progress" /></li>
+          <li><input className="completed" type="button" value="Completed" /></li>
+          <li><input className="onHold" type="button" value="On Hold" /></li>
+          <li><input className="deffered" type="button" value="Deffered" /></li>
+        </ul>
+      </div>
 
     </Modal>
 
@@ -100,49 +122,3 @@ const ChangeMeetingStatus = ({
 };
 
 export default ChangeMeetingStatus;
-
-// const ChangeMeetingStatus = React.forwardRef((props, ref) => {
-//   const { numberOfSubscriptions, onClose } = props;
-//   const { t } = useTranslation();
-//   Modal.setAppElement('#root');
-
-//   return (
-//     <Modal
-//       isOpen
-//       style={
-//         {
-//           overlay: {
-//             zIndex: '3001',
-//           },
-//         }
-//       }
-//       className={classnames('subscribe-confirmation')}
-//       ref={ref}
-//     >
-//       <div className="modal-header">
-//         <ConfirmationIcon />
-//       </div>
-//       <div className="modal-body">
-//         <h4>
-//           {t(
-//             'meeting.tabs.agenda.list.subscribe.confirmation.title',
-//             { count: numberOfSubscriptions },
-//           )}
-//         </h4>
-//         <p>
-//           {t('meeting.tabs.agenda.list.subscribe.confirmation.description')}
-//         </p>
-//         <div className="row">
-//           <button
-//             type="button"
-//             onClick={onClose}
-//           >
-//             {t('meeting.tabs.agenda.list.subscribe.confirmation.button')}
-//           </button>
-//         </div>
-//       </div>
-//     </Modal>
-//   );
-// });
-
-// export default SubscribeConfirmation;

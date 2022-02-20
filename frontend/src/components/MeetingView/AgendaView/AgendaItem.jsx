@@ -259,17 +259,17 @@ const RenderedAgendaItem = forwardRef(
               <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
             )}
 
-            {admin && true && (
+            {admin && notAModal && (
               <ul className="buttonStyles">
                 <li>
                   <input
                     type="button"
                     ref={dropDownRef}
                     className="upComing"
-                    onClick={() => {
+                    onClick={!dragOverlay ? () => {
                       setDisableSort(true);
                       setDisplaySetStatusModal(true);
-                    }}
+                    } : null}
                     value="Upcoming"
                   />
                 </li>
