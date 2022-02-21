@@ -4,6 +4,7 @@ import Modal from 'react-modal/lib/components/Modal';
 import './ChangeMeetingStatusModal.scss';
 import UpdateItemStatusModal from './updateItemStatusModal/UpdateItemStatusModal';
 import { CloseIcon } from '../../utils/_icons';
+import MeetingItemStates from '../../constants/MeetingItemStates';
 
 /**
  * This is the component for subscribe confirmation modal window.
@@ -51,8 +52,51 @@ function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
   setDisplaySetStatusModal(false);
 }
 
+const BUTTON_CLASSES = [
+  {
+    status: MeetingItemStates.PENDING,
+    class: 'upComing',
+    value: 'Upcoming',
+  },
+  {
+    status: MeetingItemStates.IN_PROGRESS,
+    class: 'inProgress',
+    value: 'In Progress',
+  },
+  {
+    status: MeetingItemStates.COMPLETED,
+    class: 'completed',
+    value: 'Completed',
+  },
+  {
+    status: 'toBeImplemented',
+    class: 'onHold',
+    value: 'On Hold',
+  },
+  {
+    status: MeetingItemStates.DEFERRED,
+    class: 'deffered',
+    value: 'Deffered',
+  },
+];
+
+function buildButtonList(itemStatus, setShowItemStatusModal, setNewStatus) {
+  const jsx = [];
+  const keyPrefix = 'giberish';
+  BUTTON_CLASSES.forEach((elem, i) => {
+    const key = keyPrefix + i;
+
+    if (itemStatus === elem.status) {
+      jsx.unshift(<li key={key}><input className={`${elem.class} fakeButton`} type="button" value={elem.value} /></li>);
+    } else {
+      jsx.push(<li key={key}><input onClick={() => { setShowItemStatusModal(true); setNewStatus(elem); }} className={elem.class} type="button" value={elem.value} /></li>);
+    }
+  });
+  return jsx;
+}
+
 const ChangeMeetingStatusModal = ({
-  itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
+  item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
 }) => {
   Modal.setAppElement('#root');
   const [itemStyle, setItemStyle] = useState(buildItemStyle(itemRef.current));
@@ -60,6 +104,8 @@ const ChangeMeetingStatusModal = ({
   const [cloneItem] = useState(itemRef.current.cloneNode(true));
   const [contentRef, setContentRef] = useState(null);
   const [showItemStatusModal, setShowItemStatusModal] = useState(false);
+  const [oldStatus] = useState(BUTTON_CLASSES.filter((elem) => elem.status === item.status)[0]);
+  const [newStatus, setNewStatus] = useState(null);
 
   const modalStyle = {
     overlay: {
@@ -94,10 +140,10 @@ const ChangeMeetingStatusModal = ({
 
   // attach the cloned item
   useEffect(() => {
-    if (contentRef != null) {
+    if (contentRef != null && !showItemStatusModal) {
       document.querySelector('#theChangeMeetingStatusModalWrapper').appendChild(cloneItem);
     }
-  }, [contentRef, cloneItem]);
+  }, [contentRef, cloneItem, showItemStatusModal]);
   return (
 
     <Modal contentRef={(node) => { setContentRef(node); }} style={modalStyle} className="ChangeMeetingStatusModal" isOpen>
@@ -120,16 +166,20 @@ const ChangeMeetingStatusModal = ({
             <CloseIcon />
           </div>
           <ul className="buttonStyles">
-            <li><input onClick={() => { setShowItemStatusModal(true); }} className="upComing" type="button" value="Upcoming" /></li>
-            <li><input className="inProgress" type="button" value="In Progress" /></li>
-            <li><input className="completed" type="button" value="Completed" /></li>
-            <li><input className="onHold" type="button" value="On Hold" /></li>
-            <li><input className="deffered" type="button" value="Deffered" /></li>
+            { buildButtonList(item.status, setShowItemStatusModal, setNewStatus)}
           </ul>
         </div>
       </div>
       )}
-      {showItemStatusModal && <UpdateItemStatusModal setShowItemStatusModal={setShowItemStatusModal} />}
+      {showItemStatusModal
+      && (
+      <UpdateItemStatusModal
+        setShowItemStatusModal={setShowItemStatusModal}
+        item={item}
+        oldStatus={oldStatus}
+        newStatus={newStatus}
+      />
+      )}
     </Modal>
   );
 };

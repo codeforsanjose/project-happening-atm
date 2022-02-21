@@ -16,6 +16,10 @@
         cursor:pointer;
     }
 
+    .fakeButton:hover{
+        cursor:default;
+    }
+
     .upComing{
         background:$pendingBlueBackground;
         color:$darkBlue;

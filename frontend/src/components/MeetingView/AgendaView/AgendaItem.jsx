@@ -133,15 +133,6 @@ const RenderedAgendaItem = forwardRef(
     const modalRef = useRef(null);
     const dropDownRef = useRef(null);
     const { t } = useTranslation();
-    const args = {
-      item,
-      itemRef,
-      setDisableSort,
-      subStatus,
-      refetchSubs,
-      dragOverlay,
-      getSubError,
-    };
 
     useEffect(() => {
       if (subStatus && !admin) {
@@ -215,7 +206,7 @@ const RenderedAgendaItem = forwardRef(
           {dispalySetStatusModal
           && (
           <ChangeMeetingStatusModal
-            args={args}
+            item={item}
             dropDownRef={dropDownRef}
             itemRef={itemRef}
             setDisableSort={setDisableSort}

@@ -20,6 +20,7 @@
             }
 
             .closeOutModal{
+                cursor:pointer;
                 .closeOutIcon{
                     margin-right:1rem;
                 }
@@ -27,15 +28,22 @@
 
         }
 
-        .updateItemStatuModalBody{
+        .updateItemStatusModalBody{
             display:flex;
-            justify-content: center;
+            align-items: center;
             background:$white;
             padding-bottom:15rem;
             padding-top:5rem;
+            flex-direction:column;
+
             .buttonsAndArrow{
-                @import '../ButtonStyles.scss';
+                display:flex;
+                flex-direction:column;
+                gap:1rem;
+                align-items:center;
             }
+            @import '../ButtonStyles.scss';
+            
         }
     }
     
