@@ -129,7 +129,7 @@ const ChangeMeetingStatusModal = ({
         </div>
       </div>
       )}
-      {showItemStatusModal && <UpdateItemStatusModal />}
+      {showItemStatusModal && <UpdateItemStatusModal setShowItemStatusModal={setShowItemStatusModal} />}
     </Modal>
   );
 };
