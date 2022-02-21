@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
+import { useTranslation } from 'react-i18next';
 import './UpdateItemStatusModal.scss';
-import { CloseIcon } from '../../../utils/_icons';
+import { CloseIcon, ArrowUpwardIcon } from '../../../utils/_icons';
 
 const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus }) => {
+  const { t } = useTranslation();
+
   const modalOverlayStyle = {
     overlay: {
       backgroundColor: 'none',
     },
   };
+
+  useEffect(() => {
+    document.querySelector('body').style.overflow = 'hidden';
+
+    return () => {
+      document.querySelector('body').style.overflow = 'visible';
+    };
+  }, []);
 
   Modal.setAppElement('#root');
 
@@ -31,13 +42,21 @@ const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus })
         <div className="updateItemStatusModalBody">
           <div className="buttonsAndArrow buttonStyles">
             <input className={`${oldStatus.class} fakeButton`} type="button" value={oldStatus.value} />
-            <div>An Arrow</div>
+            <div><ArrowUpwardIcon /></div>
             <input className={`${newStatus.class} fakeButton`} type="button" value={newStatus.value} />
           </div>
-          <p className="statusChangeDescription">Stuff Goes here</p>
+          <p className="statusChangeDescription">
+            This action will
+            {' '}
+            <strong>publish changes</strong>
+            {' '}
+            to the agenda item status
+            {' '}
+            <strong>and notify all users.</strong>
+          </p>
           <div className="publishOrCancelButtons">
-            <input type="button" className="publish" value="Publish" />
-            <input type="button" className="cancel" value="Cancel" />
+            <input type="button" className="publish" value={t('standard.buttons.publish')} />
+            <input type="button" className="cancel" value={t('standard.buttons.cancel')} />
           </div>
 
         </div>

@@ -116,9 +116,11 @@ meeting:
         options:
           completed: Completed
           in-progress: In Progress
+          upcoming: Upcoming
           closed: Closed
           removed: Removed for Separate Consideration
           deferred: Deferred
+          on-hold: On Hold
       upload-new:
         button: Upload New Agenda
         modal:

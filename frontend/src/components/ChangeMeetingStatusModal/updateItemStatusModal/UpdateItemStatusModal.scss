@@ -3,8 +3,13 @@
 .UpdateItemStatusModal{
     .updateItemStatusWrapper{
         position:absolute;
-        left:40%;
+        margin:auto;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
         top:32%;
+        max-width:26rem;
 
         .updateItemStatusHeader{
             background:$grayBlue;
@@ -16,11 +21,15 @@
             gap: 8rem;
 
             .headerText{
-                margin-left:1rem;
+                margin-left:2rem;
+                color:$darkBlue;
+                font-size:1.25rem;
+                font-weight:500;
             }
 
             .closeOutModal{
                 cursor:pointer;
+                fill:$darkBlue;
                 .closeOutIcon{
                     margin-right:1rem;
                 }
@@ -32,8 +41,7 @@
             display:flex;
             align-items: center;
             background:$white;
-            padding-bottom:15rem;
-            padding-top:5rem;
+            padding:2.5rem 2rem 1.87rem;
             flex-direction:column;
 
             .buttonsAndArrow{
@@ -41,8 +49,43 @@
                 flex-direction:column;
                 gap:1rem;
                 align-items:center;
+
+                .arrow_upward-24px{
+                    transform: rotate(180deg);
+                    fill:$lightBlue;
+                }
             }
             @import '../ButtonStyles.scss';
+            .statusChangeDescription{
+                margin:2.1rem 0;
+            }
+
+            .publishOrCancelButtons{
+                display:flex;
+                gap:5rem;
+                
+                .publish{
+                    background:$gold;
+                    border:none;
+                    padding:1rem 2rem;
+                    border-radius: 8px;
+                    font-size:1.3rem;
+                }
+                .publish:hover{
+                    cursor:pointer;
+                }
+
+                .cancel{
+                    border:none;
+                    background:none;
+                    padding:0;
+                    font-size:1.1rem;
+                    font-weight:bold;
+                }
+                .cancel:hover{
+                    cursor:pointer;
+                }
+            }
             
         }
     }

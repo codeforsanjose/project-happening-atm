@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
+import { useTranslation } from 'react-i18next';
 import './ChangeMeetingStatusModal.scss';
 import UpdateItemStatusModal from './updateItemStatusModal/UpdateItemStatusModal';
 import { CloseIcon } from '../../utils/_icons';
@@ -52,38 +53,40 @@ function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
   setDisplaySetStatusModal(false);
 }
 
-const BUTTON_CLASSES = [
-  {
-    status: MeetingItemStates.PENDING,
-    class: 'upComing',
-    value: 'Upcoming',
-  },
-  {
-    status: MeetingItemStates.IN_PROGRESS,
-    class: 'inProgress',
-    value: 'In Progress',
-  },
-  {
-    status: MeetingItemStates.COMPLETED,
-    class: 'completed',
-    value: 'Completed',
-  },
-  {
-    status: 'toBeImplemented',
-    class: 'onHold',
-    value: 'On Hold',
-  },
-  {
-    status: MeetingItemStates.DEFERRED,
-    class: 'deffered',
-    value: 'Deffered',
-  },
-];
+function buildButtonClasses(t) {
+  return [
+    {
+      status: MeetingItemStates.PENDING,
+      class: 'upComing',
+      value: t('meeting.tabs.agenda.status.options.upcoming'),
+    },
+    {
+      status: MeetingItemStates.IN_PROGRESS,
+      class: 'inProgress',
+      value: t('meeting.tabs.agenda.status.options.in-progress'),
+    },
+    {
+      status: MeetingItemStates.COMPLETED,
+      class: 'completed',
+      value: t('meeting.tabs.agenda.status.options.completed'),
+    },
+    {
+      status: 'toBeImplemented',
+      class: 'onHold',
+      value: t('meeting.tabs.agenda.status.options.on-hold'),
+    },
+    {
+      status: MeetingItemStates.DEFERRED,
+      class: 'deffered',
+      value: t('meeting.tabs.agenda.status.options.deferred'),
+    },
+  ];
+}
 
-function buildButtonList(itemStatus, setShowItemStatusModal, setNewStatus) {
+function buildButtonList(itemStatus, setShowItemStatusModal, setNewStatus, buttonClasses) {
   const jsx = [];
   const keyPrefix = 'giberish';
-  BUTTON_CLASSES.forEach((elem, i) => {
+  buttonClasses.forEach((elem, i) => {
     const key = keyPrefix + i;
 
     if (itemStatus === elem.status) {
@@ -99,12 +102,14 @@ const ChangeMeetingStatusModal = ({
   item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
 }) => {
   Modal.setAppElement('#root');
+  const { t } = useTranslation();
   const [itemStyle, setItemStyle] = useState(buildItemStyle(itemRef.current));
   const [listStyle, setListStyle] = useState(buildListStyle(dropDownRef.current));
   const [cloneItem] = useState(itemRef.current.cloneNode(true));
   const [contentRef, setContentRef] = useState(null);
   const [showItemStatusModal, setShowItemStatusModal] = useState(false);
-  const [oldStatus] = useState(BUTTON_CLASSES.filter((elem) => elem.status === item.status)[0]);
+  const [buttonClasses] = useState(buildButtonClasses(t));
+  const [oldStatus] = useState(buttonClasses.filter((elem) => elem.status === item.status)[0]);
   const [newStatus, setNewStatus] = useState(null);
 
   const modalStyle = {
@@ -162,11 +167,11 @@ const ChangeMeetingStatusModal = ({
             role="button"
             tabIndex={0}
           >
-            <span className="closeOutText">Close</span>
+            <span className="closeOutText">{t('standard.buttons.close')}</span>
             <CloseIcon />
           </div>
           <ul className="buttonStyles">
-            { buildButtonList(item.status, setShowItemStatusModal, setNewStatus)}
+            { buildButtonList(item.status, setShowItemStatusModal, setNewStatus, buttonClasses)}
           </ul>
         </div>
       </div>
