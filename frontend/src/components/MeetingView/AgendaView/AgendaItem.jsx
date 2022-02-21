@@ -23,7 +23,7 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
 import {
   NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress,
 } from '../../../utils/_icons';
-import ChangeMeetingStatus from '../../ChangeMeetingStatus/ChangeMeetingStatus';
+import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeetingStatusModal';
 
 /**
  *
@@ -123,7 +123,7 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, notAModal = true, testValue, setDisableSort, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
+    item, testValue, setDisableSort, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
@@ -141,7 +141,6 @@ const RenderedAgendaItem = forwardRef(
       refetchSubs,
       dragOverlay,
       getSubError,
-      notAModal: false,
     };
 
     useEffect(() => {
@@ -215,7 +214,7 @@ const RenderedAgendaItem = forwardRef(
 
           {dispalySetStatusModal
           && (
-          <ChangeMeetingStatus
+          <ChangeMeetingStatusModal
             args={args}
             dropDownRef={dropDownRef}
             itemRef={itemRef}
@@ -259,7 +258,7 @@ const RenderedAgendaItem = forwardRef(
               <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
             )}
 
-            {admin && notAModal && (
+            {admin && (
               <ul className="buttonStyles">
                 <li>
                   <input

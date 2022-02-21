@@ -1,0 +1,22 @@
+@import '../../../utils/colors';
+
+.UpdateItemStatusModal{
+    .updateItemStatusWrapper{
+        max-width:30rem;
+        max-height:30rem;
+        position:absolute;
+        left:40%;
+        top:32%;
+
+        .updateItemStatusHeader{
+            background:$grayBlue;
+            height:4rem;
+            display:flex;
+            flex-direction:row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8rem;
+        }
+    }
+    
+}

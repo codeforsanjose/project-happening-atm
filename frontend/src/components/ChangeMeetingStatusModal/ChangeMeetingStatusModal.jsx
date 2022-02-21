@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
-import './ChangeMeetingStatus.scss';
-
+import './ChangeMeetingStatusModal.scss';
+import UpdateItemStatusModal from './updateItemStatusModal/UpdateItemStatusModal';
 import { CloseIcon } from '../../utils/_icons';
 
 /**
@@ -43,13 +43,15 @@ function buildListStyle(dropDownRef) {
 }
 
 function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
-  // remove blur effect
+  // remove blur effect, reenable the scrollX
   document.querySelector('#root').style.filter = 'none';
+  document.querySelector('#root').style.overflowX = 'visible';
+
   setDisableSort(false);
   setDisplaySetStatusModal(false);
 }
 
-const ChangeMeetingStatus = ({
+const ChangeMeetingStatusModal = ({
   itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
 }) => {
   Modal.setAppElement('#root');
@@ -57,6 +59,7 @@ const ChangeMeetingStatus = ({
   const [listStyle, setListStyle] = useState(buildListStyle(dropDownRef.current));
   const [cloneItem] = useState(itemRef.current.cloneNode(true));
   const [contentRef, setContentRef] = useState(null);
+  const [showItemStatusModal, setShowItemStatusModal] = useState(false);
 
   const modalStyle = {
     overlay: {
@@ -75,8 +78,9 @@ const ChangeMeetingStatus = ({
       setListStyle(buildListStyle(dropDownRef.current));
     };
 
-    // blur background
+    // blur background, and hide the scroll bar it causes
     document.querySelector('#root').style.filter = 'blur(20px)';
+    document.querySelector('#root').style.overflowX = 'hidden';
 
     // setup responsiveness for the absolute positioned element
     window.addEventListener('scroll', eventListenerFunction);
@@ -96,36 +100,38 @@ const ChangeMeetingStatus = ({
   }, [contentRef, cloneItem]);
   return (
 
-    <Modal contentRef={(node) => { setContentRef(node); }} style={modalStyle} className="ChangeMeetingStatus" isOpen>
+    <Modal contentRef={(node) => { setContentRef(node); }} style={modalStyle} className="ChangeMeetingStatusModal" isOpen>
 
-      {/* Use effect is attaching a cloned item to here */}
-      <div style={itemStyle} id="theChangeMeetingStatusModalWrapper" className="modalAgendaItemWrapper" />
-
-      <div className="listModalWrapper" style={listStyle}>
-        <div
-          className="closeOutModal"
-          onClick={() => {
-            closeTheModal(setDisplaySetStatusModal, setDisableSort);
-          }}
-          onKeyPress={() => { closeTheModal(setDisplaySetStatusModal, setDisableSort); }}
-          role="button"
-          tabIndex={0}
-        >
-          <span className="closeOutText">Close</span>
-          <CloseIcon />
+      {!showItemStatusModal && (
+      <div>
+        {/* Use effect is attaching a cloned item to here */}
+        <div style={itemStyle} id="theChangeMeetingStatusModalWrapper" className="modalAgendaItemWrapper" />
+        <div className="listModalWrapper" style={listStyle}>
+          <div
+            className="closeOutModal"
+            onClick={() => {
+              closeTheModal(setDisplaySetStatusModal, setDisableSort);
+            }}
+            onKeyPress={() => { closeTheModal(setDisplaySetStatusModal, setDisableSort); }}
+            role="button"
+            tabIndex={0}
+          >
+            <span className="closeOutText">Close</span>
+            <CloseIcon />
+          </div>
+          <ul className="buttonStyles">
+            <li><input onClick={() => { setShowItemStatusModal(true); }} className="upComing" type="button" value="Upcoming" /></li>
+            <li><input className="inProgress" type="button" value="In Progress" /></li>
+            <li><input className="completed" type="button" value="Completed" /></li>
+            <li><input className="onHold" type="button" value="On Hold" /></li>
+            <li><input className="deffered" type="button" value="Deffered" /></li>
+          </ul>
         </div>
-        <ul className="buttonStyles">
-          <li><input className="upComing" type="button" value="Upcoming" /></li>
-          <li><input className="inProgress" type="button" value="In Progress" /></li>
-          <li><input className="completed" type="button" value="Completed" /></li>
-          <li><input className="onHold" type="button" value="On Hold" /></li>
-          <li><input className="deffered" type="button" value="Deffered" /></li>
-        </ul>
       </div>
-
+      )}
+      {showItemStatusModal && <UpdateItemStatusModal />}
     </Modal>
-
   );
 };
 
-export default ChangeMeetingStatus;
+export default ChangeMeetingStatusModal;
