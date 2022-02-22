@@ -128,7 +128,7 @@
   }
 
   //These styles are shared with ChangeMeetingStatus component
-  @import '../../ChangeMeetingStatusModal/ButtonStyles.scss';
+  @import '../../../utils/statusButtons.scss';
 }
 
 .active-item {

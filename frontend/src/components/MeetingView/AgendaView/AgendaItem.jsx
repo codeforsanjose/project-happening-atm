@@ -250,7 +250,7 @@ const RenderedAgendaItem = forwardRef(
             )}
 
             {admin && (
-              <ul className="buttonStyles">
+              <ul className="statusButtons">
                 <li>
                   <input
                     type="button"

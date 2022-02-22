@@ -55,7 +55,9 @@
                     fill:$lightBlue;
                 }
             }
-            @import '../ButtonStyles.scss';
+
+            @import '../../../utils/statusButtons.scss';
+
             .statusChangeDescription{
                 margin:2.1rem 0;
             }

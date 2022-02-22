@@ -6,26 +6,23 @@
             border:solid 4px $darkBlue;
         }
     }
+    
+    .closeOutModal{
+        position: absolute;
+        color: white;
+        fill: white;
+        width:100%;
+        cursor:pointer;
 
-    .listModalWrapper{
-        .closeOutModal{
-            position: absolute;
-            color: white;
-            fill: white;
-            left: 5rem;
-            bottom: 20.4rem;
-            width:100%;
-            cursor:pointer;
-
-            .closeOutText{
-                position: relative;
-                bottom: 0.4rem;
-                font-weight: 600;
-            }
+        .closeOutText{
+            position: relative;
+            bottom: 0.4rem;
+            font-weight: 600;
         }
     }
+    
 
-    @import './ButtonStyles.scss';
+    @import '../../utils/statusButtons.scss';
 
 
 

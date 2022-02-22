@@ -28,7 +28,9 @@ const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus })
     <Modal style={modalOverlayStyle} className="UpdateItemStatusModal" isOpen>
       <div className="updateItemStatusWrapper">
         <div className="updateItemStatusHeader">
-          <span className="headerText">Update Item Status</span>
+          <span className="headerText">
+            {t('meeting.tabs.agenda.status.modal.title2')}
+          </span>
           <div
             className="closeOutModal"
             onClick={() => setShowItemStatusModal(false)}
@@ -40,23 +42,23 @@ const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus })
           </div>
         </div>
         <div className="updateItemStatusModalBody">
-          <div className="buttonsAndArrow buttonStyles">
+          <div className="buttonsAndArrow statusButtons">
             <input className={`${oldStatus.class} fakeButton`} type="button" value={oldStatus.value} />
             <div><ArrowUpwardIcon /></div>
             <input className={`${newStatus.class} fakeButton`} type="button" value={newStatus.value} />
           </div>
-          <p className="statusChangeDescription">
-            This action will
-            {' '}
-            <strong>publish changes</strong>
-            {' '}
-            to the agenda item status
-            {' '}
-            <strong>and notify all users.</strong>
-          </p>
+          {/* Must do this for this localization to have bold words. */}
+          {/* eslint-disable-next-line react/no-danger */}
+          <p className="statusChangeDescription" dangerouslySetInnerHTML={{ __html: t('meeting.tabs.agenda.status.modal.description', { interpolation: { escapeValue: false } }) }} />
           <div className="publishOrCancelButtons">
             <input type="button" className="publish" value={t('standard.buttons.publish')} />
-            <input type="button" className="cancel" value={t('standard.buttons.cancel')} />
+            <input
+              type="button"
+              className="cancel"
+              value={t('standard.buttons.cancel')}
+              onClick={() => setShowItemStatusModal(false)}
+              onKeyPress={() => { setShowItemStatusModal(false); }}
+            />
           </div>
 
         </div>

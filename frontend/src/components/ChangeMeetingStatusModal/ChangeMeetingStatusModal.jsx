@@ -8,47 +8,49 @@ import { CloseIcon } from '../../utils/_icons';
 import MeetingItemStates from '../../constants/MeetingItemStates';
 
 /**
- * This is the component for subscribe confirmation modal window.
+ * This is the component for displaying the first change status modal,
+ * lets admin pick the status to change to
  *
- * props:
- *    numberOfSubscriptions
- *      A number of successful subscriptions
- *    onClose
- *      A function/callback which is called when the window is being closed
+ * props: item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort
+ *    item
+ *      The agenda item itself, from agendaItem.jsx
+ *    itemRef
+ *      Dom refernce to AgendaItem outer wrapper from agendaItem.jsx
+ *    dropDownRef
+ *      Dom reference to the button element in agendaItem.jsx
+ *    setDisplaySetStatusModal
+ *      Controls the display of the first outer modal
+ *    setDisbleSort
+ *      Disables sorting of agenda items while modal is displayed
  */
 
-function buildItemStyle(itemRef) {
+function buildStyle(itemRef) {
   const rect = itemRef.getBoundingClientRect();
   const xPos = rect.left;
   const yPos = rect.top;
 
   return {
     width: `${itemRef.clientWidth}px`,
-    height: `${itemRef.clientHeight}px`,
     position: 'absolute',
     left: `${xPos}px`,
     top: `${yPos}px`,
   };
 }
 
-function buildListStyle(dropDownRef) {
-  const rect = dropDownRef.getBoundingClientRect();
+function buildCloseOutStyle(itemRef) {
+  const rect = itemRef.getBoundingClientRect();
   const xPos = rect.left;
   const yPos = rect.top;
 
+  const offSetX = itemRef.clientWidth - 75;
+  const offSetY = -40;
   return {
-    width: `${dropDownRef.clientWidth}px`,
-    position: 'absolute',
-    left: `${xPos}px`,
-    top: `${yPos}px`,
+    left: `${xPos + offSetX}px`,
+    top: `${yPos + offSetY}px`,
   };
 }
 
 function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
-  // remove blur effect, reenable the scrollX
-  document.querySelector('#root').style.filter = 'none';
-  document.querySelector('#root').style.overflowX = 'visible';
-
   setDisableSort(false);
   setDisplaySetStatusModal(false);
 }
@@ -103,14 +105,17 @@ const ChangeMeetingStatusModal = ({
 }) => {
   Modal.setAppElement('#root');
   const { t } = useTranslation();
-  const [itemStyle, setItemStyle] = useState(buildItemStyle(itemRef.current));
-  const [listStyle, setListStyle] = useState(buildListStyle(dropDownRef.current));
+  const [itemStyle, setItemStyle] = useState(buildStyle(itemRef.current));
+  const [listStyle, setListStyle] = useState(buildStyle(dropDownRef.current));
+  const [closeOutStyle, setCloseOutStyle] = useState(buildCloseOutStyle(itemRef.current));
   const [cloneItem] = useState(itemRef.current.cloneNode(true));
   const [contentRef, setContentRef] = useState(null);
   const [showItemStatusModal, setShowItemStatusModal] = useState(false);
   const [buttonClasses] = useState(buildButtonClasses(t));
   const [oldStatus] = useState(buttonClasses.filter((elem) => elem.status === item.status)[0]);
   const [newStatus, setNewStatus] = useState(null);
+
+  console.log(itemStyle);
 
   const modalStyle = {
     overlay: {
@@ -125,8 +130,9 @@ const ChangeMeetingStatusModal = ({
 
   useEffect(() => {
     const eventListenerFunction = () => {
-      setItemStyle(buildItemStyle(itemRef.current));
-      setListStyle(buildListStyle(dropDownRef.current));
+      setItemStyle(buildStyle(itemRef.current));
+      setListStyle(buildStyle(dropDownRef.current));
+      setCloseOutStyle(buildCloseOutStyle(itemRef.current));
     };
 
     // blur background, and hide the scroll bar it causes
@@ -140,12 +146,17 @@ const ChangeMeetingStatusModal = ({
     return () => {
       window.removeEventListener('scroll', eventListenerFunction);
       window.removeEventListener('resize', eventListenerFunction);
+
+      // remove blur effect, reenable the scrollX
+      document.querySelector('#root').style.filter = 'none';
+      document.querySelector('#root').style.overflowX = 'visible';
     };
   }, [itemRef, dropDownRef, cloneItem]);
 
   // attach the cloned item
   useEffect(() => {
     if (contentRef != null && !showItemStatusModal) {
+      cloneItem.querySelector('.statusButtons').style.visibility = 'hidden';
       document.querySelector('#theChangeMeetingStatusModalWrapper').appendChild(cloneItem);
     }
   }, [contentRef, cloneItem, showItemStatusModal]);
@@ -157,20 +168,23 @@ const ChangeMeetingStatusModal = ({
       <div>
         {/* Use effect is attaching a cloned item to here */}
         <div style={itemStyle} id="theChangeMeetingStatusModalWrapper" className="modalAgendaItemWrapper" />
+
+        <div
+          style={closeOutStyle}
+          className="closeOutModal"
+          onClick={() => {
+            closeTheModal(setDisplaySetStatusModal, setDisableSort);
+          }}
+          onKeyPress={() => { closeTheModal(setDisplaySetStatusModal, setDisableSort); }}
+          role="button"
+          tabIndex={0}
+        >
+          <span className="closeOutText">{t('standard.buttons.close')}</span>
+          <CloseIcon />
+        </div>
+
         <div className="listModalWrapper" style={listStyle}>
-          <div
-            className="closeOutModal"
-            onClick={() => {
-              closeTheModal(setDisplaySetStatusModal, setDisableSort);
-            }}
-            onKeyPress={() => { closeTheModal(setDisplaySetStatusModal, setDisableSort); }}
-            role="button"
-            tabIndex={0}
-          >
-            <span className="closeOutText">{t('standard.buttons.close')}</span>
-            <CloseIcon />
-          </div>
-          <ul className="buttonStyles">
+          <ul className="statusButtons">
             { buildButtonList(item.status, setShowItemStatusModal, setNewStatus, buttonClasses)}
           </ul>
         </div>
