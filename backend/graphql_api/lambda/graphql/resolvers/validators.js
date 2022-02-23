@@ -5,7 +5,7 @@
 const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
-const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED'];
+const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED', 'ON HOLD'];
 const possibleTypes = ['test'];
 const possibleContentCategories = ['test', 'gov', 'tech', 'lol'];
 

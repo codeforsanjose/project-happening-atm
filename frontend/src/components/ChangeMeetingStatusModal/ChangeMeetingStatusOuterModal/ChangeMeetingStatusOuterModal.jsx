@@ -48,8 +48,7 @@ function buildCloseOutStyle(itemRef) {
   };
 }
 
-function closeTheModal(setDisplaySetStatusModal, setDisableSort) {
-  setDisableSort(false);
+function closeTheModal(setDisplaySetStatusModal) {
   setDisplaySetStatusModal(false);
 }
 
@@ -70,7 +69,7 @@ function buildButtonList(itemStatus, setShowItemStatusModal, setNewStatus, butto
 
 const ChangeMeetingStatusOuterModal = ({
   contentRef, itemRef, dropDownRef, setDisplaySetStatusModal,
-  setDisableSort, item, setShowItemStatusModal, setNewStatus, buttonClasses,
+  item, setShowItemStatusModal, setNewStatus, buttonClasses,
 }) => {
   const { t } = useTranslation();
   const [itemStyle, setItemStyle] = useState(buildStyle(itemRef.current));
@@ -115,9 +114,9 @@ const ChangeMeetingStatusOuterModal = ({
         style={closeOutStyle}
         className="closeOutModal"
         onClick={() => {
-          closeTheModal(setDisplaySetStatusModal, setDisableSort);
+          closeTheModal(setDisplaySetStatusModal);
         }}
-        onKeyPress={() => { closeTheModal(setDisplaySetStatusModal, setDisableSort); }}
+        onKeyPress={() => { closeTheModal(setDisplaySetStatusModal); }}
         role="button"
         tabIndex={0}
       >

@@ -1,13 +1,34 @@
 import React, { useEffect } from 'react';
+import { useMutation } from '@apollo/client';
 
 import Modal from 'react-modal/lib/components/Modal';
 import { useTranslation } from 'react-i18next';
 import './UpdateItemStatusModal.scss';
 import { CloseIcon, ArrowUpwardIcon } from '../../../utils/_icons';
+import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
-const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus }) => {
+function updateTheItem(updateItem, item, newStatus) {
+  updateItem({
+    variables: {
+      id: item.id,
+      order_number: item.order_number,
+      status: newStatus,
+      content_categories: item.content_categories,
+      item_start_timestamp: item.item_start_timestamp,
+      item_end_timestamp: item.item_end_timestamp,
+      description_loc_key: item.description_loc_key,
+      title_loc_key: item.title_loc_key,
+      parent_meeting_item_id: item.parent_meeting_item_id,
+    },
+  });
+}
+
+const UpdateItemStatusModal = ({
+  item, setShowItemStatusModal, setDisplaySetStatusModal, oldStatus, newStatus, refetchAllMeeting,
+}) => {
   const { t } = useTranslation();
-
+  const [updateItem, { error }] = useMutation(UPDATE_MEETING_ITEM,
+    { onCompleted: () => { refetchAllMeeting(); setDisplaySetStatusModal(false); } });
   const modalOverlayStyle = {
     overlay: {
       backgroundColor: 'none',
@@ -51,7 +72,17 @@ const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus })
           {/* eslint-disable-next-line react/no-danger */}
           <p className="statusChangeDescription" dangerouslySetInnerHTML={{ __html: t('meeting.tabs.agenda.status.modal.description', { interpolation: { escapeValue: false } }) }} />
           <div className="publishOrCancelButtons">
-            <input type="button" className="publish" value={t('standard.buttons.publish')} />
+            <input
+              type="button"
+              className="publish"
+              value={t('standard.buttons.publish')}
+              onClick={() => {
+                updateTheItem(updateItem, item, newStatus.status);
+              }}
+              onKeyPress={() => {
+                updateTheItem(updateItem, item, newStatus.status);
+              }}
+            />
             <input
               type="button"
               className="cancel"
@@ -60,6 +91,7 @@ const UpdateItemStatusModal = ({ setShowItemStatusModal, oldStatus, newStatus })
               onKeyPress={() => { setShowItemStatusModal(false); }}
             />
           </div>
+          {error && <p className="error">An Error has Occured</p>}
 
         </div>
       </div>

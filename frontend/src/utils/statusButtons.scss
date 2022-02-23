@@ -23,24 +23,40 @@
     .upComing{
         background:$pendingBlueBackground;
         color:$darkBlue;
+        svg{
+            fill:$darkBlue;
+        }
     }
     .inProgress{
         background:$darkBlue;
         color:$lightGreen;
+        svg{
+            fill:$lightGreen;
+        }
     }
     .completed{
         background:$pastGray;
         color:$mediumGray;
+        svg{
+            fill:$mediumGray;
+        }
     }
     .onHold{
         background:$altWhite;
         color:$darkBlue;
         border:1px solid $pendingBlueBackground;
+        svg{
+            fill:$darkBlue;
+        }
+        
     }
     .deffered{
         background:$white;
         color:$errorRed;
         border:1px solid $errorRed;
+        .svg{
+            fill:$errorRed;
+        }
     }
 
 }

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
-import { useTranslation } from 'react-i18next';
 import './ChangeMeetingStatusModal.scss';
 import UpdateItemStatusModal from './UpdateItemStatusModal/UpdateItemStatusModal';
 import ChangeMeetingStatusOuterModal from './ChangeMeetingStatusOuterModal/ChangeMeetingStatusOuterModal';
-import MeetingItemStates from '../../constants/MeetingItemStates';
-
+import buildButtonClasses from '../../utils/buildButtonClasses';
 /**
  * This is a container component, that uses ChangesMeetingStatusOuterModal for the display of the
  * agenda item modal and its list of buttons and UpdateItemStatusModal
@@ -25,44 +23,13 @@ import MeetingItemStates from '../../constants/MeetingItemStates';
  *      Disables sorting of agenda items while modal is displayed
  */
 
-function buildButtonClasses(t) {
-  return [
-    {
-      status: MeetingItemStates.PENDING,
-      class: 'upComing',
-      value: t('meeting.tabs.agenda.status.options.upcoming'),
-    },
-    {
-      status: MeetingItemStates.IN_PROGRESS,
-      class: 'inProgress',
-      value: t('meeting.tabs.agenda.status.options.in-progress'),
-    },
-    {
-      status: MeetingItemStates.COMPLETED,
-      class: 'completed',
-      value: t('meeting.tabs.agenda.status.options.completed'),
-    },
-    {
-      status: 'toBeImplemented',
-      class: 'onHold',
-      value: t('meeting.tabs.agenda.status.options.on-hold'),
-    },
-    {
-      status: MeetingItemStates.DEFERRED,
-      class: 'deffered',
-      value: t('meeting.tabs.agenda.status.options.deferred'),
-    },
-  ];
-}
-
 const ChangeMeetingStatusModal = ({
-  item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort,
+  item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort, refetchAllMeeting,
 }) => {
   Modal.setAppElement('#root');
-  const { t } = useTranslation();
   const [contentRef, setContentRef] = useState(null);
   const [showItemStatusModal, setShowItemStatusModal] = useState(false);
-  const [buttonClasses] = useState(buildButtonClasses(t));
+  const [buttonClasses] = useState(buildButtonClasses());
   const [oldStatus] = useState(buttonClasses.filter((elem) => elem.status === item.status)[0]);
   const [newStatus, setNewStatus] = useState(null);
 
@@ -86,8 +53,9 @@ const ChangeMeetingStatusModal = ({
       // remove blur effect, reenable the scrollX
       document.querySelector('#root').style.filter = 'none';
       document.querySelector('#root').style.overflowX = 'visible';
+      setDisableSort(false);
     };
-  }, []);
+  }, [setDisableSort]);
 
   return (
     <Modal contentRef={(node) => { setContentRef(node); }} style={modalStyle} className="ChangeMeetingStatusModal" isOpen>
@@ -99,7 +67,6 @@ const ChangeMeetingStatusModal = ({
         itemRef={itemRef}
         dropDownRef={dropDownRef}
         setDisplaySetStatusModal={setDisplaySetStatusModal}
-        setDisableSort={setDisableSort}
         setShowItemStatusModal={setShowItemStatusModal}
         setNewStatus={setNewStatus}
         buttonClasses={buttonClasses}
@@ -109,9 +76,11 @@ const ChangeMeetingStatusModal = ({
       && (
       <UpdateItemStatusModal
         setShowItemStatusModal={setShowItemStatusModal}
+        setDisplaySetStatusModal={setDisplaySetStatusModal}
         item={item}
         oldStatus={oldStatus}
         newStatus={newStatus}
+        refetchAllMeeting={refetchAllMeeting}
       />
       )}
     </Modal>

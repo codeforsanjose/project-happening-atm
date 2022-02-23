@@ -129,6 +129,21 @@
 
   //These styles are shared with ChangeMeetingStatus component
   @import '../../../utils/statusButtons.scss';
+  .statusButtons{
+    .relativeWrapper{
+      position: relative;
+        right: 2.5rem;
+        top: 0.25rem;
+        cursor:pointer;
+        border:none;
+
+      .buttonDownArrow{
+        position:absolute;
+        border:none;
+        background:none;
+      }
+    }
+  }
 }
 
 .active-item {

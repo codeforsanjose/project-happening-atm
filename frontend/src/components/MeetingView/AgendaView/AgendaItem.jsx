@@ -13,6 +13,7 @@ import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
 import './AgendaItem.scss';
 import { CREATE_SUBSCRIPTIONS } from '../../../graphql/graphql';
 import isAdmin from '../../../utils/isAdmin';
+import buildButtonClasses from '../../../utils/buildButtonClasses';
 
 import {
   buildSubscriptionQueryString,
@@ -21,7 +22,7 @@ import {
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import {
-  NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress,
+  NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress, KeyboardArrowDownIcon,
 } from '../../../utils/_icons';
 import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeetingStatusModal';
 
@@ -69,7 +70,7 @@ import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeeti
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
 function AgendaItem({
-  item, subStatus, refetchSubs, getSubError,
+  item, subStatus, refetchSubs, refetchAllMeeting, getSubError,
 }) {
   const [disableSort, setDisableSort] = useState(false);
   const {
@@ -92,6 +93,7 @@ function AgendaItem({
       item={item}
       subStatus={subStatus}
       refetchSubs={refetchSubs}
+      refetchAllMeeting={refetchAllMeeting}
       getSubError={getSubError}
       setDisableSort={setDisableSort}
     />
@@ -123,12 +125,13 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, testValue, setDisableSort, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
+    item, testValue, setDisableSort, id, subStatus, refetchSubs, refetchAllMeeting, dragOverlay = false, getSubError = false, ...props
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
     const [dispalySetStatusModal, setDisplaySetStatusModal] = useState(false);
     const [admin] = useState(isAdmin());
+    const [buttonClasses] = useState(buildButtonClasses());
     const itemRef = useRef(null);
     const modalRef = useRef(null);
     const dropDownRef = useRef(null);
@@ -211,6 +214,7 @@ const RenderedAgendaItem = forwardRef(
             itemRef={itemRef}
             setDisableSort={setDisableSort}
             setDisplaySetStatusModal={setDisplaySetStatusModal}
+            refetchAllMeeting={refetchAllMeeting}
           />
           )}
           <div className="item-links">
@@ -225,7 +229,7 @@ const RenderedAgendaItem = forwardRef(
                 if Item statu is not subscribed, it will show notify me;
                 if Item status is subscribed/subscribing it will show that */}
 
-            {item.status === MeetingItemStates.COMPLETED && (
+            {!isAdmin && item.status === MeetingItemStates.COMPLETED && (
               <div className="link">
                 <p className="disabled">
                   {t('meeting.tabs.agenda.status.options.completed')}
@@ -233,7 +237,7 @@ const RenderedAgendaItem = forwardRef(
               </div>
             )}
 
-            {item.status === MeetingItemStates.DEFERRED && (
+            {!isAdmin && item.status === MeetingItemStates.DEFERRED && (
             <div className="link">
               <p className="deferred">
                 {t('meeting.tabs.agenda.status.options.deferred')}
@@ -255,13 +259,26 @@ const RenderedAgendaItem = forwardRef(
                   <input
                     type="button"
                     ref={dropDownRef}
-                    className="upComing"
+                    className={buttonClasses.filter((elem) => elem.status === item.status)[0].class}
                     onClick={!dragOverlay ? () => {
                       setDisableSort(true);
                       setDisplaySetStatusModal(true);
                     } : null}
-                    value="Upcoming"
+                    value={buttonClasses.filter((elem) => elem.status === item.status)[0].value}
                   />
+
+                  <span className="relativeWrapper">
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                    <span
+                      className={`${buttonClasses.filter((elem) => elem.status === item.status)[0].class} buttonDownArrow`}
+                      onClick={!dragOverlay ? () => {
+                        setDisableSort(true);
+                        setDisplaySetStatusModal(true);
+                      } : null}
+                    >
+                      <KeyboardArrowDownIcon />
+                    </span>
+                  </span>
                 </li>
               </ul>
             )}
