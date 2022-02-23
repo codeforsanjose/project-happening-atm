@@ -1,5 +1,8 @@
 @import './colors';
 
+$font-weight:600;
+$font-size:1rem;
+
 .statusButtons{
     list-style:none;
     padding:0;
@@ -23,6 +26,8 @@
     .upComing{
         background:$pendingBlueBackground;
         color:$darkBlue;
+        font-weight:$font-weight;
+        font-size:$font-size;
         svg{
             fill:$darkBlue;
         }
@@ -30,6 +35,8 @@
     .inProgress{
         background:$darkBlue;
         color:$lightGreen;
+        font-weight:$font-weight;
+        font-size:$font-size;
         svg{
             fill:$lightGreen;
         }
@@ -37,6 +44,8 @@
     .completed{
         background:$pastGray;
         color:$mediumGray;
+        font-weight:$font-weight;
+        font-size:$font-size;
         svg{
             fill:$mediumGray;
         }
@@ -44,6 +53,8 @@
     .onHold{
         background:$altWhite;
         color:$darkBlue;
+        font-weight:$font-weight;
+        font-size:$font-size;
         border:1px solid $pendingBlueBackground;
         svg{
             fill:$darkBlue;
@@ -53,6 +64,8 @@
     .deffered{
         background:$white;
         color:$errorRed;
+        font-weight:$font-weight;
+        font-size:$font-size;
         border:1px solid $errorRed;
         .svg{
             fill:$errorRed;
