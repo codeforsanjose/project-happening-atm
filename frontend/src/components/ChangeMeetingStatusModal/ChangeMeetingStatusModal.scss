@@ -1,29 +1,2 @@
 @import '../../utils/colors';
 
-.ChangeMeetingStatusModal{
-    .modalAgendaItemWrapper{
-        .AgendaItem{
-            border:solid 4px $darkBlue;
-        }
-    }
-    
-    .closeOutModal{
-        position: absolute;
-        color: white;
-        fill: white;
-        width:100%;
-        cursor:pointer;
-
-        .closeOutText{
-            position: relative;
-            bottom: 0.4rem;
-            font-weight: 600;
-        }
-    }
-    
-
-    @import '../../utils/statusButtons.scss';
-
-
-
-}
