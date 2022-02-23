@@ -35,7 +35,7 @@ function Header({ toggled, handleToggle }) {
           <TabletOrMobile>
             <div className="home-button-group">
               <ATMLogoPinRainbowIcon className="button-icon home-button-icon" />
-              <span className="home-button-text">City of San Jose</span>
+              <span className="home-button-text">{t("navbar.city")}</span>
             </div>
           </TabletOrMobile>
           <Desktop>

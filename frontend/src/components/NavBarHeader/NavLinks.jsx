@@ -11,8 +11,8 @@ function NavLinks({ toggled, t }) {
       <div className="nav-links-scroll">
         <ul className="nav-links-list">
           <NavigationLink Icon={<HomeIcon className="button-icon" />} linkText={t('header.my-city-agenda')} path="/" />
-          <NavigationLink Icon={<ProfileIcon className="button-icon" />} linkText="Profile" path="/" />
-          <NavigationLink Icon={<FaqIcon className="button-icon" />} linkText="FAQ" path="/" />
+          <NavigationLink Icon={<ProfileIcon className="button-icon" />} linkText={t("navbar.profile")} path="/" />
+          <NavigationLink Icon={<FaqIcon className="button-icon" />} linkText={t("navbar.faq")} path="/" />
           <NavigationLink Icon={<ATMLogoPinRainbowIcon className="button-icon" />} linkText={t('navbar.about')} path="/" />                
           <LanguageDropdown />
         </ul>
