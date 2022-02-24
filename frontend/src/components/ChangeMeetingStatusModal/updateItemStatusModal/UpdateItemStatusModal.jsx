@@ -7,6 +7,26 @@ import './UpdateItemStatusModal.scss';
 import { CloseIcon, ArrowUpwardIcon } from '../../../utils/_icons';
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
+/**
+ * Presentation component that lets the user comfirm the chaange in item status
+ *
+ * props: item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort
+ *    item
+ *      The agenda item itself, from agendaItem.jsx
+ *    dropDownRef
+ *      Dom reference to the button element in agendaItem.jsx
+ *    setDisplaySetStatusModal
+ *      Flag to display the wrapper modal established by changeMeetingStatusModal
+ *    setDisbleSort
+ *      Disables sorting of agenda items while modal is displayed
+ *    refetchAllMeeting
+ *      Gets all meetings query
+ *    oldStatus
+ *      Contains the class,value,status of the old meeting button
+ *    newStatus
+ *      Contains the class,value,status of the new meeting button
+ */
+
 function updateTheItem(updateItem, item, newStatus) {
   updateItem({
     variables: {

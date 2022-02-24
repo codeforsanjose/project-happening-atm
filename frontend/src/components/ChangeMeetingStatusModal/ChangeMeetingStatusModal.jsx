@@ -18,9 +18,11 @@ import buildButtonClasses from '../../utils/buildButtonClasses';
  *    dropDownRef
  *      Dom reference to the button element in agendaItem.jsx
  *    setDisplaySetStatusModal
- *      Controls the display of the first outer modal
+ *      Flag to display the wrapper modal established by changeMeetingStatusModal
  *    setDisbleSort
  *      Disables sorting of agenda items while modal is displayed
+ *    refetchAllMeeting
+ *      Gets all meetings query
  */
 
 const ChangeMeetingStatusModal = ({

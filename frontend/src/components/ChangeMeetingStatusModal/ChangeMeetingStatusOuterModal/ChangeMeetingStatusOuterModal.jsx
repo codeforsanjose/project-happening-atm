@@ -10,16 +10,22 @@ import { CloseIcon } from '../../../utils/_icons';
  * lets admin pick the status to change to
  *
  * props: item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort
- *    item
- *      The agenda item itself, from agendaItem.jsx
+ *    contentRef
+ *      This is the ref to the wrapper modal in changeMeetingStatusModal
  *    itemRef
  *      Dom refernce to AgendaItem outer wrapper from agendaItem.jsx
  *    dropDownRef
  *      Dom reference to the button element in agendaItem.jsx
  *    setDisplaySetStatusModal
- *      Controls the display of the first outer modal
- *    setDisbleSort
- *      Disables sorting of agenda items while modal is displayed
+ *      Flag to display the wrapper modal established by changeMeetingStatusModal
+ *    buttonClasses
+ *      Array of objects hold the status,class, and value for the buttons,
+ *       this builds the buttons content and style
+ *    setNewStatus
+ *      Setter function from changeMEetingStatusModal, assigned one of the
+ *      elements from buttonClasses
+ *
+ *
  */
 
 function buildStyle(itemRef) {
