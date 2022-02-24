@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import Modal from 'react-modal/lib/components/Modal';
-import './ChangeMeetingStatusModal.scss';
 import UpdateItemStatusModal from './UpdateItemStatusModal/UpdateItemStatusModal';
 import ChangeMeetingStatusOuterModal from './ChangeMeetingStatusOuterModal/ChangeMeetingStatusOuterModal';
 import buildButtonClasses from '../../utils/buildButtonClasses';

@@ -1,20 +1,20 @@
 @import '../../../utils/colors';
 
-.ChangeMeetingStatusOuterModal{
-    .modalAgendaItemWrapper{
-        .AgendaItem{
-            border:solid 4px $darkBlue;
+.ChangeMeetingStatusOuterModal {
+    .modalAgendaItemWrapper {
+        .AgendaItem {
+            border: solid 4px $darkBlue;
         }
     }
     
-    .closeOutModal{
+    .closeOutModal {
         position: absolute;
         color: white;
         fill: white;
-        width:100%;
-        cursor:pointer;
+        width: 100%;
+        cursor: pointer;
 
-        .closeOutText{
+        .closeOutText {
             position: relative;
             bottom: 0.4rem;
             font-weight: 600;

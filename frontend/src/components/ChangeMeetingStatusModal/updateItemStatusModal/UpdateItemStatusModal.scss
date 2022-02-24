@@ -1,99 +1,98 @@
 @import '../../../utils/colors';
 
-.UpdateItemStatusModal{
-    .updateItemStatusWrapper{
-        position:absolute;
-        margin:auto;
-        left:0;
-        right:0;
-        top:0;
-        bottom:0;
-        top:32%;
-        max-width:26rem;
+.UpdateItemStatusModal {
+    .updateItemStatusWrapper {
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        top: 32%;
+        max-width: 26rem;
 
-        .updateItemStatusHeader{
-            background:$grayBlue;
-            height:4rem;
-            display:flex;
-            flex-direction:row;
+        .updateItemStatusHeader {
+            background:$grayBlue ;
+            height: 4rem;
+            display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: center;
             gap: 8rem;
 
-            .headerText{
-                margin-left:2rem;
-                color:$darkBlue;
-                font-size:1.25rem;
-                font-weight:500;
+            .headerText {
+                margin-left: 2rem;
+                color: $darkBlue;
+                font-size: 1.25rem;
+                font-weight: 500;
             }
 
-            .closeOutModal{
-                cursor:pointer;
-                fill:$darkBlue;
-                .closeOutIcon{
-                    margin-right:1rem;
+            .closeOutModal {
+                cursor: pointer;
+                fill: $darkBlue;
+                .closeOutIcon {
+                    margin-right: 1rem;
                 }
             }
 
         }
 
-        .updateItemStatusModalBody{
-            display:flex;
+        .updateItemStatusModalBody {
+            display: flex;
             align-items: center;
-            background:$white;
-            padding:2.5rem 2rem 1.87rem;
-            flex-direction:column;
+            background: $white;
+            padding: 2.5rem 2rem 1.87rem;
+            flex-direction: column;
 
-            .buttonsAndArrow{
-                display:flex;
-                flex-direction:column;
-                gap:1rem;
-                align-items:center;
+            .buttonsAndArrow {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
 
-                .arrow_upward-24px{
+                .arrow_upward-24px {
                     transform: rotate(180deg);
-                    fill:$lightBlue;
+                    fill: $lightBlue;
                 }
             }
 
             @import '../../../utils/statusButtons.scss';
 
-            .statusChangeDescription{
-                margin:2.1rem 0;
+            .statusChangeDescription {
+                margin: 2.1rem 0;
             }
 
-            .publishOrCancelButtons{
-                display:flex;
-                gap:5rem;
+            .publishOrCancelButtons {
+                display: flex;
+                gap: 5rem;
                 
-                .publish{
-                    background:$gold;
-                    border:none;
-                    padding:1rem 2rem;
+                .publish {
+                    background: $gold;
+                    border: none;
+                    padding: 1rem 2rem;
                     border-radius: 8px;
-                    font-size:1.3rem;
+                    font-size: 1.3rem;
                 }
-                .publish:hover{
-                    cursor:pointer;
+                .publish:hover {
+                    cursor: pointer;
                 }
 
-                .cancel{
-                    border:none;
-                    background:none;
-                    padding:0;
-                    font-size:1.1rem;
-                    font-weight:bold;
+                .cancel {
+                    border: none;
+                    background: none;
+                    padding: 0;
+                    font-size: 1.1rem;
+                    font-weight: bold;
                 }
-                .cancel:hover{
-                    cursor:pointer;
+                .cancel:hover {
+                    cursor: pointer;
                 }
             }
-            .error{
-                color:$errorRed;
-                font-size:1.5rem;
+            .error {
+                color: $errorRed;
+                font-size: 1.5rem;
             }
             
         }
-    }
-    
+    }   
 }
