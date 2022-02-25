@@ -125,7 +125,7 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, testValue, setDisableSort, id, subStatus, refetchSubs, refetchAllMeeting, dragOverlay = false, getSubError = false, ...props
+    item, setDisableSort, id, subStatus, refetchSubs, refetchAllMeeting, dragOverlay = false, getSubError = false, ...props
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
