@@ -26,6 +26,8 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
 import StatusDontSort from '../../../constants/StatusDontSort';
 
+import isAdmin from '../../../utils/isAdmin';
+
 /**
  * A group of agenda items in a collapsible accordion.
  *
@@ -50,7 +52,8 @@ const setNextIndex = (agendaGroups) => {
   let nextFound = false;
   let next = null;
   agendaGroups.forEach((group, i) => {
-    if (group.status === MeetingItemStates.PENDING || group.status === MeetingItemStates.IN_PROGRESS) {
+    if (group.status === MeetingItemStates.PENDING
+      || group.status === MeetingItemStates.IN_PROGRESS) {
       if (!nextFound) {
         next = i;
         nextFound = true;
@@ -60,15 +63,24 @@ const setNextIndex = (agendaGroups) => {
   return next;
 };
 
-function AgendaGroups({
-  agendaGroups, admin, subbedItems, refetchSubs, refetchAllMeeting,
-  expandedAcordians, getSubError,
-}) {
+function AgendaGroups({ args }) {
+  const {
+    agendaGroups, subbedItems, refetchSubs, refetchAllMeeting,
+    expandedAcordians, getSubError,
+  } = args;
+
   // This is the index of the next meeting up on the agenda
   // Can be either In Progress or Pending
   const [nextIndex] = useState(setNextIndex(agendaGroups));
   // prefix for the uuid
   const groupId = 'group-id';
+
+  const agendaGroupHeaderArgs = {
+    subbedItems,
+    refetchSubs,
+    refetchAllMeeting,
+    getSubError,
+  };
 
   // AgendaGroup was split into header and body to permit seperate dragging of the group and items.
   return (
@@ -84,12 +96,8 @@ function AgendaGroups({
           />
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
-            admin={admin}
             agendaGroup={parent}
-            subbedItems={subbedItems}
-            refetchSubs={refetchSubs}
-            refetchAllMeeting={refetchAllMeeting}
-            getSubError={getSubError}
+            args={agendaGroupHeaderArgs}
           />
         </AccordionItem>
       ))}
@@ -207,8 +215,12 @@ const buildSortableItems = (agendaGroup) => {
 };
 
 function AgendaGroupBody({
-  agendaGroup, admin, subbedItems, refetchSubs, refetchAllMeeting, getSubError,
+  agendaGroup, args,
 }) {
+  const {
+    subbedItems, refetchAllMeeting, refetchSubs, getSubError,
+  } = args;
+
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
     disabled: StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === agendaGroup.status),
@@ -219,9 +231,15 @@ function AgendaGroupBody({
     minHeight: options.minHeightAgendaContainer,
   };
 
+  const agendaItemArgs = {
+    refetchSubs,
+    refetchAllMeeting,
+    getSubError,
+  };
+
   return (
     <SortableContext
-      items={admin ? buildSortableItems(agendaGroup) : []}
+      items={isAdmin() ? buildSortableItems(agendaGroup) : []}
       strategy={verticalListSortingStrategy}
     >
       <AccordionItemPanel className="group-items">
@@ -235,9 +253,7 @@ function AgendaGroupBody({
                   (sub) => (sub.meeting_item_id === item.id),
                 )
               }
-              refetchSubs={refetchSubs}
-              refetchAllMeeting={refetchAllMeeting}
-              getSubError={getSubError}
+              args={agendaItemArgs}
             />
           ))}
         </div>

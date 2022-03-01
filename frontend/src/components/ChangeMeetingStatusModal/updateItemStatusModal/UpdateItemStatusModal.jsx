@@ -44,8 +44,12 @@ function updateTheItem(updateItem, item, newStatus) {
 }
 
 const UpdateItemStatusModal = ({
-  item, setShowItemStatusModal, setDisplaySetStatusModal, oldStatus, newStatus, refetchAllMeeting,
+  args,
 }) => {
+  const {
+    item, setShowItemStatusModal, setDisplaySetStatusModal, oldStatus, newStatus, refetchAllMeeting,
+  } = args;
+
   const { t } = useTranslation();
   const [updateItem, { error }] = useMutation(UPDATE_MEETING_ITEM,
     { onCompleted: () => { refetchAllMeeting(); setDisplaySetStatusModal(false); } });

@@ -74,9 +74,13 @@ function buildButtonList(itemStatus, setShowItemStatusModal, setNewStatus, butto
 }
 
 const ChangeMeetingStatusOuterModal = ({
-  contentRef, itemRef, dropDownRef, setDisplaySetStatusModal,
-  item, setShowItemStatusModal, setNewStatus, buttonClasses,
+  args,
 }) => {
+  const {
+    contentRef, itemRef, dropDownRef, setDisplaySetStatusModal,
+    item, setShowItemStatusModal, setNewStatus, buttonClasses,
+  } = args;
+
   const { t } = useTranslation();
   const [itemStyle, setItemStyle] = useState(buildStyle(itemRef.current));
   const [listStyle, setListStyle] = useState(buildStyle(dropDownRef.current));

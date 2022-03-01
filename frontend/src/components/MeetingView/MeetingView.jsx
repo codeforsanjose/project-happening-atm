@@ -88,6 +88,15 @@ function MeetingView() {
     }
   }, [meetingItemsUpdated, id, getMeetingWithItems]);
 
+  const agendaViewArgs = {
+    meeting: meetingWithItems,
+    saveMeetingItems,
+    setSaveMeetingItems,
+    setMeetingItemsUpdated,
+    setProgressStatus,
+    refetchAllMeetings: refetch,
+  };
+
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -118,12 +127,7 @@ function MeetingView() {
       )}
       {!(loading || error) && data && 'items' in meetingWithItems && (
         <AgendaView
-          meeting={meetingWithItems}
-          saveMeetingItems={saveMeetingItems}
-          setSaveMeetingItems={setSaveMeetingItems}
-          setMeetingItemsUpdated={setMeetingItemsUpdated}
-          setProgressStatus={setProgressStatus}
-          refetchAllMeetings={refetch}
+          args={agendaViewArgs}
         />
       )}
       {error && <p className="error">{error.message}</p>}

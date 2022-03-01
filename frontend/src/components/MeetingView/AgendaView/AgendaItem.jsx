@@ -70,8 +70,10 @@ import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeeti
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
 function AgendaItem({
-  item, subStatus, refetchSubs, refetchAllMeeting, getSubError,
+  item, subStatus, args,
 }) {
+  const { refetchAllMeeting, refetchSubs, getSubError } = args;
+
   const [disableSort, setDisableSort] = useState(false);
   const {
     attributes, listeners, setNodeRef, transform, transition,
@@ -82,20 +84,23 @@ function AgendaItem({
     transition,
   };
 
+  const renderedAgendaItemArgs = {
+    item,
+    refetchSubs,
+    refetchAllMeeting,
+    getSubError,
+    setDisableSort,
+  };
+
   return (
 
     <RenderedAgendaItem
       {...attributes}
       {...listeners}
-      ref={setNodeRef}
       style={style}
-      id={item.id}
-      item={item}
+      ref={setNodeRef}
       subStatus={subStatus}
-      refetchSubs={refetchSubs}
-      refetchAllMeeting={refetchAllMeeting}
-      getSubError={getSubError}
-      setDisableSort={setDisableSort}
+      args={renderedAgendaItemArgs}
     />
   );
 }
@@ -125,8 +130,13 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, setDisableSort, id, subStatus, refetchSubs, refetchAllMeeting, dragOverlay = false, getSubError = false, ...props
+    subStatus, args, ...props
   }, ref) => {
+    const {
+      setDisableSort, refetchSubs, item,
+      refetchAllMeeting, dragOverlay = false, getSubError = false,
+    } = args;
+
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
     const [dispalySetStatusModal, setDisplaySetStatusModal] = useState(false);
@@ -177,6 +187,15 @@ const RenderedAgendaItem = forwardRef(
       modalRef.current && modalRef.current.portal.close();
     };
 
+    // arguments
+    const changeMeetingStatusArgs = {
+      item,
+      dropDownRef,
+      itemRef,
+      setDisableSort,
+      setDisplaySetStatusModal,
+      refetchAllMeeting,
+    };
     // The input within className='relativeEmptyContainer' is overlay on top of the actual checkbox.
     // This allows the smooth pressing of the checkbox and the ability to drag
     // Without this the dragOverlay prevented the pressing of the checkbox
@@ -209,12 +228,7 @@ const RenderedAgendaItem = forwardRef(
           {dispalySetStatusModal
           && (
           <ChangeMeetingStatusModal
-            item={item}
-            dropDownRef={dropDownRef}
-            itemRef={itemRef}
-            setDisableSort={setDisableSort}
-            setDisplaySetStatusModal={setDisplaySetStatusModal}
-            refetchAllMeeting={refetchAllMeeting}
+            args={changeMeetingStatusArgs}
           />
           )}
           <div className="item-links">
