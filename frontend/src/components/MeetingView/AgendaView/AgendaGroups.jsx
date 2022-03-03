@@ -75,7 +75,7 @@ function AgendaGroups({ args }) {
   // prefix for the uuid
   const groupId = 'group-id';
 
-  const agendaGroupHeaderArgs = {
+  const agendaGroupBodyArgs = {
     subbedItems,
     refetchSubs,
     refetchAllMeeting,
@@ -97,7 +97,7 @@ function AgendaGroups({ args }) {
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
             agendaGroup={parent}
-            args={agendaGroupHeaderArgs}
+            args={agendaGroupBodyArgs}
           />
         </AccordionItem>
       ))}
