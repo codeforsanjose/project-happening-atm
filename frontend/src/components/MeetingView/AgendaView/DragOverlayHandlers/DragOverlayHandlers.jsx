@@ -33,17 +33,19 @@ function DragOverlayHandler(props) {
   // as the RenderAgendaItem needs its information to build a draggable overlay
   activeItem = agendaGroups[parentContainerIndex].items.find((item) => item.id === activeId);
 
+  const RenderedAgendaItemArgs = {
+    item: activeItem,
+    dragOverlay: true,
+  };
   return (
     <DragOverlay>
       <RenderedAgendaItem
-        id={activeId}
-        item={activeItem}
         subStatus={
           subbedItems.some(
             (sub) => (sub.meeting_item_id === activeId),
           )
         }
-        dragOverlay
+        args={RenderedAgendaItemArgs}
       />
     </DragOverlay>
   );

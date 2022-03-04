@@ -24,9 +24,10 @@ import buildButtonClasses from '../../utils/buildButtonClasses';
  *      Gets all meetings query
  */
 
-const ChangeMeetingStatusModal = ({
-  item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort, refetchAllMeeting,
-}) => {
+const ChangeMeetingStatusModal = ({ args }) => {
+  const {
+    item, itemRef, dropDownRef, setDisplaySetStatusModal, setDisableSort, refetchAllMeeting,
+  } = args;
   Modal.setAppElement('#root');
   const [contentRef, setContentRef] = useState(null);
   const [showItemStatusModal, setShowItemStatusModal] = useState(false);
@@ -58,30 +59,39 @@ const ChangeMeetingStatusModal = ({
     };
   }, [setDisableSort]);
 
+  // arguments for the child components
+  const changeMeetingStatusOuterModalArgs = {
+    contentRef,
+    item,
+    itemRef,
+    dropDownRef,
+    setDisplaySetStatusModal,
+    setShowItemStatusModal,
+    setNewStatus,
+    buttonClasses,
+  };
+
+  const updateItemStatusModalArgs = {
+    setShowItemStatusModal,
+    setDisplaySetStatusModal,
+    item,
+    oldStatus,
+    newStatus,
+    refetchAllMeeting,
+  };
+
   return (
     <Modal contentRef={(node) => { setContentRef(node); }} style={modalStyle} className="ChangeMeetingStatusModal" isOpen>
 
       {!showItemStatusModal && (
       <ChangeMeetingStatusOuterModal
-        contentRef={contentRef}
-        item={item}
-        itemRef={itemRef}
-        dropDownRef={dropDownRef}
-        setDisplaySetStatusModal={setDisplaySetStatusModal}
-        setShowItemStatusModal={setShowItemStatusModal}
-        setNewStatus={setNewStatus}
-        buttonClasses={buttonClasses}
+        args={changeMeetingStatusOuterModalArgs}
       />
       )}
       {showItemStatusModal
       && (
       <UpdateItemStatusModal
-        setShowItemStatusModal={setShowItemStatusModal}
-        setDisplaySetStatusModal={setDisplaySetStatusModal}
-        item={item}
-        oldStatus={oldStatus}
-        newStatus={newStatus}
-        refetchAllMeeting={refetchAllMeeting}
+        args={updateItemStatusModalArgs}
       />
       )}
     </Modal>

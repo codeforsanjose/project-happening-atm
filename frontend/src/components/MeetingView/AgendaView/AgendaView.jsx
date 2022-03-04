@@ -70,8 +70,13 @@ const OPTIONS = {
 // These are the event handlers for the DndContext
 
 function AgendaView({
-  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated, setProgressStatus, refetchAllMeetings,
+  args,
 }) {
+  const {
+    meeting, saveMeetingItems, setSaveMeetingItems,
+    setMeetingItemsUpdated, setProgressStatus, refetchAllMeetings,
+  } = args;
+
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [agendaGroups, setAgendaGroups] = useState(
@@ -163,6 +168,14 @@ function AgendaView({
   // of which prevents the DND kit from moving items between completed and pending groups
   const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
 
+  const agendaGroupsArgs = {
+    agendaGroups: displayAgenda,
+    subbedItems,
+    refetchSubs: refetch,
+    refetchAllMeeting: refetchAllMeetings,
+    expandedAcordians,
+    getSubError: error,
+  };
   return (
     <div className="AgendaView">
 
@@ -184,13 +197,7 @@ function AgendaView({
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda" onChange={(expanded) => setExpandedAcordians(expanded)}>
           <AgendaGroups
-            admin={admin}
-            agendaGroups={displayAgenda}
-            subbedItems={subbedItems}
-            refetchSubs={refetch}
-            refetchAllMeeting={refetchAllMeetings}
-            expandedAcordians={expandedAcordians}
-            getSubError={error}
+            args={agendaGroupsArgs}
           />
         </Accordion>
 
