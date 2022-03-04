@@ -13,6 +13,7 @@ import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
 import './AgendaItem.scss';
 import { CREATE_SUBSCRIPTIONS } from '../../../graphql/graphql';
 import isAdmin from '../../../utils/isAdmin';
+import buildButtonClasses from '../../../utils/buildButtonClasses';
 
 import {
   buildSubscriptionQueryString,
@@ -21,8 +22,9 @@ import {
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import {
-  NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress,
+  NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress, KeyboardArrowDownIcon,
 } from '../../../utils/_icons';
+import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeetingStatusModal';
 
 /**
  *
@@ -68,11 +70,12 @@ import {
 
 // The AgendaItem has to contain RenderedAgendaItem to ensure the drag overlay works correctly
 function AgendaItem({
-  item, subStatus, refetchSubs, getSubError,
+  item, subStatus, refetchSubs, refetchAllMeeting, getSubError,
 }) {
+  const [disableSort, setDisableSort] = useState(false);
   const {
     attributes, listeners, setNodeRef, transform, transition,
-  } = useSortable({ id: item.id });
+  } = useSortable({ id: item.id, disabled: disableSort });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -80,6 +83,7 @@ function AgendaItem({
   };
 
   return (
+
     <RenderedAgendaItem
       {...attributes}
       {...listeners}
@@ -89,7 +93,9 @@ function AgendaItem({
       item={item}
       subStatus={subStatus}
       refetchSubs={refetchSubs}
+      refetchAllMeeting={refetchAllMeeting}
       getSubError={getSubError}
+      setDisableSort={setDisableSort}
     />
   );
 }
@@ -119,12 +125,16 @@ function AgendaItemActionLink({
 
 const RenderedAgendaItem = forwardRef(
   ({
-    item, id, subStatus, refetchSubs, dragOverlay = false, getSubError = false, ...props
+    item, setDisableSort, id, subStatus, refetchSubs, refetchAllMeeting, dragOverlay = false, getSubError = false, ...props
   }, ref) => {
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
+    const [dispalySetStatusModal, setDisplaySetStatusModal] = useState(false);
     const [admin] = useState(isAdmin());
+    const [buttonClasses] = useState(buildButtonClasses());
+    const itemRef = useRef(null);
     const modalRef = useRef(null);
+    const dropDownRef = useRef(null);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -171,64 +181,108 @@ const RenderedAgendaItem = forwardRef(
     // This allows the smooth pressing of the checkbox and the ability to drag
     // Without this the dragOverlay prevented the pressing of the checkbox
     return (
-      <div {...props} ref={ref} className="AgendaItem">
+      <div ref={itemRef}>
+        <div {...props} ref={ref} className="AgendaItem">
 
-        <div className="row">
-          {item.status === MeetingItemStates.PENDING}
-          <h4>{item.title_loc_key}</h4>
-          <div className="item-status">
-            {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
-            {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
-            {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
-            {subscribed && (<NotificationFilledIcon />)}
+          <div className="row">
+            {item.status === MeetingItemStates.PENDING}
+            <h4>{item.title_loc_key}</h4>
+            <div className="item-status">
+              {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
+              {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
+              {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
+              {subscribed && (<NotificationFilledIcon />)}
+            </div>
+
           </div>
+          <p>{item.description_loc_key}</p>
+          {subscriptions && subscriptions.length > 0 && (
+            <SubscribeConfirmation
+              numberOfSubscriptions={subscriptions.length}
+              onClose={closeConfirmation}
+              ref={modalRef}
+            />
+          )}
+          {error && <div className="form-error">{error.message}</div>}
+          {getSubError && <div className="form-error">{getSubError.message}</div>}
 
-        </div>
-        <p>{item.description_loc_key}</p>
-        {subscriptions && subscriptions.length > 0 && (
-          <SubscribeConfirmation
-            numberOfSubscriptions={subscriptions.length}
-            onClose={closeConfirmation}
-            ref={modalRef}
+          {dispalySetStatusModal
+          && (
+          <ChangeMeetingStatusModal
+            item={item}
+            dropDownRef={dropDownRef}
+            itemRef={itemRef}
+            setDisableSort={setDisableSort}
+            setDisplaySetStatusModal={setDisplaySetStatusModal}
+            refetchAllMeeting={refetchAllMeeting}
           />
-        )}
-        {error && <div className="form-error">{error.message}</div>}
-        {getSubError && <div className="form-error">{getSubError.message}</div>}
-        <div className="item-links">
-          <div className="link">
-            <p>
-              <span>+</span>
-              {t('meeting.tabs.agenda.list.more-info.button')}
-            </p>
-          </div>
-          {/* if Item status is completed, it will show completed;
-              if Item status is deferred, it will show deferred;
-              if Item statu is not subscribed, it will show notify me;
-              if Item status is subscribed/subscribing it will show that */}
-
-          {item.status === MeetingItemStates.COMPLETED && (
+          )}
+          <div className="item-links">
             <div className="link">
-              <p className="disabled">
-                {t('meeting.tabs.agenda.status.options.completed')}
+              <p>
+                <span>+</span>
+                {t('meeting.tabs.agenda.list.more-info.button')}
               </p>
             </div>
-          )}
+            {/* if Item status is completed, it will show completed;
+                if Item status is deferred, it will show deferred;
+                if Item statu is not subscribed, it will show notify me;
+                if Item status is subscribed/subscribing it will show that */}
 
-          {item.status === MeetingItemStates.DEFERRED && (
-          <div className="link">
-            <p className="deferred">
-              {t('meeting.tabs.agenda.status.options.deferred')}
-            </p>
+            {!isAdmin && item.status === MeetingItemStates.COMPLETED && (
+              <div className="link">
+                <p className="disabled">
+                  {t('meeting.tabs.agenda.status.options.completed')}
+                </p>
+              </div>
+            )}
+
+            {!isAdmin && item.status === MeetingItemStates.DEFERRED && (
+            <div className="link">
+              <p className="deferred">
+                {t('meeting.tabs.agenda.status.options.deferred')}
+              </p>
+            </div>
+            )}
+
+            {(item.status !== MeetingItemStates.COMPLETED)
+            && (item.status !== MeetingItemStates.DEFERRED)
+            && (item.status !== MeetingItemStates.IN_PROGRESS)
+            && !admin
+            && (
+              <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
+            )}
+
+            {admin && (
+              <ul className="statusButtons">
+                <li>
+                  <input
+                    type="button"
+                    ref={dropDownRef}
+                    className={buttonClasses.filter((elem) => elem.status === item.status)[0].class}
+                    onClick={!dragOverlay ? () => {
+                      setDisableSort(true);
+                      setDisplaySetStatusModal(true);
+                    } : null}
+                    value={buttonClasses.filter((elem) => elem.status === item.status)[0].value}
+                  />
+
+                  <span className="relativeWrapper">
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                    <span
+                      className={`${buttonClasses.filter((elem) => elem.status === item.status)[0].class} buttonDownArrow`}
+                      onClick={!dragOverlay ? () => {
+                        setDisableSort(true);
+                        setDisplaySetStatusModal(true);
+                      } : null}
+                    >
+                      <KeyboardArrowDownIcon />
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            )}
           </div>
-          )}
-
-          {(item.status !== MeetingItemStates.COMPLETED)
-          && (item.status !== MeetingItemStates.DEFERRED)
-          && (item.status !== MeetingItemStates.IN_PROGRESS)
-          && !admin
-          && (
-            <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
-          )}
         </div>
       </div>
     );

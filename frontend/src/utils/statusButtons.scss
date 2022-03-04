@@ -1,0 +1,75 @@
+@import './colors';
+
+$font-weight:600;
+$font-size:1rem;
+
+.statusButtons{
+    list-style:none;
+    padding:0;
+    margin:0;
+    input{
+        width:10.5rem;
+        height:2rem;
+        border:none;
+        border-radius:8px;
+        font-weight:700;
+        margin-bottom:0.4rem;
+    }
+    input:hover{
+        cursor:pointer;
+    }
+
+    .fakeButton:hover{
+        cursor:default;
+    }
+
+    .upComing{
+        background:$pendingBlueBackground;
+        color:$darkBlue;
+        font-weight:$font-weight;
+        font-size:$font-size;
+        svg{
+            fill:$darkBlue;
+        }
+    }
+    .inProgress{
+        background:$darkBlue;
+        color:$lightGreen;
+        font-weight:$font-weight;
+        font-size:$font-size;
+        svg{
+            fill:$lightGreen;
+        }
+    }
+    .completed{
+        background:$pastGray;
+        color:$mediumGray;
+        font-weight:$font-weight;
+        font-size:$font-size;
+        svg{
+            fill:$mediumGray;
+        }
+    }
+    .onHold{
+        background:$altWhite;
+        color:$darkBlue;
+        font-weight:$font-weight;
+        font-size:$font-size;
+        border:1px solid $pendingBlueBackground;
+        svg{
+            fill:$darkBlue;
+        }
+        
+    }
+    .deffered{
+        background:$white;
+        color:$errorRed;
+        font-weight:$font-weight;
+        font-size:$font-size;
+        border:1px solid $errorRed;
+        .svg{
+            fill:$errorRed;
+        }
+    }
+
+}

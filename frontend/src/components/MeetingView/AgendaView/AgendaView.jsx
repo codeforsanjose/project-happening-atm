@@ -70,7 +70,7 @@ const OPTIONS = {
 // These are the event handlers for the DndContext
 
 function AgendaView({
-  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated, setProgressStatus,
+  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated, setProgressStatus, refetchAllMeetings,
 }) {
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
@@ -188,6 +188,7 @@ function AgendaView({
             agendaGroups={displayAgenda}
             subbedItems={subbedItems}
             refetchSubs={refetch}
+            refetchAllMeeting={refetchAllMeetings}
             expandedAcordians={expandedAcordians}
             getSubError={error}
           />

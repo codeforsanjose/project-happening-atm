@@ -111,7 +111,9 @@ meeting:
         button: Update Status
         modal:
           title: Update Agenda Item Status
+          title2: Update Item Status
           subtitle: Select status
+          description: This action will <strong>publish changes</strong> to the agenda item status <strong>and notify all users.</strong>
           button:
             do: Save and Publish Changes
             doing: Saving and Publishing
@@ -119,9 +121,11 @@ meeting:
         options:
           completed: Completed
           in-progress: In Progress
+          upcoming: Upcoming
           closed: Closed
           removed: Removed for Separate Consideration
           deferred: Deferred
+          on-hold: On Hold
       upload-new:
         button: Upload New Agenda
         modal:
