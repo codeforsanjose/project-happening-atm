@@ -20,7 +20,7 @@
       display: flex;
 
       .button-group-inner {
-        padding: 0 1em;
+        padding: 0 0.5em;
       }
     }
 
@@ -36,7 +36,7 @@
 
   .button-text {
     margin-left: 12px;
-    font-size: 16px;
+    font-size: 1em; //16px;
     vertical-align: middle;
     font-weight: 500;
   }
@@ -45,6 +45,7 @@
     border-left: 8px solid $cityBlue;
     background: $cityBlue10;
     color: $cityBlue;
+    box-sizing: content-box;
 
     .button-icon {
       fill: $cityBlue;
