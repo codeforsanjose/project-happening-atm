@@ -23,11 +23,11 @@ function AdminMeetingItemLinks({ meeting }) {
   const [openDeleteModal, DeleteModal] = useDeleteMeeting(meeting);
 
   const isFutureItem = isFutureTimestamp(meeting.meeting_start_timestamp);
-  const futureClasses = 'meeting-links visibility-hidden';
-  const pastClasses = 'meeting-links';
+  const pastClasses = 'meeting-links visibility-hidden';
+  const futureClasses = 'meeting-links';
 
   return (
-    <div className={isFutureItem ? pastClasses : futureClasses}>
+    <div className={isFutureItem ? futureClasses : pastClasses}>
       <Link to="#">
         <button
           type="button"
