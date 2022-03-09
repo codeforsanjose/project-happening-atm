@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import useCSVUpload from '../../hooks/useCSVUpload';
 import useDeleteMeeting from '../../hooks/useDeleteMeeting';
 import { isFutureTimestamp } from '../../utils/timestampHelper';
+import '../../utils/generalStyles.scss';
 
 // Asset imports
 import {
@@ -22,12 +23,11 @@ function AdminMeetingItemLinks({ meeting }) {
   const [openDeleteModal, DeleteModal] = useDeleteMeeting(meeting);
 
   const isFutureItem = isFutureTimestamp(meeting.meeting_start_timestamp);
-  const style = {
-    visibility: isFutureItem ? 'visible' : 'hidden',
-  };
+  const futureClasses = 'meeting-links visibility-hidden';
+  const pastClasses = 'meeting-links';
 
   return (
-    <div className="meeting-links" style={style}>
+    <div className={isFutureItem ? pastClasses : futureClasses}>
       <Link to="#">
         <button
           type="button"
