@@ -6,7 +6,7 @@ import "./LanguageDropdown.scss";
 
 function LanguageDropdown() {
     const { i18n } = useTranslation();
-    
+    const { t } = useTranslation();
     const [clickedOutside, setClickedOutside] = useState(false);
     const [expanded, setExpanded] = useState(false);
     
@@ -41,7 +41,7 @@ function LanguageDropdown() {
                 <div className="button-group">
                     <div className="button-group-inner">
                         <GlobeIcon className="button-icon"/>
-                        <span className="button-text">Languages</span>
+                        <span className="button-text">{t('navbar.language')}</span>
                         <CaratDownIcon className="button-dropdown-carat"/>
                     </div>
                 </div>

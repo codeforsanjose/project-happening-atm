@@ -138,7 +138,31 @@ When running with docker-compose, a separate persistent volume is created for Po
    }
    
    ```
+   
+### To create a local account for local login.
+ 1. You should be able to use this site key '6LdQw4IeAAAAAJhBO-s9vuYjuHXCrPUyw_OTa5hP', if not you can create one by following the steps provided.
+ 1. You first need to create a key for the recaptcha at https://www.google.com/recaptcha/admin/create
+ 1. Select recaptcha v2
+ 1. Leave selection on "I'm not a robot" checkbox
+ 1. Add localhost as the domain.
+ 1. Accept terms of service.
+ 1. Submit
+ 1. copy site key.
+ 1. Paste it into frontend\src\constants\Recaptchas.js Account_Creation
+ 1. Example below
 
+   Example
+   ```
+   const RECAPTCHAS = {
+		ACCOUNT_CREATION: '6LdQw4IeAAAAAJhBO-s9vuYjuHXCrPUyw_OTa5hP',
+	};
+
+	export default RECAPTCHAS;
+
+   
+   ```
+ 
+After following these steps, run the project, and then the create account button on the home page should work.
 ## Option 2
 
 This method is deprecated as of 4/21 and will soon be removed. Please use Option 1.

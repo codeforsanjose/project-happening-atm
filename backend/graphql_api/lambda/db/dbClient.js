@@ -45,10 +45,9 @@ module.exports = async (logger) => {
     await client.end();
   };
 
-  const convertMsToSeconds = (milliseconds) => {
-    return milliseconds / 1000;
-  };
+  const convertMsToSeconds = (milliseconds) => milliseconds / 1000;
 
+  // eslint-disable-next-line max-len
   module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status, virtualMeetingId, callInInformation, emailBeforeMeeting, emailDuringMeeting, eComment, cityOfSanJoseMeeting, youtubeLink) => {
     logger.info('dbClient: createMeeting');
     logger.info(virtualMeetingId);
@@ -87,8 +86,8 @@ module.exports = async (logger) => {
         emailDuringMeeting,
         eComment,
         cityOfSanJoseMeeting,
-        youtubeLink
-      ]
+        youtubeLink,
+      ],
     );
   };
 
@@ -134,9 +133,8 @@ module.exports = async (logger) => {
         contentCategories,
         descriptionLocKey,
         titleLocKey,
-        parentMeetingItemId
-      ]
-    );
+        parentMeetingItemId,
+      ]);
   };
 
   module.getAllMeetingItems = async () => {
@@ -165,10 +163,10 @@ module.exports = async (logger) => {
     logger.info('dbClient: createSubscriptions');
 
     // Aggregate meetings into an array so we can INSERT in a single query.
-    const itemIds = meetings.map(meeting => parseInt(meeting.meeting_item_id, 10));
+    const itemIds = meetings.map((meeting) => parseInt(meeting.meeting_item_id, 10));
 
     let paramIndex = 3;
-    let idParams = itemIds.map(itemId => `\$${paramIndex++}`);
+    const idParams = itemIds.map((itemId) => `\$${paramIndex++}`);
     const queryString = `
       INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id)
       (SELECT $1 AS phone_number, $2 AS email_address, id AS meeting_item_id, meeting_id AS meeting_id 
@@ -178,41 +176,41 @@ module.exports = async (logger) => {
     return query(queryString, [
       phoneNumber,
       emailAddress,
-      ...itemIds
+      ...itemIds,
     ]);
   };
 
   module.deleteSubscription = async (phone_number, email_address, meeting_id, meeting_item_id) => {
     logger.info('dbClient: deleteSubscription');
-    const queryString = `DELETE FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3 AND meeting_item_id = $4`;
-    return query(queryString, [phone_number,email_address,meeting_id,meeting_item_id]);
+    const queryString = 'DELETE FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3 AND meeting_item_id = $4';
+    return query(queryString, [phone_number, email_address, meeting_id, meeting_item_id]);
   };
 
   module.getSubscription = async (ids) => {
     logger.info('dbClient: getSubscription');
     let paramIndex = 1;
-    let idParams = ids.map(id => `\$${paramIndex++}`);
+    const idParams = ids.map((id) => `\$${paramIndex++}`);
     const queryString = `SELECT * FROM subscription WHERE id IN (${idParams.join(', ')})`;
     return query(queryString, [...ids]);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingID');
-    const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1'
+    const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1';
     return query(queryString, [id]);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
     logger.info('dbClient: getSubscriptionsByMeetingItemID');
-    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1'
+    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1';
     return query(queryString, [id]);
   };
 
   module.getSubscriptionsByEmailAndMeetingID = async (phone_number, email_address, meeting_id) => {
     logger.info('dbClient: getSubscriptsByEmailAndMeetingID');
-    const queryString = 'SELECT * FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3'
+    const queryString = 'SELECT * FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3';
     return query(queryString, [phone_number, email_address, meeting_id]);
-  }
+  };
 
   module.getAllSubscriptions = async () => {
     logger.info('dbClient: getAllSubscriptions');
@@ -253,9 +251,8 @@ module.exports = async (logger) => {
         contentCategories,
         descriptionLocKey,
         titleLocKey,
-        parentMeetingItemId
-      ]
-    );
+        parentMeetingItemId,
+      ]);
   };
 
   module.updateMeeting = async (id, status, meetingType, virtualMeetingUrl,
@@ -296,9 +293,8 @@ module.exports = async (logger) => {
         eComment,
         cityOfSanJoseMeeting,
         youtubeLink,
-        id
-      ]
-    );
+        id,
+      ]);
   };
 
   module.getSubscriptionsByMeetingIDList = async (idList) => {
@@ -312,8 +308,11 @@ module.exports = async (logger) => {
       }
     });
     idListString += ')';
-    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id in $1';
-    return query(queryString, [idListString]);
+    // fix for notifying next up agenda item:
+    return query(`SELECT * FROM subscription WHERE meeting_item_id IN ${[idListString]}`);
+    // orig code (not working):
+    // const queryString = 'SELECT * FROM subscription WHERE meeting_item_id IN $1';
+    // return query(queryString, [idListString]);
   };
 
   module.getAdminByEmail = async (email) => {
@@ -370,9 +369,6 @@ module.exports = async (logger) => {
     RETURNING id;`;
     return query(queryString);
   };
-
-
-
 
   return module;
 };

@@ -4,6 +4,7 @@ const MeetingItemStates = {
   MOVED: 'MOVED',
   PENDING: 'PENDING',
   DEFERRED: 'DEFERRED',
+  ON_HOLD: 'ON HOLD',
 };
 
 export default MeetingItemStates;
