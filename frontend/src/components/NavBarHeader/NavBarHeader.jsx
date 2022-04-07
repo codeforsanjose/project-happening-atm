@@ -53,7 +53,7 @@ function Header({ toggled, handleToggle }) {
               <NavigationLink
                 Icon={<ATMLogoPinRainbowIcon className="button-icon" />}
                 linkText={t("navbar.about")}
-                path="/"
+                path="/about"
               />
               <LanguageDropdown />
               <NavigationLink

@@ -33,7 +33,7 @@ function NavLinks({ toggled, t }) {
           <NavigationLink
             Icon={<ATMLogoPinRainbowIcon className="button-icon" />}
             linkText={t("navbar.about")}
-            path="/"
+            path="/about"
           />
           <LanguageDropdown />
         </ul>
