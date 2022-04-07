@@ -30,6 +30,7 @@ import LoginContext from './components/LoginContext/LoginContext';
 import AccountCreate from './components/UserAccountCreate/AccountCreate';
 import ForgotPassword from './components/ForgotPassword/ForgotPasswordRequest';
 import SetNewPassword from './components/ForgotPassword/SetNewPassword';
+import FAQ from './components/FAQ/FAQ.jsx';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -122,7 +123,9 @@ function App() {
                 <Route path="/reset-password">
                   <SetNewPassword />
                 </Route>
-
+              <Route exact path="/faq">
+                  <FAQ />
+                </Route>
                 {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
                 </Route>

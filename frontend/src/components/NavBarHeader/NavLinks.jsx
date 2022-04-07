@@ -12,7 +12,7 @@ function NavLinks({ toggled, t }) {
         <ul className="nav-links-list">
           <NavigationLink Icon={<HomeIcon className="button-icon" />} linkText={t('header.my-city-agenda')} path="/" />
           <NavigationLink Icon={<ProfileIcon className="button-icon" />} linkText="Profile" path="/" />
-          <NavigationLink Icon={<FaqIcon className="button-icon" />} linkText="FAQ" path="/" />
+          <NavigationLink Icon={<FaqIcon className="button-icon" />} linkText="FAQ" path="/faq" />
           <LanguageDropdown />
         </ul>
       </div>
