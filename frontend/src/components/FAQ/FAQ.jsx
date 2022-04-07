@@ -16,9 +16,9 @@ function FAQ({  }) {
 	}	
 
   return (
-    <div className="MeetingListView">
+    <div className="FAQ">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />		
-      <div className="FAQ">
+      <div className="FAQ-body">
         <h2>FAQ</h2>
         <h3>What is #atm?</h3>
         <p>#atm is a web based notification app centered on making public meetings in the City of San José more accessible to community members. Currently, #atm will send you notifications via email or text for specific agenda items as they come up for discussion during public city council meetings in the City of San Jose</p>
