@@ -5,7 +5,7 @@
 const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
-const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED'];
+const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED', 'ON HOLD'];
 const possibleTypes = ['test'];
 const possibleContentCategories = ['test', 'gov', 'tech', 'lol'];
 
@@ -51,15 +51,17 @@ module.exports = (logger) => {
   const isNumericString = (string) => /^\d+$/.test(string);
 
   const validateTimestamp = (ts, fieldName, context) => {
-    const tsIsNumeric = isNumericString(ts);
-    if (!tsIsNumeric) {
-      const msg = `Invalid "${fieldName}" field. Timestamp is not numeric: ${ts}`;
-      throwUserInputError(msg, context);
-    }
-    const isValidDate = new Date(parseInt(ts, 10)).getTime() > 0;
-    if (!isValidDate) {
-      const msg = `Invalid "${fieldName}" field. Timestamp is not a valid date: ${ts}`;
-      throwUserInputError(msg, context);
+    if(ts != '0'){
+      const tsIsNumeric = isNumericString(ts);
+      if (!tsIsNumeric) {
+        const msg = `Invalid "${fieldName}" field. Timestamp is not numeric: ${ts}`;
+        throwUserInputError(msg, context);
+      }
+      const isValidDate = new Date(parseInt(ts, 10)).getTime() > 0;
+      if (!isValidDate) {
+        const msg = `Invalid "${fieldName}" field. Timestamp is not a valid date: ${ts}`;
+        throwUserInputError(msg, context);
+      }
     }
   };
 

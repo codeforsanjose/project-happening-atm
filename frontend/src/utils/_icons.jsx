@@ -1,5 +1,7 @@
 import { ReactComponent as AddIcon } from '../assets/icons/add-24px.svg';
 import { ReactComponent as ArrowUpwardIcon } from '../assets/icons/arrow_upward-24px.svg';
+import { ReactComponent as ATMLogoPinRainbowIcon } from '../assets/icons/atm-logo-pin-rainbow.svg';
+import { ReactComponent as ATMLogoRainbowIcon } from '../assets/icons/atm-logo-rainbow.svg';
 import { ReactComponent as CalendarTodayIcon } from '../assets/icons/calendar_today-24px.svg';
 import { ReactComponent as CalendarBlueIcon } from '../assets/icons/calendar_blue-24px.svg';
 import { ReactComponent as CallIcon } from '../assets/icons/call-24px.svg';
@@ -56,6 +58,8 @@ import { ReactComponent as VoiceChatIcon } from '../assets/icons/voice_chat-24px
 export {
   AddIcon,
   ArrowUpwardIcon,
+  ATMLogoPinRainbowIcon,
+  ATMLogoRainbowIcon,
   CalendarTodayIcon,
   CalendarBlueIcon,
   CallIcon,

@@ -1,11 +1,14 @@
 navbar:
+  city: Thành phố San Jose
   menu: Thư mục
   browse-meetings: Tìm kiếm cuộc họp
   about: Về chúng tôi
   faq: Giải đáp thắc mắc
+  language: ngữ
   submit-feedback: Gửi phản hồi
   sign-in: Đăng nhập
   sign-out: Đăng Xuất
+  profile: Hồ sơ
 
 header:
   my-city-agenda: Chương trình nghị sự của Thành phố

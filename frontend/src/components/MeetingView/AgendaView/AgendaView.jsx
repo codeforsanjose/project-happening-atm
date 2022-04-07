@@ -13,7 +13,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  rectIntersection,
+  closestCorners,
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates,
@@ -70,8 +70,13 @@ const OPTIONS = {
 // These are the event handlers for the DndContext
 
 function AgendaView({
-  meeting, saveMeetingItems, setSaveMeetingItems, setMeetingItemsUpdated, setProgressStatus,
+  args,
 }) {
+  const {
+    meeting, saveMeetingItems, setSaveMeetingItems,
+    setMeetingItemsUpdated, setProgressStatus, refetchAllMeetings,
+  } = args;
+
   const { t } = useTranslation();
   const [showCompleted, setShowCompleted] = useState(true);
   const [agendaGroups, setAgendaGroups] = useState(
@@ -150,9 +155,9 @@ function AgendaView({
 
   // These are the props for various functions, and components in object form
   // Event handler functions
-  const onDragStartArgs = { setActiveId };
+  const onDragStartArgs = { setActiveId, agendaGroups };
   const onDragEndArgs = { setAgendaGroups, oNumStart: OPTIONS.oNumStart };
-  const onDragOverArgs = { setAgendaGroups };
+  const onDragOverArgs = { setAgendaGroups, agendaGroups };
 
   // DragOverlayhandler props
   const dragOverlayProps = {
@@ -163,6 +168,14 @@ function AgendaView({
   // of which prevents the DND kit from moving items between completed and pending groups
   const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
 
+  const agendaGroupsArgs = {
+    agendaGroups: displayAgenda,
+    subbedItems,
+    refetchSubs: refetch,
+    refetchAllMeeting: refetchAllMeetings,
+    expandedAcordians,
+    getSubError: error,
+  };
   return (
     <div className="AgendaView">
 
@@ -177,19 +190,14 @@ function AgendaView({
 
       <DndContext
         sensors={sensors}
-        collisionDetection={rectIntersection}
+        collisionDetection={closestCorners}
         onDragStart={admin ? (e) => { handleDragStart(e, onDragStartArgs); } : null}
         onDragEnd={admin ? (e) => { handleDragEnd(e, onDragEndArgs); } : null}
         onDragOver={admin ? (e) => { handleDragOver(e, onDragOverArgs); } : null}
       >
         <Accordion allowZeroExpanded allowMultipleExpanded className="agenda" onChange={(expanded) => setExpandedAcordians(expanded)}>
           <AgendaGroups
-            admin={admin}
-            agendaGroups={displayAgenda}
-            subbedItems={subbedItems}
-            refetchSubs={refetch}
-            expandedAcordians={expandedAcordians}
-            getSubError={error}
+            args={agendaGroupsArgs}
           />
         </Accordion>
 
