@@ -48,7 +48,7 @@ function Header({ toggled, handleToggle }) {
               <NavigationLink
                 Icon={<FaqIcon className="button-icon" />}
                 linkText={t("navbar.faq")}
-                path="/"
+                path="/faq"
               />
               <NavigationLink
                 Icon={<ATMLogoPinRainbowIcon className="button-icon" />}
