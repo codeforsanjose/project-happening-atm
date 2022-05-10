@@ -59,7 +59,7 @@ function Header({ toggled, handleToggle }) {
               <NavigationLink
                 Icon={<ProfileIcon className="button-icon" />}
                 linkText={t("navbar.profile")}
-                path="/"
+                path="/profile"
               />
             </div>
             <Signout t={t} />
