@@ -29,6 +29,8 @@ import SetNewPassword from "./components/ForgotPassword/SetNewPassword";
 import FAQ from "./components/FAQ/FAQ.jsx";
 import About from "./components/AboutUs/AboutUs.jsx";
 import UserAccountView from "./components/UserAccountView/UserAccountView";
+import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
+import SendFeedback from "./components/SendFeedback/SendFeedback";
 import * as serviceWorker from "./serviceWorker";
 
 import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/graphql";
@@ -131,6 +133,14 @@ function App() {
                 <Route exact path="/profile">
                   <UserAccountView />
                 </Route>
+                <Route exact path="/terms-of-use">
+                </Route>
+                <Route exact path="/privacy-policy">
+                  <PrivacyPolicy />
+                </Route>
+                <Route exact path="/send-feedback">
+                  <SendFeedback />
+                </Route>
                 {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
                 </Route>
@@ -164,8 +174,8 @@ function App() {
                   />
                 </AuthRoute>
               </Switch>
+              <Footer />
             </Router>
-            <Footer />
             <SampleQuery />
           </div>
         </LoginContext.Provider>
