@@ -114,6 +114,42 @@ query GetSubByEmailAndID(
 
 // setters
 
+export const UPDATE_MEETING = gql`
+  mutation UpdateMeeting(
+    $id: Int!,
+    $status: String,
+    $meeting_type: String,
+    $virtual_meeting_url: String,
+    $meeting_start_timestamp: String,
+    $meeting_end_timestamp: String,
+    $virtual_meeting_id: String,
+    $call_in_information: String,
+    $email_before_meeting: String,
+    $email_during_meeting: String,
+    $eComment: String,
+    $city_of_san_jose_meeting: String,
+    $youtube_link: String,
+  ) {
+    updateMeeting(
+      id: $id,
+      status: $status,
+      meeting_type: $meeting_type,
+      virtual_meeting_url: $virtual_meeting_url,
+      meeting_start_timestamp: $meeting_start_timestamp,
+      meeting_end_timestamp: $meeting_end_timestamp,
+      virtual_meeting_id: $virtual_meeting_id,
+      call_in_information: $call_in_information,
+      email_before_meeting: $email_before_meeting,
+      email_during_meeting: $email_during_meeting,
+      eComment: $eComment,
+      city_of_san_jose_meeting: $city_of_san_jose_meeting,
+      youtube_link: $youtube_link
+    ) {
+      id
+    }
+}
+`;
+
 export const UPDATE_MEETING_ITEM = gql`
   mutation UpdateMeetingItem(
     $id: Int,

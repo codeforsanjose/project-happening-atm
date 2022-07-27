@@ -1,14 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import { useTranslation } from "react-i18next";
 import "./Header.scss";
 import classnames from "classnames";
 import Spinner from "../Spinner/Spinner";
+
 import {
   toDateString,
   toTimeString,
   isFutureTimestamp,
   getDifference,
 } from "../../utils/timestampHelper";
+
+import { useMutation } from '@apollo/client';
+import { UPDATE_MEETING } from "../../graphql/graphql";
 
 // Asset imports
 import cityLogo from "../../assets/SanJoseCityLogo.png";
@@ -28,6 +32,15 @@ function Header({
 }) {
   const { t } = useTranslation();
 
+  const [meetingStatus, setMeetingStatus] = useState('not-started');
+  const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
+
+  const statuses = [
+    { label: 'Not Started', value:'not-started' },
+    { label: 'In Progress', value: 'in-progress' },
+    { label: 'Canceled', value: 'canceled' },
+  ];
+
   const getRelativeTimeLocKey = () => {
     // Returns a locale key for a meeting status (relative to the current time).
     if (isFutureTimestamp(meeting.meeting_start_timestamp)) {
@@ -42,6 +55,35 @@ function Header({
     return PAST_MEETING_STATUS_LOC_KEY;
   };
 
+  const Dropdown = ({ label, value, options, onChange }) => {
+    return (
+      <label>
+        {label}
+        <select value={value} onChange={onChange}>
+          {options.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+    );
+  };
+
+  const handleMeetingStatusChange = (event) => {
+    event.preventDefault();
+    
+    console.log(`meeting: ${JSON.stringify(meeting)}`)
+    
+    updateMeeting({ 
+      variables: { 
+        id: meeting.id,
+        status: event.target.value, 
+        meeting_start_timestamp: meeting.meeting_start_timestamp,
+        meeting_end_timestamp: 0,
+      } });
+    
+    setMeetingStatus(event.target.value);
+  };
+  
   return (
     <div className={classnames("header")}>
       <div className={classnames("header-content")}>
@@ -79,7 +121,7 @@ function Header({
 
               {isAdmin() && (
                 <>
-                  <div className="saveStatus">
+                  {/* <div className="saveStatus">
                     {t("meeting.status.label")}:
                     <button
                       className="saveStatusButton"
@@ -90,7 +132,17 @@ function Header({
                     >
                       {t("meeting.status.short.default-option")}
                     </button>
+                  </div> */}
+                  <div className="saveStatus">
+                    <Dropdown
+                      label={`${t("meeting.status.label")}:`}
+                      options={statuses}
+                      value={meetingStatus}
+                      onChange={handleMeetingStatusChange}
+                    />
+                      {/* {t("meeting.status.short.default-option")} */}
                   </div>
+              
                 </>
               )}
             </>
