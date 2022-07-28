@@ -89,6 +89,7 @@ function LoginHandler() {
       window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
 
       loginContext.setSignedIn(true);
+      window.localStorage.setItem("email_address", userName)
     }
     if (error) {
       // extracted error message
@@ -111,7 +112,7 @@ function LoginHandler() {
 
   return (
     <div className="LoginHandler">
-      {loginContext.signedIn ? <Redirect to="/" /> : ''}
+      {loginContext.signedIn ? <Redirect to={{ pathname: "/", state: { email_address: userName } }} /> : ''}
       <div className="loginHeader">{t('login.header.cityLogo')}</div>
       <div className="loginBody">
         <div className="innerWrapper">
