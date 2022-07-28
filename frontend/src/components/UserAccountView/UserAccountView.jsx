@@ -22,7 +22,7 @@ function UserAccountView() {
 
   const userEmail = localStorage.getItem("email_address");
 
-  const { data, error, refetch } = useQuery(GET_ACCOUNT_BY_EMAIL,
+  const { data } = useQuery(GET_ACCOUNT_BY_EMAIL,
     {
       variables: {
         email_address: userEmail,

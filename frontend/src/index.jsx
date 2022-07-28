@@ -31,6 +31,7 @@ import UpdateUserNumber from "./components/UpdateUserInfo/UpdateUserNumber";
 import FAQ from "./components/FAQ/FAQ.jsx";
 import About from "./components/AboutUs/AboutUs.jsx";
 import UserAccountView from "./components/UserAccountView/UserAccountView";
+import TermsOfUse from "./components/TermsOfUse/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import SendFeedback from "./components/SendFeedback/SendFeedback";
 import * as serviceWorker from "./serviceWorker";
@@ -142,6 +143,7 @@ function App() {
                   <UserAccountView />
                 </Route>
                 <Route exact path="/terms-of-use">
+                  <TermsOfUse />
                 </Route>
                 <Route exact path="/privacy-policy">
                   <PrivacyPolicy />

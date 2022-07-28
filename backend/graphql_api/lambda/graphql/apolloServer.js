@@ -54,6 +54,9 @@ module.exports = (logger) => {
 
         confirmEmail(token: String): Boolean
         unconfirmEmail(token: String): Boolean
+        updateEmail(id: Int!, email_address: String!): account
+
+        updatePhoneNumber(id: Int!, phone_number: String!): account
 
         createAccount(email_address: String, password: String, phone_number: String, roles: roles): auth_data
 
@@ -62,7 +65,6 @@ module.exports = (logger) => {
         forgotPassword(emailAddress: String): ID
         resetPassword(id: Int, password: String ): ID
 
-        # TODO: Need to add update user info mutation
     }
 
     type subscription {
@@ -272,6 +274,14 @@ module.exports = (logger) => {
       unconfirmEmail: async (_parent, args) => {
         logger.info('Initiating UnconfirmEmail Mutation resolver');
         return resolverHandler(mutationResolver.unconfirmEmail, args);
+      },
+      updateEmail: async (_parent, args) => {
+        logger.info('Initiating UpdateEmail Mutation resolver');
+        return resolverHandler(mutationResolver.updateEmail, args);
+      },
+      updatePhoneNumber: async (_parent, args) => {
+        logger.info('Initiating UpdatePhoneNumber Mutation resolver');
+        return resolverHandler(mutationResolver.updatePhoneNumber, args);
       },
       createAccount: async (_parent, args, context) => {
         logger.info('Initiating CreateAccount Mutation resolver');

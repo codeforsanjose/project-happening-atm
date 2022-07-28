@@ -44,3 +44,8 @@ export function getUserPhone() {
     return phone;
   } else return '';
 }
+
+export function getUserId() {
+  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
+  return parseJwt(token).sub;
+}
