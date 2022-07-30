@@ -29,6 +29,25 @@ export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
   }
 `;
 
+export const GET_MEETING = gql`
+  query GetMeeting($id: Int!) {
+    getMeeting(id: $id) {
+      id,
+      status,
+      meeting_type,
+      meeting_start_timestamp,
+      meeting_end_timestamp,
+      virtual_meeting_url,
+      virtual_meeting_id,
+      call_in_information,
+      email_before_meeting,
+      email_during_meeting,
+      ecomment,
+      youtube_link 
+    }
+  }
+`;
+
 export const GET_MEETING_WITH_ITEMS = gql`
   query GetMeetingWithItems($id: Int!) {
     getMeetingWithItems(id: $id) {

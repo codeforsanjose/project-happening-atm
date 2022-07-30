@@ -104,7 +104,6 @@ function MeetingView() {
         loading={loading}
         meeting={meetingWithItems}
         setSaveMeetingItems={setSaveMeetingItems}
-
         progressStatus={progressStatus}
       />
       {loading && <Spinner />}
