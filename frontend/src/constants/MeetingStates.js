@@ -5,5 +5,4 @@ const MeetingStates = {
     CANCELLED: 'CANCELLED'
   };
   
-  export default MeetingStates;
-  
+export default MeetingStates;
