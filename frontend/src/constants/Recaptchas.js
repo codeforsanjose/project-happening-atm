@@ -1,5 +1,5 @@
 const RECAPTCHAS = {
-  ACCOUNT_CREATION: '6LdQw4IeAAAAAJhBO-s9vuYjuHXCrPUyw_OTa5hP',
+  ACCOUNT_CREATION: '',
 };
 
 export default RECAPTCHAS;
