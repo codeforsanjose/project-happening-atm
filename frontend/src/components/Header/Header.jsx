@@ -121,7 +121,6 @@ function Header({
                   {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
                 </div>
                 <div className={(meetingStatus === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
-                  {/* Could change these lines to a for loop looping through the statuses json */}
                   {(meetingStatus === MeetingStates.NOT_STARTED) && <span>Not Started</span>}
                   {(meetingStatus === MeetingStates.IN_PROGRESS) && <>
                     <span>In Progress</span> <StatusInProgress className="status-icon" />
