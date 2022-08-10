@@ -41,10 +41,11 @@ function MeetingListItem({ item }) {
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
       <Link to={`meeting/${id}`} className="meeting-date">
-        <h3>
+        <h4>
           {date}
           {isInProgress && ` - ${t('meeting.status.short.in-progress')}`}
-        </h3>
+          {time}
+        </h4>
       </Link>
       <Link to={`meeting/${id}`} className="meeting-time">
         <div>{time}</div>
@@ -52,6 +53,5 @@ function MeetingListItem({ item }) {
       <MeetingItemLinks meeting={item} isInProgress={isInProgress} />
     </div>
   );
-}
 
 export default MeetingListItem;

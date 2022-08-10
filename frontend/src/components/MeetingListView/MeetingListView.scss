@@ -84,7 +84,7 @@
   .meeting-list-content {
     padding: 1.25em 10px;
     flex-grow: 1;
-    background-color: $blueSky;
+    background-color: $backgroundWhite;
 
     .complete-toggle {
       padding: 0;
@@ -112,5 +112,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .footerSearchLink {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    line-height: 150%;
+  }
+  .footerSearchLink a:link {
+    color: $cityBlue;
+    font-weight: bold;
   }
 }
