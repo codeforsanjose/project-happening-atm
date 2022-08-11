@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
 import { Accordion } from 'react-accessible-accordion';
 import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHelper';
-import { GET_ALL_MEETINGS } from '../../graphql/graphql';
+import { GET_ALL_MEETINGS, LOGIN_GOOGLE } from '../../graphql/graphql';
 import isAdmin from '../../utils/isAdmin';
 import './MeetingListView.scss';
 
@@ -58,13 +58,17 @@ function MeetingListView() {
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
 
       <div className="meeting-list-header">
-        <img className="logo" src={cityLogo} alt="logo" />
-        <p className="sub-header">{t('header.my-city-agenda')}</p>
-        <h2>{t('header.city-council-meetings')}</h2>
-        { isCurrentUserAdmin ? <AdminMeetingListViewLinks /> : null }
+        {/* <p className="sub-header">{t('header.my-city-agenda')}</p> */}
+        <div className="sub-header">
+          <p>{t('Calendar')}</p>
+          { isCurrentUserAdmin ? <AdminMeetingListViewLinks /> : null }
+        </div>
+        <h2>{t('San Jose City Council')}</h2>
       </div>
 
       <div className="meeting-list-content">
+        {/*/// MVP version does not display past meetings ///
+        
         <button
           type="button"
           className="complete-toggle"
@@ -72,7 +76,7 @@ function MeetingListView() {
         >
           {showPastMeetings ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
           <p>{t('meeting.list.show-past')}</p>
-        </button>
+        </button> */}
 
         {
             !(loading || error) && (meetingGroups.length > 0
@@ -87,6 +91,13 @@ function MeetingListView() {
 
         {loading && <div className="loader"><Spinner /></div>}
         {error && <div className="loader">{`Error! ${error.message}`}</div>}
+          <div className='footerSearchLink'>Looking for past meetings?<br></br>
+            <a href="google.com">Search the archive</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+              <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+            </svg>
+          </div>
       </div>
     </div>
   );

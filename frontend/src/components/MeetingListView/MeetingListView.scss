@@ -1,7 +1,7 @@
 @import "../../utils/colors";
 
 .MeetingListView {
-  margin-top: 8em;
+  margin-top: 4em;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -17,20 +17,23 @@
     h2 {
       margin: 0.5em 0;
 
-      &::after {
-        display: block;
-        content: "";
-        margin-top: 0.2em;
-        height: 2px;
-        width: 8em;
-        background-color: $cityBronze;
-      }
+      // &::after {
+      //   display: block;
+      //   content: "";
+      //   margin-top: 0.2em;
+      //   height: 2px;
+      //   width: 8em;
+      //   background-color: $cityBronze;
+      // }
     }
 
     .sub-header {
-      display: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
       margin: 0;
-      font-size: 1.2em;
+      font-size: 16px;
     }
     .meeting-links {
       a {
@@ -41,17 +44,13 @@
     button {
       display: flex;
       align-items: center;
-      margin-top: 1em;
-      margin-bottom: 1em;
-      padding: 0.75em;
-      padding-left: 1.25em;
-      padding-right: 1.25em;
+      padding: 8px 16px;
       border: none;
       border-radius: 0.5rem;
-      background-color: $lightBronze;
+      background-color: $atmGold;
       color: $lightBlue;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 400;
       // cursor: pointer;
 
       p {
@@ -59,7 +58,8 @@
         margin-left: 0.4em;
       }
       &:hover {
-        background-color: $cityBronze;
+        box-shadow: 0 0 4px $cityBronze inset;
+
       }
     }
 
