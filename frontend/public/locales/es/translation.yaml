@@ -282,31 +282,31 @@ meeting:
               subtitle: Por favor, identifique el número de artículo de la agenda del calendario en la línea de asunto de su correo electrónico
 
 createAccount:
-  span: es - Don't have an account?
-  link: es - Create Account
+  span: No tiene una cuenta?
+  link: Crear una cuenta
 
 forgotPassword:
   header:
-    resetPassword: es - Reset your password
+    resetPassword: Recuperar contraseña
   body:
-    heading1: es - Enter your account's email address and
-    heading2: es - we will send you a password reset link
+    heading1: Introduza la dirección de correo electrónico asociada a su cuenta y
+    heading2: le enviaremos un enlace para recuperar su contraseña.
     button:
-      sendemail: es - Send password reset email
+      sendemail: Enviar email de recuperación de cuenta
     input:
-      email: es - Email  
+      email: Email  
     link:
-      signIn: es - Sign In 
+      signIn: Ingresar
 
 setNewPassword:
-  header: es - Change password   
+  header: Cambiar contraseña
   body:
-    heading1: es - Enter your new password
+    heading1: Introduzca su nueva contraseña
     button:
-      changePassword: es - Change Password
+      changePassword: Cambiar contraseña
     input:
-      newPassword: es - New Password
-      confirmNewPassword: es - Confirm Password          
+      newPassword: Nueva contraseña
+      confirmNewPassword: Confirmar contraseña      
 
 footer:
   language:
