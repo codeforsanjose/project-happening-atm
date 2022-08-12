@@ -12,6 +12,10 @@ import {
   PastMeetingItemLinks,
   PendingMeetingItemLinks,
 } from './MeetingListItemLinks';
+import {
+  ATMLogoPinRainbowIcon,
+  InProgressDot,
+} from '../../utils/_icons';
 
 /**
  * A meeting displayed as an accordion sub item.
@@ -32,7 +36,10 @@ function MeetingListItem({ item }) {
   const { id, meeting_start_timestamp, status } = item;
   const date = toDateString(meeting_start_timestamp);
   const time = toTimeString(meeting_start_timestamp);
-  const isInProgress = status === 'IN PROGRESS';
+  // const isInProgress = status === 'IN PROGRESS';
+  //Hardcoding status for styling <----- REMOVE BEFORE COMMITING
+  const isInProgress = 'IN PROGRESS';
+
 
   const isCurrentUserAdmin = isAdmin();
   const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
@@ -41,13 +48,11 @@ function MeetingListItem({ item }) {
   return (
     <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
       <Link to={`meeting/${id}`} className="meeting-date">
-        <h4>
-          {date}<br></br>
-          {time}
-        </h4>
+          <h4>{date}</h4>
+          <div className='meeting-status'>{isInProgress && `${t('meeting.status.short.in-progress')}`}</div>
       </Link>
       <Link to={`meeting/${id}`} className="meeting-time">
-          {isInProgress && ` - ${t('meeting.status.short.in-progress')}`}
+          {time}
       </Link>
       <MeetingItemLinks meeting={item} isInProgress={isInProgress} />
     </div>

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 export function toDateString(timestamp, format) {
   // This function expects Unix timestamp in milliseconds (as String).
-  return dayjs(parseInt(timestamp, 10)).format(format || 'M/D/YYYY');
+  return dayjs(parseInt(timestamp, 10)).format(format || 'dddd D');
 }
 
 export function toTimeString(timestamp) {

@@ -52,6 +52,8 @@ import { ReactComponent as SearchIcon } from '../assets/icons/search-24px.svg';
 import { ReactComponent as ShareIcon } from '../assets/icons/share-24px.svg';
 import { ReactComponent as ViewAgendaIcon } from '../assets/icons/view_agenda-24px.svg';
 import { ReactComponent as VoiceChatIcon } from '../assets/icons/voice_chat-24px.svg';
+import { ReactComponent as CFSJLogo } from '../assets/CFSJ_Logo.svg';
+import { ReactComponent as InProgressDot } from '../assets/icons/in-progress-dot.svg';
 
 // Please add new icons in alphabetical order of their file names.
 
@@ -65,6 +67,7 @@ export {
   CallIcon,
   CancelIcon,
   CaratDownIcon,
+  CFSJLogo,
   UncheckedCheckboxIcon,
   CheckedCheckboxIcon,
   CheckedCheckboxWithInnerShadowIcon,
@@ -89,6 +92,7 @@ export {
   HomeIcon,
   ImportExportIcon,
   InfoIcon,
+  InProgressDot,
   ExpandedItemGroupIcon,
   CollapsedItemGroupIcon,
   JoinMeetingIcon,

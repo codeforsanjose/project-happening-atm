@@ -1,6 +1,7 @@
 @import "../../utils/colors";
 
 .MeetingListView {
+  background-color: $backgroundWhite;
   margin-top: 4em;
   display: flex;
   flex-direction: column;
@@ -84,7 +85,7 @@
   .meeting-list-content {
     padding: 1.25em 10px;
     flex-grow: 1;
-    background-color: $backgroundWhite;
+    background-color: transparent;
 
     .complete-toggle {
       padding: 0;

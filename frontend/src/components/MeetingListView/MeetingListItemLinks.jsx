@@ -8,6 +8,8 @@ import useDeleteMeeting from '../../hooks/useDeleteMeeting';
 import { isFutureTimestamp } from '../../utils/timestampHelper';
 import '../../utils/generalStyles.scss';
 
+
+
 // Asset imports
 import {
   CalendarTodayIcon,
@@ -15,6 +17,7 @@ import {
   FormatListNumberedIcon,
   PlayWithCircleOutlineIcon,
   DeleteIcon,
+  InProgressDot,
 } from '../../utils/_icons';
 
 function AdminMeetingItemLinks({ meeting }) {
@@ -42,9 +45,10 @@ function AdminMeetingItemLinks({ meeting }) {
         <button
           type="button"
           className="link"
+          style={{ color: '#C03A3A', background: 'transparent' }}
           onClick={openDeleteModal}
         >
-          <DeleteIcon />
+          <DeleteIcon style={{ fill: '#C03A3A' }} />
           <p>{t('meeting.list.delete-meeting.button')}</p>
         </button>
       </Link>

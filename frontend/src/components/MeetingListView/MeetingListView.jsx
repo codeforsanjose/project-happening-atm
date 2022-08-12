@@ -15,7 +15,7 @@ import Spinner from '../Spinner/Spinner';
 
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
-import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
+import { CalendarBlueIcon, CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
 
 /**
  * Main view component to display a list of upcoming/past meetings.
@@ -60,10 +60,10 @@ function MeetingListView() {
       <div className="meeting-list-header">
         {/* <p className="sub-header">{t('header.my-city-agenda')}</p> */}
         <div className="sub-header">
-          <p>{t('Calendar')}</p>
+          <p><CalendarBlueIcon height="16px"/>{t('header.calendar')}</p>
           { isCurrentUserAdmin ? <AdminMeetingListViewLinks /> : null }
         </div>
-        <h2>{t('San Jose City Council')}</h2>
+        <h2>{t('header.city-council-meetings')}</h2>
       </div>
 
       <div className="meeting-list-content">

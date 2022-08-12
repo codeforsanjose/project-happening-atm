@@ -11,9 +11,9 @@ navbar:
   profile: Profile
 
 header:
-  my-city-agenda: My City's Agenda
-  city-council-meetings: City Council Meetings
-  city-council-meeting-agenda: City Council Meeting Agenda
+  calendar: Calendar
+  city-council-meetings: San Jose City Council
+  city-council-meeting-agenda: Meeting Agenda
 
 meeting:
   start-time: Start Time

@@ -2,6 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./Footer.scss";
+import {
+  ATMLogoRainbowIcon,
+  CFSJLogo,
+} from "../../utils/_icons";
 
 function Footer() {
   const { i18n } = useTranslation();
@@ -9,11 +13,6 @@ function Footer() {
   return (
     <footer>
       <nav className="no-select">
-        <div className="languages">
-          <NavLink to="/terms-of-use">Terms of Use</NavLink>
-          <NavLink to="/privacy-policy">Privacy Policy</NavLink>
-          <NavLink to="/send-feedback">Send Feedback</NavLink>
-        </div>
         <div className="languages">
           <button
             type="button"
@@ -36,6 +35,15 @@ function Footer() {
           >
             VIETNAMESE
           </button>
+        </div>
+        <div className="legal">
+          <ATMLogoRainbowIcon className="button-icon home-button-icon" />
+          <CFSJLogo/>
+        </div>
+        <div className="legal">
+          <NavLink to="/terms-of-use">Terms of Use</NavLink>
+          <NavLink to="/privacy-policy">Privacy Policy</NavLink>
+          <NavLink to="/send-feedback">Send Feedback</NavLink>
         </div>
       </nav>
     </footer>
