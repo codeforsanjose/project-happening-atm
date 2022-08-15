@@ -17,7 +17,7 @@ footer {
   z-index: 9000;
   width: 100%;
   padding: 32px 2.5vw 3em;
-  background: linear-gradient(180deg, rgba(31,40,71,1) 35%, rgba(37,66,118,1) 140%);
+  background: linear-gradient(180deg, $cityBlue 35%, rgba(37,66,118,1) 140%);
   /* prevent unintended horizontal scroll */
   box-sizing: border-box; 
     a {

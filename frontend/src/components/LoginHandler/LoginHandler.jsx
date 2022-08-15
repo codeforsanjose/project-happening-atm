@@ -17,6 +17,10 @@ import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
 import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
 import CLIENT_ID from '../../constants/OauthClientID';
+import {
+  ATMLogoRainbowIcon,
+  CFSJLogo,
+} from "../../utils/_icons";
 
 // global constant options
 const OPTIONS = {
@@ -112,49 +116,25 @@ function LoginHandler() {
   return (
     <div className="LoginHandler">
       {loginContext.signedIn ? <Redirect to="/" /> : ''}
-      <div className="loginHeader">{t('login.header.cityLogo')}</div>
+      <div className="loginHeader">
+        <ATMLogoRainbowIcon/>
+        <div className='loginTitle'>
+            San Jose<br></br>
+            at the moment
+        </div>
+      </div>
       <div className="loginBody">
         <div className="innerWrapper">
-          <p>
+          <hr className="introTextSeparator" />
+
+          <div className='subtitle'>
             {t('login.body.header.welcomeToCity')}
             <br />
             {t('login.body.header.cityCouncil')}
-          </p>
-
-          <hr className="introTextSeparator" />
-
-          <GoogleLogin
-            clientId={OPTIONS.googleClientID}
-            render={(renderProps) => (
-              <button className="google-microsoft-login googleLogin" type="button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                <img
-                  src={googleIcon}
-                  alt="googleLogin"
-                />
-                <span>Sign In with Google</span>
-              </button>
-            )}
-            buttonText="Login"
-            onSuccess={googleHandler}
-            onFailure={responseGoogle}
-            cookiePolicy="single_host_origin"
-          />
-          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={microsoftHandler}>
-            <button className="google-microsoft-login microsoftLogin" type="button">
-              <img
-                src={microsoftIcon}
-                alt="microsoftLogin"
-              />
-              <span>{t('login.body.oauth.microsoft')}</span>
-            </button>
-          </MicrosoftLogin>
-
-          <div className="or">
-            <hr />
-            <span>{t('login.body.or')}</span>
-            <hr />
           </div>
 
+
+          {/* ATM Login account */}
           <div className="inputWrapper">
             {badLoginAttempt
               ? <p className="inputError">{t('standard.errors.badEmailPass')}</p> : ''}
@@ -183,12 +163,41 @@ function LoginHandler() {
             >
               {t('navbar.sign-in')}
             </button>
-            <NavLink className="passAnchor mobileView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
           </div>
           <div className="create-account-container">
-            <span>{t('createAccount.span')}</span>
-            <NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+             <NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+             <span>|</span>
+             <NavLink className="nav-pass-reset" to="/forgot-password">{t('forgotPassword.header.resetPassword')}</NavLink>
           </div>
+
+
+          {/* Google/Microsoft login account */}
+
+          <GoogleLogin
+            clientId={OPTIONS.googleClientID}
+            render={(renderProps) => (
+              <button className="google-microsoft-login googleLogin" type="button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                <img
+                  src={googleIcon}
+                  alt="googleLogin"
+                />
+                <span>Sign In with Google</span>
+              </button>
+            )}
+            buttonText="Login"
+            onSuccess={googleHandler}
+            onFailure={responseGoogle}
+            cookiePolicy="single_host_origin"
+          />
+          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={microsoftHandler}>
+            <button className="google-microsoft-login microsoftLogin" type="button">
+              <img
+                src={microsoftIcon}
+                alt="microsoftLogin"
+              />
+              <span>{t('login.body.oauth.microsoft')}</span>
+            </button>
+          </MicrosoftLogin>
         </div>
       </div>
     </div>

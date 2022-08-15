@@ -296,7 +296,7 @@ login:
     oauth:
       google: Sign In with Google
       microsoft: Sign In with Microsoft
-    or: or
+    or: or sign in with an account
     textSignIn:
       userName: Username
       password: Password
@@ -305,6 +305,7 @@ login:
 createAccount:
   span: Don't have an account?
   link: Create Account
+  or: or sign in with
         
 forgotPassword:
   header:
