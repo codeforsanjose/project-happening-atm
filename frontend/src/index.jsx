@@ -31,7 +31,7 @@ import About from "./components/AboutUs/AboutUs.jsx";
 import UserAccountView from "./components/UserAccountView/UserAccountView";
 import * as serviceWorker from "./serviceWorker";
 
-import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/graphql";
+import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/query";
 import AdminPaths from "./constants/AdminPaths";
 import LocalStorageTerms from "./constants/LocalStorageTerms";
 import verifyToken from "./utils/verifyToken";

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import { CancelIcon } from '../../utils/_icons';
-import { DELETE_MEETING } from '../../graphql/graphql';
+import { DELETE_MEETING } from '../../graphql/mutation';
 import './DeleteMeetingModal.scss';
 
 import SuccessModal from '../SuccessModal/SuccessModal';

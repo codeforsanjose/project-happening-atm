@@ -33,8 +33,9 @@ import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
 import isAdmin from '../../../utils/isAdmin';
 import getProgressStatus from './agendaViewFunctions/getProgressStatus';
-// graphql
-import { UPDATE_MEETING_ITEM, GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/graphql';
+
+import { GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/query';
+import { UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to

@@ -11,7 +11,7 @@ import SubscribeConfirmation from "./SubscribeConfirmation";
 import { validatePhone, getPhoneDigits, validateEmail } from "./validation";
 import { convertQueryStringToServerFormat } from "./subscribeQueryString";
 
-import { CREATE_SUBSCRIPTIONS } from "../../graphql/graphql";
+import { CREATE_SUBSCRIPTIONS } from "../../graphql/mutation";
 import { getUserEmail } from "../../utils/verifyToken";
 
 /**

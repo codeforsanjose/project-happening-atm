@@ -13,7 +13,7 @@ import {
 } from "../../utils/timestampHelper";
 
 import { useMutation } from '@apollo/client';
-import { UPDATE_MEETING } from "../../graphql/graphql";
+import { UPDATE_MEETING } from "../../graphql/mutation";
 
 // Asset imports
 import cityLogo from "../../assets/SanJoseCityLogo.png";
