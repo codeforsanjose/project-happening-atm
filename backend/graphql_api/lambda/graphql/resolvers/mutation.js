@@ -39,6 +39,32 @@ module.exports = (logger) => {
     return true;
   };
 
+  module.updateEmail = async (dbClient, args) => {
+
+    let res;
+    try {
+      res = await dbClient.updateEmail(
+        args.id, args.email_address
+      );
+    } catch (e) {
+      logger.error(`updateEmail resolver error - dbClient.updateEmail: ${e}`);
+      throw e;
+    }
+  }
+
+  module.updatePhoneNumber = async (dbClient, args) => {
+
+    let res;
+    try {
+      res = await dbClient.updatePhoneNumber(
+        args.id, args.phone_number
+      );
+    } catch (e) {
+      logger.error(`updatePhoneNumber resolver error - dbClient.updatePhoneNumber: ${e}`);
+      throw e;
+    }
+  }
+
   module.createMeeting = async (dbClient, args, context) => {
     validator.validateAuthorization(context);
     validator.validateCreateMeeting(args);

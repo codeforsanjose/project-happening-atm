@@ -370,5 +370,27 @@ module.exports = async (logger) => {
     return query(queryString);
   };
 
+  module.updateEmail = async (id, email_address) => {
+    logger.info('dbClient: updateEmail');
+    const queryString = `UPDATE account SET email_address=$2
+    WHERE id=$1`
+    return query(queryString,
+      [
+        id,
+        email_address,
+      ]);
+  }
+
+  module.updatePhoneNumber = async (id, phone_number) => {
+    logger.info('dbClient: updatePhoneNumber');
+    const queryString = `UPDATE account SET phone_number=$2
+    WHERE id=$1`
+    return query(queryString,
+      [
+        id,
+        phone_number,
+      ]);
+  }
+
   return module;
 };

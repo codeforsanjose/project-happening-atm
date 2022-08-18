@@ -238,5 +238,19 @@ module.exports = (logger) => {
     if (phone_number && phone_number.length > 0) validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
   };
 
+  module.validateUpdateEmail = (args) => {
+    const context = 'updateEmail'
+    const { email_address } = args;
+
+    validateEmail(email_address, 'email_address', context);
+  }
+
+  module.validateUpdatePhoneNumber = (args) => {
+    const context = 'updatePhoneNumber'
+    const { phone_number } = args;
+
+    if (phone_number && phone_number.length > 0) validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+  }
+
   return module;
 };

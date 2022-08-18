@@ -34,6 +34,8 @@ module.exports = (logger) => {
       const title = row.Title;
       const agendaNumber = row['Agenda #'];
 
+      console.log('hello')
+
       // We split the Agenda Number string to facilitate the storage of sub items
       // Agenda Numbers are formatted in the following way:
       // "1.", "1.1", "1.2", "2.", "2.1", etc...
