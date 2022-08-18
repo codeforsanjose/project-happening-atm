@@ -47,17 +47,6 @@ function UserAccountView() {
       </div>
 
       <div className="user-data">
-        {/* <label htmlFor="firstname">
-          First Name
-          <input type="text" id="firstname" name="firstname" className="user-data-form" value="Your First Name" />
-        </label>
-        <br />
-
-        <label htmlFor="lastname">
-          Last Name
-          <input type="text" id="lastname" name="lastname" className="user-data-form" value="Your Last Name" />
-        </label>
-        <br /> */}
 
         <label htmlFor="email">
           Email
@@ -80,7 +69,7 @@ function UserAccountView() {
 
         <span className="user-data-form">
           Reset Password? Click
-          <a href="/">
+          <a href="/reset-password">
             Here
           </a>
         </span>

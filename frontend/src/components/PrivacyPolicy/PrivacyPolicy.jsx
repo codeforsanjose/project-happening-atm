@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import NavBarHeader from "../NavBarHeader/NavBarHeader";
+import "./PrivacyPolicy.scss";
 
 function TermsOfUse() {
   const { i18n } = useTranslation();
@@ -14,7 +15,7 @@ function TermsOfUse() {
   return (
     <div>
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <h1>Privacy Policy</h1>
+      <h1 className="header">Privacy Policy</h1>
       <p>
         We want you to know how City of San Jose uses and protects any
         information that you give when you use our website.

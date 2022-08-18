@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { getUserId } from "../../utils/verifyToken";
-import { UPDATE_PHONE_NUMBER } from "../../graphql/graphql";
+import { UPDATE_PHONE_NUMBER } from "../../graphql/userAccount";
 import {
   isNullOrEmpty, isNumericString
 } from '../../utils/validations';

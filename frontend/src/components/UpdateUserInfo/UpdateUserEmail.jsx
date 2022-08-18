@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { getUserId } from "../../utils/verifyToken";
-import { UPDATE_EMAIL } from "../../graphql/graphql";
+import { UPDATE_EMAIL } from "../../graphql/userAccount";
 import {
   isNullOrEmpty, validEmail
 } from '../../utils/validations';

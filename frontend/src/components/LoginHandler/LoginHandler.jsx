@@ -18,6 +18,8 @@ import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
 import CLIENT_ID from '../../constants/OauthClientID';
 
+import { getLocalStorageItemByKey, setLocalStorageItemByKey } from '../../utils/storageUtils';
+
 // global constant options
 const OPTIONS = {
   googleClientID: CLIENT_ID.GOOGLE,
@@ -52,7 +54,7 @@ function LoginHandler() {
 
   const microsoftHandler = (err, response) => {
     if (err === null) {
-      localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
+      setLocalStorageItemByKey(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
       loginMicrosoft[0]();
     } else {
       setOtherError(true);
@@ -70,7 +72,7 @@ function LoginHandler() {
   };
 
   const googleHandler = (response) => {
-    localStorage.setItem(LocalStorageTerms.TOKEN, response.tokenId);
+    setLocalStorageItemByKey(LocalStorageTerms.TOKEN, response.tokenId);
     loginGoogle[0]();
   };
 
@@ -78,18 +80,18 @@ function LoginHandler() {
     // Successful sign in
     if (data) {
       if (Object.prototype.hasOwnProperty.call(data, 'loginGoogle')) {
-        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
+        setLocalStorageItemByKey(LocalStorageTerms.TOKEN, data.loginGoogle.token);
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginLocal')) {
-        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+        setLocalStorageItemByKey(LocalStorageTerms.TOKEN, data.loginLocal.token);
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginMicrosoft')) {
-        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
+        setLocalStorageItemByKey(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
       }
-      window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
+      setLocalStorageItemByKey(LocalStorageTerms.SIGNED_IN, true);
 
       loginContext.setSignedIn(true);
-      window.localStorage.setItem("email_address", userName)
+      setLocalStorageItemByKey("email_address", userName)
     }
     if (error) {
       // extracted error message
