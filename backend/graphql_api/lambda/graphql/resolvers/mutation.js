@@ -309,8 +309,9 @@ module.exports = (logger) => {
       if (issuer === 'accounts.google.com') {
         user = await authentication.verifyGoogleToken(dbClient, context.token);
       }
-      // TODO: Need to add Microsoft Issuer namer
-      if (issuer === 'NEED TO ADD MICROSOFT ISSUER') {
+      // TODO: Need to add Microsoft Issuer namer --FIXED
+      if (issuer.startsWith("https://login.microsoftonline.com")) {
+      // if (issuer === 'NEED TO ADD MICROSOFT ISSUER') {
         user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       }
     }
