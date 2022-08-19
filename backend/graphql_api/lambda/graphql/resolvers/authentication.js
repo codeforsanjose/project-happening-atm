@@ -1,8 +1,6 @@
-const jwt = require('jsonwebtoken');
-const { OAuth2Client } = require('google-auth-library');
-const bcrypt = require('bcrypt');
-const jwksClient = require('jwks-rsa');
-const crypto = require('crypto');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 module.exports = (logger) => {
   const module = {};
@@ -51,16 +49,9 @@ module.exports = (logger) => {
 
   const verifyGoogleToken = async (dbClient, token) => {
     let user;
-    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     try {
-      const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.GOOGLE_CLIENT_ID,
-      });
-      const payload = ticket.getPayload();
-      const {
-        email, email_verified, given_name, family_name, exp,
-      } = payload;
+      const payload = jwt.decode(token);
+      const { email, email_verified, given_name, family_name, exp } = payload;
       if (!email_verified) {
         logger.error('Google account email is not verified');
         throw new Error('Google account email is not verified');
@@ -72,7 +63,8 @@ module.exports = (logger) => {
       // Check if user in database
       const dbUser = await dbClient.getAccountByEmail(email);
       if (dbUser.rowCount !== 0) {
-        user = dbUser;
+        user = dbUser.rows[0];
+        user.isRegistered = true;
       } else {
         // Verify if admin email in admin whitelist
         const isAdmin = await verifyAdmin(dbClient, email);
@@ -98,43 +90,17 @@ module.exports = (logger) => {
   const verifyMicrosoftToken = async (dbClient, token) => {
     let user;
 
-    const validateOptions = {
-      audience: process.env.MICROSOFT_CLIENT_ID,
-    };
-
-    const getSigningKeys = (header, callback) => {
-      const client = jwksClient({
-        jwksUri: 'https://login.microsoftonline.com/common/discovery/v2.0/keys',
-      });
-
-      client.getSigningKey(header.kid, (e, key) => {
-        if (e) {
-          throw new Error(e);
-        }
-        const signingKey = key.publicKey || key.rsaPublicKey;
-        callback(null, signingKey);
-      });
-    };
-
     try {
-      const payload = new Promise((resolve, reject) => {
-        (jwt.verify(token, getSigningKeys, validateOptions, (e, result) => {
-          if (e) {
-            logger.error(`Cannot validate Microsoft Id Token: ${e}`);
-            throw new Error(e);
-          }
-          resolve(result);
-        }));
-      });
-      const { email, name, exp } = await payload;
-
-      // Microsoft Accounts don't require a personal name, this assigns default first and last name in that case
-      if (typeof name !== 'undefined') {
-        name = name.split(' ');
-      }
-      const last_name = typeof name === 'undefined' ? 'Last Name' : name[0];
-      const first_name = typeof name === 'undefined' ? 'First Name' : name[name.length - 1];
-
+      const payload = jwt.decode(token);
+      let { email, preferred_username, name, exp } = payload;
+      // Microsoft Accounts don't require a personal name
+      //this assigns default first and last name in that case
+      const [first_name, last_name] = name.split(" ") || [
+        "First Name",
+        "Last Name",
+      ];
+      // Email sometimes as preferred_username
+      email = email || preferred_username;
       // TODO: Need to find way to verify email
       if (exp < new Date().getTime() / 1000) {
         logger.error('Microsoft Id Token is Expired');
@@ -143,7 +109,8 @@ module.exports = (logger) => {
       // Check if user in database
       const dbUser = await dbClient.getAccountByEmail(email);
       if (dbUser.rowCount !== 0) {
-        user = dbUser;
+        user = dbUser.rows[0];
+        user.isRegistered = true;
       } else {
         // Verify if admin email in admin whitelist
         const isAdmin = await verifyAdmin(dbClient, email);
@@ -176,6 +143,10 @@ module.exports = (logger) => {
         throw new Error('Email does not match our records please sign up');
       }
       const dbPassword = dbUser.rows[0].password;
+      if(!dbPassword) {
+        logger.error('Sign in with your Google or Microsoft account');
+        throw new Error('Sign in with your Google or Microsoft account');
+      }
       const isAuthenticated = await comparePassword(password, dbPassword);
       if (!isAuthenticated) {
         logger.error('Email and Password do not match');
