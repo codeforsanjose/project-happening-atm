@@ -36,9 +36,9 @@ function MeetingListItem({ item }) {
   const { id, meeting_start_timestamp, status } = item;
   const date = toDateString(meeting_start_timestamp);
   const time = toTimeString(meeting_start_timestamp);
-  // const isInProgress = status === 'IN PROGRESS';
-  //Hardcoding status for styling <----- REMOVE BEFORE COMMITING
-  const isInProgress = 'IN PROGRESS';
+  const isInProgress = status === 'IN PROGRESS';
+  //LOCALDEV Hardcoded status for styling <----- REMOVE BEFORE COMMITING
+  // const isInProgress = 'IN PROGRESS';
 
 
   const isCurrentUserAdmin = isAdmin();

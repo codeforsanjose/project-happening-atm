@@ -28,6 +28,7 @@
         margin-top: 24px;
         font-size: 64px;
         font-weight:300;
+        line-height: 90%;
 
         
     }
@@ -45,6 +46,7 @@
             margin-right:auto;
 
             .subtitle {
+                max-width: 90vw;
                 text-align: center;
                 font-size: 16px;
                 line-height: 24px;
@@ -64,7 +66,7 @@
 
             .introTextSeparator{
                 width:50vw;
-                margin:24px 0 0 0;
+                margin:24px 0 24px 0;
                 height:1px;
                 border:none;
                 background-color:rgba($color: #ffffff, $alpha: 0.1);
@@ -75,9 +77,10 @@
             }
 
             .google-microsoft-login{
+                font-size: 16px;
                 background-color:$atmGold;
                 width:50vw;
-                height:3rem;
+                height:40px;
                 box-sizing: border-box;
                 display:flex;
                 align-items: center;
@@ -99,7 +102,7 @@
                     letter-spacing:1.5px;
                     margin-left:1.5rem;
                     font-weight:600;
-                    font-size:1.5rem;
+                    font-size:16px;
                 }
                 &:hover{
                     background:$cityBronze;
@@ -143,7 +146,7 @@
                 }
                 .google-microsoft-login{
                     width:90vw;
-                    height:3rem;
+                    height:40px;
                     margin-left: auto;
                     margin-right: auto; 
                     align-self:center;
@@ -151,9 +154,10 @@
                     transition: width 0ms;
 
                     span{
+                        text-align: center;
                         margin-left:1.2rem;
                         font-weight:600;
-                        font-size:calc(0.75rem + 1.25vw);
+                        font-size:16px;
                     }
 
                     &:hover{
@@ -211,11 +215,11 @@
                 }
 
                 .signInButton{
-                    width:15rem;
+                    width:50vw;
                     height:40px;
                     border:none;
                     border-radius: 0.5rem;
-                    font-size:1.5rem;
+                    font-size:16px;
                     background-color:$atmGold;
                     margin-left:auto;
                     margin-top:1.5rem;
@@ -252,7 +256,7 @@
                         width: 90vw;
                         height: 40px;
                         font-weight:600;
-                        font-size:calc(0.75rem + 1.25vw);
+                        font-size:16px;
                         color: $cityBlue;
                         
 
@@ -266,27 +270,42 @@
                     }
                 }
             }
-            .create-account-container{
-                display: flex;
-                width: 50%;
-                flex-direction: row;
-                justify-content: space-evenly;
-                align-items: center;
-                margin: 2rem 0 2rem 0;
+                .create-account-container{
+                    font-size: 14px;
+                    text-align: center;
+                    display: flex;
+                    max-width: 50%;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    margin: 2rem 0 0 0;
 
-                span{
-                    color: white;
-                    font-size: 1.0rem;
+                    span{
+                        width: 36px;
+                        text-align: center;
+                        padding:  0 16px 0 16px;
+                        color: rgba($color: #ffffff, $alpha: 0.1);
+                        font-size: 1.0rem;
+                    }
+                    .nav-account-create{
+                        color: white;
+                        margin-left: 0.2rem;
+                    }
+                    .nav-pass-reset{
+                        width: 60vw;
+                        padding:  0 16px 0 16px;
+                        color: white;
+                        margin-left: 0.2rem;
+                    }
                 }
-                .nav-account-create{
-                    color: white;
-                    margin-left: 0.2rem;
+                @media only screen and (max-width: 812px){
+                    .create-account-container{
+                        max-width: 80%;
+
+                    }
+
                 }
-                .nav-pass-reset{
-                    color: white;
-                    margin-left: 0.2rem;
-                }
-            }
+            
         }
     }
     

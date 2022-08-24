@@ -42,7 +42,7 @@
     .meeting-status {
       font-size:12px;
       font-weight: normal;
-      background-color: $liveGreen;
+      // background-color: $liveGreen;
       padding: 4px;
     }
 
@@ -77,7 +77,7 @@
         }
         &:hover {
           box-shadow: 0 0 4px $cityBronze inset;
-          
+
   
         }
       }

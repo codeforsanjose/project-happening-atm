@@ -117,7 +117,7 @@ function LoginHandler() {
     <div className="LoginHandler">
       {loginContext.signedIn ? <Redirect to="/" /> : ''}
       <div className="loginHeader">
-        <ATMLogoRainbowIcon/>
+        <ATMLogoRainbowIcon />
         <div className='loginTitle'>
             San Jose<br></br>
             at the moment
@@ -154,7 +154,7 @@ function LoginHandler() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <NavLink className="passAnchor desktopView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
+            {/* <NavLink className="passAnchor desktopView" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink> */}
             <button
               className="signInButton"
               type="button"
@@ -165,10 +165,12 @@ function LoginHandler() {
             </button>
           </div>
           <div className="create-account-container">
-             <NavLink className="nav-account-create" to="/account-create/">{t('createAccount.link')}</NavLink>
+             <NavLink className="nav-pass-reset" to="/account-create/">{t('createAccount.link')}</NavLink>
              <span>|</span>
              <NavLink className="nav-pass-reset" to="/forgot-password">{t('forgotPassword.header.resetPassword')}</NavLink>
           </div>
+
+          <hr className="introTextSeparator" />
 
 
           {/* Google/Microsoft login account */}

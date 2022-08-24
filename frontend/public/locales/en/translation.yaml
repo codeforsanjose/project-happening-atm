@@ -309,7 +309,7 @@ createAccount:
         
 forgotPassword:
   header:
-    resetPassword: Reset your password
+    resetPassword: Reset password
   body:
     heading1: Enter your account's email address and
     heading2: we will send you a password reset link
