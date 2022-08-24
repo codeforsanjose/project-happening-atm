@@ -38,7 +38,7 @@ function Footer() {
         </div>
         <div className="legal">
           <ATMLogoRainbowIcon className="button-icon home-button-icon" />
-          <CFSJLogo/>
+          <CFSJLogo className="button-icon home-button-icon"/>
         </div>
         <div className="legal">
           <NavLink to="/terms-of-use">Terms of Use</NavLink>
