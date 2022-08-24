@@ -11,7 +11,7 @@ navbar:
   profile: Perfil
 
 header:
-  my-city-agenda: Agenda de Mi Ciudad
+  calendar: Calendario
   city-council-meetings: Reuniones del Consejo de la Ciudad
   city-council-meeting-agenda: Agenda de la Reunión del Consejo de la Ciudad
 
