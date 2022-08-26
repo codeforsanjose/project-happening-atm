@@ -77,19 +77,23 @@ function LoginHandler() {
   useEffect(() => {
     // Successful sign in
     if (data) {
+      let userEmail;
       if (Object.prototype.hasOwnProperty.call(data, 'loginGoogle')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
+        userEmail = data.loginGoogle.email;
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginLocal')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+        userEmail = data.loginLocal.email || userName;
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginMicrosoft')) {
         window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
+        userEmail = data.loginMicrosoft.email
       }
       window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
 
       loginContext.setSignedIn(true);
-      window.localStorage.setItem("email_address", userName)
+      window.localStorage.setItem("email_address", userEmail)
     }
     if (error) {
       // extracted error message
