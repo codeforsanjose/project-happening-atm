@@ -200,7 +200,8 @@ export const LOGIN_LOCAL = gql`
       email_address:$email_address,
       password:$password,
     ){
-      token
+      token,
+      email
     }
   }
 `;
@@ -208,7 +209,8 @@ export const LOGIN_LOCAL = gql`
 export const LOGIN_GOOGLE = gql`
   query LoginGoogle {
     loginGoogle{
-      token
+      token,
+      email
     }
   }
 `;
@@ -216,7 +218,8 @@ export const LOGIN_GOOGLE = gql`
 export const LOGIN_MICROSOFT = gql`
 query LoginMicrosoft {
   loginMicrosoft{
-    token
+    token,
+    email
   }
 }
 `;
