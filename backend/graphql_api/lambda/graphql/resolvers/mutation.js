@@ -288,15 +288,17 @@ module.exports = (logger) => {
   ) => {
     let res;
     let user;
+    //Convert email to lowerCase
+    email_address = email_address.toLowerCase().trim();
     if (context.token === null) {
       const isAdmin = await authentication.verifyAdmin(
-        dbClient, email_address.toLowerCase().trim(),
+        dbClient, email_address,
       );
       const roles = isAdmin ? '{ADMIN}' : '{USER}';
       const pd = await authentication.hashPassword(password);
-      const token = await authentication.randomToken();
+      const token = authentication.randomToken();
       user = {
-        email_address,
+        email_address: email_address,
         phone_number,
         roles,
         pd,
@@ -309,25 +311,22 @@ module.exports = (logger) => {
       if (issuer === 'accounts.google.com') {
         user = await authentication.verifyGoogleToken(dbClient, context.token);
       }
-      // TODO: Need to add Microsoft Issuer namer --FIXED
+      // Creating account for Microsoft Auth
       if (issuer.startsWith("https://login.microsoftonline.com")) {
-      // if (issuer === 'NEED TO ADD MICROSOFT ISSUER') {
         user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       }
     }
     // Creating Account in DB
     try {
       validator.validateCreateAccount(user);
-      // Formatting email address
-      const lowerCaseEMailAddress = user.email_address.toLowerCase().trim();
       // Looking to see if email already in use
-      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress);
+      const dbResponse = await dbClient.getAccountByEmail(email_address);
       if (dbResponse.rows.length > 0) {
         logger.error('Email already signed up. Please login.');
         throw new Error('Email already signed up. Please login.');
       } else {
         res = await dbClient.createAccount(
-          lowerCaseEMailAddress, user.phone_number, user.pd, user.roles, user.auth_type, user.token,
+          email_address, user.phone_number, user.pd, user.roles, user.auth_type, user.token,
         );
       }
     } catch (e) {
@@ -345,17 +344,18 @@ module.exports = (logger) => {
       throw new Error(e);
     }
 
-    return { token: res };
+    return { token: res, email: email_address };
   };
 
   module.forgotPassword = async (
     dbClient, { emailAddress }, context,
   ) => {
+    //Convert email to lowerCase
+    emailAddress = emailAddress.toLowerCase().trim();
     logger.info(`Backend: Inside forgotPassword mutation resolver ${emailAddress}`);
     try {
-      const lowerCaseEMailAddress = emailAddress.toLowerCase().trim();
       // Verify if user exists in the system.
-      const dbResponse = await dbClient.getAccountByEmail(lowerCaseEMailAddress);
+      const dbResponse = await dbClient.getAccountByEmail(emailAddress);
       if (dbResponse.rows.length == 0) {
           logger.error('This user is not registered in our system.');
           throw new Error('This user is not registered in our system.');   
@@ -398,6 +398,29 @@ module.resetPassword = async (
     }
   } catch (e) {
   logger.error(`resetPassword mutation resolver error -  ${e}`);
+  throw new Error(e);
+  }  
+}
+module.updatePassword = async (
+  dbClient, { currentPassword, newPassword }, context,
+) => {
+  logger.info(`Backend: Inside updatePassword mutation resolver for id ${id}`);
+  //Validate user, to ensure authentication
+  validator.validateUser(context);
+  const id = context.user.sub;
+  const res = await dbClient.getAccountById(id);
+  const { password } = res.rows[0];
+  const passwordMatched = await authentication.comparePassword(currentPassword, password);
+  if(!passwordMatched) {
+    logger.error(`current password for is incorrect`)
+    throw new Error("current password is incorrect");
+  }
+  const hashedPassword = await authentication.hashPassword(newPassword);
+  try {
+    const res = await dbClient.resetPassword(id, hashedPassword);
+    return res.rows[0].id;
+  } catch (e) {
+  logger.error(`updatePassword mutation resolver error -  ${e}`);
   throw new Error(e);
   }  
 }
