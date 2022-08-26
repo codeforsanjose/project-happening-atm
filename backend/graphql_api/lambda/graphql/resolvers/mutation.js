@@ -404,10 +404,10 @@ module.resetPassword = async (
 module.updatePassword = async (
   dbClient, { currentPassword, newPassword }, context,
 ) => {
-  logger.info(`Backend: Inside updatePassword mutation resolver for id ${id}`);
   //Validate user, to ensure authentication
   validator.validateUser(context);
   const id = context.user.sub;
+  logger.info(`Backend: Inside updatePassword mutation resolver for id ${id}`);
   const res = await dbClient.getAccountById(id);
   const { password } = res.rows[0];
   const passwordMatched = await authentication.comparePassword(currentPassword, password);
