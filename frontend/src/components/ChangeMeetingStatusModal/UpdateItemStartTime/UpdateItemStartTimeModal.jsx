@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 
 import Modal from 'react-modal/lib/components/Modal';
 import { useTranslation } from 'react-i18next';
-import { CloseIcon, ArrowUpwardIcon } from '../../../utils/_icons';
+import { CloseIcon } from '../../../utils/_icons';
 import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
 import './UpdateItemStartTimeModal.scss';
@@ -54,7 +54,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
   };
 
   const handleModalClose = () => setDisplaySetStartTimeModal(false);
-  
+
   Modal.setAppElement('#root');
 
   return (
