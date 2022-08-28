@@ -15,6 +15,7 @@ services:
       - "/usr/src/app/node_modules"
     depends_on:
       - backend_pg
+    env_file: ./backend/graphql_api/lambda/.env
     links:
       - "backend_pg:gov-agenda-notifier_backend_pg_1"
     networks:
