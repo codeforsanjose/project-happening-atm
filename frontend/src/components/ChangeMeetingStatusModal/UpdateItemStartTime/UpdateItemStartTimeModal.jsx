@@ -55,6 +55,61 @@ const UpdateItemStartTimeModal = ({ args }) => {
 
   const handleModalClose = () => setDisplaySetStartTimeModal(false);
 
+  const validateNewTime = (hour, minutes, meridian) => {
+    const {errors} = formFields
+    const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0)
+    const meridianError = meridian === ''
+    // no need to update state on submit unless it has changed
+    if (errors.time !== timeError || errors.meridian !== meridianError) {
+      displayFormErrors(timeError, meridianError)
+    }
+    return !timeError && !meridianError ? true : false
+  };
+  
+  const displayFormErrors = (time, meridian) => {
+    setFormFields(prevFormFields => ({
+      ...prevFormFields,
+      errors: {
+        time,
+        meridian
+      }
+    }))
+  }
+
+  const getTimeStringInMs = (hour, minutes) => {
+    const time = new Date();
+    time.setHours(hour, minutes, 0);
+
+    return `${time.getTime()}`;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormFields(prevFormFields => ({
+      ...prevFormFields,
+      [name]: value,
+    }))
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const {hour, minutes, meridian} = formFields
+    let newHour = parseInt(hour, 10)
+    const newMinutes = parseInt(minutes, 10)
+    const isValidTime = validateNewTime(newHour, newMinutes, meridian);
+    if (!isValidTime) return 
+    const isPM = meridian === 'PM' ? true : false;
+    
+    // if hour is 12 we set it to 0 to account for 12am/12pm
+    newHour = newHour === 12 ? 0 : newHour;
+
+    if (isPM) {
+      newHour = newHour + 12;
+    }
+
+    updateTheItem(updateItem, item, getTimeStringInMs(newHour, newMinutes));
+  };
+  
   Modal.setAppElement('#root');
 
   return (
