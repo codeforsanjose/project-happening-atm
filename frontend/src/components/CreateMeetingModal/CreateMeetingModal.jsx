@@ -43,6 +43,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
   setDefaultLocale(language);
   const [createMeeting, { loading }] = useMutation(CREATE_MEETING);
   const [createSuccessful, setCreateSuccessful] = useState(false);
+  const [zoomLink, setZoomLink] = useState('');
 
   //date picker functionality
   var tomorrow = new Date();
@@ -92,7 +93,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
       await createMeeting({
         variables: {
           meeting_start_timestamp: `${timestamp}`,
-          virtual_meeting_url: "https://zoom.us/join",
+          virtual_meeting_url: `${zoomLink}`,
         },
       });
       setCreateSuccessful(true);
@@ -100,6 +101,10 @@ function CreateMeetingModal({ isOpen, closeModal }) {
       console.error(e);
     }
   };
+
+  const addZoomLink = (link) => {
+    setZoomLink(link);
+  }
 
   // custom input for calendar icon in date selector input field
   const CustomCalendarInput = forwardRef(
@@ -174,13 +179,18 @@ function CreateMeetingModal({ isOpen, closeModal }) {
                 value={date.setMinutes(Math.ceil(date.getMinutes() / 30) * 30)}
                 minTime={new Date().setHours(7, 0)}
                 maxTime={new Date().setHours(22, 0)}
-                showTimeSelect
                 showTimeSelectOnly
                 timeIntervals={30}
                 dateFormat="h:mm aa"
                 showTimeSelect={true}
                 customInput={<CustomTimeInput />}
               />
+            </div>
+          </div>
+          <div className="date-time-picker">
+            <div>
+              <p className="date-time-title">Zoom Link</p>
+              <input type="text" onChange={(event) => addZoomLink(event.target.value)}/>
             </div>
           </div>
         </div>

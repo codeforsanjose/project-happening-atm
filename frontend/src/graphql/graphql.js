@@ -78,7 +78,10 @@ export const GET_ALL_ACCOUNT_EMAILS = gql`
 export const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email_address: String) {
     getAccountByEmail(email_address: $email_address){
-      id
+      id,
+      email_address,
+      phone_number,
+      password
     }
   }
 `;

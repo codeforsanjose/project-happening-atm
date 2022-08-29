@@ -164,12 +164,12 @@ module.exports = (logger) => {
   const loginGoogle = async (dbClient, context) => {
     let token;
     try {
-      const user = {
-        rows:[]
-      };
-      user.rows.push(await authentication.verifyGoogleToken(dbClient, context.token));
-      validator.validateAuthType(user.rows[0].auth_type, "Google");
-      token = await authentication.createJWT(user);
+      const user = await authentication.verifyGoogleToken(dbClient, context.token);
+      if(!user.isRegistered) {
+        logger.error(`User not registered`);
+        throw new Error(`User not registered`);
+      }
+      token = authentication.createJWT({rows: [user]});
     } catch (e) {
       logger.error(`loginGoogle resolver error: ${e}`);
       throw e;
@@ -180,12 +180,12 @@ module.exports = (logger) => {
   const loginMicrosoft = async (dbClient, context) => {
     let token;
     try {
-      const user = {
-        rows:[]
-      };
-      user.rows.push(await authentication.verifyMicrosoftToken(dbClient, context.token));
-      validator.validateAuthType(user.rows[0].auth_type, "Microsoft");
-      token = await authentication.createJWT(user);
+      const user = await authentication.verifyMicrosoftToken(dbClient, context.token);
+      if(!user.isRegistered) {
+        logger.error(`User not registered`);
+        throw new Error(`User not registered`);
+      }
+      token = authentication.createJWT({rows: [user]});
     } catch (e) {
       logger.error(`loginMicrosoft resolver error: ${e}`);
       throw e;
