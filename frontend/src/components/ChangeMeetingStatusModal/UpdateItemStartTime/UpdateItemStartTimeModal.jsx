@@ -56,16 +56,16 @@ const UpdateItemStartTimeModal = ({ args }) => {
   const handleModalClose = () => setDisplaySetStartTimeModal(false);
 
   const validateNewTime = (hour, minutes, meridian) => {
-    const {errors} = formFields
-    const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0)
-    const meridianError = meridian === ''
+    const { errors } = formFields;
+    const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0);
+    const meridianError = meridian === '';
     // no need to update state on submit unless it has changed
     if (errors.time !== timeError || errors.meridian !== meridianError) {
-      displayFormErrors(timeError, meridianError)
+      displayFormErrors(timeError, meridianError);
     }
-    return !timeError && !meridianError ? true : false
+    return !timeError && !meridianError ? true : false;
   };
-  
+
   const displayFormErrors = (time, meridian) => {
     setFormFields(prevFormFields => ({
       ...prevFormFields,
@@ -73,8 +73,8 @@ const UpdateItemStartTimeModal = ({ args }) => {
         time,
         meridian
       }
-    }))
-  }
+    }));
+  };
 
   const getTimeStringInMs = (hour, minutes) => {
     const time = new Date();
@@ -88,19 +88,19 @@ const UpdateItemStartTimeModal = ({ args }) => {
     setFormFields(prevFormFields => ({
       ...prevFormFields,
       [name]: value,
-    }))
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const {hour, minutes, meridian} = formFields
-    let newHour = parseInt(hour, 10)
-    const newMinutes = parseInt(minutes, 10)
+    const { hour, minutes, meridian } = formFields;
+    let newHour = parseInt(hour, 10);
+    const newMinutes = parseInt(minutes, 10);
     const isValidTime = validateNewTime(newHour, newMinutes, meridian);
-    if (!isValidTime) return 
+    if (!isValidTime) return;
     const isPM = meridian === 'PM' ? true : false;
-    
-    // if hour is 12 we set it to 0 to account for 12am/12pm
+
+    // if hour is 12 we set it to 0 to account for 12pm
     newHour = newHour === 12 ? 0 : newHour;
 
     if (isPM) {
@@ -109,24 +109,32 @@ const UpdateItemStartTimeModal = ({ args }) => {
 
     updateTheItem(updateItem, item, getTimeStringInMs(newHour, newMinutes));
   };
-  
+
   Modal.setAppElement('#root');
 
   return (
     <Modal style={modalOverlayStyle} className="updateStartTimeModal" isOpen>
       <div className="updateStartTimeWrapper">
         <div className="updateStartTimeHeader">
-          <span className="headerText">Set time</span>
-          <CloseIcon
-            className="closeOutIcon"
+          <span className="headerText">
+            {t('meeting.tabs.agenda.status.modal.set-time.title')}
+          </span>
+          <button
+            className="close"
             onClick={handleModalClose}
             onKeyPress={handleModalClose}
-          />
+            aria-label={t('standard.buttons.close')}
+          >
+            <CloseIcon />
+          </button>
         </div>
         <div className="updateStartTimeModalBody">
           <form onSubmit={handleSubmit}>
             <span>Time</span>
             <div className="form-inputs">
+              <label className="visually-hidden" htmlFor="hour">
+                {t('meeting.tabs.agenda.status.modal.set-time.label.hour')}
+              </label>
               <input
                 type="text"
                 name="hour"
@@ -137,6 +145,9 @@ const UpdateItemStartTimeModal = ({ args }) => {
                 onChange={handleChange}
               />
               <span>:</span>
+              <label className="visually-hidden" htmlFor="minutes">
+                {t('meeting.tabs.agenda.status.modal.set-time.label.minutes')}
+              </label>
               <input
                 type="text"
                 name="minutes"
@@ -168,10 +179,13 @@ const UpdateItemStartTimeModal = ({ args }) => {
               </label>
             </div>
             <div className='error'>
-              <span className={formFields.errors.time ? 'visible' : null}>Invalid time</span>
-              <span className={formFields.errors.meridian ? 'visible' : null}>Choose AM/PM</span>
+              <span className={formFields.errors.time ? 'visible' : null}>
+                {t('meeting.tabs.agenda.status.modal.set-time.error.time')}
+              </span>
+              <span className={formFields.errors.meridian ? 'visible' : null}>
+                {t('meeting.tabs.agenda.status.modal.set-time.error.meridian')}
+              </span>
             </div>
-            <button type="button" onClick={() => alert(`${new Date(Number(item.item_start_timestamp))}`)}>Current</button>
             <div className="publishOrCancelButtons">
               <input
                 type="submit"
