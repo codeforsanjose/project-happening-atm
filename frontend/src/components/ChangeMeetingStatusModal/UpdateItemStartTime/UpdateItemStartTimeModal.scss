@@ -27,10 +27,12 @@
         font-weight: 500;
       }
 
-      .closeOutIcon {
+      .close {
         cursor: pointer;
         fill: $darkBlue;
-        margin-right: 1.5rem;
+        margin-right: 1rem;
+        border: none;
+        background: none;
       }
 
     }
@@ -46,7 +48,7 @@
       form {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        // align-items: flex-start;
         gap: .625rem;
 
         .form-inputs {
@@ -57,6 +59,7 @@
 
           input {
             border-radius: .25rem;
+            text-align: center;
 
             &:checked+label {
               background: $gold;
@@ -110,36 +113,27 @@
 
       @import '../../../utils/statusButtons.scss';
 
-      .statusChangeDescription {
-        margin: 2.1rem 0;
-      }
-
       .publishOrCancelButtons {
         display: flex;
-        gap: 5rem;
+        justify-content: center;
+        gap: .75rem;
 
-        .publish {
+        .publish, .cancel {
           background: $gold;
           border: none;
-          padding: 1rem 2rem;
+          padding: 1rem 1.2rem;
           border-radius: .5rem;
           font-size: 1.3rem;
-        }
+          font-weight: bold;
 
-        .publish:hover {
-          cursor: pointer;
+          &:hover {
+            cursor: pointer;
+          }
         }
 
         .cancel {
-          border: none;
           background: none;
-          padding: 0;
           font-size: 1.1rem;
-          font-weight: bold;
-        }
-
-        .cancel:hover {
-          cursor: pointer;
         }
       }
     }
