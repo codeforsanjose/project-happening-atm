@@ -8,16 +8,6 @@ import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 
 import './UpdateItemStartTimeModal.scss';
 
-
-function updateTheItem(updateItem, item, startTime) {
-  updateItem({
-    variables: {
-      ...item,
-      item_start_timestamp: startTime
-    },
-  });
-}
-
 const UpdateItemStartTimeModal = ({ args }) => {
 
   const {
@@ -49,7 +39,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
   const modalOverlayStyle = {
     overlay: {
       backgroundColor: 'rgb(175, 178, 189, 0.5)',
-      backdropFilter: 'blur(5px)'
+      backdropFilter: 'blur(20px)'
     },
   };
 
@@ -75,14 +65,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
       }
     }));
   };
-
-  const getTimeStringInMs = (hour, minutes) => {
-    const time = new Date();
-    time.setHours(hour, minutes, 0);
-
-    return `${time.getTime()}`;
-  };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormFields(prevFormFields => ({
@@ -91,9 +74,9 @@ const UpdateItemStartTimeModal = ({ args }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const { hour, minutes, meridian } = formFields;
+    const newTime = new Date();
     let newHour = parseInt(hour, 10);
     const newMinutes = parseInt(minutes, 10);
     const isValidTime = validateNewTime(newHour, newMinutes, meridian);
@@ -106,8 +89,14 @@ const UpdateItemStartTimeModal = ({ args }) => {
     if (isPM) {
       newHour = newHour + 12;
     }
+    newTime.setHours(newHour, newMinutes, 0);
 
-    updateTheItem(updateItem, item, getTimeStringInMs(newHour, newMinutes));
+    updateItem({
+      variables: {
+        ...item,
+        item_start_timestamp: `${newTime.getTime()}`
+      },
+    });
   };
 
   Modal.setAppElement('#root');
@@ -129,7 +118,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
           </button>
         </div>
         <div className="updateStartTimeModalBody">
-          <form onSubmit={handleSubmit}>
+          <form>
             <span>Time</span>
             <div className="form-inputs">
               <label className="visually-hidden" htmlFor="hour">
@@ -188,9 +177,11 @@ const UpdateItemStartTimeModal = ({ args }) => {
             </div>
             <div className="publishOrCancelButtons">
               <input
-                type="submit"
+                type="button"
                 className="publish"
                 value={t('standard.buttons.publish')}
+                onClick={handleSubmit}
+                onKeyPress={handleSubmit}
               />
               <input
                 type="button"
