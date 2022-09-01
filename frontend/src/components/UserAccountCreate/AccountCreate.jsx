@@ -7,7 +7,8 @@ import { GET_ACCOUNT_BY_EMAIL, LOGIN_LOCAL, CREATE_ACCOUNT } from '../../graphql
 import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import LoginContext from '../LoginContext/LoginContext';
 import UserRoles from '../../constants/UserRoles';
-import { InfoIcon } from '../../utils/_icons';
+import { InfoIcon, ATMLogoRainbowIcon } from '../../utils/_icons';
+
 import {
   isNullOrEmpty, isNumericString, validEmail, isPasswordValid,
 } from '../../utils/validations';
@@ -217,8 +218,8 @@ function AccountCreate() {
     <div className="main-container">
       {loginContext.signedIn ? <Redirect to="/" /> : ''}
       <div className="page-header">
-        <h1>Welcome</h1>
-        <p>Create an account to get started</p>
+        <ATMLogoRainbowIcon/>
+        <p className='create-account'>Create an account to get started</p>
         <hr />
       </div>
       <div className="form-wrapper">
@@ -282,8 +283,8 @@ function AccountCreate() {
           <div className="phone-mark">
             <label htmlFor="phone_number">Phone (optional)</label>
             <div className="tooltip-wrapper">
+              <span className="tooltiptext">Only US phone numbers supported</span>
               <InfoIcon />
-              <span className="tooltiptext">We support only US phone numbers</span>
             </div>
           </div>
           <input
@@ -311,7 +312,7 @@ function AccountCreate() {
               onChange={(e) => verifyTosChecked(e.target)}
               onBlur={(e) => verifyTosChecked(e.target)}
             />
-            <label htmlFor="tos"> I have read, understood and agreed with your Terms of Service and Privacy Policy</label>
+            <label htmlFor="tos"> I have read, understood and agreed with your <a href='/terms-of-use'>Terms of Service</a> and <a href='/privacy-policy'>Privacy Policy</a></label>
             <label style={{ color: 'red' }}>*</label>
           </div>
           {fieldErrors && fieldErrors.tos
