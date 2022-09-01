@@ -26,9 +26,14 @@ import LoginContext from "./components/LoginContext/LoginContext";
 import AccountCreate from "./components/UserAccountCreate/AccountCreate";
 import ForgotPassword from "./components/ForgotPassword/ForgotPasswordRequest";
 import SetNewPassword from "./components/ForgotPassword/SetNewPassword";
+import UpdateUserEmail from "./components/UpdateUserInfo/UpdateUserEmail";
+import UpdateUserNumber from "./components/UpdateUserInfo/UpdateUserNumber";
 import FAQ from "./components/FAQ/FAQ.jsx";
 import About from "./components/AboutUs/AboutUs.jsx";
 import UserAccountView from "./components/UserAccountView/UserAccountView";
+import TermsOfUse from "./components/TermsOfUse/TermsOfUse";
+import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
+import SendFeedback from "./components/SendFeedback/SendFeedback";
 import * as serviceWorker from "./serviceWorker";
 
 import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/query";
@@ -99,7 +104,7 @@ function App() {
             <Router>
               <Switch>
                 <AuthRoute exact path="/" signedIn={signedIn}>
-                  <MeetingListView />
+                  <MeetingListView/>
                 </AuthRoute>
                 <AuthRoute path="/subscribe" signedIn={signedIn}>
                   <Subscribe />
@@ -122,6 +127,12 @@ function App() {
                 <Route path="/reset-password">
                   <SetNewPassword />
                 </Route>
+                <Route path="/update-email">
+                  <UpdateUserEmail />
+                </Route>
+                <Route path="/update-number">
+                  <UpdateUserNumber />
+                </Route>
                 <Route exact path="/faq">
                   <FAQ />
                 </Route>
@@ -130,6 +141,15 @@ function App() {
                 </Route>
                 <Route exact path="/profile">
                   <UserAccountView />
+                </Route>
+                <Route exact path="/terms-of-use">
+                  <TermsOfUse />
+                </Route>
+                <Route exact path="/privacy-policy">
+                  <PrivacyPolicy />
+                </Route>
+                <Route exact path="/send-feedback">
+                  <SendFeedback />
                 </Route>
                 {/* <Route exact path="/participate/join">
                   <ParticipatePage Component={ParticipateJoin} />
@@ -164,8 +184,8 @@ function App() {
                   />
                 </AuthRoute>
               </Switch>
+              <Footer />
             </Router>
-            <Footer />
             <SampleQuery />
           </div>
         </LoginContext.Provider>

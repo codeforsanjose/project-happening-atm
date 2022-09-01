@@ -25,6 +25,7 @@ import {
   NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress, KeyboardArrowDownIcon,
 } from '../../../utils/_icons';
 import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeetingStatusModal';
+import UpdateItemStartTimeModal from '../../ChangeMeetingStatusModal/UpdateItemStartTime/UpdateItemStartTimeModal';
 
 /**
  *
@@ -140,6 +141,7 @@ const RenderedAgendaItem = forwardRef(
     const [subscriptions, setSubscriptions] = useState(null);
     const [subscribed, setSubscribed] = useState(subStatus);
     const [dispalySetStatusModal, setDisplaySetStatusModal] = useState(false);
+    const [displaySetStartTimeModal, setDisplaySetStartTimeModal] = useState(false);
     const [admin] = useState(isAdmin());
     const [buttonClasses] = useState(buildButtonClasses());
     const itemRef = useRef(null);
@@ -231,6 +233,12 @@ const RenderedAgendaItem = forwardRef(
             args={changeMeetingStatusArgs}
           />
           )}
+
+          {displaySetStartTimeModal
+          && (
+          <UpdateItemStartTimeModal />
+          )}
+
           <div className="item-links">
             <div className="link">
               <p>
@@ -265,6 +273,15 @@ const RenderedAgendaItem = forwardRef(
             && !admin
             && (
               <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
+            )}
+
+            {admin && (
+              <button onClick={!dragOverlay ? () => {
+                setDisableSort(true);
+                setDisplaySetStartTimeModal(true);
+              } : null}>
+                Set Time
+              </button>
             )}
 
             {admin && (
