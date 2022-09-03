@@ -11,9 +11,10 @@ import { CSS } from '@dnd-kit/utilities';
 import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
 import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
 import './AgendaItem.scss';
-import { CREATE_SUBSCRIPTIONS } from '../../../graphql/graphql';
+import { CREATE_SUBSCRIPTIONS, UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
 import isAdmin from '../../../utils/isAdmin';
 import buildButtonClasses from '../../../utils/buildButtonClasses';
+import { toTimeString } from '../../../utils/timestampHelper';
 
 import {
   buildSubscriptionQueryString,
@@ -23,6 +24,7 @@ import MeetingItemStates from '../../../constants/MeetingItemStates';
 
 import {
   NotificationFilledIcon, StatusCompleted, StatusDeferred, StatusInProgress, KeyboardArrowDownIcon,
+  CloseIcon, ScheduleBlueIcon,
 } from '../../../utils/_icons';
 import ChangeMeetingStatusModal from '../../ChangeMeetingStatusModal/ChangeMeetingStatusModal';
 import UpdateItemStartTimeModal from '../../ChangeMeetingStatusModal/UpdateItemStartTime/UpdateItemStartTimeModal';
@@ -148,6 +150,9 @@ const RenderedAgendaItem = forwardRef(
     const modalRef = useRef(null);
     const dropDownRef = useRef(null);
     const { t } = useTranslation();
+    // check if time for item is set, store if it is
+    const isTimeSet = item.item_start_timestamp !== "0";
+    const agendaItemTime = isTimeSet ? toTimeString(item.item_start_timestamp) : null;
 
     useEffect(() => {
       if (subStatus && !admin) {
@@ -183,6 +188,12 @@ const RenderedAgendaItem = forwardRef(
           meetings: subscriptionQueryString,
         },
       });
+    };
+
+    const handleDisplaySetStartTimeModal = () => {
+      if (dragOverlay) return;
+      setDisableSort(true);
+      setDisplaySetStartTimeModal(true);
     };
 
     const closeConfirmation = () => {
@@ -252,6 +263,26 @@ const RenderedAgendaItem = forwardRef(
                 {t('meeting.tabs.agenda.list.more-info.button')}
               </p>
             </div>
+              {/* verify user is admin,
+                  if agenda item has a time specified, show time and icon to reset time,
+                  If no time is specified, show button to open set time modal */}
+            {admin &&
+              <div className="link">
+                {isTimeSet ? (
+                  <div className='time admin'>
+                    <span>{agendaItemTime}</span>
+                    <button type='button' onClick={handleItemTimeReset}>
+                      <CloseIcon />
+                    </button>
+                  </div>
+                ) : (
+                  <button type='button' onClick={handleDisplaySetStartTimeModal}>
+                    Set Time
+                  </button>
+                )}
+              </div>
+            }
+
             {/* if Item status is completed, it will show completed;
                 if Item status is deferred, it will show deferred;
                 if Item statu is not subscribed, it will show notify me;
@@ -280,15 +311,6 @@ const RenderedAgendaItem = forwardRef(
               && (
                 <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
               )}
-
-            {admin && (
-              <button onClick={!dragOverlay ? () => {
-                setDisableSort(true);
-                setDisplaySetStartTimeModal(true);
-              } : null}>
-                Set Time
-              </button>
-            )}
 
             {admin && (
               <ul className="statusButtons">
