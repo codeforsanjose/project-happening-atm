@@ -1,21 +1,50 @@
 @import '../../utils/_colors.scss';
 
+.app-root {
+    height: 100vh;
+}
+
 .LoginHandler{
     font-family: 'Poppins', sans-serif;
-    width:100vw;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    background-color: $cityBlue;
-
+        
     .loginHeader{
+        background: linear-gradient(180deg,rgba(37,66,118,1) 0%, $cityBlue 100%);
         min-height:6rem;
         width:100vw;
         display:flex;
         align-items: center;
+        flex-direction: column;
         justify-content: center;
         color: white;
         font-size: 1.25rem;
+        padding: 24px;
+        padding-bottom: 0;
+
+        img {
+            max-width: 25%;
+            padding: 24px;
+        }
+
+        @media only screen and (max-width: 812px){
+
+            img {
+                max-width: 60%;
+                padding: 16px;
+            }
+
+        }
+
+
+    }
+
+    .loginTitle{
+        background: -webkit-linear-gradient(0deg, #FFF7AA 0%, #B9FBFF 44.94%, #FEB6FB 96.96%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 24px;
+        font-size: 4rem;
+        font-weight:300;
+        line-height: 90%;
     }
     .loginBody{
         
@@ -29,23 +58,33 @@
             width:100%;
             margin-left:auto;
             margin-right:auto;
+
+
+            .subtitle {
+                max-width: 90vw;
+                text-align: center;
+                font-size: 16px;
+                line-height: 24px;
+                color:white;
+                padding: 16px 0 16px 0;
             
-            p{
+            }
+            
+            p {  
                 text-align:center;
-                font-size:1.75rem;
                 line-height:2.625rem;
-                font-weight:500;
+                font-weight:lighter;
                 padding-top:0.5rem;
                 color:white;
-                margin-bottom:0;
+                margin-bottom:24px;
             }
 
             .introTextSeparator{
-                width:24rem;
-                margin:1rem 0 1.5rem 0;
-                height:2px;
+                width:50vw;
+                margin:24px 0 24px 0;
+                height:1px;
                 border:none;
-                background-color:$cityBronze;
+                background-color:rgba($color: #ffffff, $alpha: 0.1);
             }
             
             .googleLogin{
@@ -53,18 +92,20 @@
             }
 
             .google-microsoft-login{
-                background-color:$lightBronze;
-                width:30rem;
-                height:3rem;
+                font-size: 16px;
+                background-color:$atmGold;
+                width:50vw;
+                height:40px;
                 box-sizing: border-box;
-                padding-left:1.2rem;
                 display:flex;
                 align-items: center;
                 align-self:center;
+                justify-content: center;
                 transition: width 0.2s;
                 border-radius:0.5rem;
                 cursor:pointer;
                 border-style:none;
+                color: $cityBlue;
 
                 img{
                     width:2.2rem;
@@ -76,7 +117,7 @@
                     letter-spacing:1.5px;
                     margin-left:1.5rem;
                     font-weight:600;
-                    font-size:1.5rem;
+                    font-size:16px;
                 }
                 &:hover{
                     background:$cityBronze;
@@ -92,7 +133,6 @@
                 span{
                     color:white;
                     margin:0 2rem 0 2rem;
-                    font-size: 1.5rem;
                 }
 
                 hr{
@@ -100,7 +140,7 @@
                     height:0rem;
                     height: 0.15rem;
                     border: none;
-                    background-color:$cityBronze;
+                    background-color:rgba($color: #ffffff, $alpha: 0.1);
                 }
             }
 
@@ -121,7 +161,7 @@
                 }
                 .google-microsoft-login{
                     width:90vw;
-                    height:3rem;
+                    height:40px;
                     margin-left: auto;
                     margin-right: auto; 
                     align-self:center;
@@ -129,9 +169,10 @@
                     transition: width 0ms;
 
                     span{
+                        text-align: center;
                         margin-left:1.2rem;
                         font-weight:600;
-                        font-size:calc(0.75rem + 1.25vw);
+                        font-size:16px;
                     }
 
                     &:hover{
@@ -167,7 +208,7 @@
                 }
 
                 .localLogin{    
-                    width:30rem;
+                    width:50vw;
                     height:3rem;
                     box-sizing:border-box;
                     padding-left:1rem;
@@ -185,19 +226,21 @@
                     text-decoration: none;
                     font-size:1.1rem;
                     margin-top:1rem;
+                    text-align: center;
                 }
 
                 .signInButton{
-                    width:15rem;
-                    height:3.5rem;
+                    width:50vw;
+                    height:40px;
                     border:none;
                     border-radius: 0.5rem;
-                    font-size:1.5rem;
-                    background-color:$lightBronze;
+                    font-size:16px;
+                    background-color:$atmGold;
                     margin-left:auto;
                     margin-top:1.5rem;
                     margin-right:auto;
                     font-weight:600;
+                    color: $cityBlue;
                     cursor:pointer;
 
                     &:hover{
@@ -221,13 +264,16 @@
 
                     .passAnchor{
                         font-size:calc(0.6rem + 1.25vw);
+                        text-align: center;
                     }
 
                     .signInButton{
                         width: 90vw;
-                        height: 3rem;
+                        height: 40px;
                         font-weight:600;
-                        font-size:calc(0.75rem + 1.25vw);
+                        font-size:16px;
+                        color: $cityBlue;
+                        
 
                     }
                     .desktopView{
@@ -239,21 +285,47 @@
                     }
                 }
             }
-            .create-account-container{
-                display: inline-flex;
-                align-items: center;
-                margin: 2rem 0 2rem 0;
+                .create-account-container{
+                    font-size: 14px;
+                    text-align: center;
+                    display: flex;
+                    max-width: 50%;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    margin: 2rem 0 0 0;
 
-                span{
-                    color: white;
-                    font-size: 1.0rem;
+                    span{
+                        width: 36px;
+                        text-align: center;
+                        padding:  0 16px 0 16px;
+                        color: rgba($color: #ffffff, $alpha: 0.1);
+                        font-size: 1.0rem;
+                    }
+                    .nav-account-create{
+                        color: white;
+                        margin-left: 0.2rem;
+                    }
+                    .nav-pass-reset{
+                        width: 60vw;
+                        padding:  0 16px 0 16px;
+                        color: white;
+                        margin-left: 0.2rem;
+                    }
                 }
-                .nav-account-create{
-                    color: white;
-                    margin-left: 0.2rem;
+                @media only screen and (max-width: 812px){
+                    .create-account-container{
+                        max-width: 80%;
+
+                    }
+
                 }
-            }
+            
         }
     }
     
+}
+
+a:visited {
+    color: $pastGray;
 }
