@@ -2,7 +2,6 @@
 
 .CreateMeetingModal {
   position: absolute;
-  padding: 3em;
   box-shadow: rgba(0,0,0,0.8) 0 0 10px;
   background-color: $blueSky;
   border-radius: 6px;
@@ -16,44 +15,34 @@
     padding: 1em;
   }
 
-  .wrapper {
-    position: relative;
-    width: calc(236px * 2.2);
-    min-width: calc(236px * 2.2);
-    
-    @media only screen and (max-width: 812px) {
-      width: 100%;
-      min-width: 100%;
-    }
+  .modal-header {
+    background-color: $lightBronze;
+    border-radius: 6px 6px 0 0;
+    text-align: center;
 
     h2 {
       display: inline-block;
       margin: 0;
       color: $black;
       font-weight: 600;
-
-      &::after {
-        display: block;
-        content: '';
-        background-color: $cityBronze;
-        margin-top: 0.5em;
-        width: 110%;
-        height: 3px;
-        
-        @media only screen and (max-width: 400px) {
-        width: 100%;
-        } 
-      }
-      
+      width: 100%;
+      padding: 1rem;
     }
-    p {
-      margin-top: 1.5em; 
-      margin-bottom: 0em;
+  }
+
+  .wrapper {
+    position: relative;
+    width: calc(236px * 2.2);
+    min-width: calc(236px * 2.2);
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    
+    @media only screen and (max-width: 812px) {
+      width: 100%;
+      min-width: 100%;
     }
 
     .date-time {
       display: flex;
-      margin-bottom: 1.5em;
       width: 100%;
       justify-content: center;
 
@@ -64,9 +53,9 @@
     }
 
     .date-time-title {
-      margin-bottom: 0.5em;
       font-weight: 600;
       font-size: 1em;
+      margin: 0;
     }
 
     .date-time-picker {
@@ -75,6 +64,10 @@
       @media only screen and (max-width: 812px) {
         margin-top: -2em;
       }
+    }
+
+    .zoom-link {
+      margin-bottom: 1.5rem;
     }
 
     input {
