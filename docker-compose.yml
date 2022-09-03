@@ -15,6 +15,7 @@ services:
       - "/usr/src/app/node_modules"
     depends_on:
       - backend_pg
+    env_file: ./backend/graphql_api/lambda/.env
     links:
       - "backend_pg:gov-agenda-notifier_backend_pg_1"
     networks:
@@ -66,9 +67,7 @@ services:
     stdin_open: true
     depends_on:
       - backend_pg
-    environment:
-      - REACT_APP_GRAPHQL_URL=http://localhost:3000
-      - REACT_APP_JWT_ISSUER=ADD-ISSUER-DOMAIN
+    env_file: ./frontend/.env
     links:
       - "backend_pg:gov-agenda-notifier_backend_pg_1"
     networks:

@@ -115,7 +115,7 @@ module.exports = (logger) => {
         // Verify if admin email in admin whitelist
         const isAdmin = await verifyAdmin(dbClient, email);
         const roles = isAdmin ? '{ADMIN}' : '{USER}';
-        const token = await randomToken();
+        const token = randomToken();
         user = {
           first_name,
           last_name,
@@ -135,6 +135,7 @@ module.exports = (logger) => {
 
   const verifyEmailPassword = async (dbClient, email_address, password) => {
     let user;
+    //Convert email to lowerCase
     email_address = email_address.toLowerCase().trim();
     try {
       const dbUser = await dbClient.getAccountByEmail(email_address);
