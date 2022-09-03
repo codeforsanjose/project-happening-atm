@@ -18,8 +18,6 @@ import microsoftIcon from './assets/microsoft_PNG18.png';
 import LoginContext from '../LoginContext/LoginContext';
 import CLIENT_ID from '../../constants/OauthClientID';
 
-import { getLocalStorageItemByKey, setLocalStorageItemByKey } from '../../utils/storageUtils';
-
 // global constant options
 const OPTIONS = {
   googleClientID: CLIENT_ID.GOOGLE,
@@ -54,7 +52,7 @@ function LoginHandler() {
 
   const microsoftHandler = (err, response) => {
     if (err === null) {
-      setLocalStorageItemByKey(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
+      localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
       loginMicrosoft[0]();
     } else {
       setOtherError(true);
@@ -72,26 +70,30 @@ function LoginHandler() {
   };
 
   const googleHandler = (response) => {
-    setLocalStorageItemByKey(LocalStorageTerms.TOKEN, response.tokenId);
+    localStorage.setItem(LocalStorageTerms.TOKEN, response.tokenId);
     loginGoogle[0]();
   };
 
   useEffect(() => {
     // Successful sign in
     if (data) {
+      let userEmail;
       if (Object.prototype.hasOwnProperty.call(data, 'loginGoogle')) {
-        setLocalStorageItemByKey(LocalStorageTerms.TOKEN, data.loginGoogle.token);
+        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
+        userEmail = data.loginGoogle.email;
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginLocal')) {
-        setLocalStorageItemByKey(LocalStorageTerms.TOKEN, data.loginLocal.token);
+        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+        userEmail = data.loginLocal.email || userName;
       }
       if (Object.prototype.hasOwnProperty.call(data, 'loginMicrosoft')) {
-        setLocalStorageItemByKey(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
+        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
+        userEmail = data.loginMicrosoft.email
       }
-      setLocalStorageItemByKey(LocalStorageTerms.SIGNED_IN, true);
+      window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
 
       loginContext.setSignedIn(true);
-      setLocalStorageItemByKey("email_address", userName)
+      window.localStorage.setItem("email_address", userEmail)
     }
     if (error) {
       // extracted error message
