@@ -311,7 +311,7 @@ function AccountCreate() {
               onChange={(e) => verifyTosChecked(e.target)}
               onBlur={(e) => verifyTosChecked(e.target)}
             />
-            <label htmlFor="tos"> I have read, understood and agreed with your Terms of Service and Privacy Policy</label>
+            <label htmlFor="tos"> I have read, understood and agreed with your <a href="/terms-of-use">Terms of Use</a> and <a href="/privacy-policy">Privacy Policy</a></label>
             <label style={{ color: 'red' }}>*</label>
           </div>
           {fieldErrors && fieldErrors.tos
