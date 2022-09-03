@@ -3,6 +3,7 @@
 * {
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    color: white;
 }
 
 .main-container {
@@ -10,9 +11,7 @@
     display: flex;
     flex-direction: column;
     align-items: center; 
-    background-image: linear-gradient(#254276, #1F2847);
-    color: white;
-    padding-bottom: 3rem;
+    background: linear-gradient(180deg,rgba(37,66,118,1) 0%, $cityBlue 100%);
     .page-header {
        min-height:7rem;
        width:100vw;
@@ -21,31 +20,34 @@
         align-items: center;
         justify-content: center;
         font-size: 1.0rem;
-        padding-top: 3rem;
-        padding-bottom: 3rem;
+        h1 {
+            background: -webkit-linear-gradient(0deg, #FFF7AA 0%, #B9FBFF 44.94%, #FEB6FB 96.96%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 4rem;
+            font-weight:300;
+            line-height: 90%;
 
-        img {
-            width: 15vw;
         }
-
-        .create-account {
-            margin: 2rem;
+        p{
+            text-align: center;
+            margin: 0.1rem;
+            margin-top: 3rem;
             font-size: 1.5rem;
-        }
-
-        h1,p{
-            margin: 0.8rem;
         }   
         hr{
-            width:9rem;
-            height:0rem;
-            height: 0.15rem;
+            width:20vw;
+            height: 1px;
             border: none;
-            background-color:$cityBronze;
+            background-color:$atmGold;
+            margin: 1.5rem;
+
         }  
     }         
     .form-wrapper{     
-        width: 60vw;
+        width: 30vw;
         display:flex;
         flex-direction: column;
         align-items: center;
@@ -55,8 +57,15 @@
             width: 100%;
             margin-bottom: 0.5rem;
             padding: 0.5rem;
+            label {
+                margin-bottom: 0.5rem;
+            }
             input {
-                padding: 0.5rem;
+                min-height: 2rem;
+                padding-left: 0.5rem;
+                color: black;
+                border-radius: 4px;
+                font-size: 1rem;
             }
             input::placeholder {
                 color: red;
@@ -67,10 +76,10 @@
                 font-size:1.0rem;
                 margin:0;
                 padding: 0.2rem;
-                color:#ff5f54;
+                color:#ffa59f;
             }
             .input-error{
-                border: 1px solid red;
+                border: 1px solid $alertRed;
                 margin-bottom: 0;
             }
             .form-check{
@@ -89,12 +98,18 @@
                     margin-top: 0;
                     padding-top: 0;
                     padding-left: 0.5rem;
+                    font-size: 0.9rem;
                 }
             }
             .phone-mark{
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+                
+                svg {
+                    fill: $atmGold;
+                }
+
                 .tooltip-wrapper{
                     position: relative;
                     display: inline-block;
@@ -105,11 +120,13 @@
                         font-size: 0.8rem;
                         text-align: center;
                         border-radius: 0.1rem;
-                        padding: 0 0.2rem;                           
+                        padding: 0.2rem 0.2rem;                           
                         position: absolute;
                         z-index: 1;
-                        color: $gold;
-                        left: -1150%;
+                        background-color: $cityBlue;
+                        color: $atmGold;
+                        top: 180%;
+                        left: -1000%;
                     }
                     &:hover {
                         .tooltiptext{
@@ -120,6 +137,7 @@
                 }
             }
             .g-recaptcha{
+                margin: 0.5rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -130,8 +148,8 @@
                 border:none;
                 border-radius: 0.5rem;
                 font-size:1.5rem;
-                font-weight: 600;
-                background-color:$gold;
+                background-color:$atmGold;
+                color: $cityBlue;
                 margin-left:auto;
                 margin-top:0;
                 margin-right:auto;
@@ -148,8 +166,24 @@
     @media(max-width: 600px){
         .main-container {
             display: flex;
+            .page-header{
+                p{
+                    text-align: center;
+                    margin: 0.1rem;
+                    margin-top: 1rem;
+                    font-size: 1.5rem;
+                }   
+                hr{
+                    width:60vw;
+                    height: 1px;
+                    border: none;
+                    background-color:$atmGold;
+                    margin: 1.5rem;
+        
+                }  
+            }
             .form-wrapper{
-                width: 60vw;
+                width: 95vw;
                 justify-content: center;
                 align-items: center;
                 .form-fields{
@@ -162,13 +196,14 @@
                     }            
                     .inline-error{
                         font-size:0.8rem;
-                        margin:0;
+                        margin-top: 0.3rem;
+                        margin-bottom: 0.3rem;
                         padding: 0.2rem;
-                        color:#ff5f54;
+                        color:$alertRed;
                     }                    
                     .g-recaptcha{    
-                        transform:scale(0.70);
-                        -webkit-transform:scale(0.70);
+                        transform:scale(0.90);
+                        -webkit-transform:scale(0.90);
                     }
                     button{       
                         width:12rem;
@@ -196,12 +231,13 @@
                     }
                     label{
                         font-size: 0.7rem;
+                        margin: 0.5rem;
                     }      
                     .inline-error{
                         font-size:0.7rem;
                         margin:0;
                         padding: 0.2rem;
-                        color:#ff5f54;
+                        color:$alertRed;
                     }
                     .phone-mark{
                         .tooltip-wrapper{
@@ -216,8 +252,8 @@
                         display: flex;
                         justify-content: center;
                         align-items: center;  
-                        transform:scale(0.50);
-                        -webkit-transform:scale(0.50);
+                        transform:scale(0.80);
+                        -webkit-transform:scale(0.80);
                     }
                     button{
                         width:10rem;

@@ -2,7 +2,7 @@
 
 # proj-happening-atm
 
-It's common for city council, planning and commision meetings to only list one start time. The agenda items aren't scheduled for specific times because they do not know how long it will take to discuss each item. This leaves attendees wondering when they'll be able to comment on the agenda item they're interested in.
+It's common for city council, planning and commission meetings to only list one start time. The agenda items aren't scheduled for specific times because they do not know how long it will take to discuss each item. This leaves attendees wondering when they'll be able to comment on the agenda item they're interested in.
 
 This problem has become a growing issue in the era of COVID-19 since virtual meetings are becoming more common. This web app allows meeting participants to "subscribe" to meeting items for notifications via text or email. Participants will benefit greatly from a notification system rather than be on stand-by for an undetermined length of time.
 
@@ -35,7 +35,7 @@ The City of San Jose is interested in this service, but this is a project that c
 
 # Setup
 
-There are two ways to setup for local developemnt, with docker-compose (option 1) or directly (option 2). Option 1 is the recommened way to get started. It will bring up the app with a single docker command.
+There are two ways to setup for local development, with docker-compose (option 1) or directly (option 2). Option 1 is the recommended way to get started. It will bring up the app with a single docker command.
 
 ## Option 1
 
@@ -44,52 +44,11 @@ When running with docker-compose, a separate persistent volume is created for Po
 1. Go to the issues page to find something to work on:
    - https://github.com/codeforsanjose/gov-agenda-notifier/issues
 1. Install Docker: https://www.docker.com/products/docker-desktop
-1. Create a `.env` file in the `/backend/graphql_api/lambda` and paste the following in that file without changing anything (you don't need the values to get started):
+1. Create a `.env` file in the `/backend/graphql_api/lambda` using the env.example file in the directory as a template. The values in the template file will get you started.
 
-   ```
-   NODE_ENV=development
+   - This .env file is NOT to be included in version control. We don't want secret keys publicly accessible.
 
-   PGHOST=gov-agenda-notifier_backend_pg_1
-   PGUSER=docker
-   PGPASSWORD=docker
-   PGDATABASE=devdb
-   PGPORT=5432
-
-   TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
-   TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
-   TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
-   SEND_TEXT=false
-
-   AWS_ACCESS_KEY_ID=
-   AWS_SECRET_ACCESS_KEY=
-   AWS_DEFAULT_REGION=
-   FROM_ADDRESS=
-   SEND_EMAIL=false
-
-   JWT_SECRET=NEED-TO_CREATE-SECRET-KEY
-   JWT_ISSUER=ADD-ISSUER-DOMAIN
-   JWT_AUDIENCE=ADD-AUDIENCE
-
-   GOOGLE_CLIENT_ID=NEED-TO-REGISTER-APP
-   GOOGLE_CLIENT_SECRET=NEED-TO-REGISTER-APP
-
-   MICROSOFT_CLIENT_ID=NEED-TO-REGISTER-APP
-   ```
-
-   - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
-
-1. Create a `.env` file in the `backend/agenda_upload_service/lambda` and paste the following in that file without changing anything (you don't need the values to get started):
-
-   ```
-   NODE_ENV=development
-
-   PGHOST=gov-agenda-notifier_backend_pg_1
-   PGUSER=docker
-   PGPASSWORD=docker
-   PGDATABASE=devdb
-   PGPORT=5432
-
-   ```
+1. Create a `.env` file in the `backend/agenda_upload_service/lambda` using the env.example file in the directory as a template. The values in the template file will get you started.
 
 1. Run docker-compose command to bring up the apps:
    ```bash
@@ -105,42 +64,17 @@ When running with docker-compose, a separate persistent volume is created for Po
 ### To be able to Login using a Google Account
  1. To login with a Google account a Google API client ID must be provided to the front and backend.
  1. A Google API Client ID can be obtained by registering an APP here https://console.developers.google.com/.
- 1. As an alternative this Google API Client ID can be used for now `794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com`
- 1. In the `.env` file located in `/backend/graphql_api/lambda`, replace `NEED-TO-REGISTER-APP` for `GOOGLE_CLIENT_ID` with a valid Google API Client ID. Then located in the file `\frontend\src\constants\OauthClientID` put the Google API Client ID into the empty Google String. 
-
-   Example
-   ```
-   /backend/graphql_api/lambda\.env
-   GOOGLE_CLIENT_ID=794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com
-
-   \frontend\src\constants\OauthClientID
-   const CLIENT_ID = {
-    GOOGLE:"794344810158-sani885h3b9sksk7oqi0cb3spit2271p.apps.googleusercontent.com",
-   }
-   
-   ```
+ 1. In the `.env` files located in `/backend/graphql_api/lambda` and `/frontend`, add the provided ID to the environment variables `GOOGLE_CLIENT_ID` and `REACT_APP_GOOGLE_ID`.
+ 1. As an alternative the provided value in the env.example file can be used for now.
 
 ### To be able to Login using a Microsoft Account
  1. To login with a Microsoft account a Microsoft API client ID must be provided to the front and backend.
  1. A Google API Client ID can be obtained by registering an APP here https://azure.microsoft.com/en-us/features/azure-portal/. Then search for Azure Active Directory. In the scroll bar on the left under manage select App registrations to register your App.
- 1. As an alternative this Microsoft API Client ID can be used for now `d2dbfc8f-325c-46bf-a3c2-d1f2da795d9f`
- 1. In the `.env` file located in `/backend/graphql_api/lambda`, replace `NEED-TO-REGISTER-APP` for `MICROSOFT_CLIENT_ID` with a valid Microsoft API Client ID. Then located in the file `\frontend\src\constants\OauthClientID` put the Google API Client ID into the empty Google String. 
-
-   Example
-   ```
-   /backend/graphql_api/lambda\.env
-   MICROSOFT_CLIENT_ID=d2dbfc8f-325c-46bf-a3c2-d1f2da795d9f
-
-   \frontend\src\constants\OauthClientID
-   const CLIENT_ID = {
-    GOOGLE:"",
-    MICROSOFT:"d2dbfc8f-325c-46bf-a3c2-d1f2da795d9f"
-   }
-   
-   ```
+ 1. In the `.env` file located in `/backend/graphql_api/lambda` and `/frontend`, add the provided ID to the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
+ 1. As an alternative the provided value in the env.example file can be used for now.
    
 ### To create a local account for local login.
- 1. You should be able to use this site key '6LdQw4IeAAAAAJhBO-s9vuYjuHXCrPUyw_OTa5hP', if not you can create one by following the steps provided.
+ 1. You should be able to use this site key in the env.example file, if not you can create one by following the steps provided.
  1. You first need to create a key for the recaptcha at https://www.google.com/recaptcha/admin/create
  1. Select recaptcha v2
  1. Leave selection on "I'm not a robot" checkbox
@@ -148,19 +82,8 @@ When running with docker-compose, a separate persistent volume is created for Po
  1. Accept terms of service.
  1. Submit
  1. copy site key.
- 1. Paste it into frontend\src\constants\Recaptchas.js Account_Creation
- 1. Example below
+ 1. Add it to the environment variables `REACT_APP_RECAPTCHAS_SITE_KEY`.
 
-   Example
-   ```
-   const RECAPTCHAS = {
-		ACCOUNT_CREATION: '6LdQw4IeAAAAAJhBO-s9vuYjuHXCrPUyw_OTa5hP',
-	};
-
-	export default RECAPTCHAS;
-
-   
-   ```
  
 After following these steps, run the project, and then the create account button on the home page should work.
 ## Option 2
@@ -211,37 +134,9 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
          ```
 3. Initialize the GraphQL API Lambda server locally
 
-   1. Create a `.env` file in the `/backend/graphql_api/lambda` directory
+   1. Create a `.env` file in the `/backend/graphql_api/lambda` using the env.example file as a template.
 
-         ```
-         NODE_ENV=development
-
-         PGHOST=127.0.0.1
-         PGUSER=docker
-         PGPASSWORD=docker
-         PGDATABASE=devdb
-         PGPORT=8888
-
-         TWILIO_ACCOUNT_SID=AC-THIS-IS-TOP-SECRET-AND-NEEDS-TO-START-WITH-AC
-         TWILIO_AUTH_TOKEN=THIS-IS-TOP-SECRET
-         TWILIO_PHONE_NUMBER=THIS-IS-TOP-SECRET
-         SEND_TEXT=false
-
-         AWS_ACCESS_KEY_ID=
-         AWS_SECRET_ACCESS_KEY=
-         AWS_DEFAULT_REGION=
-         FROM_ADDRESS=
-         SEND_EMAIL=false
-
-         JWT_SECRET = NEED-TO_CREATE-SECRET-KEY
-         JWT_ISSUER = ADD-ISSUER-DOMAIN
-         JWT_AUDIENCE = ADD-AUDIENCE
-
-         GOOGLE_CLIENT_ID = NEED-TO-REGISTER-APP
-         GOOGLE_CLIENT_SECRET = NEED-TO-REGISTER-APP
-         ```
-
-         - This file is NOT to be included in version control. We don't want secret keys publicly accessible.
+         - This .env file is NOT to be included in version control. We don't want secret keys publicly accessible.
 
    2. Install project dependencies:
       1. Navigate to the `/backend/graphql_api/lambda` directory
@@ -307,7 +202,7 @@ NOTE: Do NOT open PRs directly to `main` branch without merging it in develop. I
 
 # Deploy
 
-We are using Code for San Jose AWS account to deploy the app to staging and production urls. See `.github/workflows/aws.yml` for worflow. All the logic for bringing up the apps resides in the Code For San Jose terraform repo. The only exception are the Dockerfile in each of the services. This way we don't have to do any devops for this app and can rely on Code for San Jose's infrastructure.
+We are using Code for San Jose AWS account to deploy the app to staging and production urls. See `.github/workflows/aws.yml` for workflow. All the logic for bringing up the apps resides in the Code For San Jose terraform repo. The only exception are the Dockerfile in each of the services. This way we don't have to do any devops for this app and can rely on Code for San Jose's infrastructure.
 
 Staging url can be found at https://happening-atm-stage.codeforsanjose.org. Production is at TODO.
 
