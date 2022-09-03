@@ -283,6 +283,16 @@ const RenderedAgendaItem = forwardRef(
               </div>
             }
 
+            {/* if user is participant and time is set, show time */}
+            {!admin
+              && isTimeSet
+              && <div className="link">
+                <div className="time">
+                  <ScheduleBlueIcon />
+                  <span>{agendaItemTime}</span>
+                </div>
+              </div>
+            }
             {/* if Item status is completed, it will show completed;
                 if Item status is deferred, it will show deferred;
                 if Item statu is not subscribed, it will show notify me;
