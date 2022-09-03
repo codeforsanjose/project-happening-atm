@@ -118,6 +118,14 @@ meeting:
             do: Save and Publish Changes
             doing: Saving and Publishing
             done: Saved and Published
+          set-time:
+            title: Set Time
+            label:
+              hour: Hour
+              minutes: Minutes
+            error:
+              time: Invalid time
+              meridian: Choose AM/PM
         options:
           completed: Completed
           in-progress: In Progress
