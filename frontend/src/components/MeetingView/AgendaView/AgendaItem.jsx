@@ -174,6 +174,28 @@ const RenderedAgendaItem = forwardRef(
       },
     );
 
+    const [updateItem] = useMutation(
+      UPDATE_MEETING_ITEM,
+      {
+        onCompleted: () => {
+          refetchAllMeeting();
+        },
+        onError: (error) => {
+          console.log(`Error resetting time: ${error.message}`)
+        }
+      }
+    );
+
+    const handleItemTimeReset = () => {
+      const defaultTime = new Date(0);
+      updateItem({
+        variables: {
+          ...item,
+          item_start_timestamp: `${defaultTime.getTime()}`
+        },
+      });
+    };
+    
     const handleSubmit = (e) => {
       const phone = getUserPhone();
       const email = getUserEmail();
