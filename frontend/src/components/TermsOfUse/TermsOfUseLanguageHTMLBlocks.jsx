@@ -75,7 +75,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           </li>
           <li>don’t abuse, harm, interfere with, or disrupt the services</li>
         </ul>
-        <h2>PERSONAL INFORMATION AND CHOICE</h2>
+        <h2>Personal Information and Choice</h2>
         <p>
           “Personal information” is information about a natural person that
           identifies or describes an individual, including, but not limited to,
@@ -120,7 +120,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           public inspection and copying if not otherwise protected by federal or
           State law.
         </p>
-        <h2>A SPECIAL NOTE ABOUT CHILDREN</h2>
+        <h2>A Special Note About Children</h2>
         <p>
           Children are not eligible to use services that require submission of
           personal information, and we require that minors (under the age of 13)
@@ -130,7 +130,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           services only if used together with your parents or guardians. If you
           are a minor, you should seek guidance from your parents.
         </p>
-        <h2>INFORMATION COLLECTED AND HOW IT IS USED</h2>
+        <h2>Information Collected and How it is Used</h2>
         <p>
           We do collect personal information directly from individuals who
           volunteer to use some of our services. Collection of this information
@@ -163,14 +163,14 @@ export const termsOfUseLanguages = (language = 'en') => {
           information is sold or distributed, and all relevant legal protections
           still apply to the City’s web sites.
         </p>
-        <h2>WHAT HAPPENS TO INFORMATION YOU SUBMIT TO US?</h2>
+        <h2>What Happens to Information You Submit to Us?</h2>
         <p>
           Any private information will only be used for the purposes for which
           it was provided and will not be shared with another entity except as
           prescribed by law. Please see our Privacy Policy for additional
           information.
         </p>
-        <h2>SURVEYS</h2>
+        <h2>Surveys</h2>
         <p>
           If during your visit to the City’s web site you participate in a
           survey or send an e-mail, the following additional information will be
@@ -182,7 +182,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           The information collected is not limited to text characters and may
           include audio, video, and graphic information formats you send us.
         </p>
-        <h2>AUTOMATIC COLLECTION OF INFORMATION/COOKIES</h2>
+        <h2>Automatic Collection of Information/Cookies</h2>
         <p>
           When you visit City of San Jose website, you should be aware that data
           linking your computer to a particular website (a “cookie”) may be
@@ -194,7 +194,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           delete the cookie file from your computer by using any of the widely
           available methods.
         </p>
-        <h2>LINKS TO OTHER SITES</h2>
+        <h2>Links to Other Sites</h2>
         <p>
           Our web site has links to sites we feel might be useful to you and
           which may provide services. When you link to another site, you are no
@@ -217,7 +217,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           intended purposes are prohibited and may result in criminal
           prosecution.
         </p>
-        <h2>LIMITATION OF LIABILITY</h2>
+        <h2>Limitation of Liability</h2>
         <p>
           The City attempts to maintain the highest accuracy of content on its
           web site. Any errors or omissions should be reported for
@@ -240,7 +240,7 @@ export const termsOfUseLanguages = (language = 'en') => {
           employees or agents.
         </p>
         <p>This Use Policy is subject to change without notice.</p>
-        <h2>OWNERSHIP</h2>
+        <h2>Ownership</h2>
         <p>
           In general, information presented on this web site, unless otherwise
           indicated, is considered in the public domain. It may be distributed
@@ -257,6 +257,11 @@ export const termsOfUseLanguages = (language = 'en') => {
         </p>
       </>
     ),
+    es: (
+      <>
+
+      </>
+    )
   };
   return allLanguages[language];
 };

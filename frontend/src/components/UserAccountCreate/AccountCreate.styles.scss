@@ -13,7 +13,7 @@
     align-items: center; 
     background: linear-gradient(180deg,rgba(37,66,118,1) 0%, $cityBlue 100%);
     .page-header {
-       min-height:6rem;
+       min-height:7rem;
        width:100vw;
         display:flex;
         flex-direction: column;
@@ -57,7 +57,6 @@
             width: 100%;
             margin-bottom: 0.5rem;
             padding: 0.5rem;
-
             label {
                 margin-bottom: 0.5rem;
             }
@@ -68,7 +67,6 @@
                 border-radius: 4px;
                 font-size: 1rem;
             }
-
             input::placeholder {
                 color: red;
                 font-size: 1.2rem;
@@ -86,7 +84,11 @@
             }
             .form-check{
                 display:flex;
+                align-items: flex-start;
                 padding-left: 0;
+                a {
+                    color: $gold;
+                }
                 input{
                     margin-top: 0.3rem;
                     padding-top: 0;
@@ -151,6 +153,7 @@
                 margin-left:auto;
                 margin-top:0;
                 margin-right:auto;
+                color: black;
                 cursor:pointer;
                 &:hover{
                     filter: brightness(70%);

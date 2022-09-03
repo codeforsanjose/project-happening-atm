@@ -76,3 +76,16 @@ footer {
     }
   }
 }
+
+.footer-pages-container {
+  padding: 5rem 3rem 2rem 3rem;
+  font-family: 'Poppins', 'sans-serif';
+  .email-text {
+    color: blue;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  h2 {
+    margin-top: 3rem;
+  }
+}
