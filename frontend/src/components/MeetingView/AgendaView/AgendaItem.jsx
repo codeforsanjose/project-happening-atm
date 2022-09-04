@@ -189,6 +189,12 @@ const RenderedAgendaItem = forwardRef(
       modalRef.current && modalRef.current.portal.close();
     };
 
+    const changeItemStartTimeArgs = {
+      item,
+      setDisplaySetStartTimeModal,
+      refetchAllMeeting,
+    };
+
     // arguments
     const changeMeetingStatusArgs = {
       item,
@@ -228,16 +234,16 @@ const RenderedAgendaItem = forwardRef(
           {getSubError && <div className="form-error">{getSubError.message}</div>}
 
           {dispalySetStatusModal
-          && (
-          <ChangeMeetingStatusModal
-            args={changeMeetingStatusArgs}
-          />
-          )}
+            && (
+              <ChangeMeetingStatusModal
+                args={changeMeetingStatusArgs}
+              />
+            )}
 
           {displaySetStartTimeModal
-          && (
-          <UpdateItemStartTimeModal />
-          )}
+            && (
+              <UpdateItemStartTimeModal args={changeItemStartTimeArgs} />
+            )}
 
           <div className="item-links">
             <div className="link">
@@ -260,20 +266,20 @@ const RenderedAgendaItem = forwardRef(
             )}
 
             {!isAdmin && item.status === MeetingItemStates.DEFERRED && (
-            <div className="link">
-              <p className="deferred">
-                {t('meeting.tabs.agenda.status.options.deferred')}
-              </p>
-            </div>
+              <div className="link">
+                <p className="deferred">
+                  {t('meeting.tabs.agenda.status.options.deferred')}
+                </p>
+              </div>
             )}
 
             {(item.status !== MeetingItemStates.COMPLETED)
-            && (item.status !== MeetingItemStates.DEFERRED)
-            && (item.status !== MeetingItemStates.IN_PROGRESS)
-            && !admin
-            && (
-              <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
-            )}
+              && (item.status !== MeetingItemStates.DEFERRED)
+              && (item.status !== MeetingItemStates.IN_PROGRESS)
+              && !admin
+              && (
+                <AgendaItemActionLink t={t} item={item} loading={loading} handleSubmit={handleSubmit} subscribed={subscribed} />
+              )}
 
             {admin && (
               <button onClick={!dragOverlay ? () => {

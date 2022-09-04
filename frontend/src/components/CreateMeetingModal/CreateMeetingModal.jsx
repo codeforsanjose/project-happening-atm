@@ -43,7 +43,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
   setDefaultLocale(language);
   const [createMeeting, { loading }] = useMutation(CREATE_MEETING);
   const [createSuccessful, setCreateSuccessful] = useState(false);
-  const [zoomLink, setZoomLink] = useState('');
+  const [zoomLink, setZoomLink] = useState("");
 
   //date picker functionality
   var tomorrow = new Date();
@@ -104,7 +104,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
 
   const addZoomLink = (link) => {
     setZoomLink(link);
-  }
+  };
 
   // custom input for calendar icon in date selector input field
   const CustomCalendarInput = forwardRef(
@@ -152,8 +152,10 @@ function CreateMeetingModal({ isOpen, closeModal }) {
       className="CreateMeetingModal"
       overlayClassName="modal-overlay"
     >
-      <div className="wrapper">
+      <div className="modal-header">
         <h2>{t(title)}</h2>
+      </div>
+      <div className="wrapper">
         <p>{t(subtitle)}</p>
         <div className="date-time">
           <div className="date-time-picker">
@@ -187,12 +189,13 @@ function CreateMeetingModal({ isOpen, closeModal }) {
               />
             </div>
           </div>
-          <div className="date-time-picker">
-            <div>
-              <p className="date-time-title">Zoom Link</p>
-              <input type="text" onChange={(event) => addZoomLink(event.target.value)}/>
-            </div>
-          </div>
+        </div>
+        <div className="zoom-link">
+          <p className="date-time-title">Zoom Link</p>
+          <input
+            type="text"
+            onChange={(event) => addZoomLink(event.target.value)}
+          />
         </div>
         <div className="modal-buttons">
           <button

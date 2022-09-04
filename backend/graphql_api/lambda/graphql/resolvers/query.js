@@ -145,26 +145,28 @@ module.exports = (logger) => {
 
   const loginLocal = async (dbClient, email_address, password) => {
     let token;
+    let user;
     try {
       if (password === undefined || password === null || password == "") {
         logger.error('Unable to authenticate no password provided')
         throw new Error('Unable to authenticate no password provided')
       } else {
-        const user = await authentication.verifyEmailPassword(dbClient, email_address, password);
+        user = await authentication.verifyEmailPassword(dbClient, email_address, password);
         validator.validateAuthType(user.rows[0].auth_type, "Local");
-        token = await authentication.createJWT(user);
+        token = authentication.createJWT(user);
       }
     } catch (e) {
       logger.error(`loginLocal resolver error: ${e}`);
       throw e;
     }
-    return { token: token }
+    return { token, email: email_address }
   };
 
   const loginGoogle = async (dbClient, context) => {
     let token;
+    let user
     try {
-      const user = await authentication.verifyGoogleToken(dbClient, context.token);
+      user = await authentication.verifyGoogleToken(dbClient, context.token);
       if(!user.isRegistered) {
         logger.error(`User not registered`);
         throw new Error(`User not registered`);
@@ -174,13 +176,14 @@ module.exports = (logger) => {
       logger.error(`loginGoogle resolver error: ${e}`);
       throw e;
     }
-    return { token: token };
+    return { token, email: user.email_address };
   };
 
   const loginMicrosoft = async (dbClient, context) => {
     let token;
+    let user;
     try {
-      const user = await authentication.verifyMicrosoftToken(dbClient, context.token);
+      user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       if(!user.isRegistered) {
         logger.error(`User not registered`);
         throw new Error(`User not registered`);
@@ -190,7 +193,7 @@ module.exports = (logger) => {
       logger.error(`loginMicrosoft resolver error: ${e}`);
       throw e;
     }
-    return { token: token };
+    return { token, email: user.email_address };
   };
 
   const verifyToken = async (dbClient, context) => {
