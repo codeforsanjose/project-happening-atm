@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import es from "date-fns/locale/es";
 import vi from "date-fns/locale/vi";
 
-import { CREATE_MEETING } from "../../graphql/graphql";
+import { CREATE_MEETING } from "../../graphql/mutation";
 import "./CreateMeetingModal.scss";
 import Spinner from "../Spinner/Spinner";
 

@@ -36,7 +36,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import SendFeedback from "./components/SendFeedback/SendFeedback";
 import * as serviceWorker from "./serviceWorker";
 
-import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/graphql";
+import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/query";
 import AdminPaths from "./constants/AdminPaths";
 import LocalStorageTerms from "./constants/LocalStorageTerms";
 import verifyToken from "./utils/verifyToken";

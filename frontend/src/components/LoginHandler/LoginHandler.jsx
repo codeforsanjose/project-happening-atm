@@ -10,7 +10,7 @@ import {
 import { GoogleLogin } from 'react-google-login';
 import MicrosoftLogin from 'react-microsoft-login';
 
-import { LOGIN_LOCAL, LOGIN_GOOGLE, LOGIN_MICROSOFT } from '../../graphql/graphql';
+import { LOGIN_LOCAL, LOGIN_GOOGLE, LOGIN_MICROSOFT } from '../../graphql/mutation';
 import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
 import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';

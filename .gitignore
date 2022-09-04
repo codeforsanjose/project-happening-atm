@@ -136,3 +136,6 @@ secrets.json
 
 # webstorm files
 .idea/
+
+#vscode configurations
+/.vscode

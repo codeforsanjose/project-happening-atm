@@ -4,7 +4,7 @@ import './MeetingView.scss';
 import { useParams } from 'react-router-dom';
 
 import { useLazyQuery, useQuery } from '@apollo/client';
-import { GET_MEETING_WITH_ITEMS } from '../../graphql/graphql';
+import { GET_MEETING_WITH_ITEMS } from '../../graphql/query';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import Header from '../Header/Header';
@@ -104,7 +104,6 @@ function MeetingView() {
         loading={loading}
         meeting={meetingWithItems}
         setSaveMeetingItems={setSaveMeetingItems}
-
         progressStatus={progressStatus}
       />
       {loading && <Spinner />}
