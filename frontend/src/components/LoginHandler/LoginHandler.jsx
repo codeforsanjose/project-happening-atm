@@ -128,7 +128,6 @@ function LoginHandler() {
       {loginContext.signedIn ? <Redirect to={{ pathname: "/", state: { email_address: userName } }} /> : ''}
       <div className="loginHeader">
         <img src={atmLogoLarge} />
-
       </div>
 
       <div className="loginBody">
