@@ -37,7 +37,7 @@ function buildStyle(itemRef) {
     width: `${itemRef.clientWidth}px`,
     position: 'absolute',
     left: `${xPos}px`,
-    top: `${yPos}px`,
+    top: '35vh'
   };
 }
 
@@ -50,7 +50,7 @@ function buildCloseOutStyle(itemRef) {
   const offSetY = -40;
   return {
     left: `${xPos + offSetX}px`,
-    top: `${yPos + offSetY}px`,
+    top: `30vh`,
   };
 }
 
