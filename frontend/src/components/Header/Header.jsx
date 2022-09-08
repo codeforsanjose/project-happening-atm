@@ -1,14 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import "./Header.scss";
 import classnames from "classnames";
 import Spinner from "../Spinner/Spinner";
+import MeetingStates from "../../constants/MeetingStates";
+
 import {
   toDateString,
   toTimeString,
   isFutureTimestamp,
   getDifference,
 } from "../../utils/timestampHelper";
+
+import { useMutation } from '@apollo/client';
+import { UPDATE_MEETING } from "../../graphql/mutation";
 
 // Asset imports
 import cityLogo from "../../assets/SanJoseCityLogo.png";
@@ -24,9 +29,20 @@ const PAST_MEETING_STATUS_LOC_KEY = "meeting.status.long.ended";
 
 
 function Header({
-  loading, meeting, setSaveMeetingItems, progressStatus,
+  loading, meeting, setSaveMeetingItems, progressStatus
 }) {
   const { t } = useTranslation();
+
+  //set default status of meetings to not started
+  const [meetingStatus, setMeetingStatus] = useState(''); //use this for css and then change the useState to be the meeting.status on reload
+  const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
+  
+  const statuses = [
+    { label: 'Not Started', value: MeetingStates.NOT_STARTED },
+    { label: 'In Progress', value: MeetingStates.IN_PROGRESS },
+    { label: 'Ended', value: MeetingStates.ENDED },
+    { label: 'Cancelled', value: MeetingStates.CANCELLED },
+  ];
 
   const getRelativeTimeLocKey = () => {
     // Returns a locale key for a meeting status (relative to the current time).
@@ -42,15 +58,57 @@ function Header({
     return PAST_MEETING_STATUS_LOC_KEY;
   };
 
+  const Dropdown = ({ label, value, options, onChange }) => {
+    return (
+      <label>
+        {label}
+        <select value={value} onChange={onChange}>
+          {options.map((option) => (
+            <option key={option.label} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+    );
+  };
+
+  useEffect(() => {
+    if(meetingStatus){
+      updateMeeting({ 
+        variables: { 
+          id: meeting.id,
+          status: meetingStatus, 
+        }
+      });
+    }
+    else if (meeting.status) {
+      setMeetingStatus(meeting.status);
+    }
+  }, [meetingStatus, meeting.status]);
+
+  useEffect(() => {
+    if(progressStatus){
+      setMeetingStatus(MeetingStates.IN_PROGRESS);
+    } 
+    else if (meeting.status === MeetingStates.IN_PROGRESS) {
+      setMeetingStatus(MeetingStates.NOT_STARTED);
+    }
+
+  }, [progressStatus])
+
+  const handleMeetingStatusChange = (event) => {
+    event.preventDefault();
+    setMeetingStatus(event.target.value);
+
+  };
+  
   return (
     <div className={classnames("header")}>
       <div className={classnames("header-content")}>
         <img className="logo" src={cityLogo} alt="logo" />
         <div className="meeting-info">
-
           <div className="title">
             {t('header.city-council-meeting-agenda')}
-            {progressStatus && <span className="statusInProgress"><StatusInProgress /></span>}
+            {(meetingStatus === MeetingStates.IN_PROGRESS) && <span className="statusInProgress"><StatusInProgress /></span>}
           </div>
           <div className="details-title">Meeting Details</div>
 
@@ -62,13 +120,16 @@ function Header({
                 <div className="date">
                   {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
                 </div>
-                <div className={progressStatus ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
-                  {progressStatus ? <span className="in-progress-header">In Progress</span> : <span className="not-started">Not Started</span>}
-                  {progressStatus && <StatusInProgress className="status-icon" />}
+                <div className={(meetingStatus === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
+                  {(meetingStatus === MeetingStates.NOT_STARTED) && <span>Not Started</span>}
+                  {(meetingStatus === MeetingStates.IN_PROGRESS) && <>
+                    <span>In Progress</span> <StatusInProgress className="status-icon" />
+                  </>}
+                  {(meetingStatus === MeetingStates.CANCELLED) && <span>Cancelled</span>}
+                  {(meetingStatus === MeetingStates.ENDED) && <span>Ended</span>}
                 </div>
               </div>
               <div className="time">
-                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
                 {t("meeting.start-time")}:{" "}
                 <span className="no-bold">
                   {toTimeString(meeting.meeting_start_timestamp)}
@@ -80,17 +141,14 @@ function Header({
               {isAdmin() && (
                 <>
                   <div className="saveStatus">
-                    {t("meeting.status.label")}:
-                    <button
-                      className="saveStatusButton"
-                      type="button"
-                      onClick={() => {
-                        setSaveMeetingItems(true);
-                      }}
-                    >
-                      {t("meeting.status.short.default-option")}
-                    </button>
+                    <Dropdown
+                      label={`${t("meeting.status.label")}:`}
+                      options={statuses}
+                      value={meetingStatus}
+                      onChange={handleMeetingStatusChange}
+                    />
                   </div>
+              
                 </>
               )}
             </>

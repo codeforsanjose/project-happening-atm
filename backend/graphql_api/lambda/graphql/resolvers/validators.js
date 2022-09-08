@@ -5,7 +5,7 @@
 const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
-const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED', 'ON HOLD'];
+const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED', 'ON HOLD', 'CANCELLED', 'ENDED', 'NOT STARTED'];
 const possibleTypes = ['test'];
 const possibleContentCategories = ['test', 'gov', 'tech', 'lol'];
 
@@ -124,6 +124,7 @@ module.exports = (logger) => {
 
   module.validateAuthorization = (context) => {
     const isAdmin = context.user.roles.includes('ADMIN');
+
     if (!isAdmin) {
       logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without admin credentials`);
       throw new ForbiddenError('No admin credentials provided.');
@@ -165,11 +166,11 @@ module.exports = (logger) => {
 
     // No need to validate ID here because the graphQL schema takes care of it well enough
 
-    validateTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
-    validateTimestamp(meeting_end_timestamp, 'meeting_end_timestamp', context);
-    validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
-    validateType(meeting_type, 'meeting_type', context);
-    validateStatus(status, 'status', context);
+    if (meeting_start_timestamp) validateTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
+    if (meeting_end_timestamp) validateTimestamp(meeting_end_timestamp, 'meeting_end_timestamp', context);
+    if (virtual_meeting_url) validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
+    if (meeting_type) validateType(meeting_type, 'meeting_type', context);
+    if (status) validateStatus(status, 'status', context);
   };
 
   module.validateCreateMeetingItem = (args) => {

@@ -8,7 +8,9 @@ import parseJwt from '../../utils/parseJwt';
 import {
     isNullOrEmpty, isPasswordValid,
   } from '../../utils/validations';
-import { RESET_PASSWORD, GET_RESET_PASSWORD_TOKEN } from '../../graphql/graphql';
+  
+import { GET_RESET_PASSWORD_TOKEN } from '../../graphql/query';
+import { RESET_PASSWORD } from '../../graphql/mutation';
 
 import './ForgotPasswordRequest.scss';
 

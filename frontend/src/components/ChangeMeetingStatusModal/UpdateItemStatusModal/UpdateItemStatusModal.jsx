@@ -5,7 +5,7 @@ import Modal from 'react-modal/lib/components/Modal';
 import { useTranslation } from 'react-i18next';
 import './UpdateItemStatusModal.scss';
 import { CloseIcon, ArrowUpwardIcon } from '../../../utils/_icons';
-import { UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+import { UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
 
 /**
  * Presentation component that lets the user comfirm the chaange in item status

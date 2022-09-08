@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
-import { CONFIRM_EMAIL, UNCONFIRM_EMAIL } from '../../graphql/graphql';
+import { CONFIRM_EMAIL, UNCONFIRM_EMAIL } from '../../graphql/mutation';
 
 // TODO: Add styling and replace placeholder text
 // https://github.com/codeforsanjose/gov-agenda-notifier/issues/146

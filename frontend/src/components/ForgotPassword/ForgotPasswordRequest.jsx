@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {NavLink} from 'react-router-dom';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
-import { GET_ACCOUNT_BY_EMAIL, FORGOT_PASSWORD } from '../../graphql/graphql';
+import { GET_ACCOUNT_BY_EMAIL } from '../../graphql/query';
+import { FORGOT_PASSWORD } from '../../graphql/mutation';
 import {isNullOrEmpty, validEmail} from '../../utils/validations';
 
 import './ForgotPasswordRequest.scss';

@@ -11,7 +11,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
 import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
 import './AgendaItem.scss';
-import { CREATE_SUBSCRIPTIONS, UPDATE_MEETING_ITEM } from '../../../graphql/graphql';
+import { CREATE_SUBSCRIPTIONS, UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
 import isAdmin from '../../../utils/isAdmin';
 import buildButtonClasses from '../../../utils/buildButtonClasses';
 import { toTimeString } from '../../../utils/timestampHelper';

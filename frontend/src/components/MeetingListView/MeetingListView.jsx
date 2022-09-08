@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
 import { Accordion } from 'react-accessible-accordion';
 import { groupMeetingsByDate, isFutureTimestamp } from '../../utils/timestampHelper';
-import { GET_ALL_MEETINGS } from '../../graphql/graphql';
+import { GET_ALL_MEETINGS } from '../../graphql/query';
 import isAdmin from '../../utils/isAdmin';
 import './MeetingListView.scss';
 
