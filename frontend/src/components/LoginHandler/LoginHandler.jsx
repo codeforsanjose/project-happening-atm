@@ -201,9 +201,7 @@ function LoginHandler() {
               <span>{t('login.body.oauth.microsoft')}</span>
             </button>
           </MicrosoftLogin>
-          <p>or <a href="">take a look first</a></p>
-          <hr className="introTextSeparator" />
-
+          <p><a href="">or take a look first</a></p>
         </div>
       </div>
     </div>
