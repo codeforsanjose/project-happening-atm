@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import './AccountCreate.styles.scss';
+import './AccountCreate.scss';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Redirect } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
