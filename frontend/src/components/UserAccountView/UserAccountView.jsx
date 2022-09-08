@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_ACCOUNT_BY_EMAIL } from '../../graphql/graphql';
+import { GET_ACCOUNT_BY_EMAIL } from '../../graphql/query';
 // import { useTranslation } from 'react-i18next';
 
 import './UserAccountView.scss';
