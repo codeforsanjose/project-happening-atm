@@ -128,14 +128,11 @@ function LoginHandler() {
       {loginContext.signedIn ? <Redirect to={{ pathname: "/", state: { email_address: userName } }} /> : ''}
       <div className="loginHeader">
         <img src={atmLogoLarge} />
-        {/* <div className='loginTitle'>
-            San Jose at the moment
-        </div> */}
+
       </div>
 
       <div className="loginBody">
         <div className="innerWrapper">
-          {/* <hr className="introTextSeparator" /> */}
           <div className='subtitle'>
             {t('login.body.header.welcomeToCity')}
             <br />
