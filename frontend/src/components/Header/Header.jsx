@@ -72,11 +72,10 @@ function Header({
   };
 
   useEffect(() => {
-    if(meetingStatus !== MeetingStates.NOT_STARTED){
+    if(isAdmin() && meetingStatus !== MeetingStates.NOT_STARTED){
       updateMeeting({ 
         variables: { 
           ...meeting,
-          id: meeting.id,
           status: meetingStatus, 
         }
       });
