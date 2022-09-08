@@ -2,10 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./Footer.scss";
-import {
-  ATMLogoRainbowIcon,
-  CFSJLogo,
-} from "../../utils/_icons";
+
+import CFSJ_Logo from "../../assets/CFSJ_Logo.svg";
+import OSJ_Logo from "../../assets/OSJ_LogoWhite.png";
 
 function Footer() {
   const { i18n } = useTranslation();
@@ -13,6 +12,9 @@ function Footer() {
   return (
     <footer>
       <nav className="no-select">
+        <div className="separator">
+          <hr></hr>
+        </div>
         <div className="languages">
           <button
             type="button"
@@ -37,8 +39,8 @@ function Footer() {
           </button>
         </div>
         <div className="logos">
-          <ATMLogoRainbowIcon/>
-          <CFSJLogo/>
+          <a href="https://www.onlyinsj.org/" ><img class="OSJ" src={OSJ_Logo}/></a>
+          <a href="https://www.codeforsanjose.org/"><img class="CFSJ" src={CFSJ_Logo}/></a>
         </div>
         <div className="legal">
           <NavLink to="/terms-of-use">Terms of Use</NavLink>
