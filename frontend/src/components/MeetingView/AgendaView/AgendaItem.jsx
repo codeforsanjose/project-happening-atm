@@ -211,6 +211,24 @@ const RenderedAgendaItem = forwardRef(
         },
       });
     };
+    
+    const buildAgendaItemStyle = ({status}) => {
+      let itemClasses = 'AgendaItem'
+
+      switch (status) {
+        case MeetingItemStates.COMPLETED:
+        case MeetingItemStates.DEFERRED:
+          return itemClasses += ' comp_def'
+        case MeetingItemStates.IN_PROGRESS:
+          return itemClasses += ' inprogress'
+        case MeetingItemStates.ON_HOLD:
+          return itemClasses += ' onhold'
+        default:
+          return itemClasses
+      }
+    }
+
+    const agendaItemClasses = buildAgendaItemStyle(item)
 
     const handleDisplaySetStartTimeModal = () => {
       if (dragOverlay) return;
@@ -242,7 +260,7 @@ const RenderedAgendaItem = forwardRef(
     // Without this the dragOverlay prevented the pressing of the checkbox
     return (
       <div ref={itemRef}>
-        <div {...props} ref={ref} className="AgendaItem">
+        <div {...props} ref={ref} className={agendaItemClasses}>
 
           <div className="row">
             {item.status === MeetingItemStates.PENDING}

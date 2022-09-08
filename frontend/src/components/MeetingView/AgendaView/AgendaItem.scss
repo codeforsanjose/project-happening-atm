@@ -4,10 +4,23 @@
   box-sizing: border-box;
   margin-bottom: 1em;
   padding: 1em;
-  border: 2px solid $cloudy;
+  border: 1px solid $darkGrayX;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: $white;
 
+  &.comp_def {
+    background-color: $backgroundWhite;
+    border-color: $gray;
+  }
+
+  &.inprogress {
+    background-color: $itemInProgress;
+    border-color: $lightBlue;
+  }
+
+  &.onhold {
+    border-color: $lightBlue;
+  }
   @media only screen and (min-device-width: 812px) {
     padding: 1.4em;
   }
