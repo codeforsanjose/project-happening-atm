@@ -18,20 +18,13 @@
         color: white;
         font-size: 1.25rem;
         padding: 24px;
-        padding-bottom: 0;
+        padding-bottom: 1rem;
+
 
         img {
-            max-width: 25%;
-            padding: 24px;
-        }
-
-        @media only screen and (max-width: 812px){
-
-            img {
-                max-width: 60%;
-                padding: 16px;
-            }
-
+            width: 40vw;
+            min-width: 250px;
+            max-width: 300px;     
         }
 
 
@@ -59,6 +52,13 @@
             margin-left:auto;
             margin-right:auto;
 
+            a {
+                color: white;
+            }
+
+            a:visited {
+                color: $offWhite;
+            }
 
             .subtitle {
                 max-width: 90vw;
@@ -66,7 +66,7 @@
                 font-size: 16px;
                 line-height: 24px;
                 color:white;
-                padding: 16px 0 16px 0;
+                padding: 2rem 0 2rem 0;
             
             }
             
@@ -74,14 +74,13 @@
                 text-align:center;
                 line-height:2.625rem;
                 font-weight:lighter;
-                padding-top:0.5rem;
+                padding-top: 1rem;
                 color:white;
-                margin-bottom:24px;
             }
 
             .introTextSeparator{
                 width:50vw;
-                margin:24px 0 24px 0;
+                margin:24px 0 0 0;
                 height:1px;
                 border:none;
                 background-color:rgba($color: #ffffff, $alpha: 0.1);

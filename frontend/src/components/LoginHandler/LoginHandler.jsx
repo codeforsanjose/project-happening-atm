@@ -128,14 +128,10 @@ function LoginHandler() {
       {loginContext.signedIn ? <Redirect to={{ pathname: "/", state: { email_address: userName } }} /> : ''}
       <div className="loginHeader">
         <img src={atmLogoLarge} />
-        {/* <div className='loginTitle'>
-            San Jose at the moment
-        </div> */}
       </div>
 
       <div className="loginBody">
         <div className="innerWrapper">
-          {/* <hr className="introTextSeparator" /> */}
           <div className='subtitle'>
             {t('login.body.header.welcomeToCity')}
             <br />
@@ -205,9 +201,7 @@ function LoginHandler() {
               <span>{t('login.body.oauth.microsoft')}</span>
             </button>
           </MicrosoftLogin>
-          <p>or <a href="">take a look first</a></p>
-          <hr className="introTextSeparator" />
-
+          <p><a href="">or take a look first</a></p>
         </div>
       </div>
     </div>
