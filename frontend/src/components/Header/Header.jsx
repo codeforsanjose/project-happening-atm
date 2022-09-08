@@ -34,7 +34,7 @@ function Header({
   const { t } = useTranslation();
 
   //set default status of meetings to not started
-  const [meetingStatus, setMeetingStatus] = useState(''); //use this for css and then change the useState to be the meeting.status on reload
+  const [meetingStatus, setMeetingStatus] = useState(MeetingStates.NOT_STARTED) //use this for css and then change the useState to be the meeting.status on reload
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
   
   const statuses = [
@@ -72,9 +72,10 @@ function Header({
   };
 
   useEffect(() => {
-    if(meetingStatus){
+    if(meetingStatus !== MeetingStates.NOT_STARTED){
       updateMeeting({ 
         variables: { 
+          ...meeting,
           id: meeting.id,
           status: meetingStatus, 
         }
@@ -89,9 +90,6 @@ function Header({
     if(progressStatus){
       setMeetingStatus(MeetingStates.IN_PROGRESS);
     } 
-    else if (meeting.status === MeetingStates.IN_PROGRESS) {
-      setMeetingStatus(MeetingStates.NOT_STARTED);
-    }
 
   }, [progressStatus])
 
