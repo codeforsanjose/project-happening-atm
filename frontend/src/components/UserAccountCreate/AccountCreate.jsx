@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import './AccountCreate.styles.scss';
+import './AccountCreate.scss';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Redirect } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -9,7 +9,7 @@ import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import LoginContext from '../LoginContext/LoginContext';
 import UserRoles from '../../constants/UserRoles';
 import { InfoIcon, ATMLogoRainbowIcon } from '../../utils/_icons';
-
+import atmLogo from '../../assets/ATM_Logo_Rainbow.png';
 import {
   isNullOrEmpty, isNumericString, validEmail, isPasswordValid,
 } from '../../utils/validations';
@@ -219,8 +219,8 @@ function AccountCreate() {
     <div className="main-container">
       {loginContext.signedIn ? <Redirect to="/" /> : ''}
       <div className="page-header">
-        <ATMLogoRainbowIcon/>
-        <p className='create-account'>Create an account to get started</p>
+        <img src={atmLogo}/>
+        <p>Create an account to get started</p>
         <hr />
       </div>
       <div className="form-wrapper">
