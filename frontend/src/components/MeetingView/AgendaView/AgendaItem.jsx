@@ -212,23 +212,35 @@ const RenderedAgendaItem = forwardRef(
       });
     };
     
-    const buildAgendaItemStyle = ({status}) => {
-      let itemClasses = 'AgendaItem'
+    // build out the item classes and text based on current status
+    const getAgendaItemStatusStyle = ({status}) => {
+      const itemStatusStyle = {
+        class: '',
+        value: '',
+      }
 
       switch (status) {
         case MeetingItemStates.COMPLETED:
+          itemStatusStyle.class = MeetingItemStates.COMPLETED.toLowerCase();
+          itemStatusStyle.value = t('meeting.tabs.agenda.status.options.completed')
+          break
         case MeetingItemStates.DEFERRED:
-          return itemClasses += ' comp_def'
+          itemStatusStyle.class  = MeetingItemStates.DEFERRED.toLowerCase();
+          itemStatusStyle.value  = t('meeting.tabs.agenda.status.options.deferred')
+          break
         case MeetingItemStates.IN_PROGRESS:
-          return itemClasses += ' inprogress'
+          itemStatusStyle.class  = MeetingItemStates.IN_PROGRESS.toLowerCase().replace(' ', '-');
+          itemStatusStyle.value  = t('meeting.tabs.agenda.status.options.in-progress')
+          break
         case MeetingItemStates.ON_HOLD:
-          return itemClasses += ' onhold'
-        default:
-          return itemClasses
+          itemStatusStyle.class  = MeetingItemStates.ON_HOLD.toLowerCase().replace(' ', '-');
+          itemStatusStyle.value  = t('meeting.tabs.agenda.status.options.on-hold')
+          break
       }
+      return itemStatusStyle
     }
 
-    const agendaItemClasses = buildAgendaItemStyle(item)
+    const agendaItemStatusStyle = getAgendaItemStatusStyle(item)
 
     const handleDisplaySetStartTimeModal = () => {
       if (dragOverlay) return;
@@ -260,7 +272,7 @@ const RenderedAgendaItem = forwardRef(
     // Without this the dragOverlay prevented the pressing of the checkbox
     return (
       <div ref={itemRef}>
-        <div {...props} ref={ref} className={agendaItemClasses}>
+        <div {...props} ref={ref} className={agendaItemStatusStyle}>
 
           <div className="row">
             {item.status === MeetingItemStates.PENDING}
