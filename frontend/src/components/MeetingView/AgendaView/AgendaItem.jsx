@@ -272,7 +272,7 @@ const RenderedAgendaItem = forwardRef(
     // Without this the dragOverlay prevented the pressing of the checkbox
     return (
       <div ref={itemRef}>
-        <div {...props} ref={ref} className={agendaItemStatusStyle}>
+        <div {...props} ref={ref} className={`AgendaItem ${agendaItemStatusStyle.class}`}>
 
           <div className="row">
             {item.status === MeetingItemStates.PENDING}
@@ -308,7 +308,7 @@ const RenderedAgendaItem = forwardRef(
               <UpdateItemStartTimeModal args={changeItemStartTimeArgs} />
             )}
 
-          <div className="item-links">
+          <div className='item-links'>
             <div className="link">
               <p>
                 <span>+</span>
@@ -319,7 +319,7 @@ const RenderedAgendaItem = forwardRef(
                   if agenda item has a time specified, show time and icon to reset time,
                   If no time is specified, show button to open set time modal */}
             {admin &&
-              <div className="link">
+              <div className="link status">
                 {isTimeSet ? (
                   <div className='time admin'>
                     <span>{agendaItemTime}</span>
@@ -334,38 +334,28 @@ const RenderedAgendaItem = forwardRef(
                 )}
               </div>
             }
-
-            {/* if user is participant and time is set, show time */}
-            {!admin
-              && isTimeSet
-              && <div className="link">
-                <div className="time">
-                  <ScheduleBlueIcon />
-                  <span>{agendaItemTime}</span>
+            {/* if user is participant and time is set, show time
+            otherwise we show the item status (completed, on hold, in progress, deferred) */}
+            {!admin && 
+              (isTimeSet ? (
+                <div className="link status">
+                  <p className="time">
+                    <ScheduleBlueIcon />
+                    {agendaItemTime}
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <div className="link status">
+                  <p className={agendaItemStatusStyle.class}>
+                  {item.status === MeetingItemStates.IN_PROGRESS && 
+                    <span><StatusInProgress /></span>
+                  }
+                    {agendaItemStatusStyle.value}
+                  </p>
+                </div>
+              ))
             }
-            {/* if Item status is completed, it will show completed;
-                if Item status is deferred, it will show deferred;
-                if Item statu is not subscribed, it will show notify me;
-                if Item status is subscribed/subscribing it will show that */}
-
-            {!isAdmin && item.status === MeetingItemStates.COMPLETED && (
-              <div className="link">
-                <p className="disabled">
-                  {t('meeting.tabs.agenda.status.options.completed')}
-                </p>
-              </div>
-            )}
-
-            {!isAdmin && item.status === MeetingItemStates.DEFERRED && (
-              <div className="link">
-                <p className="deferred">
-                  {t('meeting.tabs.agenda.status.options.deferred')}
-                </p>
-              </div>
-            )}
-
+            {/* show user subscription status or a notify me button */}
             {(item.status !== MeetingItemStates.COMPLETED)
               && (item.status !== MeetingItemStates.DEFERRED)
               && (item.status !== MeetingItemStates.IN_PROGRESS)
