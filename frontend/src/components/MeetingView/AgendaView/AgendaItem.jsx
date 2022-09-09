@@ -114,9 +114,10 @@ function AgendaItemActionLink({
   if (subscribed) {
     return (
       <div className="link">
-        <p className="disabled">
+        <p className="subscribed">
           {t('meeting.tabs.agenda.list.subscribe.button.done')}
         </p>
+        <NotificationFilledIcon />
       </div>
     );
   }
@@ -277,13 +278,6 @@ const RenderedAgendaItem = forwardRef(
           <div className="row">
             {item.status === MeetingItemStates.PENDING}
             <h4>{item.title_loc_key}</h4>
-            <div className="item-status">
-              {item.status === MeetingItemStates.COMPLETED && (<StatusCompleted />)}
-              {item.status === MeetingItemStates.IN_PROGRESS && (<StatusInProgress />)}
-              {item.status === MeetingItemStates.DEFERRED && (<StatusDeferred />)}
-              {subscribed && (<NotificationFilledIcon />)}
-            </div>
-
           </div>
           <p>{item.description_loc_key}</p>
           {subscriptions && subscriptions.length > 0 && (
