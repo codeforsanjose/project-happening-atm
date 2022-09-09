@@ -1,8 +1,7 @@
 @import '../../utils/_colors.scss';
 
-.app-root {
-    height: 100vh;
-}
+// removed height: 100vh; in .app-root due to bug where the change status modal
+// was forced off screen. 
 
 .LoginHandler{
     font-family: 'Poppins', sans-serif;
