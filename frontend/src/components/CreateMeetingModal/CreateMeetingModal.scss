@@ -87,8 +87,9 @@
       margin-bottom: 0px;
     }
 
-    button {
+    button, .modal-button, .modal-buttons, .cancel-button, .create-button {
       font-family: 'Poppins', sans-serif;
+      cursor: pointer;
     }
 
     .modal-buttons {

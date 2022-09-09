@@ -58,8 +58,6 @@ function MeetingListView() {
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
 
       <div className="meeting-list-header">
-        <img className="logo" src={cityLogo} alt="logo" />
-        <p className="sub-header">{t('header.my-city-agenda')}</p>
         <h2>{t('header.city-council-meetings')}</h2>
         { isCurrentUserAdmin ? <AdminMeetingListViewLinks /> : null }
       </div>
