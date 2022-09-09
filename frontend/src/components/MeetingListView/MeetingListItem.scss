@@ -109,8 +109,8 @@
   &:hover {
     border: 2px solid $lightBlue;
   }
-}
 
-.in-progress {
-  border: 2px solid $cityBronze;
+  &.in-progress {
+    border: 2px solid $cityBronze;
+  }
 }
