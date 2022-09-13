@@ -4,10 +4,25 @@
   box-sizing: border-box;
   margin-bottom: 1em;
   padding: 1em;
-  border: 2px solid $cloudy;
+  border: 1px solid $darkGrayX;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: $white;
 
+  // agenda item bg classes
+  &.completed,
+  &.deferred {
+    background-color: $backgroundWhite;
+    border-color: $gray;
+  }
+
+  &.in-progress {
+    background-color: $itemInProgress;
+    border-color: $lightBlue;
+  }
+
+  &.on-hold {
+    border-color: $lightBlue;
+  }
   @media only screen and (min-device-width: 812px) {
     padding: 1.4em;
   }
@@ -56,8 +71,10 @@
   }
 
   .item-links {
-    display: flex;
-    justify-content: space-between;
+    // changed to grid to align links properly
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
     
     .disabled .link {
       fill: $cloudy;
@@ -79,27 +96,39 @@
       fill: $lightBlue;
       color: $lightBlue;
       font-size: 0.8em;
+      // more info link
+      &:first-child {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      // items in column 3 of the grid
+      &:last-child,
+      &.statusButtons {
+        justify-self: end;
+        text-decoration: none;
+      }
+      // column 2 of grid
+      &.status {
+        justify-self: center;
 
-      &:first-child,
-      &:nth-child(2) {
-        p, button {
-          text-decoration: underline;
-          cursor: pointer;
+        svg {
+          margin-right: .3rem;
+          width: .625rem;
+          height: .625rem;
+          fill: $lightGreen;
         }
       }
-      &:last-child {
-        p {
-          text-decoration: none;
-        }
+      button {
+        text-decoration: underline;
+        font-size: 1em;
       }
-
       .time {
         display: flex;
         align-items: center;
         column-gap: .2rem;
         background: $pendingBlueBackground;
         padding: .1875rem .375rem;
-        font-size: .75rem;
+        font-size: 1.1em;
         border-radius: .5rem;
         font-weight: 600;
         letter-spacing: normal; // body is set to 1.5px, resetting here
@@ -107,12 +136,16 @@
         &.admin {
           padding-right: .1875rem;
 
+          span {
+            font-size: inherit;
+          }
           button {
             width: 1.3rem;
             height: 1.3rem;
 
             svg {
               opacity: 50%;
+              fill: $lightBlue
             }
           }
         }
@@ -129,20 +162,30 @@
 
         @media only screen and (min-device-width: 812px) {
           margin: 0.5em 0 0.5em 0;
-          font-size: 1em;
+          font-size: 1.1em;
         }
       }
-
-      p.disabled {
-        color: $disabledGray;
+      // item status classes
+      p.complete {
+        color: $darkGrayX;
         text-decoration: none;
+        text-transform: capitalize;
       }
       p.deferred {
         color: $errorRed;
         font-weight: 600;
+        align-self: center;
         text-decoration: none;
+        text-transform: capitalize;
       }
-
+      p.in-progress,
+      p.on-hold {
+        color: $statusIndicator;
+        text-transform: capitalize;
+      }
+      p.on-hold {
+        font-weight: 500;
+      }
       p.notify-me {
         background: $gold;
         border-radius: 5px;
@@ -150,6 +193,7 @@
         font-weight: 500;
         color: $lightBlue;
         transition: ease-in 400ms;
+        cursor: pointer;
         &:hover {
           background: darken($gold, 20%);
         }
@@ -161,6 +205,16 @@
           #99ceff 46.35%,
           #ffa6d6 100%
         );
+      }
+      p.subscribed {
+        color: $lightBlue;
+        font-weight: 600;
+        margin-right: .3rem;
+      }
+      p.subscribed ~ svg {
+        height: 14px;
+        width: 14px;
+        vertical-align: middle;
       }
     }
   }
