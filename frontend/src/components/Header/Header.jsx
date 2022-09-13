@@ -76,7 +76,6 @@ function Header({
       updateMeeting({ 
         variables: { 
           ...meeting,
-          id: meeting.id,
           status: meetingStatus, 
         }
       });

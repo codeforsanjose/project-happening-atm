@@ -39,13 +39,8 @@ function Footer() {
           </button>
         </div>
         <div className="logos">
-          <a href="https://www.onlyinsj.org/" ><img className="OSJ" src={OSJ_Logo}/></a>
-          <a href="https://www.codeforsanjose.org/"><img className="CFSJ" src={CFSJ_Logo}/></a>
-        </div>
-        <div className="legal">
           <NavLink to="/terms-of-use">Terms of Use</NavLink>
           <NavLink to="/privacy-policy">Privacy Policy</NavLink>
-          <NavLink to="/send-feedback">Send Feedback</NavLink>
         </div>
       </nav>
     </footer>
