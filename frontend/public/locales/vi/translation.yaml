@@ -99,7 +99,7 @@ meeting:
     delete-meeting:
       button: Xoá cuộc họp
       modal:
-        title: Bạn có chắn chắc rằng bạn muốn xoá cuộc họp này?
+        title: Xoá cuộc họp
         buttons:
           delete: Xoá
           deleting: Đang xoá

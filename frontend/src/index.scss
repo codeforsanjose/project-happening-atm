@@ -9,7 +9,7 @@ body {
 .app-root {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: $backgroundWhite;
   width: 100%;
   min-height: 100vh;
 }

@@ -200,19 +200,19 @@ function CreateMeetingModal({ isOpen, closeModal }) {
         <div className="modal-buttons">
           <button
             type="button"
-            className="cancel-button modal-button"
-            onClick={clearAndCloseModal}
-          >
-            {t(cancelButtonText)}
-          </button>
-          <button
-            type="button"
             className="create-button modal-button"
             // disabled={}
             onClick={handleAction}
           >
             {loading && <Spinner />}
             {loading ? t(buttonClickedText) : t(createButtonText)}
+          </button>
+          <button
+            type="button"
+            className="cancel-button modal-button"
+            onClick={clearAndCloseModal}
+          >
+            {t(cancelButtonText)}
           </button>
         </div>
       </div>

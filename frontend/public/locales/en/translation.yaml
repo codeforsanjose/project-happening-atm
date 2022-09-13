@@ -99,7 +99,7 @@ meeting:
     delete-meeting:
       button: Delete Meeting
       modal:
-        title: Are you sure you want to delete this meeting?
+        title: Delete Meeting
         buttons:
           delete: Delete
           deleting: Deleting
