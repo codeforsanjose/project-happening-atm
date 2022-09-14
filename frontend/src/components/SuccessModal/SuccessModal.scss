@@ -1,11 +1,10 @@
 @import "../../utils/_colors.scss";
 
 .SuccessModal {
-  max-width: 90vw;
+  width: 500px;
   box-shadow: rgba(0,0,0,0.8) 0 0 10px;
   position: absolute;
   top: 50%;
-  left: 10%;
   margin: 0 auto;
   transform: translate(-5%, -50%);
   font-family: 'Poppins', sans-serif;
@@ -13,12 +12,12 @@
   border-radius: 10px;
   outline: none;
 
-  @media only screen and (min-device-width: 812px) {
-    max-width: 400px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  // @media only screen and (min-device-width: 812px) {
+  //   max-width: 400px;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform: translate(-50%, -50%);
+  // }
 
   .modal-header {
     background-color: $cityBlue;
@@ -34,13 +33,19 @@
   }
 
   .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background-color: #ffffff;
     padding: 1em 1.2em;
     border-radius: 0 0 5px 5px;
     text-align: center;
+    height: 200px;
+    font-size: 1.5rem;
 
     h4 {
       font-weight: 600;
+      margin-top: 0;
     }
 
     p {
@@ -52,19 +57,19 @@
       align-items: center;
 
       button {
-        border-radius: 0.5em;
-        padding: 0.25em 1.4em;
+        border-radius: 5px;
+        padding: 0.5em 1.4em;
         cursor: pointer;
-        background-color: $cityBronze;
-        opacity: 0.8;
+        background-color: $atmGold;
+        color: $cityBlue;
         border: none;
         outline: none;
-        font-size: 1em;
+        font-size: 20px;
+        font-weight: 900;
         line-height: 25px;
-        font-family: 'Poppins', sans-serif;
 
         &:hover {
-          opacity: 1;
+          background-color: $cityBronze;
         }
       }
     }

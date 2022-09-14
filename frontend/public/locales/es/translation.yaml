@@ -69,6 +69,7 @@ meeting:
         in-0-day: Reunión comienza en unas Pocas Horas
   list:
     show-past: Mostrar Reuniónes Pasadas
+    look-for-past: ¿Buscando reuniones pasadas?
     no-meeting: ¡No se Encontraron Reuniones!
     calendar-export:
       button: Exportar a Calendario

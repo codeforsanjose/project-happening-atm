@@ -7,6 +7,7 @@ import { ReactComponent as CalendarBlueIcon } from '../assets/icons/calendar_blu
 import { ReactComponent as CallIcon } from '../assets/icons/call-24px.svg';
 import { ReactComponent as CancelIcon } from '../assets/icons/cancel-24px.svg';
 import { ReactComponent as CaratDownIcon } from '../assets/icons/carat_down.svg';
+import { ReactComponent as DocumentIcon } from '../assets/icons/document.svg';
 import { ReactComponent as UncheckedCheckboxIcon } from '../assets/icons/check_box_outline_blank-24px.svg';
 import { ReactComponent as CheckedCheckboxIcon } from '../assets/icons/check_box-24px.svg';
 import { ReactComponent as CheckedCheckboxWithInnerShadowIcon } from '../assets/icons/check-boxes-1.svg';
@@ -67,6 +68,7 @@ export {
   CallIcon,
   CancelIcon,
   CaratDownIcon,
+  DocumentIcon,
   CFSJLogo,
   UncheckedCheckboxIcon,
   CheckedCheckboxIcon,

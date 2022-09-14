@@ -69,6 +69,7 @@ meeting:
         in-0-day: Meeting starts in a few hours
   list:
     show-past: Show Past Meetings
+    look-for-past: Looking for past meetings?
     no-meeting: No meetings found!
     calendar-export:
       button: Export to Calendar

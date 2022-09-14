@@ -63,14 +63,7 @@ function MeetingListView() {
       </div>
 
       <div className="meeting-list-content">
-        <button
-          type="button"
-          className="complete-toggle"
-          onClick={() => setShowPastMeetings((completed) => !completed)}
-        >
-          {showPastMeetings ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
-          <p>{t('meeting.list.show-past')}</p>
-        </button>
+
 
         {
             !(loading || error) && (meetingGroups.length > 0
@@ -85,7 +78,20 @@ function MeetingListView() {
 
         {loading && <div className="loader"><Spinner /></div>}
         {error && <div className="loader">{`Error! ${error.message}`}</div>}
+        <div className='past-meetings'>
+          <p>{t('meeting.list.look-for-past')}</p>
+          <a href="/archive"><p>{t('meeting.list.show-past')}</p></a>
+        </div>
+      {/* <button
+          type="button"
+          className="complete-toggle"
+          onClick={() => setShowPastMeetings((completed) => !completed)}
+        >
+          {showPastMeetings ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
+          <p>{t('meeting.list.show-past')}</p>
+        </button> */}
       </div>
+
     </div>
   );
 }
