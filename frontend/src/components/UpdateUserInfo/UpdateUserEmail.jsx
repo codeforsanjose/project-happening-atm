@@ -23,8 +23,7 @@ const UpdateUserEmail = () => {
     setNavToggled(!navToggled);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit() {
     verifyEmailAddressFormat();
     if (!fieldErrors) {
       updateEmail({
@@ -65,7 +64,7 @@ const UpdateUserEmail = () => {
             <p className="title">Email</p>
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form>
             <div>
             <label htmlFor="email" className='sr-only'>Email</label>
               <input
@@ -79,7 +78,11 @@ const UpdateUserEmail = () => {
               {fieldErrors
               ? <p className="inline-error">{fieldErrors}</p> : ''}
             </div>
-            <button className="user-account-update-btn" type="submit">
+            <button 
+              className="user-account-update-btn" 
+              type="button"
+              onClick={handleSubmit}
+            >
               Change Email
             </button>
           </form>
