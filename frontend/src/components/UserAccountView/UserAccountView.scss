@@ -80,7 +80,7 @@
 .update-user-email-view {
   form {
     display: grid;
-    row-gap: 2.5rem;
+    grid-template-rows: repeat(3, 2.5rem);
   }
 
   .form-input,
@@ -92,17 +92,21 @@
   }
 
   .form-input {
+    grid-row: 1 / 2;
     border: .0625rem solid $gray;
     padding: .5rem .875rem;
-    color: $black
+    color: $black;
   }
 
   .inline-error {
+    grid-row: 2 / 3;
+    margin-top: .5rem;
     font-size: .75rem;
     color: $errorRed;
   }
 
   .user-account-update-btn {
+    grid-row: 3 / 4;
     background: $gold;
     font-weight: 600;
     color: $cityBlue;
