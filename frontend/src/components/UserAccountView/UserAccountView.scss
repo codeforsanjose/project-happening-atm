@@ -1,6 +1,8 @@
 @import "../../utils/_colors.scss";
+
 // TODO: 9/13/22 add media queries for desktop. css is for mobile
-.user-account-info-view {
+.user-account-info-view,
+.update-user-email-view {
   padding: 1.22rem;
   margin-top: 3.75rem;
   // set to flex with grow so it will
@@ -11,67 +13,103 @@
 
   .user-account-header {
     padding-bottom: 1.15rem;
-    border-radius: 5px;
-    background-color: $white;
   }
 
   .title {
     font-weight: 600;
     font-size: 1.25rem;
+    color: $black;
     border-bottom: .145rem solid $gold;
     width: fit-content;
     padding: 3px 5px 3px 2px;
   }
 
-  .user-data {
-    .user-data-group {
-      display: grid;
-      grid-template-columns: 90% 10%;
-      grid-template-rows: repeat(2, 1fr);
-      row-gap: 7px;
-      align-items: center;
-      padding: 1.25rem 0;
-      border-bottom: .145rem solid $gold;
-
-      &:first-child {
-        padding-top: 0;
-      }
-
-      &:last-child {
-        border: none;
-      }
-
-      .label {
-        grid-row: 1;
-        font-weight: 600;
-        font-size: 1rem;
-        color: $black;
-      }
-
-      .info {
-        grid-row: 2;
-      }
-
-      .label,
-      .info {
-        margin: 0;
-      }
-
-      .edit {
-        grid-area: 1 / 2 / 3 / 3;
-        justify-self: end;
-        text-decoration: none;
-        color: $cityBlue;
-
-        &:visited {
-          color: $cityBlue;
-        }
-      }
-    }
-  }
-
   .logo {
     width: 40%;
     height: auto;
+  }
+}
+
+.user-account-info-view {
+  .user-data-group {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    grid-template-rows: repeat(2, 1fr);
+    row-gap: 7px;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: .145rem solid $gold;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border: none;
+    }
+
+    .label {
+      grid-row: 1;
+      font-weight: 600;
+      font-size: 1rem;
+      color: $black;
+    }
+
+    .info {
+      grid-row: 2;
+    }
+
+    .label,
+    .info {
+      margin: 0;
+    }
+
+    .edit {
+      grid-area: 1 / 2 / 3 / 3;
+      justify-self: end;
+      text-decoration: none;
+      color: $cityBlue;
+
+      &:visited {
+        color: $cityBlue;
+      }
+    }
+  }
+}
+
+.update-user-email-view {
+  form {
+    display: grid;
+    row-gap: 2.5rem;
+  }
+
+  .form-input,
+  .user-account-update-btn {
+    height: 2.5rem;
+    width: 100%;
+    border-radius: .25rem;
+    border: none;
+  }
+
+  .form-input {
+    border: .0625rem solid $gray;
+    padding: .5rem .875rem;
+    color: $black
+  }
+
+  .inline-error {
+    font-size: .75rem;
+    color: $errorRed;
+  }
+
+  .user-account-update-btn {
+    background: $gold;
+    font-weight: 600;
+    color: $cityBlue;
+
+    &.disabled {
+      background: $pastGray;
+      color: $gray;
+    }
   }
 }
