@@ -32,9 +32,9 @@ function UserAccountView() {
   useEffect(() => {
     if (data) {
       setEmailAddress(data.getAccountByEmail.email_address);
-      setPhoneNumber(data.getAccountByEmail.phone_number)
+      setPhoneNumber(data.getAccountByEmail.phone_number);
     }
-  }, [data])
+  }, [data]);
 
   return (
     <div className="user-account-info-view">
@@ -47,38 +47,37 @@ function UserAccountView() {
       </div>
 
       <div className="user-data">
-
-        <label htmlFor="email">
-          Email
-          <input type="email" id="email" name="email" className="user-data-form" value={emailAddress} />
-          <a href='/update-email'><button>Edit</button></a>
-        </label>
-        <br />
-
-        <label htmlFor="phone">
-          Phone Number
-          <input type="tel" id="phone" name="phone" className="user-data-form" value={phoneNumber} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
-          <a href='/update-number'><button>Edit</button></a>
-        </label>
-        <br />
-
-        <button className="user-account-update-btn" type="submit">
-          Update Account
-        </button>
-        <br />
-
-        <span className="user-data-form">
-          Reset Password? Click
-          <a href="/reset-password">
-            Here
+        <div className="user-data-group">
+          <p className='label'>Email</p>
+          <p className='info'>{emailAddress}</p>
+          <a className='edit' href='/update-email'>
+            Edit
+            <span className='sr-only'>
+              email
+            </span>
           </a>
-        </span>
+        </div>
+        <div className="user-data-group">
+          <p className='label'>Phone</p>
+          <p className='info'>{phoneNumber}</p>
+          <a className='edit' href='/update-number'>
+            Edit
+            <span className='sr-only'>
+              phone number
+            </span>
+          </a>
+        </div>
+        <div className="user-data-group">
+          <p className='label'>Password</p>
+          <p className='info'>********</p>
+          <a className='edit' href='/reset-password'>
+            Edit
+            <span className='sr-only'>
+              password
+            </span>
+          </a>
+        </div>
       </div>
-
-      {/* Need to show this only when the user clicks an edit button */}
-      {/* <br />
-      <p>Update User Info Below</p>
-      <UserAccountUpdateForm /> */}
     </div>
   );
 }
