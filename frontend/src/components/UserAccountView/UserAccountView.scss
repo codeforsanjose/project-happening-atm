@@ -81,6 +81,26 @@
   form {
     display: grid;
     grid-template-rows: repeat(3, 2.5rem);
+
+    > div {
+      position: relative;
+
+      .clear-form-input {
+        position: absolute;
+        right: 5px;
+        border: none;
+        top: 20%;
+        padding: 0;
+        height: 24px;
+        width: 24px;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0);
+      }
+    }
+
+    svg {
+      fill: $gray;
+    }
   }
 
   .form-input,
