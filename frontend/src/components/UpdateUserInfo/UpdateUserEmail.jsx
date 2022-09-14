@@ -65,19 +65,20 @@ const UpdateUserEmail = () => {
             <p className="title">Email</p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-          >
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="user-data-form"
-              placeholder="Email"
-              onChange={(e) => checkingEmail(e.target.value)}
-            />
-            {fieldErrors
-            ? <p className="inline-error">{fieldErrors}</p> : ''}
+          <form onSubmit={handleSubmit}>
+            <div>
+            <label htmlFor="email" className='sr-only'>Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="form-input"
+                placeholder="Email"
+                onChange={(e) => checkingEmail(e.target.value)}
+              />
+              {fieldErrors
+              ? <p className="inline-error">{fieldErrors}</p> : ''}
+            </div>
             <button className="user-account-update-btn" type="submit">
               Change Email
             </button>
