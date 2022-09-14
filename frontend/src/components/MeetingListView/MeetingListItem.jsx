@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { toDateString, toTimeString } from '../../utils/timestampHelper';
 import './MeetingListItem.scss';
+import { StatusInProgress } from '../../utils/_icons';
 import isAdmin from '../../utils/isAdmin';
 
 // Component imports
@@ -30,9 +31,10 @@ function MeetingListItem({ item }) {
   const { t } = useTranslation();
   // eslint-disable-next-line camelcase
   const { id, meeting_start_timestamp, status } = item;
-  const date = toDateString(meeting_start_timestamp);
+  const date = toDateString(meeting_start_timestamp, 'dddd, MMM D');
   const time = toTimeString(meeting_start_timestamp);
   const isInProgress = status === 'IN PROGRESS';
+  const isEnded = status === 'ENDED';
 
   const isCurrentUserAdmin = isAdmin();
   const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
@@ -43,9 +45,14 @@ function MeetingListItem({ item }) {
       <Link to={`meeting/${id}`} className="meeting-date">
         <h3>
           {date}
-          {isInProgress && ` - ${t('meeting.status.short.in-progress')}`}
         </h3>
       </Link>
+      <div className={classnames('meeting-status', { 'progress-wrapper-started': isInProgress })}>
+        {isInProgress && <>
+          <StatusInProgress className="status-icon"/>
+          <span>{t('meeting.status.short.in-progress')}</span>
+        </>}
+      </div>
       <Link to={`meeting/${id}`} className="meeting-time">
         <div>{time}</div>
       </Link>

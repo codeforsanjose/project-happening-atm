@@ -1,18 +1,20 @@
 @import "../../utils/_colors.scss";
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
 
 .MeetingListGroup {
   .group-header {
     margin-bottom: 0.8em;
-
+    
     .group-button {
       padding: 1em;
       border-radius: 4px;
-      background-color: $cityBlue;
-      color: #fff;
+      background-color: $backgroundWhite;
+      border-top: 2px solid $gray;
+      margin-top: 1rem;
       cursor: pointer;
 
       &:hover {
-        background-color: $lightBlue;
+        background-color: $gray;
       }
 
       .group-main-text:before {
@@ -35,7 +37,9 @@
       .button-text {
         display: flex;
         justify-content: space-between;
-        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+        align-items: center;
 
         @media only screen and (min-device-width: 812px) {
           justify-content: left;

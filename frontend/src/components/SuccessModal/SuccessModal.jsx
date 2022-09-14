@@ -43,6 +43,7 @@ function SuccessModal({
         <div className="row">
           <button
             type="button"
+            className='modal-button'
             onClick={confirmModal}
           >
             {confirmText}

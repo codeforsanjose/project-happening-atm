@@ -1,33 +1,23 @@
-@import '../../utils/colors';
+@import "../../utils/colors";
 
 .DeleteMeetingModal {
-  padding: 3em;
-  box-shadow: rgba(0,0,0,0.8) 0 0 10px;
-  background-color: $blueSky;
+  box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px;
+  background-color: white;
   border-radius: 6px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 
-  .wrapper {
+  .modal-header {
     position: relative;
+    background-color: $opaqueGold;
+    border-radius: 6px 6px 0 0;
+    text-align: center;
 
     h2 {
       display: inline-block;
       margin: 0;
       color: $black;
       font-weight: 600;
-
-      &::after {
-        display: block;
-        content: '';
-        background-color: $cityBronze;
-        margin-top: 0.5em;
-        width: 300px;
-        height: 3px;
-      }
-    }
-
-    button {
-      font-family: 'Poppins', sans-serif;
+      padding: 1rem;
     }
 
     .cancel-button {
@@ -40,12 +30,22 @@
     }
 
     .close-modal {
-      right: -2.5em;
-      top: -2.5em;
+      right: 0.5em;
+      top: 0.5em;
+    }
+  }
+
+  .wrapper {
+    position: relative;
+    padding: 1em 3em 3em 3em;
+
+    button {
+      font-family: "Poppins", sans-serif;
     }
 
     .delete-meeting-info {
       font-size: 1.4em;
+      text-align: center;
     }
 
     .modal-buttons {
@@ -58,7 +58,7 @@
         margin-left: 1em;
         border-radius: 6px;
         border: 4px solid transparent;
-        background-color: $lightBronze;
+        background-color: $pastGray;
         color: $black;
         font-size: 20px;
         font-weight: 900;
@@ -72,7 +72,7 @@
       .delete-button {
         display: flex;
         justify-content: center;
-        background-color: $red;
+        background-color: $errorRed;
         color: #fff;
         font-weight: 500;
 

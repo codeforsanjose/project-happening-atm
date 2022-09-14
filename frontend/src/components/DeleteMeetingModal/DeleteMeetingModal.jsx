@@ -1,16 +1,16 @@
 /* eslint-disable no-console */
-import React, { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import Modal from 'react-modal';
-import { useTranslation } from 'react-i18next';
-import { useMutation } from '@apollo/client';
-import { toDateString, toTimeString } from '../../utils/timestampHelper';
-import { CancelIcon } from '../../utils/_icons';
-import { DELETE_MEETING } from '../../graphql/mutation';
-import './DeleteMeetingModal.scss';
+import React, { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Modal from "react-modal";
+import { useTranslation } from "react-i18next";
+import { useMutation } from "@apollo/client";
+import { toDateString, toTimeString } from "../../utils/timestampHelper";
+import { CancelIcon } from "../../utils/_icons";
+import { DELETE_MEETING } from "../../graphql/mutation";
+import "./DeleteMeetingModal.scss";
 
-import SuccessModal from '../SuccessModal/SuccessModal';
-import Spinner from '../Spinner/Spinner';
+import SuccessModal from "../SuccessModal/SuccessModal";
+import Spinner from "../Spinner/Spinner";
 
 /**
  * A modal to meeting deletion.
@@ -32,18 +32,13 @@ import Spinner from '../Spinner/Spinner';
  *      Boolean indicating if success modal is shown
  */
 
-function DeleteMeetingModal({
-  isOpen,
-  closeModal,
-  meetingId,
-  startTime,
-}) {
+function DeleteMeetingModal({ isOpen, closeModal, meetingId, startTime }) {
   const history = useHistory();
   const { t } = useTranslation();
   const [deleteMeeting, { loading }] = useMutation(DELETE_MEETING);
   const [deleteSuccessful, setDeleteSuccessful] = useState(false);
 
-  const date = toDateString(startTime);
+  const date = toDateString(startTime, "dddd, MMM D");
   const time = toTimeString(startTime);
 
   const clearAndCloseModal = useCallback(() => {
@@ -64,7 +59,7 @@ function DeleteMeetingModal({
     }
   }, [deleteMeeting, meetingId]);
 
-  Modal.setAppElement('#root');
+  Modal.setAppElement("#root");
 
   if (deleteSuccessful) {
     return (
@@ -86,12 +81,18 @@ function DeleteMeetingModal({
       className="DeleteMeetingModal"
       overlayClassName="modal-overlay"
     >
-      <div className="wrapper">
-        <button type="button" onClick={clearAndCloseModal} className="cancel-button close-modal">
+      <div className="modal-header">
+        <h2>{t("meeting.list.delete-meeting.modal.title")}</h2>
+        <button
+          type="button"
+          onClick={clearAndCloseModal}
+          className="cancel-button close-modal"
+        >
           <CancelIcon />
         </button>
+      </div>
+      <div className="wrapper">
 
-        <h2>{t('meeting.list.delete-meeting.modal.title')}</h2>
         <p className="delete-meeting-info">{`${date} - ${time}`}</p>
 
         <div className="modal-buttons">
@@ -103,16 +104,12 @@ function DeleteMeetingModal({
           >
             {loading && <Spinner />}
             {loading
-              ? t('meeting.list.delete-meeting.modal.buttons.deleting')
-              : t('meeting.list.delete-meeting.modal.buttons.delete')}
+              ? t("meeting.list.delete-meeting.modal.buttons.deleting")
+              : t("meeting.list.delete-meeting.modal.buttons.delete")}
           </button>
 
-          <button
-            type="button"
-            className="modal-button"
-            onClick={closeModal}
-          >
-            {t('meeting.list.delete-meeting.modal.buttons.cancel')}
+          <button type="button" className="modal-button" onClick={closeModal}>
+            {t("meeting.list.delete-meeting.modal.buttons.cancel")}
           </button>
         </div>
       </div>

@@ -31,7 +31,7 @@ function AdminMeetingItemLinks({ meeting }) {
       <Link to="#">
         <button
           type="button"
-          className="link"
+          className="link upload-agenda-button"
           onClick={openUploadModal}
         >
           <ViewAgendaIcon />
@@ -41,7 +41,7 @@ function AdminMeetingItemLinks({ meeting }) {
       <Link to="#">
         <button
           type="button"
-          className="link"
+          className="link delete-agenda-button"
           onClick={openDeleteModal}
         >
           <DeleteIcon />

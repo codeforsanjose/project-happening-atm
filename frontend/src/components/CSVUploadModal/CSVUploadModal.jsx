@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
-import React, { useState, useRef, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import Modal from 'react-modal';
-import './CSVUploadModal.scss';
-import uploadCSV from '../../utils/uploadHelper';
+import React, { useState, useRef, useCallback } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Modal from "react-modal";
+import "./CSVUploadModal.scss";
+import uploadCSV from "../../utils/uploadHelper";
 
-import DragAndDrop from './DragAndDrop';
-import Spinner from '../Spinner/Spinner';
-import SuccessModal from '../SuccessModal/SuccessModal';
-import { PublishIcon, CancelIcon } from '../../utils/_icons';
+import DragAndDrop from "./DragAndDrop";
+import Spinner from "../Spinner/Spinner";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { PublishIcon, CancelIcon, DocumentIcon, DeleteIcon } from "../../utils/_icons";
 
 /**
  * A modal to handle CSV Uploads.
@@ -37,6 +38,7 @@ import { PublishIcon, CancelIcon } from '../../utils/_icons';
 function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   const fileInputRef = useRef();
   const history = useHistory();
+  const { t } = useTranslation();
   const { pathname } = useLocation();
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -51,12 +53,12 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   }
 
   const handleFileDrop = useCallback((files) => {
-    if (files.length === 0 || files[0].type !== 'text/csv') return;
+    if (files.length === 0 || files[0].type !== "text/csv") return;
     setSelectedFile(files[0]);
   }, []);
 
   function clearSelectedFile() {
-    fileInputRef.current.value = '';
+    fileInputRef.current.value = "";
     setSelectedFile(null);
   }
 
@@ -87,11 +89,12 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
     }
   }
 
-  const redirect = pathname === '/';
+  const redirect = pathname === "/";
   const publishButtonText = isLoading
-    ? 'Uploading and Publishing' : 'Upload and Publish';
+    ? "Uploading and Publishing"
+    : "Upload and Publish";
 
-  Modal.setAppElement('#root');
+  Modal.setAppElement("#root");
 
   if (uploadSuccessful) {
     return (
@@ -100,7 +103,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
         closeModal={clearAndCloseModal}
         headerText="Agenda Successfully Uploaded!"
         confirmModal={redirect ? redirectToMeeting : clearAndCloseModal}
-        confirmText={redirect ? 'Go to Meeting' : 'Close'}
+        confirmText={redirect ? "Go to Meeting" : "Close"}
       />
     );
   }
@@ -114,53 +117,63 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
       overlayClassName="modal-overlay"
     >
       <div className="wrapper">
-        <button type="button" onClick={clearAndCloseModal} className="cancel-button close-modal">
+        <button
+          type="button"
+          onClick={clearAndCloseModal}
+          className="cancel-button close-modal"
+        >
           <CancelIcon />
         </button>
 
-        {
-          showConfirm
-            ? (
-              <>
-                <h2>Are you sure you want to upload a new agenda?</h2>
+        {showConfirm ? (
+          <>
+            <h2>Are you sure you want to upload a new agenda?</h2>
 
-                <p className="confirm-message">
-                  This action will overwrite the existing meeting and unsubscribe
-                  and notify all subscribed users.
-                </p>
+            <p className="confirm-message">
+              This action will overwrite the existing meeting and unsubscribe
+              and notify all subscribed users.
+            </p>
 
-                <div className="confirm-buttons">
-                  <button
-                    type="button"
-                    className="modal-button"
-                    onClick={handleUpload}
-                  >
-                    Upload New Agenda
-                  </button>
-                  <button
-                    type="button"
-                    className="modal-button"
-                    onClick={() => setShowConfirm(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2>Upload New Agenda</h2>
-                <DragAndDrop dropHandler={handleFileDrop}>
-                  <div className="upload-area">
-                    {selectedFile && (
-                      <div className="file-preview">
-                        <button type="button" onClick={clearSelectedFile} className="cancel-button cancel-file">
-                          <CancelIcon />
-                        </button>
-                        <div className="csv-icon">csv</div>
-                        <p>{selectedFile.name}</p>
-                      </div>
-                    )}
+            <div className="confirm-buttons">
+              <button
+                type="button"
+                className="modal-button"
+                onClick={handleUpload}
+              >
+                Upload New Agenda
+              </button>
+              <button
+                type="button"
+                className="modal-button"
+                onClick={() => setShowConfirm(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2>Upload New Agenda</h2>
+            <DragAndDrop dropHandler={handleFileDrop}>
+              <div className="upload-area">
+                {selectedFile && (
+                  <div className="file-preview">
+                    <button
+                      type="button"
+                      onClick={clearSelectedFile}
+                      className="cancel-button cancel-file"
+                    >
+                      <CancelIcon />
+                    </button>
+                    <div className="csv-icon">
+                      <DocumentIcon />
+                    </div>
+                    <p>{selectedFile.name}</p>
+                  </div>
+                )}
 
+                {!selectedFile ? (
+                  <>
                     <PublishIcon />
                     <p>Drag and Drop CSV File</p>
                     <label htmlFor="csv">
@@ -175,21 +188,40 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
                         ref={fileInputRef}
                       />
                     </label>
+                  </>
+                ) : (
+                  <div 
+                    className="remove-csv"
+                    onClick={() => clearSelectedFile()}
+                    ref={fileInputRef}
+                  >
+                    <DeleteIcon />
+                    <p>Remove file</p>
                   </div>
-                </DragAndDrop>
+                )}
 
-                <button
-                  type="button"
-                  className="upload-button modal-button"
-                  onClick={() => setShowConfirm(true)}
-                  disabled={!selectedFile}
-                >
-                  {isLoading && <Spinner />}
-                  {publishButtonText}
-                </button>
-              </>
-            )
-        }
+              </div>
+            </DragAndDrop>
+
+            <div className="lower-buttons">
+              {!selectedFile ? (
+                <></>
+              ) : (
+              <button
+                type="button"
+                className="upload-button modal-button"
+                onClick={() => setShowConfirm(true)}
+              >
+                {isLoading && <Spinner />}
+                {publishButtonText}
+              </button>
+              )}
+              <button type="button" className="delete-button modal-button" onClick={closeModal}>
+                {t("meeting.list.delete-meeting.modal.buttons.cancel")}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </Modal>
   );

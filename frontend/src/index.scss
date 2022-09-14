@@ -9,7 +9,7 @@ body {
 .app-root {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: $backgroundWhite;
   width: 100%;
   min-height: 100vh;
 }
@@ -47,6 +47,7 @@ body {
   text-decoration: none;
   font-family: 'Montserrat', sans-serif;
   letter-spacing: 1.2px;
+  cursor: pointer;
 }
 
 .visually-hidden {
