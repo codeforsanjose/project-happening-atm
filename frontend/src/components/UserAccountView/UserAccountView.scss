@@ -1,20 +1,77 @@
 @import "../../utils/_colors.scss";
+// TODO: 9/13/22 add media queries for desktop. css is for mobile
+.user-account-info-view {
+  padding: 1.22rem;
+  margin-top: 3.75rem;
+  // set to flex with grow so it will
+  // fill the browser height
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
-.user-account-header {
-	margin-top: 2em;
+  .user-account-header {
+    padding-bottom: 1.15rem;
+    border-radius: 5px;
+    background-color: $white;
+  }
 
-	box-sizing: border-box;
-	margin-bottom: 1em;
-	padding: 1em;
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-gap: 0.5em;
-	border: 2px solid $cloudy;
-	border-radius: 5px;
-	background-color: #fff;
-}
+  .title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    border-bottom: .145rem solid $gold;
+    width: fit-content;
+    padding: 3px 5px 3px 2px;
+  }
 
-.logo {
-	width: 40%;
-	height: auto;
+  .user-data {
+    .user-data-group {
+      display: grid;
+      grid-template-columns: 90% 10%;
+      grid-template-rows: repeat(2, 1fr);
+      row-gap: 7px;
+      align-items: center;
+      padding: 1.25rem 0;
+      border-bottom: .145rem solid $gold;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        border: none;
+      }
+
+      .label {
+        grid-row: 1;
+        font-weight: 600;
+        font-size: 1rem;
+        color: $black;
+      }
+
+      .info {
+        grid-row: 2;
+      }
+
+      .label,
+      .info {
+        margin: 0;
+      }
+
+      .edit {
+        grid-area: 1 / 2 / 3 / 3;
+        justify-self: end;
+        text-decoration: none;
+        color: $cityBlue;
+
+        &:visited {
+          color: $cityBlue;
+        }
+      }
+    }
+  }
+
+  .logo {
+    width: 40%;
+    height: auto;
+  }
 }

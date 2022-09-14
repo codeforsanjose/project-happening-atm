@@ -36,6 +36,7 @@ function UserAccountView() {
     }
   }, [data])
 
+  // TODO: get user data from backend to display
   return (
     <div className="user-account-info-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -47,8 +48,22 @@ function UserAccountView() {
       </div>
 
       <div className="user-data">
-
-        <label htmlFor="email">
+        <div className="user-data-group">
+          <p className='label'>Email</p>
+          <p className='info'>john.doe@maildrop.cc</p>
+          <a className='edit' href='/update-email'>Edit</a>
+        </div>
+        <div className="user-data-group">
+          <p className='label'>Phone</p>
+          <p className='info'>123-456-7890</p>
+          <a className='edit' href='/update-number'>Edit</a>
+        </div>
+        <div className="user-data-group">
+          <p className='label'>Password</p>
+          <p className='info'>********</p>
+          <a className='edit' href='/update-number'>Edit</a>
+        </div>
+        {/* <label htmlFor="email">
           Email
           <input type="email" id="email" name="email" className="user-data-form" value={emailAddress} />
           <a href='/update-email'><button>Edit</button></a>
@@ -72,7 +87,7 @@ function UserAccountView() {
           <a href="/reset-password">
             Here
           </a>
-        </span>
+        </span> */}
       </div>
 
       {/* Need to show this only when the user clicks an edit button */}
