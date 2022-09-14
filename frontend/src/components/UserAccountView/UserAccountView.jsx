@@ -32,9 +32,9 @@ function UserAccountView() {
   useEffect(() => {
     if (data) {
       setEmailAddress(data.getAccountByEmail.email_address);
-      setPhoneNumber(data.getAccountByEmail.phone_number)
+      setPhoneNumber(data.getAccountByEmail.phone_number);
     }
-  }, [data])
+  }, [data]);
 
   return (
     <div className="user-account-info-view">
@@ -49,18 +49,33 @@ function UserAccountView() {
       <div className="user-data">
         <div className="user-data-group">
           <p className='label'>Email</p>
-          <p className='info'>{emailAddress}</p> 
-          <a className='edit' href='/update-email'>Edit</a>
+          <p className='info'>{emailAddress}</p>
+          <a className='edit' href='/update-email'>
+            Edit
+            <span className='sr-only'>
+              email
+            </span>
+          </a>
         </div>
         <div className="user-data-group">
           <p className='label'>Phone</p>
           <p className='info'>{phoneNumber}</p>
-          <a className='edit' href='/update-number'>Edit</a>
+          <a className='edit' href='/update-number'>
+            Edit
+            <span className='sr-only'>
+              phone number
+            </span>
+          </a>
         </div>
         <div className="user-data-group">
           <p className='label'>Password</p>
           <p className='info'>********</p>
-          <a className='edit' href='/update-number'>Edit</a>
+          <a className='edit' href='/update-number'>
+            Edit
+            <span className='sr-only'>
+              password
+            </span>
+          </a>
         </div>
       </div>
     </div>
