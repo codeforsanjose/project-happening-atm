@@ -70,7 +70,7 @@ function UserAccountView() {
         <div className="user-data-group">
           <p className='label'>Password</p>
           <p className='info'>********</p>
-          <a className='edit' href='/update-number'>
+          <a className='edit' href='/reset-password'>
             Edit
             <span className='sr-only'>
               password
