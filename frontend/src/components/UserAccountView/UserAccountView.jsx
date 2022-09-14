@@ -36,7 +36,6 @@ function UserAccountView() {
     }
   }, [data])
 
-  // TODO: get user data from backend to display
   return (
     <div className="user-account-info-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -50,12 +49,12 @@ function UserAccountView() {
       <div className="user-data">
         <div className="user-data-group">
           <p className='label'>Email</p>
-          <p className='info'>john.doe@maildrop.cc</p>
+          <p className='info'>{emailAddress}</p> 
           <a className='edit' href='/update-email'>Edit</a>
         </div>
         <div className="user-data-group">
           <p className='label'>Phone</p>
-          <p className='info'>123-456-7890</p>
+          <p className='info'>{phoneNumber}</p>
           <a className='edit' href='/update-number'>Edit</a>
         </div>
         <div className="user-data-group">
@@ -63,37 +62,7 @@ function UserAccountView() {
           <p className='info'>********</p>
           <a className='edit' href='/update-number'>Edit</a>
         </div>
-        {/* <label htmlFor="email">
-          Email
-          <input type="email" id="email" name="email" className="user-data-form" value={emailAddress} />
-          <a href='/update-email'><button>Edit</button></a>
-        </label>
-        <br />
-
-        <label htmlFor="phone">
-          Phone Number
-          <input type="tel" id="phone" name="phone" className="user-data-form" value={phoneNumber} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
-          <a href='/update-number'><button>Edit</button></a>
-        </label>
-        <br />
-
-        <button className="user-account-update-btn" type="submit">
-          Update Account
-        </button>
-        <br />
-
-        <span className="user-data-form">
-          Reset Password? Click
-          <a href="/reset-password">
-            Here
-          </a>
-        </span> */}
       </div>
-
-      {/* Need to show this only when the user clicks an edit button */}
-      {/* <br />
-      <p>Update User Info Below</p>
-      <UserAccountUpdateForm /> */}
     </div>
   );
 }
