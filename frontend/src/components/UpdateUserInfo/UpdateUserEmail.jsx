@@ -8,7 +8,7 @@ import {
 
 // Component imports
 import NavBarHeader from "../NavBarHeader/NavBarHeader";
-
+import { CancelIcon } from '../../utils/_icons';
 import "../UserAccountView/UserAccountView.scss";
 
 const UpdateUserEmail = () => {
@@ -66,7 +66,9 @@ const UpdateUserEmail = () => {
 
           <form>
             <div>
-            <label htmlFor="email" className='sr-only'>Email</label>
+              <label htmlFor="email" className='sr-only'>
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -75,11 +77,18 @@ const UpdateUserEmail = () => {
                 placeholder="Email"
                 onChange={(e) => checkingEmail(e.target.value)}
               />
+              {newEmail &&
+                <button type='button' className='clear-form-input'>
+                  <span className='sr-only'>Clear email</span>
+                  <CancelIcon/>
+                </button>
+              }
               {fieldErrors
               ? <p className="inline-error">{fieldErrors}</p> : ''}
             </div>
             <button 
-              className="user-account-update-btn" 
+              className={`user-account-update-btn ${
+                fieldErrors || !newEmail ? 'disabled' : ''}`}
               type="button"
               onClick={handleSubmit}
             >
