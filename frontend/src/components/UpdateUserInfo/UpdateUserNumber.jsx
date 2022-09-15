@@ -8,20 +8,26 @@ import {
 
 // Component imports
 import NavBarHeader from "../NavBarHeader/NavBarHeader";
-
+import { CancelIcon, InfoIcon } from '../../utils/_icons';
 import "../UserAccountView/UserAccountView.scss";
-import icon from '../../assets/info-24px.svg';
 
+// TODO: fix validation, issues with input length
+// TODO: update to use correct form pattern
+// TODO: update input to show number as (xxx) xxx-xxxx
 const UpdateUserNumber = () => {
   const [navToggled, setNavToggled] = useState(false);
   const [newNumber, setNewNumber] = useState('');
   const [fieldErrors, setFieldErrors] = useState(null);
   const [updateNumberSuccessful, setUpdateNumberSuccessful] = useState(false);
-
+  const [showInfo, setShowInfo] = useState(false)
   const [updatePhoneNumber] = useMutation(UPDATE_PHONE_NUMBER);
 
   function handleToggle() {
     setNavToggled(!navToggled);
+  }
+
+  const handleShowInfo = () => {
+    setShowInfo(prevShowInfo => !prevShowInfo)
   }
 
   function handleSubmit(e) {
@@ -70,24 +76,41 @@ const UpdateUserNumber = () => {
         <>
           <div className="user-account-header">
             <p className="title">Phone Number</p>
-            <img src={icon} alt="info" />
-            <p>We only support US phone numbers</p>
+            {showInfo && 
+              <span className='info-message'>We only support US phone numbers</span>
+            }
+            <button className='info-button' onClick={handleShowInfo}>
+              <span className='sr-only'>Info</span>
+              <InfoIcon/>
+            </button>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <input
-              type="phone-number"
-              id="phone-number"
-              name="phone-number"
-              className="user-data-form"
-              placeholder="Phone Number"
-              autoFocus
-              noValidate
-              onChange={(e) => checkingPhoneNumber(e.target.value)}
-            />
+          <form>
+            <div>
+              <input
+                type="tel"
+                id="phone-number"
+                name="phone-number"
+                className="form-input"
+                placeholder="Phone Number"
+                autoFocus
+                noValidate
+                onChange={(e) => checkingPhoneNumber(e.target.value)}
+              />
+              {newNumber &&
+                <button type='button' className='clear-form-input'>
+                  <span className='sr-only'>Clear phone number</span>
+                  <CancelIcon/>
+                </button>
+              }
+            </div>
             {fieldErrors
             ? <p className="inline-error">{fieldErrors}</p> : ''}
-            <button className="user-account-update-btn" type="submit">
+            <button className={`user-account-update-btn${fieldErrors || !newNumber ? ' disabled' : ''}`}
+              type="button"
+              onClick={(!fieldErrors && newNumber) && handleSubmit}
+              disabled={fieldErrors ? true : false}
+            >
               Change Phone Number
             </button>
           </form>
