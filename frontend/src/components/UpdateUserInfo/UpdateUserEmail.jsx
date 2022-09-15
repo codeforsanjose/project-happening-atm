@@ -23,6 +23,7 @@ const UpdateUserEmail = () => {
     setNavToggled(!navToggled);
   }
   // TODO: fix email updating. apollo throws error currently
+  // TODO: update form to follow correct pattern
   function handleSubmit() {
     verifyEmailAddressFormat();
     if (!fieldErrors) {
@@ -87,10 +88,10 @@ const UpdateUserEmail = () => {
               ? <p className="inline-error">{fieldErrors}</p> : ''}
             </div>
             <button 
-              className={`user-account-update-btn ${
-                fieldErrors || !newEmail ? 'disabled' : ''}`}
+              className={`user-account-update-btn${fieldErrors || !newEmail ? ' disabled' : ''}`}
               type="button"
-              onClick={handleSubmit}
+              onClick={(!fieldErrors && newEmail) && handleSubmit}
+              disabled={fieldErrors ? true : false}
             >
               Change Email
             </button>
