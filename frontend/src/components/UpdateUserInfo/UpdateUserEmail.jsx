@@ -56,7 +56,7 @@ const UpdateUserEmail = () => {
 
       {updateEmailSuccessful ? (
         <div className="user-account-header">
-          <p className="title">Phone number was successfully updated!</p>
+          <p className="title">Email was successfully updated!</p>
         </div>
       ) : (
         <>
