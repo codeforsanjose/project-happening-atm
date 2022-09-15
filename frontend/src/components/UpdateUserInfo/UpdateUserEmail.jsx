@@ -22,7 +22,7 @@ const UpdateUserEmail = () => {
   function handleToggle() {
     setNavToggled(!navToggled);
   }
-
+  // TODO: fix email updating. apollo throws error currently
   function handleSubmit() {
     verifyEmailAddressFormat();
     if (!fieldErrors) {
