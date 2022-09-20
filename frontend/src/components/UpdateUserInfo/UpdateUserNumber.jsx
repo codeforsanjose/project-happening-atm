@@ -108,7 +108,8 @@ const UpdateUserNumber = () => {
             ? <p className="inline-error">{fieldErrors}</p> : ''}
             <button className={`user-account-update-btn${fieldErrors || !newNumber ? ' disabled' : ''}`}
               type="button"
-              onClick={(!fieldErrors && newNumber) && handleSubmit}
+              // need to do this so that you can not submit button on initial page load
+              {...!fieldErrors && newNumber ? { onClick: handleSubmit} : {}}
               disabled={fieldErrors ? true : false}
             >
               Change Phone Number
