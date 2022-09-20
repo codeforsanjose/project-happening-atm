@@ -69,7 +69,7 @@ const UpdateUserNumber = () => {
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
 
       {updateNumberSuccessful ? (
-        <div className="user-account-header">
+        <div className="user-account-header success">
           <p className="title">Phone number was successfully updated!</p>
         </div>
       ) : (

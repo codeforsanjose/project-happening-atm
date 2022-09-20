@@ -170,4 +170,12 @@
       width: 22px;
     }
   }
+
+  .user-account-header.success {
+    grid-template-columns: 1fr;
+
+    .title {
+      border: 0;
+    }
+  }
 }
