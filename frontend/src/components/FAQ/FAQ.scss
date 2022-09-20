@@ -1,14 +1,12 @@
 .FAQ{
-  margin-top: 6em;
+  width: 50%;
+  margin: 6em auto;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   font-family: "Poppins", sans-serif;
 
   .FAQ-body{
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 2em;
 
     h3{
       margin-bottom: 0em;
@@ -20,7 +18,7 @@
       line-height: 1.5em;
      }
 
-    @media only screen and (min-width: 812px) {
+    @media only screen and (max-width: 812px) {
       margin-left: 20%;
       margin-right: 20%;
     }
