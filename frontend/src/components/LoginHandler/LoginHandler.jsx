@@ -21,6 +21,7 @@ import CLIENT_ID from '../../constants/OauthClientID';
 import {
   ATMLogoRainbowIcon,
   CFSJLogo,
+  InfoIcon
 } from "../../utils/_icons";
 
 import atmLogoLarge from "../../assets/ATM_Logo_Rainbow.png";
@@ -201,7 +202,10 @@ function LoginHandler() {
               <span>{t('login.body.oauth.microsoft')}</span>
             </button>
           </MicrosoftLogin>
-          <p><a href="">or take a look first</a></p>
+          <p className='tool-tip-wrapper'><a href="">or take a look first</a>
+            <span className='tool-tip-text'>You'll need an account to sign up for notifications.</span>
+            <InfoIcon/>
+          </p>
         </div>
       </div>
     </div>

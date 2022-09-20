@@ -8,7 +8,7 @@ import {
 
 // Component imports
 import NavBarHeader from "../NavBarHeader/NavBarHeader";
-
+import { CancelIcon } from '../../utils/_icons';
 import "../UserAccountView/UserAccountView.scss";
 
 const UpdateUserEmail = () => {
@@ -22,9 +22,9 @@ const UpdateUserEmail = () => {
   function handleToggle() {
     setNavToggled(!navToggled);
   }
-
-  function handleSubmit(e) {
-    e.preventDefault();
+  // TODO: fix email updating. apollo throws error currently
+  // TODO: update form to follow correct pattern
+  function handleSubmit() {
     verifyEmailAddressFormat();
     if (!fieldErrors) {
       updateEmail({
@@ -57,7 +57,7 @@ const UpdateUserEmail = () => {
 
       {updateEmailSuccessful ? (
         <div className="user-account-header">
-          <p className="title">Phone number was successfully updated!</p>
+          <p className="title">Email was successfully updated!</p>
         </div>
       ) : (
         <>
@@ -65,20 +65,34 @@ const UpdateUserEmail = () => {
             <p className="title">Email</p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-          >
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="user-data-form"
-              placeholder="Email"
-              onChange={(e) => checkingEmail(e.target.value)}
-            />
-            {fieldErrors
-            ? <p className="inline-error">{fieldErrors}</p> : ''}
-            <button className="user-account-update-btn" type="submit">
+          <form>
+            <div>
+              <label htmlFor="email" className='sr-only'>
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="form-input"
+                placeholder="Email"
+                onChange={(e) => checkingEmail(e.target.value)}
+              />
+              {newEmail &&
+                <button type='button' className='clear-form-input'>
+                  <span className='sr-only'>Clear email</span>
+                  <CancelIcon/>
+                </button>
+              }
+              {fieldErrors
+              ? <p className="inline-error">{fieldErrors}</p> : ''}
+            </div>
+            <button 
+              className={`user-account-update-btn${fieldErrors || !newEmail ? ' disabled' : ''}`}
+              type="button"
+              onClick={(!fieldErrors && newEmail) && handleSubmit}
+              disabled={fieldErrors ? true : false}
+            >
               Change Email
             </button>
           </form>
