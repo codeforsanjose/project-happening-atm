@@ -28,29 +28,42 @@ import { CloseIcon } from '../../../utils/_icons';
  *
  */
 
-function buildStyle(itemRef) {
-  const rect = itemRef.getBoundingClientRect();
-  const xPos = rect.left;
-  const yPos = rect.top;
+function buildStyle(itemRef, dropDownRef = null) {
+  const isStatusDropDown = dropDownRef !== null
+  const itemRect = itemRef.getBoundingClientRect();
+  const itemXPos = itemRect.left;
+  const itemOffsetY = itemRect.height / 2
+
+  if (!isStatusDropDown) {
+    return {
+      width: `${itemRef.clientWidth}px`,
+      position: 'absolute',
+      left: `${itemXPos}px`,
+      top: `calc(50vh - ${itemOffsetY}px)`
+    };
+  }
+
+  const dropDownRect = dropDownRef.getBoundingClientRect();
+  const dropDownXPos = dropDownRect.left;
+  const dropDownOffsetY = itemOffsetY - dropDownRect.height * 1.8
 
   return {
-    width: `${itemRef.clientWidth}px`,
+    width: `${dropDownRef.clientWidth}px`,
     position: 'absolute',
-    left: `${xPos}px`,
-    top: '35vh'
-  };
+    left: `${dropDownXPos}px`,
+    top: `calc(50vh + ${dropDownOffsetY}px)`
+  };  
 }
 
 function buildCloseOutStyle(itemRef) {
   const rect = itemRef.getBoundingClientRect();
   const xPos = rect.left;
-  const yPos = rect.top;
 
   const offSetX = itemRef.clientWidth - 75;
-  const offSetY = -40;
+  const offSetY = 40;
   return {
     left: `${xPos + offSetX}px`,
-    top: `30vh`,
+    top: `calc(50vh - ${rect.height / 2 + offSetY}px)`
   };
 }
 
@@ -83,13 +96,21 @@ const ChangeMeetingStatusOuterModal = ({
 
   const { t } = useTranslation();
   const [itemStyle, setItemStyle] = useState(buildStyle(itemRef.current));
-  const [listStyle, setListStyle] = useState(buildStyle(dropDownRef.current));
+  const [listStyle, setListStyle] = useState(buildStyle(itemRef.current, dropDownRef.current));
   const [closeOutStyle, setCloseOutStyle] = useState(buildCloseOutStyle(itemRef.current));
 
   useEffect(() => {
+    document.querySelector('body').style.overflow = 'hidden';
+
+    return () => {
+      document.querySelector('body').style.overflow = 'visible';
+    };
+  }, []);
+  
+  useEffect(() => {
     const eventListenerFunction = () => {
       setItemStyle(buildStyle(itemRef.current));
-      setListStyle(buildStyle(dropDownRef.current));
+      setListStyle(buildStyle(itemRef.current, dropDownRef.current));
       setCloseOutStyle(buildCloseOutStyle(itemRef.current));
     };
 
@@ -107,7 +128,7 @@ const ChangeMeetingStatusOuterModal = ({
   useEffect(() => {
     if (contentRef != null) {
       setItemStyle(buildStyle(itemRef.current));
-      setListStyle(buildStyle(dropDownRef.current));
+      setListStyle(buildStyle(itemRef.current, dropDownRef.current));
       setCloseOutStyle(buildCloseOutStyle(itemRef.current));
       const cloneItem = itemRef.current.cloneNode(true);
       cloneItem.querySelector('.statusButtons').style.visibility = 'hidden';

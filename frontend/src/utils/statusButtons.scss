@@ -9,12 +9,11 @@ $font-size:1rem;
     margin:0;
     justify-self: end;
     input{
-        width:10.5rem;
+        width:8rem;
         height:2rem;
         border:none;
         border-radius:8px;
         font-weight:700;
-        margin-bottom:0.4rem;
     }
     input:hover{
         cursor:pointer;
@@ -67,10 +66,33 @@ $font-size:1rem;
         color:$errorRed;
         font-weight:$font-weight;
         font-size:$font-size;
-        border:1px solid $errorRed;
         .svg{
             fill:$errorRed;
         }
     }
 
+}
+// button styles for the change agenda item status modal
+.listModalWrapper {
+  .statusButtons {
+    width: fit-content;
+    border: 1px solid $cityBlue;
+    border-radius: 8px;
+
+    
+    > li:first-child input {
+      border-top-right-radius: 8px;
+      border-top-left-radius: 8px;
+    }
+
+    > li:last-child input {
+      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+  }
+
+  input {
+    height: 3rem;
+    border-radius: 0;
+  }
 }
