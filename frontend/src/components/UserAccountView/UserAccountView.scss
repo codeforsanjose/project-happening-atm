@@ -2,7 +2,8 @@
 
 // TODO: 9/13/22 add media queries for desktop. css is for mobile
 .user-account-info-view,
-.update-user-email-view {
+.update-user-email-view,
+.update-user-number-view {
   padding: 1.22rem;
   margin-top: 3.75rem;
   // set to flex with grow so it will
@@ -77,7 +78,8 @@
   }
 }
 
-.update-user-email-view {
+.update-user-email-view,
+.update-user-number-view {
   form {
     display: grid;
     grid-template-rows: repeat(3, 2.5rem);
@@ -134,6 +136,46 @@
     &.disabled {
       background: $pastGray;
       color: $gray;
+    }
+  }
+}
+
+.update-user-number-view {
+  .user-account-header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) 24px;
+    align-items: center;
+    
+    .info-message {
+      color: $cityBlue;
+      font-size: .75rem;
+      text-align: right;
+      padding-right: .7rem;
+    }
+
+    .info-button {
+      grid-column: 3;
+      border: none;
+      border-radius: 50%;
+      padding: 0;
+      height: 22px;
+      width: 22px;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0);
+    }
+
+    svg {
+      fill: $cityBlue;
+      height: 22px;
+      width: 22px;
+    }
+  }
+
+  .user-account-header.success {
+    grid-template-columns: 1fr;
+
+    .title {
+      border: 0;
     }
   }
 }
