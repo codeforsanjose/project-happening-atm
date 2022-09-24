@@ -11,6 +11,10 @@
   border-radius: 5px;
   background-color: #fff;
 
+  @media screen and (max-width: 500px) {
+    padding: 0.8em;
+  }
+
   @media only screen
   and (min-device-width: 812px) {
     grid-template-columns: 1.4em 2fr 1fr 1.4em;
@@ -100,8 +104,6 @@
     flex-direction: row;
 
     @media screen and (max-width: 500px) {
-      display: flex;
-      flex-direction: column;
       margin-top: 1rem;
       align-items: center;
     }
@@ -113,6 +115,16 @@
         padding: 10px 15px;
         border-radius: 5px;
         border: transparent;
+
+        @media screen and (max-width: 500px) {
+          padding: 5px 8px;
+        }
+
+        svg {
+          @media screen and (max-width: 500px) {
+            width: 15px;
+          }
+        }
       }
       
       .upload-agenda-button {
@@ -136,6 +148,10 @@
         p {
           margin: 0;
           margin-left: 0.4em;
+
+          @media screen and (max-width: 500px) {
+            font-size: 12px;
+          }
         }
 
         &:hover {
