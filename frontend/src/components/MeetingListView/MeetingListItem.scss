@@ -97,7 +97,14 @@
 
   .meeting-links {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+
+    @media screen and (max-width: 500px) {
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+      align-items: center;
+    }
 
     a {
       text-decoration: none;
@@ -105,6 +112,7 @@
       .upload-agenda-button, .delete-agenda-button {
         padding: 10px 15px;
         border-radius: 5px;
+        border: transparent;
       }
       
       .upload-agenda-button {
@@ -115,13 +123,15 @@
 
       .delete-agenda-button {
         color: $errorRed;
-        fill: $errorRed
+        fill: $errorRed;
+        background-color: transparent;
       }
 
       .link {
         display: flex;
         align-items: center;
         font-size: 0.9em;
+        width: max-content;
 
         p {
           margin: 0;
@@ -132,16 +142,18 @@
           text-decoration: underline;
         }
       }
-    }
 
+    }
+    
     .disabled-link {
       color: gray;
       pointer-events: none;
-
+      
       svg {
         fill: gray;
       }
     }
+    
   }
 
   &:hover {
