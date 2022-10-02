@@ -21,7 +21,7 @@ const LINKS = [
   {
     key: 'uploadAgenda',
     icon: PublishIcon,
-    linkText: 'Upload New Agenda'
+    linkText: 'Upload Agenda'
   }
 ];
 

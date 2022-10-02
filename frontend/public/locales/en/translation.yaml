@@ -29,7 +29,7 @@ meeting:
         inputs:
           date: Date
           time: Time
-    upload-new-agenda: Upload New Agenda
+    upload-new-agenda: Upload Agenda
     join:
       zoom: Join Zoom Meeting
     watch: Watch Meeting Broadcast
@@ -136,9 +136,9 @@ meeting:
           deferred: Deferred
           on-hold: On Hold
       upload-new:
-        button: Upload New Agenda
+        button: Upload Agenda
         modal:
-          title: Upload New Agenda
+          title: Upload Agenda
           input:
             help: Drag and Drop CSV File
             alt: Or Upload from Your Computer

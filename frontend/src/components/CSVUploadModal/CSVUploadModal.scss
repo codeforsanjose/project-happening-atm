@@ -19,6 +19,14 @@
       padding: 1em 2em;
     }
 
+    .disabled-upload-header {
+      background-color: $alertRed;
+    }
+
+    .inline-text {
+      color: $errorRed;
+    }
+
     .upload-area {
       box-sizing: border-box;
       height: 15em;
@@ -30,6 +38,12 @@
       justify-content: center;
       background: #fff;
       border-radius: 6px;
+
+      @media screen and (max-width: 500px) {
+        height: 12em;
+        width: 95vw;
+        padding: 0 2em 1em 2em;
+      }
 
       p {
         margin: 0.8em 0;
@@ -63,6 +77,11 @@
       background-color: transparent;
       cursor: pointer;
       transform: scale(0.8);
+    }
+
+    .close-button {
+      background-color: $atmGold;
+      color: $cityBlue;
     }
 
     .close-modal {
