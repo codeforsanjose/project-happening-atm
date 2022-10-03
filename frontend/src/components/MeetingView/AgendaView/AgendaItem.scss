@@ -255,6 +255,7 @@
   .item-links {
     display: flex;
     justify-content: space-between;
+    justify-items: flex-end;
   }
   .link:not(:first-child) {
     margin-left: unset;
