@@ -64,7 +64,7 @@ module.exports = (logger) => {
       const title = rootItem[0];
 
       // This is a root item
-      let amendedTitle = `${rootItemNumber} ${title}`
+      let amendedTitle = `${rootItemNumber} ${title}`;
 
       // eslint-disable-next-line no-await-in-loop
       const res = await dbClient.createMeetingItem(
