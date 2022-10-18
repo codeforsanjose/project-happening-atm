@@ -279,7 +279,6 @@ const RenderedAgendaItem = forwardRef(
             {item.status === MeetingItemStates.PENDING}
             <h4>{item.title_loc_key}</h4>
           </div>
-          <p>{item.description_loc_key}</p>
           {subscriptions && subscriptions.length > 0 && (
             <SubscribeConfirmation
               numberOfSubscriptions={subscriptions.length}
@@ -303,12 +302,6 @@ const RenderedAgendaItem = forwardRef(
             )}
 
           <div className='item-links'>
-            <div className="link">
-              <p>
-                <span>+</span>
-                {t('meeting.tabs.agenda.list.more-info.button')}
-              </p>
-            </div>
               {/* verify user is admin,
                   if agenda item has a time specified, show time and icon to reset time,
                   If no time is specified, show button to open set time modal */}
@@ -373,7 +366,6 @@ const RenderedAgendaItem = forwardRef(
                   />
 
                   <span className="relativeWrapper">
-                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
                     <span
                       className={`${buttonClasses.filter((elem) => elem.status === item.status)[0].class} buttonDownArrow`}
                       onClick={!dragOverlay ? () => {

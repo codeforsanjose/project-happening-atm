@@ -65,6 +65,7 @@ module.exports = (logger) => {
 
       // This is a root item
       let amendedTitle = `${rootItemNumber} ${title}`;
+
       // eslint-disable-next-line no-await-in-loop
       const res = await dbClient.createMeetingItem(
         meetingId, null, orderNumber, null, null,
@@ -76,7 +77,7 @@ module.exports = (logger) => {
       const subItems = rootItem[1];
       for (const subItemNumber of subItems.keys()) {
         let subTitle = subItems.get(subItemNumber);
-        subTitle = (subTitle.length > 250) ? subTitle.substring(0,247) + '...' : subTitle;
+        subTitle = (subTitle.length > 280) ? subTitle.substring(0,277) + '...' : subTitle;
         logger.debug(`Creating nested meeting item: ${subTitle}`);
 
         // This is a nested item

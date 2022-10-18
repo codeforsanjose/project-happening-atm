@@ -33,6 +33,7 @@
     margin-top: 5px;
     h4 {
       margin: 0;
+      padding-bottom: 1rem;
       display: inline-block;
       font-weight: 500;
     }
@@ -73,9 +74,9 @@
   .item-links {
     // changed to grid to align links properly
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    
+    grid-template-columns: repeat(2, 1fr);
+    align-items:center;
+
     .disabled .link {
       fill: $cloudy;
       color: $cloudy;
@@ -108,7 +109,7 @@
       }
       // column 2 of grid
       &.status {
-        justify-self: center;
+        justify-self: flex-start;
 
         svg {
           margin-right: .3rem;
@@ -254,6 +255,7 @@
   .item-links {
     display: flex;
     justify-content: space-between;
+    justify-items: flex-end;
   }
   .link:not(:first-child) {
     margin-left: unset;
