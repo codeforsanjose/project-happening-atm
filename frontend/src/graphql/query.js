@@ -31,18 +31,19 @@ export const GET_ALL_MEETINGS_WITH_ITEMS = gql`
 export const GET_MEETING = gql`
   query GetMeeting($id: Int!) {
     getMeeting(id: $id) {
-      id,
-      status,
-      meeting_type,
-      meeting_start_timestamp,
-      meeting_end_timestamp,
-      virtual_meeting_url,
-      virtual_meeting_id,
-      call_in_information,
-      email_before_meeting,
-      email_during_meeting,
-      ecomment,
-      youtube_link 
+      id
+      status
+      meeting_type
+      meeting_start_timestamp
+      meeting_end_timestamp
+      virtual_meeting_url
+      virtual_meeting_id
+      call_in_information
+      email_before_meeting
+      email_during_meeting
+      ecomment
+      youtube_link
+      agenda_pdf_link
     }
   }
 `;
@@ -51,32 +52,32 @@ export const GET_MEETING_WITH_ITEMS = gql`
   query GetMeetingWithItems($id: Int!) {
     getMeetingWithItems(id: $id) {
       meeting {
-        id,
-        status,
-        meeting_type,
-        meeting_start_timestamp,
-        meeting_end_timestamp,
-        virtual_meeting_url,
-        virtual_meeting_id,
-        call_in_information,
-        email_before_meeting,
-        email_during_meeting,
-        ecomment,
-        youtube_link,
+        id
+        status
+        meeting_type
+        meeting_start_timestamp
+        meeting_end_timestamp
+        virtual_meeting_url
+        virtual_meeting_id
+        call_in_information
+        email_before_meeting
+        email_during_meeting
+        ecomment
+        youtube_link
+        agenda_pdf_link
       }
       items {
-        id,
-        meeting_id,
-        parent_meeting_item_id,
-        order_number,
-        status,
-        item_start_timestamp,
-        item_end_timestamp,
-        content_categories,
-        description_loc_key,
+        id
+        meeting_id
+        parent_meeting_item_id
+        order_number
+        status
+        item_start_timestamp
+        item_end_timestamp
+        content_categories
+        description_loc_key
         title_loc_key
       }
-
     }
   }
 `;

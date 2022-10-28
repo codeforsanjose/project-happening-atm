@@ -1,43 +1,45 @@
-@import '../../utils/colors';
+@import "../../utils/colors";
 
 .meeting-view {
   padding: 0;
   padding-bottom: 2em;
   background-color: $blueSky;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 
   @media only screen and (min-device-width: 812px) {
     margin: 0 200px 0;
     padding-bottom: 3em;
   }
-  
-  
+
   a {
     text-decoration: none;
   }
-  
-  .join-meeting{
+  .agend-pdf-link {
+    text-decoration: underline;
+    margin-left: 2em;
+  }
+  .join-meeting {
     color: $happeningBlue;
     background-color: $lightGreen;
     border-radius: 5px;
-    
+
     /* custom edits */
     border: none;
     display: flex;
     align-items: center;
     margin: 1em;
-    margin-left: 2em; 
+    margin-left: 2em;
     padding: 0.5em;
     padding-left: 1.25em;
     padding-right: 1.25em;
 
-    p{
+    p {
       /* Join Zoom Meeting */
       position: static;
       width: 88px;
       height: 36px;
       right: 14px;
-      top: calc(50% - 36px/2);
+      top: calc(50% - 36px / 2);
 
       //font-family: 'Poppins';
       font-style: normal;
@@ -49,7 +51,7 @@
       text-align: center;
 
       /* happening blue: 1F2847 */
-      color: #1F2847;
+      color: #1f2847;
 
       /* Inside auto layout */
       flex: none;

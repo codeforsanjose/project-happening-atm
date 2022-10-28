@@ -72,14 +72,23 @@ module.exports = (logger) => {
     let res;
     try {
       res = await dbClient.createMeeting(
-        args.meeting_type, args.meeting_start_timestamp,
-        args.virtual_meeting_url, args.status, args.virtual_meeting_id,
-        args.call_in_information, args.email_before_meeting,
-        args.email_during_meeting, args.eComment, args.city_of_san_jose_meeting,
+        args.meeting_type,
+        args.meeting_start_timestamp,
+        args.virtual_meeting_url,
+        args.status,
+        args.virtual_meeting_id,
+        args.call_in_information,
+        args.email_before_meeting,
+        args.email_during_meeting,
+        args.eComment,
+        args.city_of_san_jose_meeting,
+        args.agenda_pdf_link,
         args.youtube_link
       );
     } catch (e) {
-      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
+      logger.error(
+        `createMeeting resolver error - dbClient.createMeeting: ${e}`
+      );
       throw e;
     }
 
