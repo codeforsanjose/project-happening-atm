@@ -48,14 +48,27 @@ module.exports = async (logger) => {
   const convertMsToSeconds = (milliseconds) => milliseconds / 1000;
 
   // eslint-disable-next-line max-len
-  module.createMeeting = async (meetingType, meetingStartTimestamp, virtualMeetingUrl, status, virtualMeetingId, callInInformation, emailBeforeMeeting, emailDuringMeeting, eComment, cityOfSanJoseMeeting, youtubeLink) => {
-    logger.info('dbClient: createMeeting');
+  module.createMeeting = async (
+    meetingType,
+    meetingStartTimestamp,
+    virtualMeetingUrl,
+    status,
+    virtualMeetingId,
+    callInInformation,
+    emailBeforeMeeting,
+    emailDuringMeeting,
+    eComment,
+    cityOfSanJoseMeeting,
+    youtubeLink,
+    agnedaPDFLink
+  ) => {
+    logger.info("dbClient: createMeeting");
     logger.info(virtualMeetingId);
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
     const queryString = `
-        INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status, virtual_meeting_id, call_in_information, email_before_meeting, email_during_meeting, ecomment, city_of_san_jose_meeting, youtube_link)
+        INSERT INTO meeting(meeting_type, meeting_start_timestamp, virtual_meeting_url, created_timestamp, updated_timestamp, status, virtual_meeting_id, call_in_information, email_before_meeting, email_during_meeting, ecomment, city_of_san_jose_meeting, youtube_link, agenda_pdf_link)
         VALUES (
           $1,
           to_timestamp($2),
@@ -240,26 +253,37 @@ module.exports = async (logger) => {
             title_loc_key = $9,
             parent_meeting_item_id = $10
         WHERE id = $1`;
-    return query(queryString,
-      [
-        id,
-        orderNumber,
-        status,
-        convertMsToSeconds(itemStartTimestamp),
-        convertMsToSeconds(itemEndTimestamp),
-        convertMsToSeconds(updatedTimestamp),
-        contentCategories,
-        descriptionLocKey,
-        titleLocKey,
-        parentMeetingItemId,
-      ]);
+    return query(queryString, [
+      id,
+      orderNumber,
+      status,
+      convertMsToSeconds(itemStartTimestamp),
+      convertMsToSeconds(itemEndTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      contentCategories,
+      descriptionLocKey,
+      titleLocKey,
+      parentMeetingItemId,
+    ]);
   };
 
-  module.updateMeeting = async (id, status, meetingType, virtualMeetingUrl,
-    meetingStartTimestamp, meetingEndTimestamp, virtualMeetingId,
-    callInInformation, emailBeforeMeeting, emailDuringMeeting, eComment,
-    cityOfSanJoseMeeting, youtubeLink) => {
-    logger.info('dbClient: updateMeeting');
+  module.updateMeeting = async (
+    id,
+    status,
+    meetingType,
+    virtualMeetingUrl,
+    meetingStartTimestamp,
+    meetingEndTimestamp,
+    virtualMeetingId,
+    callInInformation,
+    emailBeforeMeeting,
+    emailDuringMeeting,
+    eComment,
+    cityOfSanJoseMeeting,
+    youtubeLink,
+    agendaPDFLink
+  ) => {
+    logger.info("dbClient: updateMeeting");
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting

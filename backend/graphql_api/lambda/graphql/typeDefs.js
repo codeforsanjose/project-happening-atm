@@ -28,17 +28,74 @@ type Query {
     # TODO: Need to add reset password query
 
     getResetPasswordToken(id: Int): account
-}
+  }
 
-type Mutation {
-    createMeeting(meeting_start_timestamp: String!, meeting_type: String, status: String, virtual_meeting_url: String, virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
-    updateMeeting(id: Int!, status: String, meeting_type: String, virtual_meeting_url: String, meeting_start_timestamp: String, meeting_end_timestamp: String, , virtual_meeting_id: String, call_in_information: String, email_before_meeting: String, email_during_meeting: String, eComment: String, city_of_san_jose_meeting: String, youtube_link: String): meeting
+  type Mutation {
+    createMeeting(
+      meeting_start_timestamp: String!
+      meeting_type: String
+      status: String
+      virtual_meeting_url: String
+      virtual_meeting_id: String
+      call_in_information: String
+      email_before_meeting: String
+      email_during_meeting: String
+      eComment: String
+      city_of_san_jose_meeting: String
+      youtube_link: String
+      agenda_pdf_link: String
+    ): meeting
+    updateMeeting(
+      id: Int!
+      status: String
+      meeting_type: String
+      virtual_meeting_url: String
+      meeting_start_timestamp: String
+      meeting_end_timestamp: String
+      virtual_meeting_id: String
+      call_in_information: String
+      email_before_meeting: String
+      email_during_meeting: String
+      eComment: String
+      city_of_san_jose_meeting: String
+      youtube_link: String
+      agenda_pdf_link: String
+    ): meeting
 
-    createMeetingItem(meeting_id: Int!, order_number: Int!, item_start_timestamp: String, item_end_timestamp: String, status: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
-    updateMeetingItem(id: Int, order_number: Int!, status: String, item_start_timestamp: String, item_end_timestamp: String, content_categories: String!, description_loc_key: String, title_loc_key: String, parent_meeting_item_id: Int): meeting_item
+    createMeetingItem(
+      meeting_id: Int!
+      order_number: Int!
+      item_start_timestamp: String
+      item_end_timestamp: String
+      status: String
+      content_categories: String!
+      description_loc_key: String
+      title_loc_key: String
+      parent_meeting_item_id: Int
+    ): meeting_item
+    updateMeetingItem(
+      id: Int
+      order_number: Int!
+      status: String
+      item_start_timestamp: String
+      item_end_timestamp: String
+      content_categories: String!
+      description_loc_key: String
+      title_loc_key: String
+      parent_meeting_item_id: Int
+    ): meeting_item
 
-    createSubscriptions(phone_number: String, email_address:String, meetings: [meetingInput]): [subscription]
-    deleteSubscription(phone_number: String!, email_address: String!, meeting_id: Int!, meeting_item_id: Int!): Boolean
+    createSubscriptions(
+      phone_number: String
+      email_address: String
+      meetings: [meetingInput]
+    ): [subscription]
+    deleteSubscription(
+      phone_number: String!
+      email_address: String!
+      meeting_id: Int!
+      meeting_item_id: Int!
+    ): Boolean
 
     confirmEmail(token: String): Boolean
     unconfirmEmail(token: String): Boolean
@@ -91,9 +148,10 @@ type meeting {
     ecomment: String
     city_of_san_jose_meeting: String
     youtube_link: String
-}
+    agenda_pdf_link: String
+  }
 
-type meeting_item {
+  type meeting_item {
     id: Int
     meeting_id: Int
     parent_meeting_item_id: Int

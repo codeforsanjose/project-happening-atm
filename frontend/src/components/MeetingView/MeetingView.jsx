@@ -97,6 +97,14 @@ function MeetingView() {
     refetchAllMeetings: refetch,
   };
 
+  const agendaItemsPDFLink = meetingWithItems.agenda_pdf_link
+    ? meetingWithItems.agenda_pdf_link
+    : "";
+  const linktoPDFAgendaItems = !(loading || error) && data && (
+    <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
+      Recommendations & Attachments
+    </a>
+  );
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -107,7 +115,8 @@ function MeetingView() {
         progressStatus={progressStatus}
       />
       {loading && <Spinner />}
-      {!(loading || error) && data && 'items' in meetingWithItems && (
+      {linktoPDFAgendaItems}
+      {!(loading || error) && data && "items" in meetingWithItems && (
         <a
           meeting={meetingWithItems}
           href={meetingWithItems.virtual_meeting_url}
