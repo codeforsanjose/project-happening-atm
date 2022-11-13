@@ -60,7 +60,7 @@ module.exports = async (logger) => {
     eComment,
     cityOfSanJoseMeeting,
     youtubeLink,
-    agnedaPDFLink
+    agendaPDFLink
   ) => {
     logger.info("dbClient: createMeeting");
     logger.info(virtualMeetingId);
@@ -82,7 +82,8 @@ module.exports = async (logger) => {
           $10,
           $11,
           $12,
-          $13
+          $13,
+          $14
         ) RETURNING id;`;
     return query(
       queryString,
@@ -100,6 +101,7 @@ module.exports = async (logger) => {
         eComment,
         cityOfSanJoseMeeting,
         youtubeLink,
+        agendaPDFLink
       ],
     );
   };
