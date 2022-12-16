@@ -75,7 +75,7 @@ jobs:
 
   deploy:
     name: Deploy to AWS ECS
-    runs-on: ubuntu-latesc
+    runs-on: ubuntu-latest
     needs: [setup_env, build]
     environment:
       name: ${{ github.event.inputs.env }}
