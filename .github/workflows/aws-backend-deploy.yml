@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.ref }}
       - name: Set AWS Env & Image Tag per workflow
@@ -61,13 +61,13 @@ jobs:
           docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
 
       - name: Build & Push Image to ECR
-        uses: kciter/aws-ecr-action@v3
+        uses: docker/build-push-action@v3
         with:
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: ${{ needs.setup_env.outputs.AWS_APPENV }}
-          tags: latest,${{ needs.setup_env.outputs.IMAGE_TAG }}
-          dockerfile: backend/graphql_api/lambda/Dockerfile
-          path: backend/graphql_api/lambda
+          context: backend/graphql_api/lambda/Dockerfile
+          push: true
+          tags:
+            - ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com:latest
+            - ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com:${{ needs.setup_env.outputs.IMAGE_TAG }}
 
       - name: Logout AWS ECR
         if: ${{ always() }}
