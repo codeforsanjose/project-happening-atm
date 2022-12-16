@@ -56,10 +56,9 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-         aws-region: ${{ env.AWS_DEFAULT_REGION }}
+        run: |
+          aws ecr get-login-password | \
+          docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
 
       - name: Build & Push Image to ECR
         uses: kciter/aws-ecr-action@v3
@@ -69,6 +68,10 @@ jobs:
           tags: latest,${{ needs.setup_env.outputs.IMAGE_TAG }}
           dockerfile: backend/graphql_api/lambda/Dockerfile
           path: backend/graphql_api/lambda
+
+      - name: Logout AWS ECR
+        if: ${{ always() }}
+        run: docker logout ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
 
   deploy:
     name: Deploy to AWS ECS
@@ -99,3 +102,7 @@ jobs:
           cluster: ${{ env.AWS_SHARED_CLUSTER }}
           wait-for-service-stability: true
           wait-for-minutes: 5 minutes
+
+      - name: Delete pulled Task Definition
+        if: ${{ always() }}
+        run: rm -f task-def.json
