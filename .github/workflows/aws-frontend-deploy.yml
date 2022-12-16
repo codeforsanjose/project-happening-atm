@@ -15,7 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  AWS_SHARED_CLUSTER: multi-tenant-prod
+  AWS_SHARED_CLUSTER: arn:aws:ecs:us-west-2:${{ secrets.AWS_ACCOUNT_ID }}:cluster/multi-tenant-prod
+  AWS_ECR_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
   AWS_APP_NAME: happening-atm-frontend
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -58,7 +59,7 @@ jobs:
       - name: Login to Amazon ECR
         run: |
           aws ecr get-login-password | \
-          docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
+          docker login --username AWS --password-stdin ${{ env.AWS_ECR_REGISTRY_URL }}
 
       - name: Build & Push Image to ECR
         uses: docker/build-push-action@v3
@@ -66,12 +67,12 @@ jobs:
           context: frontend/
           push: true
           tags: |
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/${{ needs.setup_env.outputs.AWS_APPENV }}:latest
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
+            ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:latest
+            ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
 
       - name: Logout AWS ECR
         if: ${{ always() }}
-        run: docker logout ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
+        run: docker logout ${{ env.AWS_ECR_REGISTRY_URL }}
 
   deploy:
     name: Deploy to AWS ECS
@@ -93,7 +94,7 @@ jobs:
         with:
           task-definition: task-def.json
           container-name: ${{ needs.setup_env.outputs.AWS_APPENV }}
-          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
+          image: ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
       - name: Deploy Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
