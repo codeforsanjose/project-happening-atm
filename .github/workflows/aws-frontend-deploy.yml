@@ -85,13 +85,12 @@ jobs:
         run: |
           aws ecs describe-task-definition \
             --task-definition ${{ needs.setup_env.outputs.AWS_APPENV }} \
-            --query taskDefinition | \
-            jq 'del(.taskDefinitionArn,.revision,.status,.registeredBy,.registeredAt,.compatibilities,.requiresAttributes)' > task-def.json
+            --query taskDefinition > task-definition.json
       - name: Interpolate new Docker Image Tag into Task Definition
         id: task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-def.json
+          task-definition: task-definition.json
           container-name: ${{ needs.setup_env.outputs.AWS_APPENV }}
           image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
       - name: Deploy Amazon ECS
@@ -105,4 +104,4 @@ jobs:
 
       - name: Delete pulled Task Definition
         if: ${{ always() }}
-        run: rm -f task-def.json
+        run: rm -f task-definition.json
