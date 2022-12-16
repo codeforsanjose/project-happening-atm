@@ -65,9 +65,9 @@ jobs:
         with:
           context: frontend/
           push: true
-          tags:
-            - ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com:latest
-            - ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com:${{ needs.setup_env.outputs.IMAGE_TAG }}
+          tags: |
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com:latest
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com:${{ needs.setup_env.outputs.IMAGE_TAG }}
 
       - name: Logout AWS ECR
         if: ${{ always() }}
