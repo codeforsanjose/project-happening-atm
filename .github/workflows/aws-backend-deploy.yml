@@ -15,11 +15,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  AWS_SHARED_CLUSTER: multi-tenant-prod
+  AWS_SHARED_CLUSTER: arn:aws:ecs:us-west-2:${{ secrets.AWS_ACCOUNT_ID }}:cluster/multi-tenant-prod
+  AWS_ECR_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com
   AWS_APP_NAME: happening-atm-backend
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: us-west-2
+  AWS_REGION: us-west-2
 
 jobs:
   setup_env:
@@ -27,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.ref }}
       - name: Set AWS Env & Image Tag per workflow
@@ -51,22 +53,27 @@ jobs:
     needs: [setup_env]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.ref }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        run: |
+          aws ecr get-login-password | \
+          docker login --username AWS --password-stdin ${{ env.AWS_ECR_REGISTRY_URL }}
 
       - name: Build & Push Image to ECR
-        uses: kciter/aws-ecr-action@v3
+        uses: docker/build-push-action@v3
         with:
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: ${{ needs.setup_env.outputs.AWS_APPENV }}
-          tags: latest,${{ needs.setup_env.outputs.IMAGE_TAG }}
-          dockerfile: backend/graphql_api/lambda/Dockerfile
-          path: backend/graphql_api/lambda
+          context: backend/graphql_api/lambda/Dockerfile
+          push: true
+          tags: |
+            ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:latest
+            ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
+
+      - name: Logout AWS ECR
+        if: ${{ always() }}
+        run: docker logout ${{ env.AWS_ECR_REGISTRY_URL }}
 
   deploy:
     name: Deploy to AWS ECS
@@ -88,7 +95,7 @@ jobs:
         with:
           task-definition: task-def.json
           container-name: ${{ needs.setup_env.outputs.AWS_APPENV }}
-          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
+          image: ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:${{ needs.setup_env.outputs.IMAGE_TAG }}
       - name: Deploy Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
@@ -97,3 +104,7 @@ jobs:
           cluster: ${{ env.AWS_SHARED_CLUSTER }}
           wait-for-service-stability: true
           wait-for-minutes: 5 minutes
+
+      - name: Delete pulled Task Definition
+        if: ${{ always() }}
+        run: rm -f task-def.json
