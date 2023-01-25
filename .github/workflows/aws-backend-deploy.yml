@@ -17,7 +17,7 @@ concurrency:
 env:
   AWS_SHARED_CLUSTER: arn:aws:ecs:us-west-2:${{ secrets.AWS_ACCOUNT_ID }}:cluster/multi-tenant-prod
   AWS_ECR_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com
-  AWS_APP_NAME: happening-atm-backend
+  AWS_APP_NAME: happening-atm-api
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: us-west-2
