@@ -22,7 +22,7 @@ services:
                 aliases:
                     - happening-db-host
         labels:
-            com.codeforsanjose.app: happening-atm
+            org.codeforsanjose.app: happening-atm
 
     graphql:
         build:
@@ -38,7 +38,7 @@ services:
             postgres:
                 condition: service_healthy
         labels:
-            com.codeforsanjose.app: happening-atm
+            org.codeforsanjose.app: happening-atm
 
     backend:
         build:
@@ -54,7 +54,7 @@ services:
             postgres:
                 condition: service_healthy
         labels:
-            com.codeforsanjose.app: happening-atm
+            org.codeforsanjose.app: happening-atm
 
     frontend:
         # node-sass 4* needs node version 14
@@ -72,9 +72,9 @@ services:
             postgres:
                 condition: service_healthy
         labels:
-            com.codeforsanjose.app: happening-atm
+            org.codeforsanjose.app: happening-atm
 
 volumes:
     postgres-data:
         labels:
-            com.codeforsanjose.app: happening-atm
+            org.codeforsanjose.app: happening-atm
