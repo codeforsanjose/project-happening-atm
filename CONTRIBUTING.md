@@ -87,14 +87,14 @@ When adding or updating fields that are used in the Graphql mutations, be sure t
 
 - To login with a Google account a Google API client ID must be provided to the front and backend.
 - A Google API Client ID can be obtained by registering an APP here https://console.developers.google.com/.
-- In the `.env` files located in `/backend/graphql_api` and `/frontend`, add the provided ID to the environment variables `GOOGLE_CLIENT_ID` and `REACT_APP_GOOGLE_ID`.
+- In the `.env` files located in `docker/graphql` and `docker/frontend`, add the provided ID to the environment variables `GOOGLE_CLIENT_ID` and `REACT_APP_GOOGLE_ID`.
 - As an alternative the provided value in the `.env` file can be used for now.
 
 ### Login using a Microsoft Account
 
 - To login with a Microsoft account a Microsoft API client ID must be provided to the front and backend.
 - A Google API Client ID can be obtained by registering an APP here https://azure.microsoft.com/en-us/features/azure-portal/. Then search for Azure Active Directory. In the scroll bar on the left under manage select App registrations to register your App.
-- In the `.env` file located in `/backend/graphql_api` and `/frontend`, add the provided ID to the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
+- In the `.env` file located in `docker/graphql` and `docker/frontend`, add the provided ID to the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
 - As an alternative the provided value in the `.env` file can be used for now.
    
 ### local account for local login.
