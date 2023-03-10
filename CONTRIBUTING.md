@@ -75,7 +75,7 @@ When adding or updating fields that are used in the Graphql mutations, be sure t
     - :warning: Delete generated `node_modules` in that services' directory!
 - Escape Hatch!
   - Unable to build or start the application; restart from a "clean slate"
-  - Run `docker system prune -f -a --filter label='com.codeforsanjose.add=happening-atm'`
+  - Run `docker system prune -f -a --filter label='org.codeforsanjose.app=happening-atm'`
   - Still not working?
   - Run `docker system prune -a`
 

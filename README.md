@@ -43,8 +43,8 @@ Application is hosted on AWS
 TODO via Github Actions
 
 ## Live deployments
-  - `stage`: https://happening-atm-stage.codeforsanjose.org.
-  - `prod`: Production is not live yet.
+  - `stage`: https://happening-atm-stage.codeforsanjose.org
+  - `prod`: Production is not live yet
 
 ## Contributing
 
