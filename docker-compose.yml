@@ -22,12 +22,12 @@ services:
                 aliases:
                     - happening-db-host
         labels:
-            com.codeforsanjose: gov-agenda-notifier
+            com.codeforsanjose.app: happening-atm
 
     graphql:
         build:
             dockerfile: docker/graphql/Dockerfile
-        image: gov-agenda-notifier-graphql:latest
+        image: happening-atm-graphql:latest
         ports:
             - "3000:3000"
         volumes:
@@ -38,12 +38,12 @@ services:
             postgres:
                 condition: service_healthy
         labels:
-            com.codeforsanjose: gov-agenda-notifier
+            com.codeforsanjose.app: happening-atm
 
     backend:
         build:
             dockerfile: docker/backend/Dockerfile
-        image: gov-agenda-notifier-backend:latest
+        image: happening-atm-backend:latest
         ports:
             - "3002:3002"
         volumes:
@@ -54,13 +54,13 @@ services:
             postgres:
                 condition: service_healthy
         labels:
-            com.codeforsanjose: gov-agenda-notifier
+            com.codeforsanjose.app: happening-atm
 
     frontend:
         # node-sass 4* needs node version 14
         build:
             dockerfile: docker/frontend/Dockerfile
-        image: gov-agenda-notifier-frontend:latest
+        image: happening-atm-frontend:latest
         ports:
             - "3001:3000"
         volumes:
@@ -72,9 +72,9 @@ services:
             postgres:
                 condition: service_healthy
         labels:
-            com.codeforsanjose: gov-agenda-notifier
+            com.codeforsanjose.app: happening-atm
 
 volumes:
     postgres-data:
         labels:
-            com.codeforsanjose: gov-agenda-notifier
+            com.codeforsanjose.app: happening-atm

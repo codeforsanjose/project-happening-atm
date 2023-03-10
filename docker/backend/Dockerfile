@@ -1,5 +1,5 @@
 FROM docker.io/library/node:14.21.3 as npm_cache_backend
-LABEL com.codeforsanjose="gov-agenda-notifier"
+LABEL com.codeforsanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 
@@ -7,7 +7,7 @@ COPY ./backend/agenda_upload_service/package*.json .
 RUN npm install --from-lockfile
 
 FROM docker.io/library/node:14.21.3
-LABEL com.codeforsanjose="gov-agenda-notifier"
+LABEL com.codeforsanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 
