@@ -74,14 +74,14 @@ When adding or updating fields that are used in the Graphql mutations, be sure t
     - Uncomment `- /usr/src/app/node_modules`
     - :warning: Delete generated `node_modules` in that services' directory!
 - Escape Hatch!
-  - Unable to build or start the application; restart from a "clean slate"?
+  - Unable to build or start the application; restart from a "clean slate"
   - Run `docker system prune -f -a --filter label='com.codeforsanjose.add=happening-atm'`
   - Still not working?
   - Run `docker system prune -a`
 
 ## External API Dependencies
 
-:warning: **Managing Secrets**: `.env` is included in `.gitignore` to avoid leakage into Github. Althought it is _ok_ to update the file with other secrets needed to run the application locally, please keep this in mind.
+:warning: **Managing Secrets**: `.env` is included in `.gitignore` to avoid leakage into Github. Although it is _ok_ to update the file with other secrets needed to run the application locally, please keep this in mind.
 
 ### Login using a Google Account
 
