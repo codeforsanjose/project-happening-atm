@@ -1,4 +1,4 @@
-FROM docker.io/library/node:14.21.3 as npm_cache_graphql
+FROM docker.io/library/node:14.21.3 as node_modules_cache
 LABEL com.codeforsanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
@@ -13,7 +13,7 @@ WORKDIR /usr/src/app
 
 COPY ./backend/graphql_api .
 
-COPY --from=npm_cache_graphql /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --from=node_modules_cache /usr/src/app/node_modules /usr/src/app/node_modules
 
 RUN npm install --from-lockfile 
 

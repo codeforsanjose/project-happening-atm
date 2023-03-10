@@ -1,4 +1,4 @@
-FROM docker.io/library/node:14.21.3 as npm_cache_backend
+FROM docker.io/library/node:14.21.3 as node_modules_cache
 LABEL com.codeforsanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
@@ -13,7 +13,7 @@ WORKDIR /usr/src/app
 
 COPY ./backend/agenda_upload_service .
 
-COPY --from=npm_cache_backend /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --from=node_modules_cache /usr/src/app/node_modules /usr/src/app/node_modules
 
 EXPOSE 3000/tcp
 
