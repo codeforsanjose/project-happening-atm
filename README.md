@@ -27,7 +27,6 @@ The City of San Jose is interested in this service, but this is a project that c
 - [Google Drive](https://drive.google.com/drive/folders/1a89AKh3Kia3BGYeMUF7ishE4avblFIYu?usp=sharing)
 - [Links to Visual Design Mocks](https://docs.google.com/document/d/1Jcdsw6d8MMXWaU_PTPcMVtoTtBxtx4A7d0VfhMH7K5M/edit)
 - [Latest Kanban ToDo list](https://trello.com/b/pfECjOgE/happening-atm) TODO: Update to JIRA board?
-- [(old) List of TODO items](https://github.com/codeforsanjose/gov-agenda-notifier/projects/2)
 
 - [User Stories Board](https://miro.com/app/board/o9J_leAd8y8=/)
 
@@ -41,7 +40,7 @@ Application is hosted on AWS
 
 ## Testing Pipeline
 
-TODO
+TODO via Github Actions
 
 ## Live deployments
   - `stage`: https://happening-atm-stage.codeforsanjose.org.
