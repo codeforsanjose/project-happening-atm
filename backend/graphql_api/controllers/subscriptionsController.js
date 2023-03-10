@@ -1,9 +1,9 @@
-const getTwilioClient = require('../twilio/twilioClient');
+// const getTwilioClient = require('../twilio/twilioClient');
 const getSesClient = require('../ses/sesClient');
 
 module.exports = (logger) => {
   const module = {};
-  const twilioClient = getTwilioClient(logger);
+  // const twilioClient = getTwilioClient(logger);
   const sesClient = getSesClient(logger);
 
   const notifySubscribers = async (dbClient, messageBody, subscriptionQueryResponse) => {
@@ -92,11 +92,12 @@ module.exports = (logger) => {
       }
     };
 
-    try {
-      await sendMessages(phoneNumberMap, twilioClient.sendTextMessage)
-    } catch (e) {
-      logger.error(`Error sending texts: ${e}`);
-    }
+    // TODO: Replace with AWS SNS for text messages
+    // try {
+    //   await sendMessages(phoneNumberMap, twilioClient.sendTextMessage)
+    // } catch (e) {
+    //   logger.error(`Error sending texts: ${e}`);
+    // }
 
     try {
       await sendMessages(emailMap, sesClient.sendEmail)
