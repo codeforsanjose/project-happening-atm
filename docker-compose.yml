@@ -10,6 +10,8 @@ services:
             POSTGRES_USER: happening-username
             POSTGRES_PASSWORD: happening-password
             POSTGRES_DB: happening-db-name
+        volumes:
+            - postgres-data:/var/lib/postgresql
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U happening-username -d happening-db-name"]
             interval: 10s
@@ -19,59 +21,63 @@ services:
             default:
                 aliases:
                     - happening-db-host
+        labels:
+            com.codeforsanjose: gov-agenda-notifier
 
     graphql:
-        image: docker.io/library/node:14.21.3
-        entrypoint: "npm install && npm start"
-        working_dir: "/usr/src/app"
+        build:
+            dockerfile: docker/backend/Dockerfile
+        image: gov-agenda-notifier-graphql:latest
         ports:
             - "3000:3000"
         volumes:
-            - "./backend/graphql_api/lambda:/usr/src/app"
-            # Don't sync the node_modules directory back to the client.
-            # - "/usr/src/app/node_modules"
+            - "./backend/graphql_api:/usr/src/app"
+            - /usr/src/app/node_modules
+        env_file: ./docker/graphql/.env
         depends_on:
             postgres:
                 condition: service_healthy
-        env_file: ./backend/graphql_api/lambda/.env
+        labels:
+            com.codeforsanjose: gov-agenda-notifier
 
-    node-express:
+    backend:
         build:
-            context: backend
-            dockerfile: docker/backend.Dockerfile
-        image: docker.io/library/node:14.21.3
-        entrypoint: "npm install && npm start"
-        working_dir: "/usr/src/app"
+            dockerfile: docker/backend/Dockerfile
+        image: gov-agenda-notifier-backend:latest
         ports:
             - "3002:3002"
         volumes:
-            - "./backend/agenda_upload_service/lambda:/usr/src/app"
-            # Don't sync the node_modules directory back to the client.
-            # - "/usr/src/app/node_modules"
+            - "./backend/agenda_upload_service:/usr/src/app"
+            - /usr/src/app/node_modules
+        env_file: ./docker/backend/.env
         depends_on:
             postgres:
                 condition: service_healthy
-            # - frontend
+        labels:
+            com.codeforsanjose: gov-agenda-notifier
 
     frontend:
         # node-sass 4* needs node version 14
-        image: docker.io/library/node:14.21.3
-        entrypoint: "npm install && npm start"
-        working_dir: "/usr/src/app"
+        build:
+            dockerfile: docker/frontend/Dockerfile
+        image: gov-agenda-notifier-frontend:latest
         ports:
             - "3001:3000"
         volumes:
             - "./frontend:/usr/src/app"
-            # Don't sync the node_modules directory back to the client.
-            # - "/usr/src/app/node_modules"
+            - /usr/src/app/node_modules
         # stdin_open: true
+        env_file: ./docker/frontend/.env
         depends_on:
             postgres:
                 condition: service_healthy
-        env_file: ./frontend/.env
+        labels:
+            com.codeforsanjose: gov-agenda-notifier
 
 volumes:
     postgres-data:
-networks:
-    default:
-        name: happening
+        labels:
+            com.codeforsanjose: gov-agenda-notifier
+
+# labels:
+#     - "com.codeforsanjose=gov-agenda-notifier"
