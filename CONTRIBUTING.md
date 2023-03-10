@@ -19,10 +19,11 @@ Graphql requires you to write resolvers (`backend/graphql_api/graphql/resolvers`
 ## Prerequisites
 
 - Download and install Docker Desktop
-  - Already installed; update now and keep it updated
   - https://www.docker.com/products/docker-desktop
+  - :warning: Update if already installed.
+- Additional prerequisites for Windows Users: https://docs.docker.com/desktop/install/windows-install/
 
-## Bootstrap Development environment
+## Initialize Development environment
 
 :warning: All `docker compose` commands should be ran from repository root directory
 
@@ -77,8 +78,6 @@ When adding or updating fields that are used in the Graphql mutations, be sure t
   - Run `docker system prune -f -a --filter label='com.codeforsanjose.add=happening-atm'`
   - Still not working?
   - Run `docker system prune -a`
-- [Docker on Windows computer](https://docs.docker.com/desktop/install/windows-install/)
-  - Additional prerequisites for Windows Users
 
 ## External API Dependencies
 
