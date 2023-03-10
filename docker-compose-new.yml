@@ -1,0 +1,39 @@
+---
+version: "3.9"
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+    healthcheck:
+      test: curl -s localhost:3000/
+      interval: 10s
+      timeout: 15s
+    env_file:
+      - ./docker/development/.env.client.development
+
+  server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.server
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+    volumes:
+      - ./backend/graphql_api:/usr/src/app
+    healthcheck:
+      test: curl localhost:3001/v1/heartofvalley/ping
+      interval: 10s
+      timeout: 15s
+    env_file:
+      - ./docker/development/.env.server.development
+
+  nginx:
+    build:
+      context: ./docker/development
+      dockerfile: Dockerfile.nginx
+    restart: always
+    ports:
+      - "80:80"

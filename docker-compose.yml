@@ -1,80 +1,77 @@
-version: "3"
+---
+version: "3.9"
 services:
-  backend_graphql:
-    image: "node:14"
-    entrypoint:
-      - "sh"
-      - "-c"
-      - "npm install && npm start"
-    working_dir: "/usr/src/app"
-    ports:
-      - "3000:3000"
-    volumes:
-      - "./backend/graphql_api/lambda:/usr/src/app"
-      # Don't sync the node_modules directory back to the client.
-      - "/usr/src/app/node_modules"
-    depends_on:
-      - backend_pg
-    env_file: ./backend/graphql_api/lambda/.env
-    links:
-      - "backend_pg:gov-agenda-notifier_backend_pg_1"
-    networks:
-      - my_network
-  backend_pg:
-    build: "./backend/docker_for_local_dev_db"
-    # this is for debugging; graphql connects to PG via internal docker network
-    ports:
-      - "5431:5432"
-    volumes:
-      - ./backend/docker_for_local_dev_db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - my_network
-  backend_upload:
-    image: "node:14"
-    entrypoint:
-      - "sh"
-      - "-c"
-      - "npm install && npm start"
-    working_dir: "/usr/src/app"
-    ports:
-      - "3002:3002"
-    volumes:
-      - "./backend/agenda_upload_service/lambda:/usr/src/app"
-      # Don't sync the node_modules directory back to the client.
-      - "/usr/src/app/node_modules"
-    depends_on:
-      - backend_pg
-      - frontend
-    links:
-      - "backend_pg:gov-agenda-notifier_backend_pg_1"
-    networks:
-      - my_network
-  frontend:
-    # node-sass 4* needs node version 14
-    image: "node:14"
-    entrypoint:
-      - "sh"
-      - "-c"
-      - "npm install && npm start"
-    working_dir: "/usr/src/app"
-    ports:
-      - "3001:3000"
-    volumes:
-      - "./frontend:/usr/src/app"
-      # Don't sync the node_modules directory back to the client.
-      - "/usr/src/app/node_modules"
-    stdin_open: true
-    depends_on:
-      - backend_pg
-    env_file: ./frontend/.env
-    links:
-      - "backend_pg:gov-agenda-notifier_backend_pg_1"
-    networks:
-      - my_network
+    postgres:
+        image: docker.io/library/postgres:13.10-alpine
+        # this is for debugging; graphql connects to PG via internal docker network
+        ports:
+            - "5431:5432"
+        environment:
+            POSTGRES_USER: happening-username
+            POSTGRES_PASSWORD: happening-password
+            POSTGRES_DB: happening-db-name
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U happening-username -d happening-db-name"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        networks:
+            default:
+                aliases:
+                    - happening-db-host
+
+    graphql:
+        image: docker.io/library/node:14.21.3
+        entrypoint: "npm install && npm start"
+        working_dir: "/usr/src/app"
+        ports:
+            - "3000:3000"
+        volumes:
+            - "./backend/graphql_api/lambda:/usr/src/app"
+            # Don't sync the node_modules directory back to the client.
+            # - "/usr/src/app/node_modules"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        env_file: ./backend/graphql_api/lambda/.env
+
+    node-express:
+        build:
+            context: backend
+            dockerfile: docker/backend.Dockerfile
+        image: docker.io/library/node:14.21.3
+        entrypoint: "npm install && npm start"
+        working_dir: "/usr/src/app"
+        ports:
+            - "3002:3002"
+        volumes:
+            - "./backend/agenda_upload_service/lambda:/usr/src/app"
+            # Don't sync the node_modules directory back to the client.
+            # - "/usr/src/app/node_modules"
+        depends_on:
+            postgres:
+                condition: service_healthy
+            # - frontend
+
+    frontend:
+        # node-sass 4* needs node version 14
+        image: docker.io/library/node:14.21.3
+        entrypoint: "npm install && npm start"
+        working_dir: "/usr/src/app"
+        ports:
+            - "3001:3000"
+        volumes:
+            - "./frontend:/usr/src/app"
+            # Don't sync the node_modules directory back to the client.
+            # - "/usr/src/app/node_modules"
+        # stdin_open: true
+        depends_on:
+            postgres:
+                condition: service_healthy
+        env_file: ./frontend/.env
+
 volumes:
-  postgres-data:
+    postgres-data:
 networks:
-  my_network:
-    name: my_network
-    driver: bridge
+    default:
+        name: happening

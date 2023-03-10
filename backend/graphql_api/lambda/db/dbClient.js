@@ -6,11 +6,11 @@ module.exports = async (logger) => {
   const module = {};
 
   const client = new Client({
-    host: process.env.PGHOST,
-    port: process.env.PGPORT,
-    database: process.env.PGDATABASE,
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
+    host: process.env.HAPPENINGATM_DB_HOST,
+    port: process.env.HAPPENINGATM_DB_PORT || 5432,
+    database: process.env.HAPPENINGATM_DB_NAME,
+    user: process.env.HAPPENINGATM_DB_USER,
+    password: process.env.HAPPENINGATM_DB_PASSWORD,
   });
 
   client.on('error', (err) => {

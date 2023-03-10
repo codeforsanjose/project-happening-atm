@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM  docker.io/library/node:14.21.3 as builder
 
 ARG REACT_APP_GRAPHQL_URL
 
