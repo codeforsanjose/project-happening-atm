@@ -66,7 +66,7 @@ When adding or updating fields that are used in the Graphql mutations, be sure t
 
 - How are `node_modules` managed?
   - Utilizing Docker stages in `Dockerfiles`, `node_modules_cache` contains the "cached" `node_modules` directory.
-- How to update `package.json` or `package-lock.json`
+- How to update `package.json` and/or `package-lock.json`
   - :info: Each "service" (frontend, backend, graphql) contains their own `package*.json`
   - For each service:
     - Comment out line `- /usr/src/app/node_modules` for the service
