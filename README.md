@@ -44,11 +44,11 @@ When running with docker-compose, a separate persistent volume is created for Po
 1. Go to the issues page to find something to work on:
    - https://github.com/codeforsanjose/gov-agenda-notifier/issues
 1. Install Docker: https://www.docker.com/products/docker-desktop
-1. Create a `.env` file in the `/backend/graphql_api/lambda` using the env.example file in the directory as a template. The values in the template file will get you started.
+1. Create a `.env` file in the `/backend/graphql_api` using the env.example file in the directory as a template. The values in the template file will get you started.
 
    - This .env file is NOT to be included in version control. We don't want secret keys publicly accessible.
 
-1. Create a `.env` file in the `backend/agenda_upload_service/lambda` using the env.example file in the directory as a template. The values in the template file will get you started.
+1. Create a `.env` file in the `backend/agenda_upload_service` using the env.example file in the directory as a template. The values in the template file will get you started.
 
 1. Run docker-compose command to bring up the apps:
    ```bash
@@ -64,13 +64,13 @@ When running with docker-compose, a separate persistent volume is created for Po
 ### To be able to Login using a Google Account
  1. To login with a Google account a Google API client ID must be provided to the front and backend.
  1. A Google API Client ID can be obtained by registering an APP here https://console.developers.google.com/.
- 1. In the `.env` files located in `/backend/graphql_api/lambda` and `/frontend`, add the provided ID to the environment variables `GOOGLE_CLIENT_ID` and `REACT_APP_GOOGLE_ID`.
+ 1. In the `.env` files located in `/backend/graphql_api` and `/frontend`, add the provided ID to the environment variables `GOOGLE_CLIENT_ID` and `REACT_APP_GOOGLE_ID`.
  1. As an alternative the provided value in the env.example file can be used for now.
 
 ### To be able to Login using a Microsoft Account
  1. To login with a Microsoft account a Microsoft API client ID must be provided to the front and backend.
  1. A Google API Client ID can be obtained by registering an APP here https://azure.microsoft.com/en-us/features/azure-portal/. Then search for Azure Active Directory. In the scroll bar on the left under manage select App registrations to register your App.
- 1. In the `.env` file located in `/backend/graphql_api/lambda` and `/frontend`, add the provided ID to the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
+ 1. In the `.env` file located in `/backend/graphql_api` and `/frontend`, add the provided ID to the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
  1. As an alternative the provided value in the env.example file can be used for now.
    
 ### To create a local account for local login.
@@ -134,18 +134,18 @@ Frontend specific development doesn't require these steps. Setting up the DB is 
          ```
 3. Initialize the GraphQL API Lambda server locally
 
-   1. Create a `.env` file in the `/backend/graphql_api/lambda` using the env.example file as a template.
+   1. Create a `.env` file in the `/backend/graphql_api` using the env.example file as a template.
 
          - This .env file is NOT to be included in version control. We don't want secret keys publicly accessible.
 
    2. Install project dependencies:
-      1. Navigate to the `/backend/graphql_api/lambda` directory
+      1. Navigate to the `/backend/graphql_api` directory
       2. Run command:
          ```bash
          npm install
          ```
    3. Start server:
-      1. Navigate to the `/backend/graphql_api/lambda` directory
+      1. Navigate to the `/backend/graphql_api` directory
       2. Run command:
          ```bash
          npm start
@@ -168,27 +168,27 @@ After deleting the image with that command, follow steps "2. Initialize the loca
 
 # Architecture
 
-Frontend and backend are their own services. Frontend is in React and can be found in `frontend/` folder. To fetch data, frontend makes http requests to the backend using Graphql. Backend can be found in `backend/graphql_api/lambda` folder.
+Frontend and backend are their own services. Frontend is in React and can be found in `frontend/` folder. To fetch data, frontend makes http requests to the backend using Graphql. Backend can be found in `backend/graphql_api` folder.
 
 Upload is its own express app and can be found in `backend/agenda_upload_service/`. The upload services will be brought up by docker-compose along with the other services. To upload, use the example file (`backend/agenda_upload_service/example.csv`), then do:
 
     curl --form csvfile='@backend/agenda_upload_service/example.csv' -F csvfile=example.csv localhost:3002/upload
 
-Graphql requires you to write resolvers (`backend/graphql_api/lambda/graphql/resolvers`) which once registered can be called by the frontend. There's `backend/graphql_api/lambda/db/dbClient.js` which is used by the resolvers to connect to the database.
+Graphql requires you to write resolvers (`backend/graphql_api/graphql/resolvers`) which once registered can be called by the frontend. There's `backend/graphql_api/db/dbClient.js` which is used by the resolvers to connect to the database.
 
 ## Migrations
 
-`postgres-migrations` library is used to manage migrations. `backend/graphql_api/lambda/migrations/` contains all the migrations with the exception of creating the database which still exists in `backend/docker_for_local_dev_db/init.sql`.
+`postgres-migrations` library is used to manage migrations. `backend/graphql_api/migrations/` contains all the migrations with the exception of creating the database which still exists in `backend/docker_for_local_dev_db/init.sql`.
 
-Migrations are run on each request in `backend/graphql_api/lambda/db/dbClient.js`.
+Migrations are run on each request in `backend/graphql_api/db/dbClient.js`.
 
 To create a new migration:
 
-1. Create a new file in `backend/graphql_api/lambda/migrations/` with incrementing integer prefix and few words describing the change, for example `002-add-link-to-meeting.sql`.
+1. Create a new file in `backend/graphql_api/migrations/` with incrementing integer prefix and few words describing the change, for example `002-add-link-to-meeting.sql`.
 1. Add your migration in that file.
 1. Migrations will be automatically run on next request to the backend.
 
-When adding or updating fields that are used in the Graphql mutations, be sure to update `backend/graphql_api/lambda/graphql/apolloServer.js`.
+When adding or updating fields that are used in the Graphql mutations, be sure to update `backend/graphql_api/graphql/apolloServer.js`.
 
 
 # Workflow
