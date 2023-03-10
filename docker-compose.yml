@@ -26,7 +26,7 @@ services:
 
     graphql:
         build:
-            dockerfile: docker/backend/Dockerfile
+            dockerfile: docker/graphql/Dockerfile
         image: gov-agenda-notifier-graphql:latest
         ports:
             - "3000:3000"
@@ -66,7 +66,7 @@ services:
         volumes:
             - "./frontend:/usr/src/app"
             - /usr/src/app/node_modules
-        # stdin_open: true
+        stdin_open: true
         env_file: ./docker/frontend/.env
         depends_on:
             postgres:
@@ -78,6 +78,3 @@ volumes:
     postgres-data:
         labels:
             com.codeforsanjose: gov-agenda-notifier
-
-# labels:
-#     - "com.codeforsanjose=gov-agenda-notifier"

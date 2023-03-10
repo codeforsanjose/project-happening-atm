@@ -15,6 +15,8 @@ COPY ./backend/graphql_api .
 
 COPY --from=npm_cache_graphql /usr/src/app/node_modules /usr/src/app/node_modules
 
+RUN npm install --from-lockfile 
+
 EXPOSE 3000/tcp
 
 CMD ["npm", "run", "start"]
