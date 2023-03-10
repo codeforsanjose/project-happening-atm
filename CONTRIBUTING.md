@@ -38,11 +38,11 @@ Graphql requires you to write resolvers (`backend/graphql_api/graphql/resolvers`
 3. Create Admin user for Graphql
   - TODO
 
-### Stop the application:
+#### Stop the application:
   - Ctrl-C
   - `docker compose down` in the repository root directory
 
-### Relavent Local URLs
+#### Relavent Local URLs
 - Frontend React App Server
   - `localhost:3001/`
 - Graphql Server
