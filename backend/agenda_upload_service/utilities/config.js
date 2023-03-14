@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || 'production'
+const env = process.env.NODE_ENV || 'development'
 
 /**
  * insert your API Key & Secret for each environment 

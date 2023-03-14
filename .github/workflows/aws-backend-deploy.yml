@@ -65,7 +65,7 @@ jobs:
       - name: Build & Push Image to ECR
         uses: docker/build-push-action@v3
         with:
-          context: backend/graphql_api/lambda/
+          context: backend/graphql_api
           push: true
           tags: |
             ${{ env.AWS_ECR_REGISTRY_URL }}/${{ needs.setup_env.outputs.AWS_APPENV }}:latest
