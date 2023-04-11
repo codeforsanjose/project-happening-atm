@@ -1,32 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import './LoginHandler.scss';
-import {
-  Redirect, NavLink,
-} from 'react-router-dom';
-import {
-  useLazyQuery,
-} from '@apollo/client';
-import { GoogleLogin } from 'react-google-login';
-import MicrosoftLogin from 'react-microsoft-login';
-
-import { LOGIN_LOCAL, LOGIN_GOOGLE, LOGIN_MICROSOFT } from '../../graphql/mutation';
-import LocalStorageTerms from '../../constants/LocalStorageTerms';
-import ErrorMessagesGraphQL from '../../constants/ErrorMessagesGraphQL';
-import googleIcon from './assets/btn_google_signin_light_normal_web@2x.png';
-import microsoftIcon from './assets/microsoft_PNG18.png';
-import LoginContext from '../LoginContext/LoginContext';
-import CLIENT_ID from '../../constants/OauthClientID';
+import React, { useState, useEffect, useContext } from "react";
+import { useTranslation } from "react-i18next";
+import "./LoginHandler.scss";
+import { Redirect, NavLink } from "react-router-dom";
+import { useLazyQuery } from "@apollo/client";
+import { GoogleLogin } from "react-google-login";
+import MicrosoftLogin from "react-microsoft-login";
 
 import {
-  ATMLogoRainbowIcon,
-  CFSJLogo,
-  InfoIcon
-} from "../../utils/_icons";
+  LOGIN_LOCAL,
+  LOGIN_GOOGLE,
+  LOGIN_MICROSOFT,
+} from "../../graphql/mutation";
+import LocalStorageTerms from "../../constants/LocalStorageTerms";
+import ErrorMessagesGraphQL from "../../constants/ErrorMessagesGraphQL";
+import googleIcon from "./assets/btn_google_signin_light_normal_web@2x.png";
+import microsoftIcon from "./assets/microsoft_PNG18.png";
+import LoginContext from "../LoginContext/LoginContext";
+import CLIENT_ID from "../../constants/OauthClientID";
+
+import { ATMLogoRainbowIcon, CFSJLogo, InfoIcon } from "../../utils/_icons";
 
 import atmLogoLarge from "../../assets/ATM_Logo_Rainbow.png";
 
-import { getLocalStorageItemByKey, setLocalStorageItemByKey } from '../../utils/storageUtils';
+import {
+  getLocalStorageItemByKey,
+  setLocalStorageItemByKey,
+} from "../../utils/storageUtils";
 
 // global constant options
 const OPTIONS = {
@@ -37,19 +36,39 @@ const OPTIONS = {
 function LoginHandler() {
   const { t } = useTranslation();
 
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [badLoginAttempt, setBadLoginAttempt] = useState(false);
   const [otherError, setOtherError] = useState(false);
   const loginContext = useContext(LoginContext); // holds setSignIn, and signIn props
-  const loginLocal = useLazyQuery(LOGIN_LOCAL,
-    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); } });
-  const loginGoogle = useLazyQuery(LOGIN_GOOGLE,
-    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
-  const loginMicrosoft = useLazyQuery(LOGIN_MICROSOFT,
-    { onCompleted: (d) => { setData(d); }, onError: (e) => { setError(e); }, fetchPolicy: 'network-only' });
+  const loginLocal = useLazyQuery(LOGIN_LOCAL, {
+    onCompleted: (d) => {
+      setData(d);
+    },
+    onError: (e) => {
+      setError(e);
+    },
+  });
+  const loginGoogle = useLazyQuery(LOGIN_GOOGLE, {
+    onCompleted: (d) => {
+      setData(d);
+    },
+    onError: (e) => {
+      setError(e);
+    },
+    fetchPolicy: "network-only",
+  });
+  const loginMicrosoft = useLazyQuery(LOGIN_MICROSOFT, {
+    onCompleted: (d) => {
+      setData(d);
+    },
+    onError: (e) => {
+      setError(e);
+    },
+    fetchPolicy: "network-only",
+  });
 
   // needed to fix an infinite looping problem with microsoft oauth and microsoft-react-login
   const { sessionStorage } = window;
@@ -62,7 +81,10 @@ function LoginHandler() {
 
   const microsoftHandler = (err, response) => {
     if (err === null) {
-      localStorage.setItem(LocalStorageTerms.TOKEN, response.idToken.rawIdToken);
+      localStorage.setItem(
+        LocalStorageTerms.TOKEN,
+        response.idToken.rawIdToken
+      );
       loginMicrosoft[0]();
     } else {
       setOtherError(true);
@@ -88,22 +110,31 @@ function LoginHandler() {
     // Successful sign in
     if (data) {
       let userEmail;
-      if (Object.prototype.hasOwnProperty.call(data, 'loginGoogle')) {
-        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginGoogle.token);
+      if (Object.prototype.hasOwnProperty.call(data, "loginGoogle")) {
+        window.localStorage.setItem(
+          LocalStorageTerms.TOKEN,
+          data.loginGoogle.token
+        );
         userEmail = data.loginGoogle.email;
       }
-      if (Object.prototype.hasOwnProperty.call(data, 'loginLocal')) {
-        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginLocal.token);
+      if (Object.prototype.hasOwnProperty.call(data, "loginLocal")) {
+        window.localStorage.setItem(
+          LocalStorageTerms.TOKEN,
+          data.loginLocal.token
+        );
         userEmail = data.loginLocal.email || userName;
       }
-      if (Object.prototype.hasOwnProperty.call(data, 'loginMicrosoft')) {
-        window.localStorage.setItem(LocalStorageTerms.TOKEN, data.loginMicrosoft.token);
-        userEmail = data.loginMicrosoft.email
+      if (Object.prototype.hasOwnProperty.call(data, "loginMicrosoft")) {
+        window.localStorage.setItem(
+          LocalStorageTerms.TOKEN,
+          data.loginMicrosoft.token
+        );
+        userEmail = data.loginMicrosoft.email;
       }
       window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, true);
 
       loginContext.setSignedIn(true);
-      window.localStorage.setItem("email_address", userEmail)
+      window.localStorage.setItem("email_address", userEmail);
     }
     if (error) {
       // extracted error message
@@ -126,53 +157,69 @@ function LoginHandler() {
 
   return (
     <div className="LoginHandler">
-      {loginContext.signedIn ? <Redirect to={{ pathname: "/", state: { email_address: userName } }} /> : ''}
+      {loginContext.signedIn ? (
+        <Redirect to={{ pathname: "/", state: { email_address: userName } }} />
+      ) : (
+        ""
+      )}
       <div className="loginHeader">
         <img src={atmLogoLarge} />
       </div>
 
       <div className="loginBody">
         <div className="innerWrapper">
-          <div className='subtitle'>
-            {t('login.body.header.welcomeToCity')}
+          <div className="subtitle">
+            {t("login.body.header.welcomeToCity")}
             <br />
-            {t('login.body.header.cityCouncil')}
-          </div>      
+            {t("login.body.header.cityCouncil")}
+          </div>
 
           <div className="inputWrapper">
-            {badLoginAttempt
-              ? <p className="inputError">{t('standard.errors.badEmailPass')}</p> : ''}
-            {otherError
-              ? <p className="inputError">{t('standard.errors.something-went-wrong')}</p> : ''}
+            {badLoginAttempt ? (
+              <p className="inputError">{t("standard.errors.badEmailPass")}</p>
+            ) : (
+              ""
+            )}
+            {otherError ? (
+              <p className="inputError">
+                {t("standard.errors.something-went-wrong")}
+              </p>
+            ) : (
+              ""
+            )}
             <input
               className="localLogin localNameLogin"
               type="text"
-              placeholder={t('login.body.textSignIn.userName')}
+              placeholder={t("login.body.textSignIn.userName")}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
             <input
               className="localLogin"
               type="password"
-              placeholder={t('login.body.textSignIn.password')}
+              placeholder={t("login.body.textSignIn.password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            
+
             <button
               className="signInButton"
               type="button"
               value="Sign In"
               onClick={signInHandler}
             >
-              {t('navbar.sign-in')}
+              {t("navbar.sign-in")}
             </button>
           </div>
 
           <div className="create-account-container">
-             <NavLink className="nav-pass-reset" to="/account-create/">{t('createAccount.link')}</NavLink>
-             <span>|</span>
-             <NavLink className="nav-pass-reset" to="/forgot-password">{t('login.body.textSignIn.forgotPass')}</NavLink>
+            <NavLink className="nav-pass-reset" to="/account-create/">
+              {t("createAccount.link")}
+            </NavLink>
+            <span>|</span>
+            <NavLink className="nav-pass-reset" to="/forgot-password">
+              {t("login.body.textSignIn.forgotPass")}
+            </NavLink>
           </div>
 
           <hr className="introTextSeparator" />
@@ -180,11 +227,13 @@ function LoginHandler() {
           <GoogleLogin
             clientId={OPTIONS.googleClientID}
             render={(renderProps) => (
-              <button className="google-microsoft-login googleLogin" type="button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                <img
-                  src={googleIcon}
-                  alt="googleLogin"
-                />
+              <button
+                className="google-microsoft-login googleLogin"
+                type="button"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
+                <img src={googleIcon} alt="googleLogin" />
                 <span>Sign In with Google</span>
               </button>
             )}
@@ -193,18 +242,24 @@ function LoginHandler() {
             onFailure={responseGoogle}
             cookiePolicy="single_host_origin"
           />
-          <MicrosoftLogin clientId={OPTIONS.microsoftClientID} authCallback={microsoftHandler}>
-            <button className="google-microsoft-login microsoftLogin" type="button">
-              <img
-                src={microsoftIcon}
-                alt="microsoftLogin"
-              />
-              <span>{t('login.body.oauth.microsoft')}</span>
+          <MicrosoftLogin
+            clientId={OPTIONS.microsoftClientID}
+            authCallback={microsoftHandler}
+          >
+            <button
+              className="google-microsoft-login microsoftLogin"
+              type="button"
+            >
+              <img src={microsoftIcon} alt="microsoftLogin" />
+              <span>{t("login.body.oauth.microsoft")}</span>
             </button>
           </MicrosoftLogin>
-          <p className='tool-tip-wrapper'><a href="">or take a look first</a>
-            <span className='tool-tip-text'>You'll need an account to sign up for notifications.</span>
-            <InfoIcon/>
+          <p className="tool-tip-wrapper">
+            <a href="">or take a look first</a>
+            <span className="tool-tip-text">
+              You'll need an account to sign up for notifications.
+            </span>
+            <InfoIcon />
           </p>
         </div>
       </div>
