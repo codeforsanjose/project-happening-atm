@@ -47,6 +47,8 @@ TODO via Github Actions
 - Run the app, and wait for the engine to run (green status bar on bottom left)
 - In the terminal, go to your repository and run `docker compose build`. You only need to run this command once, then you can bring up your environment again by using `docker compose up`.
 
+
+
 ## Live deployments
   - `stage`: https://happening-atm-stage.codeforsanjose.org
   - `prod`: Production is not live yet
