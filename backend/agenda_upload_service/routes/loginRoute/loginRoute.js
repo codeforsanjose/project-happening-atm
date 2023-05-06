@@ -1,4 +1,43 @@
 const { Router } = require("express");
+const dbClient = require("../../db/dbClient.js");
+const { comparePassword } = require("../../utilities/auth.js");
+
+function loginRoute(logger) {
+  const router = Router();
+  router.post("/login", async function (req, res) {
+    const client = await dbClient(logger);
+    const { username } = req.body;
+    try {
+      console.log("here");
+      const dbUser = await client.getAccountByEmail(username);
+      console.log("HOLY SHIT THE DB USER ---->", dbUser);
+      if (dbUser.rows.length === 0) {
+        console.log("Email does not match our records please sign up");
+        throw new Error("Email does not match our records please sign up");
+      }
+      const dbPassword = dbUser.rows[0].password;
+      if (!dbPassword) {
+        console.log("Sign in with your Google or Microsoft account");
+        throw new Error("Sign in with your Google or Microsoft account");
+      }
+      const isAuthenticated = await comparePassword(password, dbPassword);
+      if (!isAuthenticated) {
+        console.log("Email and Password do not match");
+        throw new Error("Email and Password do not match");
+      }
+      user = dbUser;
+    } catch (e) {
+      console.log(`Cannot authenticate email and password: ${e}`);
+      throw new Error(e);
+    }
+    res.status(200).json({ user });
+  });
+
+  return router;
+}
+module.exports = {
+  loginRoute,
+};
 
 // const loginLocal = async (dbClient, email_address, password) => {
 //   let token;
@@ -22,14 +61,3 @@ const { Router } = require("express");
 //   }
 //   return { token, email: email_address };
 // };
-
-module.exports = (logger) => {
-  const router = Router();
-
-  router.get("/login", function (req, res) {
-    console.log("------------>the login paarmas", req);
-    res.status(200).json({ msg: "login post here in server" });
-  });
-
-  return router;
-};

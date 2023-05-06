@@ -21,7 +21,6 @@ module.exports = (logger) => {
   // So, we'll handle the connection's lifecycle here at the initial function call and throw it downstream.
   const resolverHandler = async (resolverFunc, args, context) => {
     let dbClient;
-    console.log("HOW MANY TIUMES DO I GET CALLLLLLLLLLLLLEDDDDDDDD");
     try {
       dbClient = await getDBClient(logger);
       await dbClient.init();
@@ -107,13 +106,13 @@ module.exports = (logger) => {
       },
       loginLocal: async (_parent, args) => {
         const yes = await loginUser(args.email_address, args.password);
-        console.log("ohhhhhh boy", yes);
         logger.info("Initiating LoginLocal Query resolver");
-        return resolverHandler(
-          queryResolver.loginLocal,
-          args.email_address,
-          args.password
-        );
+        // return resolverHandler(
+        //   queryResolver.loginLocal,
+        //   args.email_address,
+        //   args.password
+        // );
+        // return true;
       },
       loginGoogle: async (_parent, args, context) => {
         logger.info("Initiating LoginGoogle Query resolver");
