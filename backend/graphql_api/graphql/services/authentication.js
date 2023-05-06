@@ -5,7 +5,7 @@ module.exports = async function loginUser(username, passphrase) {
       username,
       password: passphrase,
     };
-    const result = await postRequst("http://backend:3002/auth/login", body);
+    const result = await postRequst("/auth/login", body);
     return result.data.user;
   } catch (e) {
     console.log("error in login", e.response.status);
