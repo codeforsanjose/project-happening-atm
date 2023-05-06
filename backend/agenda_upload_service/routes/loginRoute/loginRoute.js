@@ -6,11 +6,9 @@ function loginRoute(logger) {
   const router = Router();
   router.post("/login", async function (req, res) {
     const client = await dbClient(logger);
-    const { username } = req.body;
+    const { username, password } = req.body;
     try {
-      console.log("here");
       const dbUser = await client.getAccountByEmail(username);
-      console.log("HOLY SHIT THE DB USER ---->", dbUser);
       if (dbUser.rows.length === 0) {
         console.log("Email does not match our records please sign up");
         throw new Error("Email does not match our records please sign up");
@@ -25,7 +23,7 @@ function loginRoute(logger) {
         console.log("Email and Password do not match");
         throw new Error("Email and Password do not match");
       }
-      user = dbUser;
+      user = dbUser.rows[0];
     } catch (e) {
       console.log(`Cannot authenticate email and password: ${e}`);
       throw new Error(e);

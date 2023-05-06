@@ -105,8 +105,14 @@ module.exports = (logger) => {
         );
       },
       loginLocal: async (_parent, args) => {
-        const yes = await loginUser(args.email_address, args.password);
+        const loginLocalUserResult = await loginUser(
+          args.email_address,
+          args.password
+        );
+        console.log("YESSSS -> ", loginLocalUserResult);
         logger.info("Initiating LoginLocal Query resolver");
+        return loginLocalUserResult;
+
         // return resolverHandler(
         //   queryResolver.loginLocal,
         //   args.email_address,
