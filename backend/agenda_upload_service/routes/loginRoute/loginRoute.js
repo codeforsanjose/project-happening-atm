@@ -36,26 +36,3 @@ function loginRoute(logger) {
 module.exports = {
   loginRoute,
 };
-
-// const loginLocal = async (dbClient, email_address, password) => {
-//   let token;
-//   let user;
-//   try {
-//     if (password === undefined || password === null || password == "") {
-//       logger.error("Unable to authenticate no password provided");
-//       throw new Error("Unable to authenticate no password provided");
-//     } else {
-//       user = await authentication.verifyEmailPassword(
-//         dbClient,
-//         email_address,
-//         password
-//       );
-//       validator.validateAuthType(user.rows[0].auth_type, "Local");
-//       token = authentication.createJWT(user);
-//     }
-//   } catch (e) {
-//     logger.error(`loginLocal resolver error: ${e}`);
-//     throw e;
-//   }
-//   return { token, email: email_address };
-// };

@@ -109,16 +109,8 @@ module.exports = (logger) => {
           args.email_address,
           args.password
         );
-        console.log("YESSSS -> ", loginLocalUserResult);
         logger.info("Initiating LoginLocal Query resolver");
         return loginLocalUserResult;
-
-        // return resolverHandler(
-        //   queryResolver.loginLocal,
-        //   args.email_address,
-        //   args.password
-        // );
-        // return true;
       },
       loginGoogle: async (_parent, args, context) => {
         logger.info("Initiating LoginGoogle Query resolver");
