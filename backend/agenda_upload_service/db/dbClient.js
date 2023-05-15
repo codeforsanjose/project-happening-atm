@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+const { Client } = require("pg");
 
 module.exports = async (logger) => {
   const module = {};
@@ -11,23 +11,30 @@ module.exports = async (logger) => {
     password: process.env.HAPPENINGATM_DB_PASSWORD,
   });
 
-  client.on('error', (err) => {
-    logger.error(`Error with DB: ${err.stack}`);
+  client.on("error", (err) => {
+    console.log(`Error with DB: ${err.stack}`);
   });
 
   const query = async (queryString, args, callback) => {
-    logger.debug(queryString, args);
+    console.log(queryString, args);
+    try {
+      await client.connect();
+      console.log("DB connected");
+    } catch (e) {
+      console.log(`DB connection error: ${e.stack}`);
+      throw e;
+    }
     try {
       return await client.query(queryString, args, callback);
     } catch (e) {
-      logger.error(`dbClient query error: ${e.stack}`);
-      logger.debug(`errored query: ${queryString}. errored args: ${args}`);
+      console.log(`dbClient query error: ${e.stack}`);
+      console.log(`errored query: ${queryString}. errored args: ${args}`);
       throw e;
     }
   };
 
   const initTables = async () => {
-    logger.info('Initializing DB tables if necessary');
+    logger.info("Initializing DB tables if necessary");
     try {
       await query(`
       CREATE TABLE IF NOT EXISTS meeting (
@@ -104,7 +111,7 @@ module.exports = async (logger) => {
   module.init = async () => {
     try {
       await client.connect();
-      logger.info('DB connected');
+      logger.info("DB connected");
     } catch (e) {
       logger.error(`DB connection error: ${e.stack}`);
       throw e;
@@ -126,10 +133,19 @@ module.exports = async (logger) => {
   };
 
   module.createMeeting = async (
-    meetingType, meetingStartTimestamp, virtualMeetingUrl, status, virtualMeetingId, callInInformation,
-    emailBeforeMeeting, emailDuringMeeting, eComment, cityOfSanJoseMeeting, youtubeLink
+    meetingType,
+    meetingStartTimestamp,
+    virtualMeetingUrl,
+    status,
+    virtualMeetingId,
+    callInInformation,
+    emailBeforeMeeting,
+    emailDuringMeeting,
+    eComment,
+    cityOfSanJoseMeeting,
+    youtubeLink
   ) => {
-    logger.info('dbClient: createMeeting');
+    logger.info("dbClient: createMeeting");
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -139,32 +155,35 @@ module.exports = async (logger) => {
           email_during_meeting, eComment, city_of_san_jose_meeting, youtube_link)
         VALUES ($1, to_timestamp($2), $3, to_timestamp($4), to_timestamp($5), $6, $7, $8, $9, $10, $11, $12, $13)
         RETURNING id;`;
-    return query(
-      queryString,
-      [
-        meetingType,
-        convertMsToSeconds(meetingStartTimestamp),
-        virtualMeetingUrl,
-        convertMsToSeconds(createdTimestamp),
-        convertMsToSeconds(updatedTimestamp),
-        status,
-        virtualMeetingId,
-        callInInformation,
-        emailBeforeMeeting,
-        emailDuringMeeting,
-        eComment,
-        cityOfSanJoseMeeting,
-        youtubeLink
-      ]
-    );
+    return query(queryString, [
+      meetingType,
+      convertMsToSeconds(meetingStartTimestamp),
+      virtualMeetingUrl,
+      convertMsToSeconds(createdTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      status,
+      virtualMeetingId,
+      callInInformation,
+      emailBeforeMeeting,
+      emailDuringMeeting,
+      eComment,
+      cityOfSanJoseMeeting,
+      youtubeLink,
+    ]);
   };
 
   module.createMeetingItem = async (
-    meetingId, parentMeetingItemId, orderNumber,
-    itemStartTimestamp, itemEndTimestamp,
-    status, contentCategories, descriptionLocKey, titleLocKey,
+    meetingId,
+    parentMeetingItemId,
+    orderNumber,
+    itemStartTimestamp,
+    itemEndTimestamp,
+    status,
+    contentCategories,
+    descriptionLocKey,
+    titleLocKey
   ) => {
-    logger.info('dbClient: createMeetingItem');
+    logger.info("dbClient: createMeetingItem");
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -172,31 +191,40 @@ module.exports = async (logger) => {
         INSERT INTO meeting_item(meeting_id, parent_meeting_item_id, order_number, created_timestamp, updated_timestamp, item_start_timestamp, item_end_timestamp, status, content_categories, description_loc_key, title_loc_key)
         VALUES ($1, $2, $3, to_timestamp($4), to_timestamp($5), to_timestamp($6), to_timestamp($7), $8, $9, $10, $11)
         RETURNING id;`;
-    return query(queryString,
-      [
-        meetingId,
-        parentMeetingItemId,
-        orderNumber,
-        convertMsToSeconds(createdTimestamp),
-        convertMsToSeconds(updatedTimestamp),
-        convertMsToSeconds(itemStartTimestamp),
-        convertMsToSeconds(itemEndTimestamp),
-        status,
-        contentCategories,
-        descriptionLocKey,
-        titleLocKey
-      ]
-    );
+    return query(queryString, [
+      meetingId,
+      parentMeetingItemId,
+      orderNumber,
+      convertMsToSeconds(createdTimestamp),
+      convertMsToSeconds(updatedTimestamp),
+      convertMsToSeconds(itemStartTimestamp),
+      convertMsToSeconds(itemEndTimestamp),
+      status,
+      contentCategories,
+      descriptionLocKey,
+      titleLocKey,
+    ]);
   };
 
   module.getMeeting = async (id) => {
-    logger.info('dbClient: getMeeting');
+    logger.info("dbClient: getMeeting");
     return query(`SELECT * FROM meeting WHERE id = ${id}`);
   };
 
   module.deleteMeetingItemsFroMeeting = async (meetingId) => {
-    logger.info('dbClient: getMeeting');
+    logger.info("dbClient: getMeeting");
     return query(`DELETE FROM meeting_item WHERE meeting_id = ${meetingId}`);
+  };
+
+  module.getAccountByEmail = async (email) => {
+    //logger.info("dbClient: getAccountByEmail");
+    console.log("ohhhhh hererere finally", email);
+    return query(`SELECT * FROM account WHERE email_address = '${email}'`);
+  };
+
+  module.getAccountById = async (id) => {
+    logger.info("dbClient: getAccountById ");
+    return query(`SELECT * FROM account WHERE id = ${id}`);
   };
 
   return module;
