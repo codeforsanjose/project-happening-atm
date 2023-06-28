@@ -78,6 +78,7 @@ module.exports = (logger) => {
       for (const subItemNumber of subItems.keys()) {
         let subTitle = subItems.get(subItemNumber);
         const ellipses = '...';
+        // subTitle's max char length is 255 (including subTitle number and any abbreviation elipses)
         subTitle = (subTitle.length + rootItemNumber.length + subItemNumber.length > 255) 
           ? subTitle.substring(0,254 - ellipses.length - rootItemNumber.length - subItemNumber.length) + ellipses 
           : subTitle;
