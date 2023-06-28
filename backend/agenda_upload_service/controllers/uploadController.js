@@ -26,7 +26,7 @@ module.exports = (logger) => {
 
   const ingestData = async (dbClient, meetingId, csvData) => {
     const jsonValue = await csvtojson().fromString(csvData);
-    
+
     const agendaItems = new Map();
     // The reason why we store the CSV data into nested maps is
     // to facilitate the handling of unordered CSV data
@@ -77,7 +77,11 @@ module.exports = (logger) => {
       const subItems = rootItem[1];
       for (const subItemNumber of subItems.keys()) {
         let subTitle = subItems.get(subItemNumber);
-        subTitle = (subTitle.length > 280) ? subTitle.substring(0,277) + '...' : subTitle;
+        const ellipses = '...';
+        // subTitle's max char length is 255 (including subTitle number and any abbreviation elipses)
+        subTitle = (subTitle.length + rootItemNumber.length + subItemNumber.length > 255) 
+          ? subTitle.substring(0,254 - ellipses.length - rootItemNumber.length - subItemNumber.length) + ellipses 
+          : subTitle;
         logger.debug(`Creating nested meeting item: ${subTitle}`);
 
         // This is a nested item

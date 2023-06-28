@@ -18,13 +18,6 @@ module.exports = async (logger) => {
   const query = async (queryString, args, callback) => {
     console.log(queryString, args);
     try {
-      await client.connect();
-      console.log("DB connected");
-    } catch (e) {
-      console.log(`DB connection error: ${e.stack}`);
-      throw e;
-    }
-    try {
       return await client.query(queryString, args, callback);
     } catch (e) {
       console.log(`dbClient query error: ${e.stack}`);
