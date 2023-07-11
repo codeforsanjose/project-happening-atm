@@ -31,7 +31,7 @@ module.exports = async (logger) => {
   module.init = async () => {
     try {
       await client.connect();
-      logger.info("DB connected");
+      logger.info("DB connected - line 34 - backend/graphql_api/db/dbClient.js");
 
       await migrate({ client }, "./migrations");
       logger.info("Migrations completed successfully.");
@@ -43,6 +43,8 @@ module.exports = async (logger) => {
 
   module.end = async () => {
     await client.end();
+    logger.info("DB disconnected - line 46 - backend/graphql_api/db/dbClient.js");
+
   };
 
   const convertMsToSeconds = (milliseconds) => milliseconds / 1000;

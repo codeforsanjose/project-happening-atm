@@ -36,6 +36,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import SendFeedback from "./components/SendFeedback/SendFeedback";
 import * as serviceWorker from "./serviceWorker";
 
+// import parseJwt from './utils/parseJwt.js';
 import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/query";
 import AdminPaths from "./constants/AdminPaths";
 import LocalStorageTerms from "./constants/LocalStorageTerms";
@@ -47,16 +48,16 @@ const httpLink = new BatchHttpLink({
   batchMax: 100,
 });
 
-//
+
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
+  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN); 
 
-  // if the token is valid use it, else attach no token  to header
+  // if the token both exists and is valid use it, else attach no token to header
   return {
     headers: {
       ...headers,
-      authorization: verifyToken() ? `Bearer ${token}` : "",
+      authorization: (token && verifyToken()) ? `Bearer ${token}` : "",      
     },
   };
 });
@@ -81,12 +82,13 @@ function SampleQuery() {
 }
 
 const initializeSignIn = () => {
+// localStorage.getItem returns string, so need to convert to boolean  
   const tokenSignedIn = window.localStorage.getItem(
-    LocalStorageTerms.SIGNED_IN
-  );
-
+    LocalStorageTerms.SIGNED_IN) === 'true';
+  ;   
   // provides verification to the front-end the login status
-  const loggedIn = verifyToken() && tokenSignedIn;
+  // 1st verify user is signed in before attempting token verification
+  const loggedIn = tokenSignedIn && verifyToken(); 
   window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, loggedIn);
 
   return loggedIn;

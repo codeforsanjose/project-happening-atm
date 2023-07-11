@@ -23,6 +23,7 @@ module.exports = (logger) => {
     let dbClient;
     try {
       dbClient = await getDBClient(logger);
+      logger.info("Initiating DB Client - backend/graphql_api/graphql/apolloServer.js");
       await dbClient.init();
       return await resolverFunc(dbClient, args, context);
     } catch (err) {
@@ -30,7 +31,7 @@ module.exports = (logger) => {
       throw err;
     } finally {
       try {
-        logger.info("Ending DB connection");
+        logger.info("Ending DB connection - backend/graphql_api/graphql/apolloServer.js");
         await dbClient.end();
       } catch (err) {
         logger.error(`Error ending DB connection: ${err.stack}`);
@@ -109,8 +110,11 @@ module.exports = (logger) => {
           args.email_address,
           args.password
         );
+        // create signed JWT to relay logged in user info in hashed token
+        let token = authentication.createJWT({rows:[loginLocalUserResult]}) 
         logger.info("Initiating LoginLocal Query resolver");
-        return loginLocalUserResult;
+        //return await resolverHandler(queryResolver.loginLocal, args.email_address, args.password); // original loginLocal logic (prior to refactor) 
+        return {token: token, email: loginLocalUserResult.email_address}; // mirrors return args from orig. loginLocal function in backend/graphql_api/graphql/resolvers/query.js
       },
       loginGoogle: async (_parent, args, context) => {
         logger.info("Initiating LoginGoogle Query resolver");

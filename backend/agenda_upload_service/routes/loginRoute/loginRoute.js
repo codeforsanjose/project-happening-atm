@@ -28,6 +28,10 @@ function loginRoute(logger) {
       console.log(`Cannot authenticate email and password: ${e}`);
       throw new Error(e);
     }
+    // finally end db connection
+    finally {
+      client.end();
+    }
     res.status(200).json({ user });
   });
 

@@ -1,19 +1,23 @@
-const { Client } = require("pg");
+const { Pool } = require("pg");
 
 module.exports = async (logger) => {
   const module = {};
 
-  const client = new Client({
+  const pool = new Pool({
     host: process.env.HAPPENINGATM_DB_HOST,
     port: process.env.HAPPENINGATM_DB_PORT || 5432,
     database: process.env.HAPPENINGATM_DB_NAME,
     user: process.env.HAPPENINGATM_DB_USER,
     password: process.env.HAPPENINGATM_DB_PASSWORD,
-  });
+  })
 
-  client.on("error", (err) => {
+  pool.on("error", (err) => {
     console.log(`Error with DB: ${err.stack}`);
   });
+
+  // surface the db pool connection so that it can later be released in module.end
+  const client = await pool.connect();
+  console.log('new DB pool connection - line 19 backend/agenda_upload_service/db/dbClient.js');
 
   const query = async (queryString, args, callback) => {
     console.log(queryString, args);
@@ -103,8 +107,8 @@ module.exports = async (logger) => {
 
   module.init = async () => {
     try {
-      await client.connect();
-      logger.info("DB connected");
+      const client = await pool.connect();
+      logger.info("DB pool connected - line 124 backend/agenda_upload_service/db/dbClient.js");
     } catch (e) {
       logger.error(`DB connection error: ${e.stack}`);
       throw e;
@@ -118,7 +122,8 @@ module.exports = async (logger) => {
   };
 
   module.end = async () => {
-    await client.end();
+    console.log('Disconnecting DB Pool - line 133 - backend/agenda_upload_service/db/dbClient.js');
+    await client.release();
   };
 
   const convertMsToSeconds = (milliseconds) => {

@@ -4,10 +4,9 @@
 const parseJwt = (token) => {
   try {
     const partToRead = token;
-    // TODO: currently this function was useing atob which is depricated
-    // once it parses it trys to use the roles but it is a random generated token line 384 in mutation.js in backend graphql
-    // that would need to be parsed to base64 encoding there and here would read to utf8 and use the roles
-    const parsed = JSON.parse(Buffer.from(partToRead, "utf8"));
+    
+    const parsed = JSON.parse(Buffer.from(partToRead.split('.')[1], 'base64').toString('utf8'));
+
     return parsed;
   } catch (e) {
     console.log("the error", e);
