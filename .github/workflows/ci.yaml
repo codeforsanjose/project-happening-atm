@@ -16,7 +16,7 @@ on:
         required: true
 
 concurrency:
-  group: test-${{ github.head_ref || github.run_id }}
+  group: ci-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 permissions:
@@ -48,6 +48,6 @@ jobs:
           version: latest
       - id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - run: make build-${{ matrix.iamge }}
+      - run: make build-${{ matrix.image }}
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
