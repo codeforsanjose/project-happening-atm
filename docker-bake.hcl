@@ -72,6 +72,9 @@ target "_common" {
  * This section defines virtual base targets, which are shared across the
  * different dependent targets.
  */
+variable "PUBLIC_URL" { default = "http://localhost" }
+variable "REACT_APP_GRAPHQL_URL" { default = "http://localhost" }
+variable "REACT_APP_JWT_ISSUER" { default = "default-jwt" }
 target "frontend" {
     dockerfile = "docker/frontend/Dockerfile"
     context = "./"

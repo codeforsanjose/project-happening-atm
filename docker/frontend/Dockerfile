@@ -11,7 +11,9 @@ LABEL org.opensourcesanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 
+ARG PUBLIC_URL
 ARG REACT_APP_GRAPHQL_URL
+ARG REACT_APP_JWT_ISSUER
 
 COPY ./frontend .
 
