@@ -8,14 +8,14 @@ global:
 
 frontend:
   replicaCount: 1
-  command: [ "npm", "run", "start"]
+  command: ["nginx", "-g", "daemon off;"]
   cpu:
-    requests: 250m
+    requests: 100m
     limit: 1000m
   memory:
-    requests: 256Mi
+    requests: 100Mi
     limit: 1024Mi
-  port: 3000
+  port: 80
 
 backend:
   replicaCount: 1
