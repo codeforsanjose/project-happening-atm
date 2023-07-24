@@ -35,6 +35,5 @@ jobs:
           aws-region: us-west-2
       - id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - run: aws eks --region us-west-2 update-kubeconfig --name shared-cluser-prod
       - run: make deploy
       - run: make deploy-status
