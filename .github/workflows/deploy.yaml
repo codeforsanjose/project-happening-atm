@@ -1,0 +1,41 @@
+---
+name: deploy
+run-name: ${{ github.event.inputs.env }} deploy ${{ github.ref_name }} ${{ github.event_name }} by ${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        type: environment
+      ref:
+        description: 'Branch, Tag, or Full SHA'
+        required: true
+        default: 'develop'
+
+concurrency:
+  group: ${{ github.event.inputs.env }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.env }}
+    env:
+      DEPLOYMENT: ${{ github.event.inputs.env }}
+      AWS_ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/eimmigrate
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "AWS_EKS_CLUSTER=shared-cluster-$(echo $DEPLOYMENT | cut -d'-' -f2)" >> $GITHUB_ENV
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
+          role-session-name: gha
+          aws-region: us-west-2
+      - id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - run: aws eks --region us-west-2 update-kubeconfig --name ${AWS_EKS_CLUSTER}
+      - run: make deploy
+      - run: make deploy-status
