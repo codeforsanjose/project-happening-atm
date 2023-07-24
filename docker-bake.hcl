@@ -84,16 +84,16 @@ target "backend" {
     dockerfile = "docker/backend/Dockerfile"
     context = "./"
     inherits = ["_common"]
-    tags = dockerTag("happeningatm", "${DOCKER_TAG}-backend", "backend")
-    cache-from = [dockerS3Cache("${CACHE_ID}")]
+    tags = dockerTag("happeningatm", "${DOCKER_TAG}", "backend")
+    cache-from = [dockerS3Cache("${CACHE_ID}-backend")]
     cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-backend"): ""]
 }
 target "graphql" {
     dockerfile = "docker/graphql/Dockerfile"
     context = "./"
     inherits = ["_common"]
-    tags = dockerTag("happeningatm", "${DOCKER_TAG}-graphql", "graphql")
-    cache-from = [dockerS3Cache("${CACHE_ID}")]
+    tags = dockerTag("happeningatm", "${DOCKER_TAG}", "graphql")
+    cache-from = [dockerS3Cache("${CACHE_ID}-graphql")]
     cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-graphql"): ""]
 }
 /*
