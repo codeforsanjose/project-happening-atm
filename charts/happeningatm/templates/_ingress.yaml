@@ -15,7 +15,7 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: {{ .Release.Name }}
+              name: {{ .Release.Name }}-frontend
               port:
                 number: 80
 ---

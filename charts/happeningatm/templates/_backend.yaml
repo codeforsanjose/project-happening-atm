@@ -9,10 +9,7 @@ metadata:
     secrets.doppler.com/reload: 'true'
 spec:
   strategy:
-    rollingUpdate:
-      maxSurge: 100%
-      maxUnavailable: 50%
-    type: RollingUpdate
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: backend
@@ -50,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-backend
   namespace: {{ .Release.Name }}
   labels:
     app.kubernetes.io/name: backend

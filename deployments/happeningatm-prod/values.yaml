@@ -10,11 +10,11 @@ frontend:
   replicaCount: 1
   command: [ "npm", "run", "start"]
   cpu:
-    requests: 100m
-    limit: 2000m
+    requests: 250m
+    limit: 1000m
   memory:
-    requests: 150Mi
-    limit: 2048Mi
+    requests: 256Mi
+    limit: 1024Mi
   port: 3000
 
 backend:
@@ -22,10 +22,10 @@ backend:
   command: ["npm", "run", "start"]
   cpu:
     requests: 100m
-    limit: 2000m
+    limit: 1000m
   memory:
     requests: 150Mi
-    limit: 2048Mi
+    limit: 1024Mi
   port: 3002
 
 graphql:
@@ -33,10 +33,10 @@ graphql:
   command: ["npm", "run", "start"]
   cpu:
     requests: 100m
-    limit: 2000m
+    limit: 1000m
   memory:
     requests: 150Mi
-    limit: 2048Mi
+    limit: 1024Mi
   port: 3000
 
 serviceaccount:

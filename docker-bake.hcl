@@ -75,6 +75,7 @@ target "_common" {
 target "frontend" {
     dockerfile = "docker/frontend/Dockerfile"
     context = "./"
+    target = "build"
     inherits = ["_common"]
     tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
     cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
