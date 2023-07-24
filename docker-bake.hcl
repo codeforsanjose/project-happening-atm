@@ -79,6 +79,11 @@ target "frontend" {
     dockerfile = "docker/frontend/Dockerfile"
     context = "./"
     target = "build"
+    args = {
+        PUBLIC_URL = "${PUBLIC_URL}"
+        REACT_APP_GRAPHQL_URL = "${REACT_APP_GRAPHQL_URL}"
+        REACT_APP_JWT_ISSUER = "${REACT_APP_JWT_ISSUER}"
+    }
     inherits = ["_common"]
     tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
     cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
