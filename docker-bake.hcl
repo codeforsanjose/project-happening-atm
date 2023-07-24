@@ -63,8 +63,6 @@ variable "CACHE_ID" {
     default = "docker-happeningatm-${hostArch()}"
 }
 target "_common" {
-    cache-from = [dockerS3Cache("${CACHE_ID}")]
-    cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}"): ""]
     output = ["${OUTPUT}"]
 }
 
@@ -79,18 +77,24 @@ target "frontend" {
     context = "./"
     inherits = ["_common"]
     tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
+    cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
+    cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-frontend"): ""]
 }
 target "backend" {
     dockerfile = "docker/backend/Dockerfile"
     context = "./"
     inherits = ["_common"]
-    tags = dockerTag("happeningatm", "${DOCKER_TAG}", "backend")
+    tags = dockerTag("happeningatm", "${DOCKER_TAG}-backend", "backend")
+    cache-from = [dockerS3Cache("${CACHE_ID}")]
+    cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-backend"): ""]
 }
 target "graphql" {
     dockerfile = "docker/graphql/Dockerfile"
     context = "./"
     inherits = ["_common"]
-    tags = dockerTag("happeningatm", "${DOCKER_TAG}", "graphql")
+    tags = dockerTag("happeningatm", "${DOCKER_TAG}-graphql", "graphql")
+    cache-from = [dockerS3Cache("${CACHE_ID}")]
+    cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-graphql"): ""]
 }
 /*
  * Default Target(s) to build
