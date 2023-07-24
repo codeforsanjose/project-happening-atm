@@ -1,0 +1,26 @@
+{{- define "shared-lib.vpa" -}}
+{{- if .Values.vpa.create -}}
+---
+apiVersion: "autoscaling.k8s.io/v1"
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}-web-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: web
+  updatePolicy:
+    updateMode: "Off"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: web
+        minAllowed:
+          cpu: {{ .Values.web.cpu.requests }}
+          memory: {{ .Values.web.memory.requests }}
+        maxAllowed:
+          cpu: {{ .Values.web.cpu.limit }}
+          memory: {{ .Values.web.memory.limit }}
+        controlledResources: ["cpu", "memory"]
+{{- end }}
+{{- end -}}

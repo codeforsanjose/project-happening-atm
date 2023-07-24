@@ -1,0 +1,42 @@
+{{- define "shared-lib.ingress" -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Name }}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{ index .Values.global "deployed_url" }}
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ .Release.Name }}-frontend
+              port:
+                number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-redirect
+  namespace: {{ .Release.Name }}
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: https://{{ index .Values.global "deployed_url" }}$request_uri
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: www.{{ index .Values.global "deployed_url" }}
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ .Release.Name }}
+              port:
+                number: 80
+{{- end -}}

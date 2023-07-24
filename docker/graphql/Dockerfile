@@ -1,5 +1,5 @@
 FROM docker.io/library/node:14.21.3 as node_modules_cache
-LABEL org.codeforsanjose.app="happening-atm"
+LABEL org.opensourcesanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 
@@ -7,7 +7,7 @@ COPY ./backend/graphql_api/package*.json .
 RUN npm install --from-lockfile
 
 FROM docker.io/library/node:14.21.3
-LABEL org.codeforsanjose.app="happening-atm"
+LABEL org.opensourcesanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 

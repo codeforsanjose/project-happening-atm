@@ -1,0 +1,62 @@
+{{- define "shared-lib.frontend" -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: {{ .Release.Name }}
+  annotations:
+    secrets.doppler.com/reload: 'true'
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+  replicas: {{ .Values.frontend.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frontend
+    spec:
+      {{- if .Values.serviceaccount.create }}
+      serviceAccountName: {{ .Release.Name }}
+      {{- end }}
+      containers:
+      - image: "{{ .Values.global.image.repository }}:frontend-{{ .Values.global.image.tag }}"
+        name: frontend
+        command:
+          {{- range .Values.frontend.command }}
+          - {{ . }}
+          {{- end }}
+        resources:
+          limits:
+            cpu: {{ .Values.frontend.cpu.limit }}
+            memory: {{ .Values.frontend.memory.limit }}
+          requests:
+            cpu: {{ .Values.frontend.cpu.requests }}
+            memory: {{ .Values.frontend.memory.requests }}
+        ports:
+        - containerPort: {{ .Values.frontend.port }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.global.doppler_secret_ref }}
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-frontend
+  namespace: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: frontend
+spec:
+  ports:
+    - port: 80
+      targetPort: {{ .Values.frontend.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: frontend
+{{- end -}}
