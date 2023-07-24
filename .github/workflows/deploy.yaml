@@ -28,7 +28,6 @@ jobs:
       AWS_ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/eimmigrate
     steps:
       - uses: actions/checkout@v3
-      - run: echo "AWS_EKS_CLUSTER=shared-cluster-$(echo $DEPLOYMENT | cut -d'-' -f2)" >> $GITHUB_ENV
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
@@ -36,6 +35,6 @@ jobs:
           aws-region: us-west-2
       - id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - run: aws eks --region us-west-2 update-kubeconfig --name ${AWS_EKS_CLUSTER}
+      - run: aws eks --region us-west-2 update-kubeconfig --name shared-cluser-prod
       - run: make deploy
       - run: make deploy-status
