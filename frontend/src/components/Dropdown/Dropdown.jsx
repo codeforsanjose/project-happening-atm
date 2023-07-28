@@ -1,6 +1,8 @@
 import React, {useState} from "react";
+import { KeyboardArrowDownIcon } from '../../utils/_icons';
 
-function Dropdown({ options }) {
+
+function Dropdown({ options, value, onChange }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleClick = () => {
@@ -11,7 +13,7 @@ function Dropdown({ options }) {
 		// Close Dropdown
 		setIsOpen(false);
 		// Determine what option the user clicked on:
-		console.log(option);
+		onChange(option);
 	}
 
 	const renderedOptions = options.map((option) => {
@@ -20,9 +22,10 @@ function Dropdown({ options }) {
 		);
 	});
 
+
 	return (
 		<div>
-			<div onClick={handleClick}>Select...</div>
+			{!isOpen && <div onClick={handleClick}>{value?.label || 'Select...'} <KeyboardArrowDownIcon /></div>}		
 			{isOpen && <div>{renderedOptions}</div>}
 		</div>
 	);

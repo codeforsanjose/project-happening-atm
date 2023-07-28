@@ -34,14 +34,6 @@ function MeetingHeader({
 }) {
   const { t } = useTranslation();
 
-  //set default status of meetings to Upcoming
-  const [meetingStatus, setMeetingStatus] = useState(MeetingStates.UPCOMING) //use this for css and then change the useState to be the meeting.status on reload
-  const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
-  
-  const handleSelect = (option) => {
-    setMeetingStatus(option);
-  }
-
   const statuses = [
     { label: 'Upcoming', value: MeetingStates.UPCOMING },
     { label: 'In Progress', value: MeetingStates.IN_PROGRESS },
@@ -49,6 +41,16 @@ function MeetingHeader({
     { label: 'Ended', value: MeetingStates.ENDED },
     { label: 'Deferred', value: MeetingStates.DEFERRED },
   ];
+  
+  //Set default status of meetings to Upcoming
+  console.log('meeting.status:', meeting.status);
+  const [meetingStatus, setMeetingStatus] = useState(statuses[0]); //MeetingStates.UPCOMING) //use this for css and then change the useState to be the meeting.status on reload
+  const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
+  
+  const handleSelectStatus = (option) => {
+    setMeetingStatus(option);
+  }
+
 
   const getRelativeTimeLocKey = () => {
     // Returns a locale key for a meeting status (relative to the current time).
@@ -76,13 +78,12 @@ function MeetingHeader({
   //     </label>
   //   );
   // };
-
   useEffect(() => {
-    if(isAdmin() && meetingStatus !== MeetingStates.UPCOMING){
+    if(isAdmin() && meetingStatus.value !== MeetingStates.UPCOMING){
       updateMeeting({ 
         variables: { 
           ...meeting,
-          status: meetingStatus, 
+          status: meetingStatus.value, 
         }
       });
     }
@@ -91,9 +92,10 @@ function MeetingHeader({
     }
   }, [meetingStatus, meeting.status]);
 
+  // JYIP: 2023.07: if any meeting item becomes "In Progress" state, overall meeting becomes in progress state
   useEffect(() => {
     if(progressStatus){
-      setMeetingStatus(MeetingStates.IN_PROGRESS);
+      setMeetingStatus(statuses[1]); //MeetingStates.IN_PROGRESS);
     } 
 
   }, [progressStatus])
@@ -111,25 +113,22 @@ function MeetingHeader({
         <div className="meeting-info">
           <div className="title">
             {t('header.city-council-meeting-agenda')}
-            {(meetingStatus === MeetingStates.IN_PROGRESS) && <span className="statusInProgress"><StatusInProgress /></span>}
           </div>
           <div className="details-title">Meeting Details</div>
-
           {loading && <Spinner />}
-
           {!loading && (
             <>
               <div className="date-wrapper">
                 <div className="date">
                   {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
                 </div>
-                <div className={(meetingStatus === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
-                  {(meetingStatus === MeetingStates.UPCOMING) && <span>Upcoming</span>}
-                  {(meetingStatus === MeetingStates.IN_PROGRESS) && <>
+                <div className={(meetingStatus.value === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
+                  {(meetingStatus.value === MeetingStates.UPCOMING) && <span>Upcoming</span>}
+                  {(meetingStatus.value === MeetingStates.IN_PROGRESS) && <>
                     <span>In Progress</span> <StatusInProgress className="status-icon" />
                   </>}
-                  {(meetingStatus === MeetingStates.CANCELLED) && <span>Cancelled</span>}
-                  {(meetingStatus === MeetingStates.ENDED) && <span>Ended</span>}
+                  {/* {(meetingStatus.value === MeetingStates.CANCELLED) && <span>Cancelled</span>} */}
+                  {(meetingStatus.value === MeetingStates.ENDED) && <span>Ended</span>}
                 </div>
               </div>
               <div className="time">
@@ -144,12 +143,19 @@ function MeetingHeader({
               {isAdmin() && (
                 <>
                   <div className="saveStatus">
-                    <Dropdown options={statuses}
-                      // label={`${t("meeting.status.label")}:`}
-                      // options={statuses}
-                      // value={meetingStatus}
-                      // onChange={handleMeetingStatusChange}
+                    <Dropdown 
+                      options={statuses}
+                      value={meetingStatus}
+                      onChange={handleSelectStatus}
                     />
+                     {/* 
+                     <Dropdown
+                      label={`${t("meeting.status.label")}:`}
+                      options={statuses}
+                      value={meetingStatus}
+                      onChange={handleMeetingStatusChange}
+                       />
+                       */}
                   </div>
               
                 </>
