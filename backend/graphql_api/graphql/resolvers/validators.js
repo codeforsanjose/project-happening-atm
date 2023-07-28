@@ -5,7 +5,9 @@
 const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
-const possibleStatuses = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'DEFERRED', 'ON HOLD', 'CANCELLED', 'ENDED', 'NOT STARTED'];
+// JYIP: Need to filter to latest statuses per MVP designs
+const possibleStatuses = ['UPCOMING', 'NOT STARTED', 'PENDING', 'IN PROGRESS', 
+  'IN RECESS', 'COMPLETED', 'DEFERRED', 'ON HOLD', 'CANCELLED', 'ENDED',];
 const possibleTypes = ['test'];
 const possibleContentCategories = ['test', 'gov', 'tech', 'lol'];
 

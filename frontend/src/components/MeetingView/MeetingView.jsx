@@ -7,7 +7,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_MEETING_WITH_ITEMS } from '../../graphql/query';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
-import Header from '../Header/Header';
+import MeetingHeader from '../MeetingHeader/MeetingHeader';
 // import ParticipateView from "./ParticipateView/ParticipateView";
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
@@ -108,7 +108,7 @@ function MeetingView() {
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <Header
+      <MeetingHeader
         loading={loading}
         meeting={meetingWithItems}
         setSaveMeetingItems={setSaveMeetingItems}

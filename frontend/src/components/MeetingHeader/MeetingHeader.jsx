@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { useTranslation } from "react-i18next";
-import "./Header.scss";
+import "./MeetingHeader.scss";
 import classnames from "classnames";
 import Spinner from "../Spinner/Spinner";
 import MeetingStates from "../../constants/MeetingStates";
+import Dropdown from "../Dropdown/Dropdown";
 
 import {
   toDateString,
@@ -28,20 +29,25 @@ const MEETING_RELATIVE_TIME_LOC_KEY_PREFIX = "meeting.status.relative.long.";
 const PAST_MEETING_STATUS_LOC_KEY = "meeting.status.long.ended";
 
 
-function Header({
+function MeetingHeader({
   loading, meeting, setSaveMeetingItems, progressStatus
 }) {
   const { t } = useTranslation();
 
-  //set default status of meetings to not started
-  const [meetingStatus, setMeetingStatus] = useState(MeetingStates.NOT_STARTED) //use this for css and then change the useState to be the meeting.status on reload
+  //set default status of meetings to Upcoming
+  const [meetingStatus, setMeetingStatus] = useState(MeetingStates.UPCOMING) //use this for css and then change the useState to be the meeting.status on reload
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
   
+  const handleSelect = (option) => {
+    setMeetingStatus(option);
+  }
+
   const statuses = [
-    { label: 'Not Started', value: MeetingStates.NOT_STARTED },
+    { label: 'Upcoming', value: MeetingStates.UPCOMING },
     { label: 'In Progress', value: MeetingStates.IN_PROGRESS },
+    { label: 'In Recess', value: MeetingStates.IN_RECESS },
     { label: 'Ended', value: MeetingStates.ENDED },
-    { label: 'Cancelled', value: MeetingStates.CANCELLED },
+    { label: 'Deferred', value: MeetingStates.DEFERRED },
   ];
 
   const getRelativeTimeLocKey = () => {
@@ -58,21 +64,21 @@ function Header({
     return PAST_MEETING_STATUS_LOC_KEY;
   };
 
-  const Dropdown = ({ label, value, options, onChange }) => {
-    return (
-      <label>
-        {label}
-        <select value={value} onChange={onChange}>
-          {options.map((option) => (
-            <option key={option.label} value={option.value}>{option.label}</option>
-          ))}
-        </select>
-      </label>
-    );
-  };
+  // const Dropdown = ({ label, value, options, onChange }) => {
+  //   return (
+  //     <label>
+  //       {label}
+  //       <select value={value} onChange={onChange}>
+  //         {options.map((option) => (
+  //           <option key={option.label} value={option.value}>{option.label}</option>
+  //         ))}
+  //       </select>
+  //     </label>
+  //   );
+  // };
 
   useEffect(() => {
-    if(isAdmin() && meetingStatus !== MeetingStates.NOT_STARTED){
+    if(isAdmin() && meetingStatus !== MeetingStates.UPCOMING){
       updateMeeting({ 
         variables: { 
           ...meeting,
@@ -118,7 +124,7 @@ function Header({
                   {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
                 </div>
                 <div className={(meetingStatus === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
-                  {(meetingStatus === MeetingStates.NOT_STARTED) && <span>Not Started</span>}
+                  {(meetingStatus === MeetingStates.UPCOMING) && <span>Upcoming</span>}
                   {(meetingStatus === MeetingStates.IN_PROGRESS) && <>
                     <span>In Progress</span> <StatusInProgress className="status-icon" />
                   </>}
@@ -138,11 +144,11 @@ function Header({
               {isAdmin() && (
                 <>
                   <div className="saveStatus">
-                    <Dropdown
-                      label={`${t("meeting.status.label")}:`}
-                      options={statuses}
-                      value={meetingStatus}
-                      onChange={handleMeetingStatusChange}
+                    <Dropdown options={statuses}
+                      // label={`${t("meeting.status.label")}:`}
+                      // options={statuses}
+                      // value={meetingStatus}
+                      // onChange={handleMeetingStatusChange}
                     />
                   </div>
               
@@ -156,4 +162,4 @@ function Header({
   );
 }
 
-export default Header;
+export default MeetingHeader;

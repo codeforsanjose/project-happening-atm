@@ -1,8 +1,9 @@
 const MeetingStates = {
-    NOT_STARTED: 'NOT STARTED',
+    UPCOMING: 'UPCOMING',
     IN_PROGRESS: 'IN PROGRESS',
+    IN_RECESS: 'IN RECESS',
     ENDED: 'ENDED',
-    CANCELLED: 'CANCELLED'
+    DEFERRED: 'DEFERRED',
   };
   
 export default MeetingStates;
