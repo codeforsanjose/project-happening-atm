@@ -1,0 +1,12 @@
+@import "../../utils/_colors.scss";
+
+.panel {
+	width: 158px;
+	border: 1px solid $cityBlue;
+	border-radius: 12px;
+	overflow: hidden; 
+	text-align: center;
+	cursor: pointer;
+}
+
+

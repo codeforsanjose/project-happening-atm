@@ -42,15 +42,12 @@ function MeetingHeader({
     { label: 'Deferred', value: MeetingStates.DEFERRED },
   ];
   
+  const statusIndexMap = { 'UPCOMING': 0, 'IN PROGRESS': 1, 'IN RECESS': 2, 'ENDED': 3, 'DEFERRED': 4}
+
   //Set default status of meetings to Upcoming
   console.log('meeting.status:', meeting.status);
   const [meetingStatus, setMeetingStatus] = useState(statuses[0]); //MeetingStates.UPCOMING) //use this for css and then change the useState to be the meeting.status on reload
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
-  
-  const handleSelectStatus = (option) => {
-    setMeetingStatus(option);
-  }
-
 
   const getRelativeTimeLocKey = () => {
     // Returns a locale key for a meeting status (relative to the current time).
@@ -86,13 +83,14 @@ function MeetingHeader({
           status: meetingStatus.value, 
         }
       });
+      // console.log('new meeting', meeting);
     }
     else if (meeting.status) {
-      setMeetingStatus(meeting.status);
+      setMeetingStatus(statuses[statusIndexMap[meeting.status]]);
     }
   }, [meetingStatus, meeting.status]);
 
-  // JYIP: 2023.07: if any meeting item becomes "In Progress" state, overall meeting becomes in progress state
+  // JYIP: 2023.07 observation of inherited functionality: if any meeting item becomes "In Progress" state, overall meeting becomes in progress state
   useEffect(() => {
     if(progressStatus){
       setMeetingStatus(statuses[1]); //MeetingStates.IN_PROGRESS);
@@ -103,8 +101,11 @@ function MeetingHeader({
   const handleMeetingStatusChange = (event) => {
     event.preventDefault();
     setMeetingStatus(event.target.value);
-
   };
+
+  const handleSelectStatus = (option) => {
+    setMeetingStatus(option);
+  }
   
   return (
     <div className={classnames("header")}>
@@ -122,14 +123,14 @@ function MeetingHeader({
                 <div className="date">
                   {toDateString(meeting.meeting_start_timestamp, 'dddd, MMMM D, YYYY')}
                 </div>
-                <div className={(meetingStatus.value === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
+                {/* <div className={(meetingStatus.value === MeetingStates.IN_PROGRESS) ? 'progress-wrapper progress-wrapper-started' : 'progress-wrapper'}>
                   {(meetingStatus.value === MeetingStates.UPCOMING) && <span>Upcoming</span>}
                   {(meetingStatus.value === MeetingStates.IN_PROGRESS) && <>
                     <span>In Progress</span> <StatusInProgress className="status-icon" />
                   </>}
-                  {/* {(meetingStatus.value === MeetingStates.CANCELLED) && <span>Cancelled</span>} */}
+                  {(meetingStatus.value === MeetingStates.CANCELLED) && <span>Cancelled</span>}
                   {(meetingStatus.value === MeetingStates.ENDED) && <span>Ended</span>}
-                </div>
+                </div> */}
               </div>
               <div className="time">
                 {t("meeting.start-time")}:{" "}
@@ -147,6 +148,7 @@ function MeetingHeader({
                       options={statuses}
                       value={meetingStatus}
                       onChange={handleSelectStatus}
+                      dropDownType={'meeting-status'}
                     />
                      {/* 
                      <Dropdown
