@@ -183,7 +183,7 @@ function AgendaGroupHeader({
               </div>
             </div>
             <div className="group-icon">
-              <span className="expansionIconStatus"><StatusInProgress className={buildIconClass(active, next, completed)} /></span>
+              {/* <span className="expansionIconStatus"><StatusInProgress className={buildIconClass(active, next, completed)} /></span> */}
               <span className="expansionIcon">
                 {!expanded ? <AddIcon /> : <RemoveIcon />}
               </span>
