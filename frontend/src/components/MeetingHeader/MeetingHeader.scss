@@ -1,6 +1,8 @@
 @import "../../utils/_colors.scss";
 
-.header {
+$font-size: 1rem;
+
+.meeting-header {
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -8,24 +10,114 @@
   z-index: 100;
   font-family: 'Poppins', sans-serif;
   letter-spacing: 1.1px;
-  padding-top: 120px;
+  padding-top: 65px;
 
-  .header-content {
-    padding: 1em 1.25em;
+  .selector-panel{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-right: 0;
+    padding-left: calc(25vw + 1rem + 10px); // match component AgendaGroup
+    height: 50px;
+    padding-top: 11px;
+    font-weight: 300;
+    font-size: $font-size;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.15));
+
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 3rem;
+    align-items: baseline;
+
+    @media (max-width: 811px) {
+      padding-left: calc(1rem + 10px);
+    }
+  }
+
+  .label {
+    font-weight: 900;
+    color: $black;
+  }
+
+  .upcoming {
+    background:$pendingBlueBackground;
+    color:$darkBlue;
+    svg{
+        fill:$darkBlue;
+    }
+  }
+
+  .selector-panel.in-progress {
+    background-color: $lightGreen;
+    color: $darkBlue;
+  }
+
+  .ended {
+    background:$pastGray;
+    color:$mediumGray;
+    svg{
+        fill:$mediumGray;
+    }
+  }
+
+  .in-recess {
+    background:$altWhite;
+    color:$darkBlue;
+    svg{
+        fill:$darkBlue;
+    }
+  }
+
+  .deferred{
+    background:$white;
+    color:$errorRed;
+    svg{
+        fill:$errorRed;
+    }
+  }
+
+
+  .header-shared-content--admin {
+    padding-top: 50px;
+  }
+
+  .header-shared-content {
     color: $black;
 
-    .logo {
-      width: 77px;
+    .community-user-meeting-status {
+      color: $statusIndicator;
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding-right: 1em;
     }
 
     .meeting-info {
       font-weight: 600;
       font-size: 1em;
-      margin-top: 0.7em;
+      margin-top: 1rem;
+      margin-left: calc(1rem + 10px); // match AgendaGroup styling
+    }
 
-      @media only screen
-      and (min-device-width: 812px) {
-        padding-top: 4em;
+    .date-status-wrapper {
+      display: flex;
+      justify-content: space-between;
+      column-gap: 2rem;
+      font-size: 1rem;
+      font-weight: 300;
+      padding-right: calc(1rem + 10px);      
+      margin-bottom: 0.3rem;
+    }
+
+    .progress-wrapper-started {
+      color: $statusIndicator;
+
+      .status-icon {
+        fill: $lightGreen;
+        margin-right: 0.5em;
+        position: relative;
+        transform: scale(0.85);
       }
     }
 
@@ -33,83 +125,7 @@
       font-size: 1.5em;
       line-height: 1.5em;
       margin-bottom: 1.7em;
-
-      .statusInProgress {
-        margin-left: 0.3em;
-      }
-    }
-
-    .details-title, .status {
-      font-size: 1.15em;
-    }
-
-    .details-title {
-      width: 200px;
-      padding-bottom: 0.3em;
-      margin-bottom: 0.5em;
-      border-bottom: 2px $cityBronze solid;
-    }
-
-    .date-wrapper {
-      display: flex;
-      justify-content: space-between;
-      .progress-wrapper {
-        background: $pendingBlueBackground;
-        color: $darkBlue;
-        border-radius: 3px;
-        padding: 0.4em 1em;
-
-        .status-icon {
-          fill: $lightGreen;
-          margin-left: 0.2em;
-          position: relative;
-          top: 0.15em;
-          transform: scale(0.85);
-        }
-      }
-      .progress-wrapper-started {
-        background: $darkBlue;
-        color: $alertGreen;
-        padding: 0.4em 0.7em;
-      }
-      .date, .time {
-        margin-bottom: 0.3em;
-      }
-    }
-
-    .time {
-      margin-bottom: 0.5em;
-
-      .no-bold {
-        font-weight: 400;
-      }
-    }
-    
-
-    .status {
-      color: $lightBlue;
-      margin-bottom: 2.5em;
-    }
-
-    .saveStatus {
-      .saveStatusButton {
-        background-color: $cityBlue;
-        color: white;
-        border-style: inset;
-        margin-left: 0.7rem;
-        padding-right: 1.4rem;
-        text-align: left;
-        cursor: pointer;
-      }
-
-      .saveStatusButton:active {
-        border-style: outset;
-        border-width: 2px;
-      }
-    }
-
-    .hide {
-      // TODO
     }
   }
+
 }
