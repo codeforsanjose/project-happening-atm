@@ -100,7 +100,15 @@
 		outline: 1px solid $upcoming;
 	}
 
-	.in-recess, .on-hold {
+	.in-recess {
+		background: $white;
+		color: $happeningBlue;
+		svg {
+			fill: $happeningBlue;
+		}
+	}
+
+	.on-hold {
 		background:$altWhite;
 		color:$happeningBlue;
 		svg{
