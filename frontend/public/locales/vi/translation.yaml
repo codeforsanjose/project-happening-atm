@@ -38,7 +38,7 @@ meeting:
     label: Trạng thái cuộc họp
     short:
       default-option: Cập nhật trạng thái
-      upcoming: sắp tới
+      upcoming: Sắp tới
       in-progress: Đang diễn ra
       in-recess: Tạm dừng
       ended: Kết thúc
@@ -121,11 +121,12 @@ meeting:
             done: Đã lưu và đã Cập nhật
         options:
           completed: Đã Hoàn thành
-          upcoming: sắp tới
+          upcoming: Sắp tới
           in-progress: Đang diễn ra
           closed: Đã kết thúc
           removed: Đã gỡ để cân nhắc thêm
           deferred: Đã hoãn
+          on-hold: Đang bị hoãn
       upload-new:
         button: Tải lên Chương trình nghị sự mới
         modal:
