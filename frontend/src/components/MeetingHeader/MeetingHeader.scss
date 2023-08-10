@@ -26,11 +26,11 @@ $font-size: 1rem;
 
     display: flex;
     justify-content: flex-start;
-    column-gap: 3rem;
-    align-items: baseline;
+    column-gap: 2rem;
+    align-items:center;
 
     @media (max-width: 811px) {
-      padding-left: calc(1rem + 10px);
+      padding-left: calc(3% + 1rem + 10px);
     }
   }
 
@@ -69,13 +69,16 @@ $font-size: 1rem;
   }
 
   .deferred{
-    background:$white;
+    background:$pastGray;
     color:$errorRed;
     svg{
         fill:$errorRed;
     }
   }
 
+  #meeting-status-dropdown {
+    position: relative;
+  }
 
   .header-shared-content--admin {
     padding-top: 50px;
