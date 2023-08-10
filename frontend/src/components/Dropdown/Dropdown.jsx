@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 /*
  * A re-usable dropdown component for viewing/managing dropdown selections such as
- * meeting status and meeting item status
+ * meeting status and meeting agenda item status
  * props: options, value, onChange, dropdownType
  * 	options: the list of possible dropdown values
  *	value: the currently selected dropdown value (per 'controlled form input' pattern)
@@ -54,8 +54,8 @@ function Dropdown({ options, value, onChange, dropdownType }) {
         key={option.value}
         className={classNames(
           // apply addtl styling to indicate currently selected option
-          option.value === value.value ? "dropdown-item-selected" : "",
-          "dropdown-item", // apply standard styling for all options
+          option.value === value.value ? 'dropdown-item-selected' : '',
+          'dropdown-item', // apply standard styling for all options
           option.class
         )}
         onClick={() => handleOptionClick(option)}
@@ -72,8 +72,8 @@ function Dropdown({ options, value, onChange, dropdownType }) {
 					type="button"
           className={classNames(
             value.class,
-            "dropdown-item",
-            "selector",
+            'dropdown-item',
+            'selector',
             dropdownType
           )}
           onClick={handleClick}
@@ -81,8 +81,8 @@ function Dropdown({ options, value, onChange, dropdownType }) {
           {t(value?.label) || 'Select...'}
           <KeyboardArrowDownIcon
             className={classNames(
-              dropdownType + "-dropdown-arrow",
-              "dropdown-arrow"
+              dropdownType + '-dropdown-arrow',
+              'dropdown-arrow'
             )}
           />
         </button>
@@ -93,7 +93,7 @@ function Dropdown({ options, value, onChange, dropdownType }) {
         </div>
       )}
       {isOpen && (
-        <div className={classNames("dropdown-wrapper", dropdownType)}>
+        <div className={classNames('dropdown-wrapper', dropdownType)}>
           {renderedOptions}
         </div>
       )}
