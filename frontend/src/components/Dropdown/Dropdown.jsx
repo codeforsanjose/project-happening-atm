@@ -1,22 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import Panel from './Panel';
-import classNames from 'classnames';
-import { KeyboardArrowDownIcon } from '../../utils/_icons';
-import './Dropdown.scss';
+import classNames from "classnames";
+import { KeyboardArrowDownIcon } from "../../utils/_icons";
+import "./Dropdown.scss";
+import { useTranslation } from "react-i18next";
 
 /*
  * A re-usable dropdown component for viewing/managing dropdown selections such as
  * meeting status and meeting item status
- * props: options, value, onChange, dropDownType
+ * props: options, value, onChange, dropdownType
  * 	options: the list of possible dropdown values
  *	value: the currently selected dropdown value (per 'controlled form input' pattern)
  * 	onChange: event handler for when (admin) user selects new dropdown value
- *  dropDownType: an identifier to differentiate diff dropdown use cases and associated styling as necessary
+ *  dropdownType: an identifier to differentiate diff dropdown use cases and associated styling as necessary
  */
-function Dropdown({ options, value, onChange, dropDownType }) {
+function Dropdown({ options, value, onChange, dropdownType }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropDownRef = useRef();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -53,15 +54,13 @@ function Dropdown({ options, value, onChange, dropDownType }) {
         key={option.value}
         className={classNames(
           // apply addtl styling to indicate currently selected option
-          option.value.toLowerCase() === value.value.toLowerCase()
-            ? 'dropdown-item-selected'
-            : '',
-          'dropdown-item', // apply standard styling for all options
-          option.value.toLowerCase().split(' ').join('-')
+          option.value === value.value ? "dropdown-item-selected" : "",
+          "dropdown-item", // apply standard styling for all options
+          option.class
         )}
         onClick={() => handleOptionClick(option)}
       >
-        {option.label}
+        {t(option.label)}
       </div>
     );
   });
@@ -69,21 +68,35 @@ function Dropdown({ options, value, onChange, dropDownType }) {
   return (
     <div ref={dropDownRef} className="dropdown">
       {!isOpen && (
-        <Panel
+        <button
+					type="button"
           className={classNames(
-            value.value.toLowerCase().split(' ').join('-'),
-            'dropdown-item',
-            'selector'
+            value.class,
+            "dropdown-item",
+            "selector",
+            dropdownType
           )}
           onClick={handleClick}
         >
-          {value?.label || 'Select...'}
+          {t(value?.label) || 'Select...'}
           <KeyboardArrowDownIcon
-            className={classNames(dropDownType + '-dropdown-arrow', 'icon')}
+            className={classNames(
+              dropdownType + "-dropdown-arrow",
+              "dropdown-arrow"
+            )}
           />
-        </Panel>
+        </button>
       )}
-      {isOpen && <Panel className="dropdown-wrapper">{renderedOptions}</Panel>}
+      {isOpen && (
+        <div className={classNames('dropdown-open', className)}>
+          {renderedOptions}
+        </div>
+      )}
+      {isOpen && (
+        <div className={classNames("dropdown-wrapper", dropdownType)}>
+          {renderedOptions}
+        </div>
+      )}
     </div>
   );
 }
