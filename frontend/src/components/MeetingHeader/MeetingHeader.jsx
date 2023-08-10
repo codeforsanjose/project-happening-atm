@@ -28,21 +28,29 @@ function MeetingHeader({
   // possible meeting statuses to be passed into dropdown w/ internationalization of status labels
   const statuses = [
     {
-      label: t("meeting.status.short.upcoming"),
+      label: "meeting.status.short.upcoming",
       value: MeetingStates.UPCOMING,
+      class: "upcoming",
     },
     {
-      label: t("meeting.status.short.in-progress"),
+      label: "meeting.status.short.in-progress",
       value: MeetingStates.IN_PROGRESS,
+      class: "in-progress",
     },
     {
-      label: t("meeting.status.short.in-recess"),
+      label: "meeting.status.short.in-recess",
       value: MeetingStates.IN_RECESS,
+      class: "in-recess",
     },
-    { label: t("meeting.status.short.ended"), value: MeetingStates.ENDED },
     {
-      label: t("meeting.status.short.deferred"),
+      label: "meeting.status.short.ended",
+      value: MeetingStates.ENDED,
+      class: "ended",
+    },
+    {
+      label: "meeting.status.short.deferred",
       value: MeetingStates.DEFERRED,
+      class: "deferred",
     },
   ];
 
@@ -94,10 +102,10 @@ function MeetingHeader({
   }, [meetingStatus, meeting.status]);
 
   // JYIP: 2023.07 observation of inherited functionality (i.e. someone else built this) & potential issue:
-  // FUNCTIONALITY: If any meeting item is changed to "In Progress" status, overall meeting status automatically
+  // FUNCTIONALITY: If any individual meeting agenda item status is changed to "In Progress" status, overall meeting status automatically
   // changes to "In Progress" status
   // ISSUE: admin cannot subsequently change overall meeting status from "In Progress" to something else,
-  // unless all individual meeting item statuses are changed to something other than "in Progress",
+  // unless all individual meeting agenda item statuses are changed to something other than "in Progress",
   useEffect(() => {
     if (progressStatus) {
       setMeetingStatus(statuses[statusIndexMap.indexOf("IN PROGRESS")]);
@@ -117,12 +125,7 @@ function MeetingHeader({
       {!loading && (
         <>
           {isAdmin() && (
-            <div
-              className={classNames(
-                meetingStatus.value.toLowerCase().split(" ").join("-"),
-                "selector-panel"
-              )}
-            >
+            <div className={classNames(meetingStatus.class, "selector-panel")}>
               <label htmlFor="meeting-status-dropdown" className="label">
                 {t("meeting.status.label")}
               </label>
@@ -132,7 +135,7 @@ function MeetingHeader({
                   options={statuses}
                   value={meetingStatus}
                   onChange={handleSelectStatus}
-                  dropDownType={"meeting-status"}
+                  dropdownType={"meeting-status"}
                 />
               </div>
             </div>
@@ -167,7 +170,7 @@ function MeetingHeader({
                         <StatusInProgress className="status-icon" />
                       </>
                     )}
-                    {meetingStatus.label}
+                    {t(meetingStatus.label)}
                   </div>
                 )}
               </div>
