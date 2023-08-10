@@ -152,8 +152,8 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const agendaItemStatuses = [
     {
       label: 'meeting.tabs.agenda.status.options.upcoming',
-      value: MeetingItemStates.PENDING, // need to change to UPCOMING once we fix upstream functionality (e.g. agenda upload service etc.) to default to 'Upcoming' status instead of 'Pending'
-      class: 'pending', // need to change to 'upcoming' once we fix upstream functionality (e.g. agenda upload service etc.) to default to 'Upcoming' status instead of 'Pending'
+      value: MeetingItemStates.UPCOMING,
+      class: 'upcoming',
     },
     {
       label: 'meeting.tabs.agenda.status.options.in-progress',
@@ -308,7 +308,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
         className={`AgendaItem ${agendaItemStatus.class}`}
       >
         <div className="row">
-          {item.status === MeetingItemStates.PENDING}
+          {item.status === MeetingItemStates.UPCOMING}
           <h4>{item.title_loc_key}</h4>
         </div>
         {subscriptions && subscriptions.length > 0 && (
@@ -362,7 +362,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
                       <StatusInProgress />
                     </span>
                   )}
-                  {agendaItemStatus.value !== MeetingItemStates.PENDING &&
+                  {agendaItemStatus.value !== MeetingItemStates.UPCOMING &&
                     t(agendaItemStatus.label)}
                 </p>
               </div>

@@ -58,7 +58,7 @@
 		text-shadow: 1px 1px 2px grey;
 	}
 
-	.upcoming, .pending {
+	.upcoming {
 		background:$pendingBlueBackground;
 		color:$happeningBlue;
 		svg{
@@ -67,7 +67,7 @@
 	}
 
 	// indicate: can't change status back to Upcoming
-	.dropdown-wrapper .upcoming {
+	.dropdown-wrapper.meeting-status .upcoming  {
 		cursor: not-allowed;
 	}
 

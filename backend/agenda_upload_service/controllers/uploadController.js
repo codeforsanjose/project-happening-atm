@@ -69,7 +69,7 @@ module.exports = (logger) => {
       // eslint-disable-next-line no-await-in-loop
       const res = await dbClient.createMeetingItem(
         meetingId, null, orderNumber, null, null,
-        'PENDING', 'test', 'description', amendedTitle,
+        'UPCOMING', 'test', 'description', amendedTitle, // 'UPCOMING' status per latest MVP designs
       );
       const rootMeetingItemId = res.rows[0].id;
       orderNumber += 1;
@@ -89,7 +89,7 @@ module.exports = (logger) => {
         // eslint-disable-next-line no-await-in-loop
         const res = await dbClient.createMeetingItem(
           meetingId, rootMeetingItemId, orderNumber, null, null,
-          'PENDING', 'test', 'description', amendedTitle,
+          'UPCOMING', 'test', 'description', amendedTitle, // 'UPCOMING' status per latest MVP designs
         );
         orderNumber += 1;
       }
@@ -108,7 +108,7 @@ module.exports = (logger) => {
 
     try {
       if (!meetingId) {
-        const res = await dbClient.createMeeting('test', 1, '', 'PENDING');
+        const res = await dbClient.createMeeting('test', 1, '', 'UPCOMING'); // 'UPCOMING' status per latest MVP designs
         meetingId = res.rows[0].id;
       } else {
         const res = await dbClient.getMeeting(Number(meetingId))
