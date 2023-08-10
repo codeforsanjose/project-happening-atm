@@ -1,15 +1,16 @@
 @import '../../utils/_colors.scss';
 
 .dropdown {
-  $font-weight: 600;
-  $font-size: 1rem;
+	$font-weight: 600;
+	$font-size: 1rem;
+	width: 160px;
 
-  .dropdown-wrapper {
-    z-index: 500;
-    overflow: hidden; // ensure overflow doesn't overlap rounded edges
-    border: none;
-    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.15));
-  }
+	.dropdown-wrapper {
+		z-index: 500;
+		overflow: hidden; // ensure rounded edges
+		border: none;
+		filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.15));
+	}
 
   .dropdown-item,
   .dropdown-item-selected {
@@ -18,88 +19,87 @@
     font-size: $font-size;
   }
 
-  .dropdown-item-selected {
-    filter: brightness(80%);
-    text-shadow: 1px 1px 2px grey;
-  }
+	.dropdown-item-selected {
+		filter: brightness(80%);
+		text-shadow: 1px 1px 2px grey;
+	}
 
   .dropdown-item:hover {
     filter: brightness(80%);
   }
 
-  .selector {
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    column-gap: 9px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    border: none;
-  }
+	.selector {
+		display: flex;
+		justify-content: center;
+		align-items: end;
+		column-gap: 9px;
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+		border: none;
+	}
 
   .selector:hover {
     filter: brightness(80%);
     text-shadow: 1px 1px 2px grey;
   }
 
-  .upcoming {
-    background: $pendingBlueBackground;
-    color: $darkBlue;
-    svg {
-      fill: $darkBlue;
-    }
-  }
+	.upcoming {
+		background:$pendingBlueBackground;
+		color:$darkBlue;
+		svg{
+				fill:$darkBlue;
+		}
+	}
 
   .dropdown-wrapper .upcoming {
     cursor: not-allowed;
   }
 
-  .in-progress {
-    background: $darkBlue;
-    color: $lightGreen;
-    svg {
-      fill: $lightGreen;
-    }
-  }
+	.in-progress {
+		background:$darkBlue;
+		color:$lightGreen;
+		svg{
+				fill:$lightGreen;
+		}
+	}
 
-  .selector.in-progress {
-    background-color: $lightGreen;
-    color: $darkBlue;
-  }
+	.selector.in-progress {
+		background-color: $lightGreen;
+		color: $darkBlue;
+	}
 
-  .ended,
-  .completed {
-    background: $pastGray;
-    color: $mediumGray;
-    svg {
-      fill: $mediumGray;
-    }
-  }
+	.ended, .completed {
+		background:$pastGray;
+		color:$mediumGray;
+		svg{
+				fill:$mediumGray;
+		}
+	}
 
-  .in-recess,
-  .on-hold {
-    background: $altWhite;
-    color: $darkBlue;
-    // border:1px solid $pendingBlueBackground;
-    svg {
-      fill: $darkBlue;
-    }
-  }
+	.in-recess, .on-hold {
+		background:$altWhite;
+		color:$darkBlue;
+		// border:1px solid $pendingBlueBackground;
+		svg{
+				fill:$darkBlue;
+		}
+	}
 
-  .deferred {
-    background: $white;
-    color: $errorRed;
-    svg {
-      fill: $errorRed;
-    }
-  }
+	.deferred{
+		background:$white;
+		color:$errorRed;
+		svg{
+				fill:$errorRed;
+		}
+	}
 
   .meeting-status-dropdown-arrow {
     background-color: $atmGold;
     border-radius: 100%;
   }
 
-  svg.meeting-status-dropdown-arrow {
-    fill: black;
-  }
+	svg.meeting-status-dropdown-arrow {
+		fill: black;
+	}
+
 }
