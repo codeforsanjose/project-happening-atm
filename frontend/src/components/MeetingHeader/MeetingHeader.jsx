@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "./MeetingHeader.scss";
-import classnames from "classnames";
 import Spinner from "../Spinner/Spinner";
 import MeetingStates from "../../constants/MeetingStates";
 import Dropdown from "../Dropdown/Dropdown";
@@ -114,10 +113,9 @@ function MeetingHeader({
   const isInProgress = meetingStatus.value === "IN PROGRESS";
 
   return (
-    <div className={classnames("meeting-header")}>
+    <div className="meeting-header">
       {!loading && (
         <>
-          {/* <div className="status">{t(getRelativeTimeLocKey())}</div> */}
           {isAdmin() && (
             <div
               className={classNames(
@@ -142,7 +140,7 @@ function MeetingHeader({
         </>
       )}
       <div
-        className={classnames(
+        className={classNames(
           "header-shared-content",
           isAdmin() && "header-shared-content--admin"
         )}
@@ -160,7 +158,7 @@ function MeetingHeader({
                 {/* display meeting status for community users: */}
                 {!isAdmin() && (
                   <div
-                    className={classnames("community-user-meeting-status", {
+                    className={classNames("community-user-meeting-status", {
                       "progress-wrapper-started": isInProgress,
                     })}
                   >
