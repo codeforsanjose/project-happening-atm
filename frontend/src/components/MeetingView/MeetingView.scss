@@ -1,13 +1,10 @@
-@import "../../utils/colors";
+@import '../../utils/colors';
 
 .meeting-view {
   padding: 0;
   padding-bottom: 2em;
   background-color: $blueSky;
-  font-family: "Poppins", sans-serif;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
+  font-family: 'Poppins', sans-serif;
 
   @media only screen and (min-device-width: 812px) {
     margin: 0 200px 0;
