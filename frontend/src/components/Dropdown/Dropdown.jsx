@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
-import Panel from "./Panel";
-import classNames from "classnames";
-import { KeyboardArrowDownIcon } from "../../utils/_icons";
-import "./Dropdown.scss";
+import Panel from './Panel';
+import classNames from 'classnames';
+import { KeyboardArrowDownIcon } from '../../utils/_icons';
+import './Dropdown.scss';
 
 /*
  * A re-usable dropdown component for viewing/managing dropdown selections such as
@@ -31,11 +31,11 @@ function Dropdown({ options, value, onChange, dropDownType }) {
         setIsOpen(false);
       }
     };
-    document.addEventListener("click", handler, true);
+    document.addEventListener('click', handler, true);
 
     return () => {
       // return cleanup function for dismounting of dropdown component
-      document.removeEventListener("click", handler);
+      document.removeEventListener('click', handler);
     };
   }, []);
 
@@ -54,10 +54,10 @@ function Dropdown({ options, value, onChange, dropDownType }) {
         className={classNames(
           // apply addtl styling to indicate currently selected option
           option.value.toLowerCase() === value.value.toLowerCase()
-            ? "dropdown-item-selected"
-            : "",
-          "dropdown-item", // apply standard styling for all options
-          option.value.toLowerCase().split(" ").join("-")
+            ? 'dropdown-item-selected'
+            : '',
+          'dropdown-item', // apply standard styling for all options
+          option.value.toLowerCase().split(' ').join('-')
         )}
         onClick={() => handleOptionClick(option)}
       >
@@ -71,15 +71,15 @@ function Dropdown({ options, value, onChange, dropDownType }) {
       {!isOpen && (
         <Panel
           className={classNames(
-            value.value.toLowerCase().split(" ").join("-"),
-            "dropdown-item",
-            "selector"
+            value.value.toLowerCase().split(' ').join('-'),
+            'dropdown-item',
+            'selector'
           )}
           onClick={handleClick}
         >
-          {value?.label || "Select..."}
+          {value?.label || 'Select...'}
           <KeyboardArrowDownIcon
-            className={classNames(dropDownType + "-dropdown-arrow", "icon")}
+            className={classNames(dropDownType + '-dropdown-arrow', 'icon')}
           />
         </Panel>
       )}
