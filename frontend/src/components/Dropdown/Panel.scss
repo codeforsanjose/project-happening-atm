@@ -1,11 +1,9 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .panel {
-	width: 160px;
-	border-radius: 12px;
-	overflow: hidden; 
-	text-align: center;
-	cursor: pointer;
+  width: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
 }
-
-
