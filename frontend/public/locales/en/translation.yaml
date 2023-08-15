@@ -14,6 +14,7 @@ header:
   my-city-agenda: My City's Agenda
   city-council-meetings: San Jose City Council
   city-council-meeting-agenda: City Council Meeting Agenda
+  meeting-agenda: Meeting Agenda
 
 meeting:
   start-time: Start Time
@@ -37,9 +38,11 @@ meeting:
     label: Meeting Status
     short:
       default-option: Update Status
+      upcoming: Upcoming
       in-progress: In Progress
       in-recess: In Recess
       ended: Ended
+      deferred: Deferred      
       cancelled: Cancelled
     long:
       in-progress: Meeting is in progress

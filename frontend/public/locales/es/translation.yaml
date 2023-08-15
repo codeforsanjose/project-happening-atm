@@ -12,8 +12,9 @@ navbar:
 
 header:
   my-city-agenda: Agenda de Mi Ciudad
-  city-council-meetings: Reuniones del Consejo de la Ciudad
+  city-council-meetings: Reuniones del Consejo de la Ciudad de San José
   city-council-meeting-agenda: Agenda de la Reunión del Consejo de la Ciudad
+  meeting-agenda: Agenda de la Reunión
 
 meeting:
   start-time: Hora de Inicio
@@ -37,9 +38,11 @@ meeting:
     label: Estado de la Reunión
     short:
       default-option: Estado de Actualización
+      upcoming: Próxima
       in-progress: En Curso
       in-recess: En Receso
       ended: Terminó
+      deferred: Diferido
       cancelled: Cancelado
     long:
       in-progress: Reunión Esta en Curso
@@ -120,6 +123,7 @@ meeting:
         options:
           completed: Completado
           in-progress: En Curso
+          upcoming: Próxima
           closed: Cerrado
           removed: Eliminado para una Consideración Separada
           deferred: Diferido

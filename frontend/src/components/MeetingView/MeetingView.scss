@@ -1,14 +1,18 @@
-@import "../../utils/colors";
+@import '../../utils/colors';
 
 .meeting-view {
   padding: 0;
   padding-bottom: 2em;
   background-color: $blueSky;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 
   @media only screen and (min-device-width: 812px) {
     margin: 0 200px 0;
     padding-bottom: 3em;
+    // JY 2023.07: per latest MVP designs
+    width: 50vw;
+    margin-left: 25vw;
+    margin-right: 25vw;
   }
 
   a {
@@ -16,7 +20,7 @@
   }
   .agend-pdf-link {
     text-decoration: underline;
-    margin-left: 2em;
+    margin-left: calc(1rem + 10px); // match AgendaGroup styling
   }
   .join-meeting {
     color: $happeningBlue;
@@ -28,7 +32,7 @@
     display: flex;
     align-items: center;
     margin: 1em;
-    margin-left: 2em;
+    margin-left: calc(1rem + 10px); // match AgendaGroup styling
     padding: 0.5em;
     padding-left: 1.25em;
     padding-right: 1.25em;

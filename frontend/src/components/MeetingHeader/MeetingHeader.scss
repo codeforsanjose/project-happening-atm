@@ -1,0 +1,131 @@
+@import "../../utils/_colors.scss";
+
+$font-size: 1rem;
+
+.meeting-header {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  z-index: 100;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1.1px;
+  padding-top: 65px;
+
+  .selector-panel{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-right: 0;
+    padding-left: calc(25vw + 1rem + 10px); // match component AgendaGroup
+    height: 50px;
+    padding-top: 9px;
+    font-weight: 300;
+    font-size: $font-size;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.15));
+
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 3rem;
+    align-items: baseline;
+
+    @media (max-width: 811px) {
+      padding-left: calc(1rem + 10px);
+    }
+  }
+
+  .label {
+    font-weight: 900;
+    color: $black;
+  }
+
+  .upcoming {
+    background:$pendingBlueBackground;
+    color:$darkBlue;
+    svg{
+        fill:$darkBlue;
+    }
+  }
+
+  .selector-panel.in-progress {
+    background-color: $lightGreen;
+    color: $darkBlue;
+  }
+
+  .ended {
+    background:$pastGray;
+    color:$mediumGray;
+    svg{
+        fill:$mediumGray;
+    }
+  }
+
+  .in-recess {
+    background:$altWhite;
+    color:$darkBlue;
+    svg{
+        fill:$darkBlue;
+    }
+  }
+
+  .deferred{
+    background:$white;
+    color:$errorRed;
+    svg{
+        fill:$errorRed;
+    }
+  }
+
+
+  .header-shared-content--admin {
+    padding-top: 50px;
+  }
+
+  .header-shared-content {
+    color: $black;
+
+    .community-user-meeting-status {
+      color: $statusIndicator;
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding-right: 1em;
+    }
+
+    .meeting-info {
+      font-weight: 600;
+      font-size: 1em;
+      margin-top: 1rem;
+      margin-left: calc(1rem + 10px); // match AgendaGroup styling
+    }
+
+    .date-status-wrapper {
+      display: flex;
+      justify-content: space-between;
+      column-gap: 2rem;
+      font-size: 1rem;
+      font-weight: 300;
+      padding-right: calc(1rem + 10px);      
+      margin-bottom: 0.3rem;
+    }
+
+    .progress-wrapper-started {
+      color: $statusIndicator;
+
+      .status-icon {
+        fill: $lightGreen;
+        margin-right: 0.5em;
+        position: relative;
+        transform: scale(0.85);
+      }
+    }
+
+    .title {
+      font-size: 1.5em;
+      line-height: 1.5em;
+      margin-bottom: 1.7em;
+    }
+  }
+
+}

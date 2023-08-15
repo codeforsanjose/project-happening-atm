@@ -9,18 +9,14 @@ import {
 } from 'react-accessible-accordion';
 import './AgendaGroup.scss';
 
-import {
-  useDroppable,
-} from '@dnd-kit/core';
+import { useDroppable } from '@dnd-kit/core';
 
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import {
-  StatusInProgress, AddIcon, RemoveIcon,
-} from '../../../utils/_icons';
+import { StatusInProgress, AddIcon, RemoveIcon } from '../../../utils/_icons';
 
 import MeetingItemStates from '../../../constants/MeetingItemStates';
 import AgendaItem from './AgendaItem';
@@ -52,8 +48,10 @@ const setNextIndex = (agendaGroups) => {
   let nextFound = false;
   let next = null;
   agendaGroups.forEach((group, i) => {
-    if (group.status === MeetingItemStates.PENDING
-      || group.status === MeetingItemStates.IN_PROGRESS) {
+    if (
+      group.status === MeetingItemStates.PENDING ||
+      group.status === MeetingItemStates.IN_PROGRESS
+    ) {
       if (!nextFound) {
         next = i;
         nextFound = true;
@@ -65,8 +63,12 @@ const setNextIndex = (agendaGroups) => {
 
 function AgendaGroups({ args }) {
   const {
-    agendaGroups, subbedItems, refetchSubs, refetchAllMeeting,
-    expandedAcordians, getSubError,
+    agendaGroups,
+    subbedItems,
+    refetchSubs,
+    refetchAllMeeting,
+    expandedAcordians,
+    getSubError,
   } = args;
 
   // This is the index of the next meeting up on the agenda
@@ -86,13 +88,19 @@ function AgendaGroups({ args }) {
   return (
     <>
       {agendaGroups.map((parent, i) => (
-        <AccordionItem className="AgendaGroup" key={`${parent.id}accord`} uuid={groupId + parent.id}>
+        <AccordionItem
+          className="AgendaGroup"
+          key={`${parent.id}accord`}
+          uuid={groupId + parent.id}
+        >
           <AgendaGroupHeader
             agendaGroup={parent}
             completed={parent.status === MeetingItemStates.COMPLETED}
             active={parent.status === MeetingItemStates.IN_PROGRESS}
             next={i === nextIndex}
-            expanded={expandedAcordians.some((elem) => elem === groupId + parent.id)}
+            expanded={expandedAcordians.some(
+              (elem) => elem === groupId + parent.id
+            )}
           />
           <AgendaGroupBody
             key={`${parent.id}agendaGroup`}
@@ -158,13 +166,13 @@ const splitTitle = (title) => {
   };
 };
 
-function AgendaGroupHeader({
-  agendaGroup, active, expanded, next, completed,
-}) {
+function AgendaGroupHeader({ agendaGroup, active, expanded, next, completed }) {
   return (
     <div>
       <AccordionItemHeading className="group-header">
-        <AccordionItemButton className={buildAccordianClass(active, next, completed)}>
+        <AccordionItemButton
+          className={buildAccordianClass(active, next, completed)}
+        >
           <div className="button-text">
             <div className="group-title">
               <div className="title-number">
@@ -175,15 +183,14 @@ function AgendaGroupHeader({
                 {splitTitle(agendaGroup.title_loc_key).titleText}
                 <br />
                 {active && (
-                <span className="groupStatus">
-                  {'\u00A0'}
-                  In Progress
-                </span>
+                  <span className="groupStatus">
+                    {'\u00A0'}
+                    In Progress
+                  </span>
                 )}
               </div>
             </div>
             <div className="group-icon">
-              <span className="expansionIconStatus"><StatusInProgress className={buildIconClass(active, next, completed)} /></span>
               <span className="expansionIcon">
                 {!expanded ? <AddIcon /> : <RemoveIcon />}
               </span>
@@ -192,7 +199,6 @@ function AgendaGroupHeader({
         </AccordionItemButton>
       </AccordionItemHeading>
     </div>
-
   );
 }
 
@@ -200,11 +206,15 @@ const buildSortableItems = (agendaGroup) => {
   let returnArray = [];
   const { items, status } = agendaGroup;
 
-  const dontSort = StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === status);
+  const dontSort = StatusDontSort.GROUP_DONT_SORT.some(
+    (elem) => elem === status
+  );
 
   if (!dontSort) {
     returnArray = items.filter((item) => {
-      if (!StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === item.status)) {
+      if (
+        !StatusDontSort.ITEMS_DONT_SORT.some((elem) => elem === item.status)
+      ) {
         return true;
       }
       return false;
@@ -214,16 +224,14 @@ const buildSortableItems = (agendaGroup) => {
   return returnArray.map((item) => item.id);
 };
 
-function AgendaGroupBody({
-  agendaGroup, args,
-}) {
-  const {
-    subbedItems, refetchAllMeeting, refetchSubs, getSubError,
-  } = args;
+function AgendaGroupBody({ agendaGroup, args }) {
+  const { subbedItems, refetchAllMeeting, refetchSubs, getSubError } = args;
 
   const { setNodeRef } = useDroppable({
     id: agendaGroup.dropID,
-    disabled: StatusDontSort.GROUP_DONT_SORT.some((elem) => elem === agendaGroup.status),
+    disabled: StatusDontSort.GROUP_DONT_SORT.some(
+      (elem) => elem === agendaGroup.status
+    ),
   });
 
   // needed to ensure the dragable element can be placed when the container is empty
@@ -248,11 +256,9 @@ function AgendaGroupBody({
             <AgendaItem
               key={item.id}
               item={item}
-              subStatus={
-                subbedItems.some(
-                  (sub) => (sub.meeting_item_id === item.id),
-                )
-              }
+              subStatus={subbedItems.some(
+                (sub) => sub.meeting_item_id === item.id
+              )}
               args={agendaItemArgs}
             />
           ))}

@@ -46,6 +46,7 @@ import { UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
  *      An object representing a meeting with an array of the agenda items
  *
  * state:
+ *    JYIP: 2023.08: Per latest MPV designs the showCompleted feature is no longer in scope
  *    showCompleted
  *      Boolean state to toggle if completed agenda items are shown
  *    agendaGroups
@@ -167,7 +168,7 @@ function AgendaView({
 
   // Necessary as the createRenderedGroups function returns renderedAgendaGroups
   // of which prevents the DND kit from moving items between completed and pending groups
-  const displayAgenda = showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
+  const displayAgenda = agendaGroups; //showCompleted ? agendaGroups : createRenderedGroups(agendaGroups);
 
   const agendaGroupsArgs = {
     agendaGroups: displayAgenda,
@@ -180,14 +181,14 @@ function AgendaView({
   return (
     <div className="AgendaView">
 
-      <button
+      {/* <button
         type="button"
         className="complete-toggle"
         onClick={() => setShowCompleted((completed) => !completed)}
       >
         {showCompleted ? <CheckedCheckboxIcon /> : <UncheckedCheckboxIcon />}
         <p>{t('meeting.tabs.agenda.list.show-closed')}</p>
-      </button>
+      </button> */}
 
       <DndContext
         sensors={sensors}

@@ -12,8 +12,9 @@ navbar:
 
 header:
   my-city-agenda: Chương trình nghị sự của Thành phố
-  city-council-meetings: Các Cuộc họp của Hội đồng Thành phố
+  city-council-meetings: Các Cuộc họp của Hội đồng Thành phố San Jose
   city-council-meeting-agenda: Cuộc họp nghị sự của Hội đồng Thành phố
+  meeting-agenda: chương trình họp
 
 meeting:
   start-time: Giờ Bắt đầu
@@ -37,9 +38,11 @@ meeting:
     label: Trạng thái cuộc họp
     short:
       default-option: Cập nhật trạng thái
+      upcoming: sắp tới
       in-progress: Đang diễn ra
       in-recess: Tạm dừng
       ended: Kết thúc
+      deferred: Đã hoãn
       cancelled: Đã huỷ
     long:
       in-progress: Cuộc họp đang diễn ra
@@ -118,6 +121,7 @@ meeting:
             done: Đã lưu và đã Cập nhật
         options:
           completed: Đã Hoàn thành
+          upcoming: sắp tới
           in-progress: Đang diễn ra
           closed: Đã kết thúc
           removed: Đã gỡ để cân nhắc thêm
