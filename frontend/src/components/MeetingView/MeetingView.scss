@@ -5,13 +5,11 @@
   background-color: $blueSky;
   font-family: "Poppins", sans-serif;
   margin: 0 3%;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
+
 
   @media only screen and (min-device-width: 812px) {
     margin: 0 200px 0;
-    // JY 2023.07: per latest MVP designs
+    // JY 2023.07: per latest MVP designs for desktop:
     width: 50vw;
     margin-left: 25vw;
     margin-right: 25vw;
