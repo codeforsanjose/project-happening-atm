@@ -50,3 +50,6 @@ jobs:
       - run: make build-${{ matrix.image }}
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          REACT_APP_GRAPHQL_URL: ${{ vars.REACT_APP_GRAPHQL_URL }}
+          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+          REACT_APP_JWT_ISSUER: ${{ secrets.REACT_APP_JWT_ISSUER }}
