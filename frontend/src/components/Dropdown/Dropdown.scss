@@ -8,10 +8,10 @@
 	.panel {
 		width: 160px;
 		border-radius: 12px;
-		overflow: hidden; 
+		overflow: hidden;
 		text-align: center;
 		cursor: pointer;
-	}
+	}	
 
 	.dropdown-open {
 		position: absolute;
@@ -24,7 +24,7 @@
 		text-align: center;
 		cursor: pointer;
 		margin-top: -20px; // ensures dropdown doesn't jump down when open
-		// workaround for hiding corner edges on Safari: https://stackoverflow.com/questions/14383632/webkit-border-radius-and-overflow-bug-when-using-any-animation-transition/16681137
+		// workaround for hiding corners on Safari: https://stackoverflow.com/questions/14383632/webkit-border-radius-and-overflow-bug-when-using-any-animation-transition/16681137
 		-webkit-backface-visibility: hidden;
 		-moz-backface-visibility: hidden;
 		-webkit-transform: translate3d(0, 0, 0);
@@ -32,7 +32,7 @@
 	}
 	
 	.dropdown-open.agenda-item-status {
-		outline: 1px solid $happeningBlue;
+		outline: 1px solid $happeningBlue; //$statusIndicator;
 	}
 
 	.dropdown-item, .dropdown-item-selected {
@@ -66,7 +66,7 @@
 		text-shadow: 1px 1px 2px grey;
 	}
 
-	.upcoming {
+	.upcoming, .pending {
 		background:$pendingBlueBackground;
 		color:$happeningBlue;
 		svg{
@@ -75,7 +75,7 @@
 	}
 
 	// indicate: can't change status back to Upcoming
-	.dropdown-open.meeting-status .upcoming  {
+	.dropdown-open.meeting-status .upcoming {
 		cursor: not-allowed;
 	}
 
@@ -108,15 +108,7 @@
 		outline: 1px solid $upcoming;
 	}
 
-	.in-recess {
-		background: $white;
-		color: $happeningBlue;
-		svg {
-			fill: $happeningBlue;
-		}
-	}
-
-	.on-hold {
+	.in-recess, .on-hold {
 		background:$altWhite;
 		color:$happeningBlue;
 		svg{

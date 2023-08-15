@@ -70,8 +70,6 @@ function Dropdown({ options, value, onChange, className }) {
       {!isOpen && (
         <button
 					type="button"
-        <button
-					type="button"
           className={classNames(
             value.class,
             'dropdown-item',
