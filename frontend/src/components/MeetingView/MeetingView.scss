@@ -7,7 +7,7 @@
   margin: 0 3%;
 
 
-  @media only screen and (min-device-width: 812px) {
+  @media only screen and (min-width: 812px) {
     margin: 0 200px 0;
     // JY 2023.07: per latest MVP designs for desktop:
     width: 50vw;
