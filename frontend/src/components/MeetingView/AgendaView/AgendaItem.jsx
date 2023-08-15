@@ -14,7 +14,6 @@ import {
   UPDATE_MEETING_ITEM,
 } from '../../../graphql/mutation';
 import isAdmin from '../../../utils/isAdmin';
-// import buildButtonClasses from '../../../utils/buildButtonClasses'; // deprecated: to be removed w/ future implementation of re-usable confirmation modal
 import { toTimeString } from '../../../utils/timestampHelper';
 
 import {
@@ -145,7 +144,6 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const [displaySetStartTimeModal, setDisplaySetStartTimeModal] =
     useState(false);
   const [admin] = useState(isAdmin());
-  //const [buttonClasses] = useState(buildButtonClasses()); // deprecated: to be removed w/ future implementation of re-usable confirmation modal
   const { t } = useTranslation();
 
   // possible agenda item statuses to be passed into dropdown w/ internationalization of status labels
