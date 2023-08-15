@@ -109,11 +109,18 @@
 	}
 
 	.in-recess, .on-hold {
-		background:$altWhite;
 		color:$happeningBlue;
 		svg{
 				fill:$happeningBlue;
 		}
+	}
+
+	.in-recess {
+		background: $white;
+	}
+
+	.on-hold {
+		background: $altWhite;
 	}
 
 	.deferred{
