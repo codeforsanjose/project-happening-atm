@@ -12,9 +12,6 @@ function Footer() {
   return (
     <footer>
       <nav className="no-select">
-        {/* <div className="separator">
-          <hr></hr>
-        </div> */}
         <div className="languages">
           <button
             type="button"
