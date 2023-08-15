@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import classNames from "classnames";
-import { KeyboardArrowDownIcon } from "../../utils/_icons";
-import "./Dropdown.scss";
-import { useTranslation } from "react-i18next";
+import classNames from 'classnames';
+import { KeyboardArrowDownIcon } from '../../utils/_icons';
+import './Dropdown.scss';
+import { useTranslation } from 'react-i18next';
 
 /*
  * A re-usable dropdown component for viewing/managing dropdown selections such as
  * meeting status and meeting agenda item status
- * props: options, value, onChange, dropdownType
+ * props: options, value, onChange, className
  * 	options: the list of possible dropdown values
  *	value: the currently selected dropdown value (per 'controlled form input' pattern)
  * 	onChange: event handler for when (admin) user selects new dropdown value
- *  dropdownType: an identifier to differentiate diff dropdown use cases and associated styling as necessary
+ *  className: styling for diff dropdown use cases
  */
-function Dropdown({ options, value, onChange, dropdownType }) {
+function Dropdown({ options, value, onChange, className }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropDownRef = useRef();
   const { t } = useTranslation();
@@ -70,18 +70,21 @@ function Dropdown({ options, value, onChange, dropdownType }) {
       {!isOpen && (
         <button
 					type="button"
+        <button
+					type="button"
           className={classNames(
             value.class,
             'dropdown-item',
             'selector',
-            dropdownType
+            className,
+						'panel',
           )}
           onClick={handleClick}
         >
           {t(value?.label) || 'Select...'}
           <KeyboardArrowDownIcon
             className={classNames(
-              dropdownType + '-dropdown-arrow',
+              className,
               'dropdown-arrow'
             )}
           />
@@ -89,11 +92,6 @@ function Dropdown({ options, value, onChange, dropdownType }) {
       )}
       {isOpen && (
         <div className={classNames('dropdown-open', className)}>
-          {renderedOptions}
-        </div>
-      )}
-      {isOpen && (
-        <div className={classNames('dropdown-wrapper', dropdownType)}>
           {renderedOptions}
         </div>
       )}

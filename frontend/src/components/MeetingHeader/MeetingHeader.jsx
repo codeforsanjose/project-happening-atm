@@ -135,7 +135,7 @@ function MeetingHeader({
                   options={statuses}
                   value={meetingStatus}
                   onChange={handleSelectStatus}
-                  dropdownType={"meeting-status"}
+                  className="meeting-status"
                 />
               </div>
             </div>

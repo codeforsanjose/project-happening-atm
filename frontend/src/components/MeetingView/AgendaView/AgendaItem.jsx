@@ -386,7 +386,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
                 options={agendaItemStatuses}
                 value={agendaItemStatus}
                 onChange={handleSelectStatus}
-                dropdownType={'agenda-item-status'}
+                className="agenda-item-status"
               />
             </div>
           )}

@@ -5,7 +5,15 @@
 	$font-size: 1rem;
 	width: 160px;
 
-	.dropdown-wrapper {
+	.panel {
+		width: 160px;
+		border-radius: 12px;
+		overflow: hidden; 
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.dropdown-open {
 		position: absolute;
 		z-index: 10000; // place above footer (for agenda item status etc)
 		overflow: hidden; // ensure rounded edges
@@ -23,8 +31,8 @@
 		-moz-transform: translate3d(0, 0, 0);		
 	}
 	
-	.dropdown-wrapper.agenda-item-status {
-		outline: 1px solid $happeningBlue; //$statusIndicator;
+	.dropdown-open.agenda-item-status {
+		outline: 1px solid $happeningBlue;
 	}
 
 	.dropdown-item, .dropdown-item-selected {
@@ -67,7 +75,7 @@
 	}
 
 	// indicate: can't change status back to Upcoming
-	.dropdown-wrapper.meeting-status .upcoming  {
+	.dropdown-open.meeting-status .upcoming  {
 		cursor: not-allowed;
 	}
 
@@ -142,13 +150,13 @@
 		}
 	}
 
-	.meeting-status-dropdown-arrow {
+	.meeting-status.dropdown-arrow {
 		background-color: $atmGold;
 		border-radius: 100%;
 	}
 
 	.selector svg {
-		&.meeting-status-dropdown-arrow {
+		&.meeting-status.dropdown-arrow {
 			fill: black;
 		}
 	}
