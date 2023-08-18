@@ -40,7 +40,7 @@ function Footer() {
             <img className="OSJ" src={OSJ_Logo} alt="Only in San Jose" />
           </a>
           <a
-            href="https://www.codeforsanjose.org/"
+            href="www.opensourcesanjose.org"
             target="_blank"
             rel="noreferrer"
           >
