@@ -11,13 +11,6 @@ spec:
     - host: {{ index .Values.global "deployed_url" }}
       http:
         paths:
-        - path: /graphql
-          pathType: Prefix
-          backend:
-            service:
-              name: {{ .Release.Name }}-graphql
-              port:
-                number: 80
         - path: /graphql/
           pathType: Prefix
           backend:
