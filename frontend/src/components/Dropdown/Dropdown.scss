@@ -15,7 +15,7 @@
 
   .dropdown-open {
     position: absolute;
-    z-index: 10000; // place above footer (for agenda item status etc)
+    z-index: 50; // place above footer (for agenda item status etc)
     overflow: hidden; // ensure overflow doesn't overlap rounded edges
     border: none;
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.35));
