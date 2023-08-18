@@ -72,23 +72,36 @@ target "_common" {
  * This section defines virtual base targets, which are shared across the
  * different dependent targets.
  */
-variable "PUBLIC_URL" { default = "http://localhost" }
-variable "REACT_APP_GRAPHQL_URL" { default = "http://localhost" }
-variable "REACT_APP_JWT_ISSUER" { default = "default-jwt" }
+
+// This builds the frontend bundle and serves using nginx
+// variable "PUBLIC_URL" { default = "http://localhost" }
+// variable "REACT_APP_GRAPHQL_URL" { default = "http://localhost" }
+// variable "REACT_APP_JWT_ISSUER" { default = "default-jwt" }
+// target "frontend" {
+//     dockerfile = "docker/frontend/Dockerfile"
+//     context = "./"
+//     target = "build"
+//     args = {
+//         PUBLIC_URL = "${PUBLIC_URL}"
+//         REACT_APP_GRAPHQL_URL = "${REACT_APP_GRAPHQL_URL}"
+//         REACT_APP_JWT_ISSUER = "${REACT_APP_JWT_ISSUER}"
+//     }
+//     inherits = ["_common"]
+//     tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
+//     cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
+//     cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-frontend"): ""]
+// }
+
 target "frontend" {
     dockerfile = "docker/frontend/Dockerfile"
     context = "./"
-    target = "build"
-    args = {
-        PUBLIC_URL = "${PUBLIC_URL}"
-        REACT_APP_GRAPHQL_URL = "${REACT_APP_GRAPHQL_URL}"
-        REACT_APP_JWT_ISSUER = "${REACT_APP_JWT_ISSUER}"
-    }
+    target = "app"
     inherits = ["_common"]
     tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
     cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
     cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-frontend"): ""]
 }
+
 target "backend" {
     dockerfile = "docker/backend/Dockerfile"
     context = "./"

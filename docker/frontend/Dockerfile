@@ -11,22 +11,19 @@ LABEL org.opensourcesanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 
-ARG PUBLIC_URL
-ARG REACT_APP_GRAPHQL_URL
-ARG REACT_APP_JWT_ISSUER
-
 COPY ./frontend .
 
 COPY --from=node_modules_cache /usr/src/app/node_modules /usr/src/app/node_modules
 
-RUN npm run build
-
 EXPOSE 3000/tcp
-
 CMD [ "npm", "run", "start"]
 
-FROM nginx as build
+FROM app as build
+ARG PUBLIC_URL
+ARG REACT_APP_GRAPHQL_URL
+ARG REACT_APP_JWT_ISSUER
+RUN npm run build
 
-COPY --from=app /usr/src/app/build /usr/share/nginx/html
-
+FROM nginx as prod
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80/tcp
