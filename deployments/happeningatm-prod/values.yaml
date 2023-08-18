@@ -8,7 +8,7 @@ global:
 
 frontend:
   replicaCount: 1
-  command: ["nginx", "-g", "daemon off;"]
+  command: ["npm", "run", "start"]
   cpu:
     requests: 100m
     limit: 1000m
