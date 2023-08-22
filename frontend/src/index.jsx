@@ -48,16 +48,15 @@ const httpLink = new BatchHttpLink({
   batchMax: 100,
 });
 
-
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN); 
+  const token = window.localStorage.getItem(LocalStorageTerms.TOKEN);
 
   // if the token both exists and is valid use it, else attach no token to header
   return {
     headers: {
       ...headers,
-      authorization: (token && verifyToken()) ? `Bearer ${token}` : "",      
+      authorization: token && verifyToken() ? `Bearer ${token}` : "",
     },
   };
 });
@@ -76,19 +75,17 @@ function SampleQuery() {
   if (error) console.log("THE Error: ", error);
 
   // eslint-disable-next-line no-console
-  console.log(data);
-
+  // console.log(data);
   return null;
 }
 
 const initializeSignIn = () => {
-// localStorage.getItem returns string, so need to convert to boolean  
-  const tokenSignedIn = window.localStorage.getItem(
-    LocalStorageTerms.SIGNED_IN) === 'true';
-  ;   
+  // localStorage.getItem returns string, so need to convert to boolean
+  const tokenSignedIn =
+    window.localStorage.getItem(LocalStorageTerms.SIGNED_IN) === "true";
   // provides verification to the front-end the login status
   // 1st verify user is signed in before attempting token verification
-  const loggedIn = tokenSignedIn && verifyToken(); 
+  const loggedIn = tokenSignedIn && verifyToken();
   window.localStorage.setItem(LocalStorageTerms.SIGNED_IN, loggedIn);
 
   return loggedIn;
@@ -106,7 +103,7 @@ function App() {
             <Router>
               <Switch>
                 <AuthRoute exact path="/" signedIn={signedIn}>
-                  <MeetingListView/>
+                  <MeetingListView />
                 </AuthRoute>
                 <AuthRoute path="/subscribe" signedIn={signedIn}>
                   <Subscribe />

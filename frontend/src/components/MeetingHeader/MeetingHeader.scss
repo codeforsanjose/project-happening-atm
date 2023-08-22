@@ -7,7 +7,7 @@ $font-size: 1rem;
   display: flex;
   flex-direction: column;
   width: 100%;
-  z-index: 100;
+  z-index: 10;
   font-family: 'Poppins', sans-serif;
   letter-spacing: 1.1px;
   padding-top: 65px;
@@ -26,11 +26,11 @@ $font-size: 1rem;
 
     display: flex;
     justify-content: flex-start;
-    column-gap: 3rem;
-    align-items: baseline;
+    column-gap: 2rem;
+    align-items:center;
 
     @media (max-width: 811px) {
-      padding-left: calc(1rem + 10px);
+      padding-left: calc(3% + 1rem + 10px);
     }
   }
 
@@ -61,7 +61,7 @@ $font-size: 1rem;
   }
 
   .in-recess {
-    background:$altWhite;
+    background:$white;
     color:$darkBlue;
     svg{
         fill:$darkBlue;
@@ -69,13 +69,16 @@ $font-size: 1rem;
   }
 
   .deferred{
-    background:$white;
+    background:$pastGray;
     color:$errorRed;
     svg{
         fill:$errorRed;
     }
   }
 
+  #meeting-status-dropdown {
+    position: relative;
+  }
 
   .header-shared-content--admin {
     padding-top: 50px;

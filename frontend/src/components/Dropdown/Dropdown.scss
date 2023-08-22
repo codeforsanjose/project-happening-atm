@@ -1,14 +1,39 @@
-@import '../../utils/_colors.scss';
+@import "../../utils/_colors.scss";
 
 .dropdown {
   $font-weight: 600;
   $font-size: 1rem;
+  width: 160px;
 
-  .dropdown-wrapper {
-    z-index: 500;
+  .panel {
+    width: 160px;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .dropdown-open {
+    position: absolute;
+    z-index: 50; // place above footer (for agenda item status etc)
     overflow: hidden; // ensure overflow doesn't overlap rounded edges
     border: none;
-    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.15));
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.35));
+    border-radius: 12px;
+    width: 160px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: -20px; // ensures dropdown doesn't jump down when open
+
+    // workaround for hiding corners on Safari: https://stackoverflow.com/questions/14383632/webkit-border-radius-and-overflow-bug-when-using-any-animation-transition/16681137
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+  }
+
+  .dropdown-open.agenda-item-status {
+    outline: 1px solid $happeningBlue; //$statusIndicator;
   }
 
   .dropdown-item,
@@ -21,6 +46,7 @@
   .dropdown-item-selected {
     filter: brightness(80%);
     text-shadow: 1px 1px 2px grey;
+    cursor: default; // indicate option is already current selection
   }
 
   .dropdown-item:hover {
@@ -29,11 +55,11 @@
 
   .selector {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: end;
-    column-gap: 9px;
+    column-gap: 0.6rem; //9px;
     padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-right: 0.85rem;
     border: none;
   }
 
@@ -42,29 +68,35 @@
     text-shadow: 1px 1px 2px grey;
   }
 
-  .upcoming {
+  .upcoming,
+  .pending {
     background: $pendingBlueBackground;
-    color: $darkBlue;
+    color: $happeningBlue;
     svg {
-      fill: $darkBlue;
+      fill: $happeningBlue;
     }
   }
 
-  .dropdown-wrapper .upcoming {
+  // indicate: can't change status back to Upcoming
+  .dropdown-open.meeting-status .upcoming {
     cursor: not-allowed;
   }
 
   .in-progress {
-    background: $darkBlue;
+    background: $happeningBlue;
     color: $lightGreen;
     svg {
       fill: $lightGreen;
     }
   }
 
-  .selector.in-progress {
+  .selector.in-progress.meeting-status {
     background-color: $lightGreen;
-    color: $darkBlue;
+    color: $happeningBlue;
+  }
+
+  .selector.deferred {
+    background-color: $pastGray;
   }
 
   .ended,
@@ -76,14 +108,24 @@
     }
   }
 
+  .selector.on-hold {
+    outline: 1px solid $upcoming;
+  }
+
   .in-recess,
   .on-hold {
-    background: $altWhite;
-    color: $darkBlue;
-    // border:1px solid $pendingBlueBackground;
+    color: $happeningBlue;
     svg {
-      fill: $darkBlue;
+      fill: $happeningBlue;
     }
+  }
+
+  .in-recess {
+    background: $white;
+  }
+
+  .on-hold {
+    background: $altWhite;
   }
 
   .deferred {
@@ -94,12 +136,34 @@
     }
   }
 
-  .meeting-status-dropdown-arrow {
+  .deferred svg {
+    &.dropdown-arrow {
+      fill: $errorRed;
+    }
+  }
+
+  .upcoming svg,
+  .on-hold svg,
+  .completed svg {
+    &.dropdown-arrow {
+      fill: $happeningBlue;
+    }
+  }
+
+  .in-progress svg {
+    &.dropdown-arrow {
+      fill: $lightGreen;
+    }
+  }
+
+  .meeting-status.dropdown-arrow {
     background-color: $atmGold;
     border-radius: 100%;
   }
 
-  svg.meeting-status-dropdown-arrow {
-    fill: black;
+  .selector svg {
+    &.meeting-status.dropdown-arrow {
+      fill: black;
+    }
   }
 }

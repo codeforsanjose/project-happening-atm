@@ -14,8 +14,7 @@
 }
 
 footer {
-  
-  z-index: 9000;
+  z-index: 40; // allow admin agenda item dropdown to sit on top
   width: 100%;
   height: 100%;
   padding: 32px 2.5vw 3em;
