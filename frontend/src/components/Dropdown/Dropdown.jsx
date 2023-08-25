@@ -18,7 +18,7 @@ function Dropdown({ options, value, onChange, className }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropDownRef = useRef();
   const { t } = useTranslation();
-
+	const propsClassName = className;
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
@@ -61,7 +61,9 @@ function Dropdown({ options, value, onChange, className }) {
 						)}				
 					value={t(option.label)}
 					disabled={
-					option.value === value.value ? true : false}
+					option.value === value.value ||
+					(propsClassName ==='meeting-status' && option.value === 'UPCOMING') // indicate can't revert mtg status to 'upcoming'
+					? true : false}
 					onClick={() => handleOptionClick(option)}
 				>
 				</input>
