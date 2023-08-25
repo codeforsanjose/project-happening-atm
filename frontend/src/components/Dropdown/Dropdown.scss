@@ -43,6 +43,20 @@
     font-size: $font-size;
   }
 
+	input {
+		border: none;
+		color: inherit;
+		background-color: inherit;
+		outline: none;
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+	}
+
+	input:disabled{
+		cursor: default;
+	}
+
   .dropdown-item-selected {
     filter: brightness(80%);
     text-shadow: 1px 1px 2px grey;

@@ -50,18 +50,21 @@ function Dropdown({ options, value, onChange, className }) {
   // construct open dropdown w/ diff selection options
   const renderedOptions = options.map((option) => {
     return (
-      <div
-        key={option.value}
-        className={classNames(
-          // apply addtl styling to indicate currently selected option
-          option.value === value.value ? 'dropdown-item-selected' : '',
-          'dropdown-item', // apply standard styling for all options
-          option.class
-        )}
-        onClick={() => handleOptionClick(option)}
-      >
-        {t(option.label)}
-      </div>
+				<input
+					key={option.value}
+					type="button"
+					className={classNames(
+						// apply addtl styling to indicate currently selected option
+						option.value === value.value ? 'dropdown-item-selected' : '',
+						'dropdown-item', // apply standard styling for all options
+						option.class
+						)}				
+					value={t(option.label)}
+					disabled={
+					option.value === value.value ? true : false}
+					onClick={() => handleOptionClick(option)}
+				>
+				</input>
     );
   });
 
