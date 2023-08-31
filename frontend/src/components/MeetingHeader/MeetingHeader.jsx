@@ -59,21 +59,12 @@ function MeetingHeader({
 
   // internationalization (i.e. "i18") of days of week for meeting day/time display
   const i18Date = () => {
-    const dayArrayIndex = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
     const dateString = toDateString(
       meeting.meeting_start_timestamp,
       "dddd D"
     ).split(" ");
-    const dayOfWeek = dateString[0];
-    const i18DayIndex = dayArrayIndex.indexOf(dayOfWeek);
+    const i18DayIndex = new Date(
+				Number(meeting.meeting_start_timestamp)).getDay();
     return (
       t("standard.weekdays", { returnObjects: true })[i18DayIndex] +
       " " +
