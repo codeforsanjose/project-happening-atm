@@ -49,7 +49,7 @@ function ConfirmationModal({
       overlayClassName="modal-overlay"
     >
       <div className="modal-header">
-        <h2>{t(headerText)}</h2>
+        <h2>{headerText}</h2>
         <button
           type="button"
           className="close-modal"

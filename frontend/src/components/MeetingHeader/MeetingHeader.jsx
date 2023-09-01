@@ -22,7 +22,7 @@ import isAdmin from "../../utils/isAdmin";
 function MeetingHeader({
   loading,
   meeting,
-  setSaveMeetingItems,
+  setSaveMeetingItems, // this prop doesn't appear to be used. Follow-up to see if can remove
   progressStatus,
 }) {
   const { t } = useTranslation();
