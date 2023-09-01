@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import "./MeetingHeader.scss";
 import Spinner from "../Spinner/Spinner";
 import MeetingStates from "../../constants/MeetingStates";
 import Dropdown from "../Dropdown/Dropdown";
+import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
+
 import classNames from "classnames";
 
 import { toDateString, toTimeString } from "../../utils/timestampHelper";
@@ -64,7 +66,8 @@ function MeetingHeader({
       "dddd D"
     ).split(" ");
     const i18DayIndex = new Date(
-				Number(meeting.meeting_start_timestamp)).getDay();
+      Number(meeting.meeting_start_timestamp)
+    ).getDay();
     return (
       t("standard.weekdays", { returnObjects: true })[i18DayIndex] +
       " " +
@@ -77,6 +80,59 @@ function MeetingHeader({
     statuses[statusIndexMap.indexOf("UPCOMING")]
   ); //Set default status of meetings to Upcoming
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
+  // open/close states for meeting status change confirmation modal:
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const openModal = () => {
+    setShowModal(true);
+  };
+  let [pendingStatus, setPendingStatus] = useState(meetingStatus);
+
+  // Define prop values for the confirmation modal for admins to change the meeting status:
+  // Note: different language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
+  const modalHeaderText = "Update meeting status";
+  const modalBodyText = error ? (
+    <>
+      There was an error, please try again. This action will update the meeting
+      status to{" "}
+      <b>
+        <em>{t(pendingStatus.label)}</em>
+      </b>{" "}
+      and notify all users.`
+    </>
+  ) : (
+    <>
+      This action will update the meeting status to{" "}
+      <b>
+        <em>{t(pendingStatus.label)}</em>
+      </b>{" "}
+      and notify all users.
+    </>
+  );
+  // different language support can be added later as this is for Admins anyhow
+  const modalActionButton = (
+    <button
+      onClick={() => setMeetingStatus(pendingStatus)}
+      disabled={updating}
+      className="action-button"
+    >
+      Update
+    </button>
+  );
+  const modalCancelButton = (
+    <button
+      type="button"
+      className="cancel-button"
+      onClick={() => {
+        setPendingStatus(meetingStatus);
+        closeModal();
+      }}
+    >
+      {t("standard.buttons.cancel")}
+    </button>
+  );
 
   // re-render whenever meeting status changes
   useEffect(() => {
@@ -87,6 +143,7 @@ function MeetingHeader({
           status: meetingStatus.value,
         },
       });
+      if (!error) closeModal();
     } else if (meetingStatus.value !== meeting.status && meeting.status) {
       setMeetingStatus(statuses[statusIndexMap.indexOf(meeting.status)]);
     }
@@ -105,9 +162,9 @@ function MeetingHeader({
 
   // handle new user selection for meeting status
   const handleSelectStatus = (option) => {
-    setMeetingStatus(option);
+    openModal();
+    setPendingStatus(option);
   };
-
   // flag to indicate if meeting is in progress
   const isInProgress = meetingStatus.value === "IN PROGRESS";
 
@@ -116,20 +173,34 @@ function MeetingHeader({
       {!loading && (
         <>
           {isAdmin() && (
-            <div className={classNames(meetingStatus.class, "selector-panel")}>
-              <label htmlFor="meeting-status-dropdown" className="label">
-                {t("meeting.status.label")}
-              </label>
-              <div id="meeting-status-dropdown">
-                <Dropdown
-                  id="meeting-status-dropdown"
-                  options={statuses}
-                  value={meetingStatus}
-                  onChange={handleSelectStatus}
-                  className="meeting-status"
-                />
+            <>
+              <div
+                className={classNames(meetingStatus.class, "selector-panel")}
+              >
+                <label htmlFor="meeting-status-dropdown" className="label">
+                  {t("meeting.status.label")}
+                </label>
+                <div id="meeting-status-dropdown">
+                  <Dropdown
+                    id="meeting-status-dropdown"
+                    options={statuses}
+                    value={meetingStatus}
+                    onChange={(option) => handleSelectStatus(option)}
+                    className="meeting-status"
+                  />
+                </div>
               </div>
-            </div>
+              {showModal && (
+                <ConfirmationModal
+                  isOpen={showModal}
+                  closeModal={closeModal}
+                  headerText={modalHeaderText}
+                  bodyText={modalBodyText}
+                  actionButton={modalActionButton}
+                  cancelButton={modalCancelButton}
+                />
+              )}
+            </>
           )}
         </>
       )}
