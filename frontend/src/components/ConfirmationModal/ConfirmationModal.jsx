@@ -8,7 +8,8 @@ import "./ConfirmationModal.scss";
 import classNames from "classnames";
 
 /**
- * A common re-usable modal for Create / Update / Delete actions
+ * A common re-usable confirmation modal used to confirm requested admin action 
+ * (e.g. such as deleting a meeting, changing a meeting status, changing an agenda item status etc)
  *
  * props:
  *    isOpen
