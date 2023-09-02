@@ -28,7 +28,7 @@ import {
   CloseIcon,
   ScheduleBlueIcon,
 } from '../../../utils/_icons';
-import UpdateItemStartTimeModal from '../../ChangeMeetingStatusModal/UpdateItemStartTime/UpdateItemStartTimeModal';
+import UpdateItemStartTimeModal from "../../UpdateItemStartTimeModal/UpdateItemStartTimeModal";
 import Dropdown from '../../Dropdown/Dropdown';
 import ConfirmationModal from "../../ConfirmationModal/ConfirmationModal";
 
