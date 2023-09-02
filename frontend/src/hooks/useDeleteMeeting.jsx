@@ -23,7 +23,7 @@ import ConfirmationModal from "../components/ConfirmationModal/ConfirmationModal
  *    Modal component
  */
 
-const useDeleteMeetingNew = ({ id, meeting_start_timestamp }) => {
+const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
   const history = useHistory();
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
@@ -96,4 +96,4 @@ const useDeleteMeetingNew = ({ id, meeting_start_timestamp }) => {
   return [openModal, DeleteModal];
 };
 
-export default useDeleteMeetingNew;
+export default useDeleteMeeting;
