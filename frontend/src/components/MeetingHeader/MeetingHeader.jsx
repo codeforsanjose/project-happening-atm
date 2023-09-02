@@ -27,7 +27,7 @@ function MeetingHeader({
 }) {
   const { t } = useTranslation();
 
-  // possible meeting statuses to be passed into dropdown w/ internationalization of status labels
+  // possible meeting statuses to be passed into meeting status dropdown w/ internationalization of status labels
   const statuses = [
     {
       label: "meeting.status.short.upcoming",
@@ -135,6 +135,7 @@ function MeetingHeader({
   );
 
   // re-render whenever meeting status changes
+  // Note: updateMeeting is async(?) mutation, so may need to revisit this, but works as is currently
   useEffect(() => {
     if (isAdmin() && meetingStatus.value !== MeetingStates.UPCOMING) {
       updateMeeting({

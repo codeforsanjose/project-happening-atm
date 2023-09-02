@@ -61,9 +61,6 @@ function ConfirmationModal({
       </div>
       <div className={classNames("modal-body", className)}>
         <p className="modal-body-text">{bodyText}</p>
-        {/* circle back to ability to:
-				(i) handle errors & loading
-				(ii) translation of labels, perhaps via button component w/ translation of children */}
         <div className="modal-buttons">
           {actionButton}
           {cancelButton}

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import useCSVUpload from '../../hooks/useCSVUpload';
-import useDeleteMeeting from '../../hooks/useDeleteMeeting';
-import { isFutureTimestamp } from '../../utils/timestampHelper';
-import '../../utils/generalStyles.scss';
+import useDeleteMeeting from "../../hooks/useDeleteMeeting";
+import { isFutureTimestamp } from "../../utils/timestampHelper";
+import "../../utils/generalStyles.scss";
 
 // Asset imports
 import {
@@ -15,7 +15,7 @@ import {
   FormatListNumberedIcon,
   PlayWithCircleOutlineIcon,
   DeleteIcon,
-} from '../../utils/_icons';
+} from "../../utils/_icons";
 
 function AdminMeetingItemLinks({ meeting }) {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ function AdminMeetingItemLinks({ meeting }) {
   const [openDeleteModal, DeleteModal] = useDeleteMeeting(meeting);
 
   const isFutureItem = isFutureTimestamp(meeting.meeting_start_timestamp);
-  const pastClasses = 'meeting-links visibility-hidden';
-  const futureClasses = 'meeting-links';
+  const pastClasses = "meeting-links visibility-hidden";
+  const futureClasses = "meeting-links";
 
   return (
     <div className={isFutureItem ? futureClasses : pastClasses}>
@@ -35,7 +35,7 @@ function AdminMeetingItemLinks({ meeting }) {
           onClick={openUploadModal}
         >
           <ViewAgendaIcon />
-          <p>{t('meeting.actions.upload-new-agenda')}</p>
+          <p>{t("meeting.actions.upload-new-agenda")}</p>
         </button>
       </Link>
       <Link to="#">
@@ -45,7 +45,7 @@ function AdminMeetingItemLinks({ meeting }) {
           onClick={openDeleteModal}
         >
           <DeleteIcon />
-          <p>{t('meeting.list.delete-meeting.button')}</p>
+          <p>{t("meeting.list.delete-meeting.button")}</p>
         </button>
       </Link>
 
