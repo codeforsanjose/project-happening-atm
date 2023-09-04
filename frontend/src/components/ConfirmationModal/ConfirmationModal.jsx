@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import { useTranslation } from "react-i18next";
 import { CloseIcon } from "../../utils/_icons";
-// import Spinner from "../Spinner/Spinner"; // handled by the action bar
 import "./ConfirmationModal.scss";
 import classNames from "classnames";
 
