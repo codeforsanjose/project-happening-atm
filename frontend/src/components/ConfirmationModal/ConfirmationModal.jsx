@@ -36,6 +36,7 @@ function ConfirmationModal({
   actionButton,
   cancelButton,
   className,
+  contentLabel,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -48,6 +49,7 @@ function ConfirmationModal({
       onRequestClose={closeModal}
       className={classNames("confirmation-modal", className)}
       overlayClassName="modal-overlay"
+      contentLabel={contentLabel}
     >
       <div className="modal-header">
         <h2>{headerText}</h2>

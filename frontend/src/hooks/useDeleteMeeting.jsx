@@ -90,6 +90,7 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
         actionButton={modalActionButton}
         cancelButton={modalCancelButton}
         className="delete-meeting-modal"
+        contentLabel="Delete Meeting"
       />
     ) : null;
 

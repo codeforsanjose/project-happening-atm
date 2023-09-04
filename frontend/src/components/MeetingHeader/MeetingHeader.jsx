@@ -199,6 +199,7 @@ function MeetingHeader({
                   bodyText={modalBodyText}
                   actionButton={modalActionButton}
                   cancelButton={modalCancelButton}
+                  contentLabel="Update Meeting Status"
                 />
               )}
             </>

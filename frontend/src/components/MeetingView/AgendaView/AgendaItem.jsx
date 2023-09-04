@@ -455,6 +455,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
                   bodyText={modalBodyText}
                   actionButton={modalActionButton}
                   cancelButton={modalCancelButton}
+                  contentLabel="Update Agenda Item Status"
                 />
               )}
             </>
