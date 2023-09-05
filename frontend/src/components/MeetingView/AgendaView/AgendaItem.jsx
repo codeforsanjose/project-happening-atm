@@ -309,7 +309,6 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const handleSelectStatus = (option) => {
     openConfirmationModal();
     setPendingAgendaItemStatus(option);
-    // setAgendaItemStatus(option);
   };
 
   const handleItemTimeReset = () => {
