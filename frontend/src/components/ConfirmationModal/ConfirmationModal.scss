@@ -51,17 +51,17 @@
 			text-align: center;
 		}
 
-		.delete-meeting-modal.modal-buttons {
-			min-width: 200px;
-			display: flex;
-			flex-direction: column;
-			row-gap: 0.75rem;
-		}
-
 		.modal-buttons {
       display: flex;
       justify-content: center;
 			column-gap: 0.25rem;
+
+			&.delete-meeting-modal {
+				min-width: 200px;
+				display: flex;
+				flex-direction: column;
+				row-gap: 0.75rem;
+			}
 
     	button {
 				padding: 0.25em 1.95em;
