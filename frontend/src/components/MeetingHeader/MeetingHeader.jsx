@@ -90,8 +90,8 @@ function MeetingHeader({
   };
   let [pendingStatus, setPendingStatus] = useState(meetingStatus);
 
-  // Define prop values for the confirmation modal for admins to change the meeting status:
-  // Note: different language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
+  // Define prop values for the confirmation modal when admins change the meeting status:
+  // Note: local language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
   const modalHeaderText = "Update meeting status";
   const modalBodyText = error ? (
     <>
@@ -110,28 +110,6 @@ function MeetingHeader({
       </b>{" "}
       and notify all users.
     </>
-  );
-  // different language support can be added later as this is for Admins anyhow
-  const modalActionButton = (
-    <button
-      onClick={() => setMeetingStatus(pendingStatus)}
-      disabled={updating}
-      className="action-button"
-    >
-      Update
-    </button>
-  );
-  const modalCancelButton = (
-    <button
-      type="button"
-      className="cancel-button"
-      onClick={() => {
-        setPendingStatus(meetingStatus);
-        closeModal();
-      }}
-    >
-      {t("standard.buttons.cancel")}
-    </button>
   );
 
   // re-render whenever meeting status changes
@@ -197,8 +175,13 @@ function MeetingHeader({
                   closeModal={closeModal}
                   headerText={modalHeaderText}
                   bodyText={modalBodyText}
-                  actionButton={modalActionButton}
-                  cancelButton={modalCancelButton}
+                  confirmButtonText={t("standard.buttons.update")}
+                  onConfirm={() => setMeetingStatus(pendingStatus)}
+                  disableConfirm={updating}
+                  onCancel={() => {
+                    setPendingStatus(meetingStatus);
+                    closeModal();
+                  }}
                   contentLabel="Update Meeting Status"
                 />
               )}

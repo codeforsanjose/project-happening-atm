@@ -53,32 +53,24 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
     }
   };
 
-  const modalHeaderText = t("meeting.list.delete-meeting.modal.title");
-  const modalBodyText = error
-    ? `There was an error, Please try again. ${date} - ${time}`
-    : `${date} - ${time}`;
+  // internationalization (i.e. "i18") of days of week for meeting day/time display
+  const i18Date = () => {
+    const i18DayIndex = new Date(Number(meeting_start_timestamp)).getDay();
+    const i18MonthIndex = new Date(Number(meeting_start_timestamp)).getMonth();
+    return (
+      t("standard.weekdays", { returnObjects: true })[i18DayIndex] +
+      ", " +
+      t("standard.months", { returnObjects: true })[i18MonthIndex] +
+      " " +
+      date.split(" ")[2]
+    );
+  };
 
+  const modalHeaderText = t("meeting.list.delete-meeting.modal.title");
   // different language support can be added later as this is for Admins anyhow
-  const modalActionButton = (
-    <button
-      onClick={handleDelete}
-      disabled={loading}
-      className="action-button delete-meeting"
-    >
-      Delete
-    </button>
-  );
-  const modalCancelButton = (
-    <button
-      type="button"
-      className="cancel-button"
-      onClick={() => {
-        closeModal();
-      }}
-    >
-      {t("standard.buttons.cancel")}
-    </button>
-  );
+  const modalBodyText = error
+    ? `There was an error, Please try again. ${i18Date()} - ${time}`
+    : `${i18Date()} - ${time}`;
 
   const DeleteModal = () =>
     showModal ? (
@@ -87,10 +79,13 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
         closeModal={closeModal}
         headerText={modalHeaderText}
         bodyText={modalBodyText}
-        actionButton={modalActionButton}
-        cancelButton={modalCancelButton}
+        confirmButtonText={t(
+          "meeting.list.delete-meeting.modal.buttons.delete"
+        )}
+        onConfirm={handleDelete}
+        onCancel={() => closeModal()}
         className="delete-meeting-modal"
-        contentLabel="Delete Meeting"
+        contentLabel={t("meeting.list.delete-meeting.modal.title")}
       />
     ) : null;
 

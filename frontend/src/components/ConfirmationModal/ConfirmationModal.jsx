@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import { useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import { useTranslation } from "react-i18next";
 import { CloseIcon } from "../../utils/_icons";
@@ -7,7 +6,7 @@ import "./ConfirmationModal.scss";
 import classNames from "classnames";
 
 /**
- * A common re-usable confirmation modal used to confirm requested admin action 
+ * A common re-usable confirmation modal used to confirm requested admin action
  * (e.g. such as deleting a meeting, changing a meeting status, changing an agenda item status etc)
  *
  * props:
@@ -16,15 +15,21 @@ import classNames from "classnames";
  *    closeModal
  *      Callback function to close the modal
  * 		headerText
- * 			text to display in the modal header
+ * 			Text to display in the modal header
  * 		bodyText
- *    	text to display in the modal body
- *		actionButton
- *			confirmation button (for updating/creating/deleting)
- *		cancelButton
- *			cancel button
+ *    	Text to display in the modal body
+ *		confirmButtonText
+ *			Text to display on confirmation button (for updating/deleting etc.)
+ *		onConfirm
+				Callback function to be called when user (admin) clicks confirmation button
+ *		disableConfirm
+ *			Flag to indicate if confirmation button should be temporarily disabled (debounce purposes: avoid multi-clicks)
+ *		onCancel
+ *			Callback function to be called when user clicks cancel
  * 		className
- * 			any custom styling classes for given confirmation modal's use case
+ * 			Any custom styling classes for given confirmation modal's use case
+ * 		contentLabel
+ * 			react-modal provided prop for a11y purposes - provides a label for the modal content (via aria-label) 
  */
 
 function ConfirmationModal({
@@ -32,15 +37,17 @@ function ConfirmationModal({
   closeModal,
   headerText,
   bodyText,
-  actionButton,
-  cancelButton,
+  confirmButtonText,
+  onConfirm,
+  disableConfirm,
+  onCancel,
   className,
   contentLabel,
 }) {
-  const history = useHistory();
   const { t } = useTranslation();
 
-  Modal.setAppElement("#root"); // enables react-modal to set aria-hidden = true for non-modal page content
+  // modal-react requirement: enables react-modal to set aria-hidden = true for non-modal page content
+  Modal.setAppElement("#root");
 
   return (
     <Modal
@@ -63,9 +70,22 @@ function ConfirmationModal({
       </div>
       <div className={classNames("modal-body", className)}>
         <p className="modal-body-text">{bodyText}</p>
-        <div className="modal-buttons">
-          {actionButton}
-          {cancelButton}
+        <div className={classNames("modal-buttons", className)}>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={disableConfirm}
+            className={classNames("action-button", className)}
+          >
+            {confirmButtonText}
+          </button>
+          <button
+            type="button"
+            className={classNames("cancel-button", className)}
+            onClick={onCancel}
+          >
+            {t("standard.buttons.cancel")}
+          </button>
         </div>
       </div>
     </Modal>

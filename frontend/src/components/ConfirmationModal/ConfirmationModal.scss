@@ -31,13 +31,8 @@
 			cursor: pointer;
 			color: $darkBlue;
 			fill: $darkBlue;
-			// margin-right: 1rem;
 			border: none;
 			background: none;			
-			// position: absolute;
-			// padding: 0;
-			// border: none;
-			// background-color: transparent;
 		}
 	}
 
@@ -56,6 +51,13 @@
 			text-align: center;
 		}
 
+		.delete-meeting-modal.modal-buttons {
+			min-width: 200px;
+			display: flex;
+			flex-direction: column;
+			row-gap: 0.75rem;
+		}
+
 		.modal-buttons {
       display: flex;
       justify-content: center;
@@ -69,10 +71,6 @@
 				font-weight: 600;
 				cursor: pointer;
 
-				// @media only screen and (max-width:812px) {
-				// 	padding: 0.25em 1.5em;
-				// }
-
 				&:hover {
 					background-color: $cityBronze;
 				}
@@ -83,12 +81,12 @@
 				background-color: $atmGold;
 				margin-right: 1em;
 
-				&.delete-meeting {
+				&.delete-meeting-modal {
 					background-color: $errorRed;
 					color: $white;
 				}
 	
-				&.delete-meeting:hover {
+				&.delete-meeting-modal:hover {
 					background-color: $red; //#bd170f;
 				}	
 
@@ -99,7 +97,6 @@
 					cursor: not-allowed;
 				}
 			}
-
 
 			.cancel-button {
 				border: 4px solid transparent;
@@ -114,12 +111,4 @@
 		}
 
 	}
-
-	.delete-meeting-modal .modal-buttons {
-		min-width: 200px;
-		display: flex;
-		flex-direction: column;
-		row-gap: 0.75rem;
-	}
-
 }

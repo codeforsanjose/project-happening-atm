@@ -147,7 +147,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const [admin] = useState(isAdmin());
   const { t } = useTranslation();
 
-  // possible agenda item statuses to be passed into dropdown w/ internationalization of status labels
+  // possible agenda item statuses to be passed into dropdown w/ internationalization of item status labels
   const agendaItemStatuses = [
     {
       label: "meeting.tabs.agenda.status.options.upcoming",
@@ -221,7 +221,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   );
   // Define prop values for the confirmation modal for admins to change the agenda item status:
   // Note: different language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
-  const modalHeaderText = "Update item status";
+  const modalHeaderText = t("meeting.tabs.agenda.status.modal.title2"); // note: translation missing from yaml files
   const modalBodyText = errorMsg ? (
     <>
       There was an error, please try again. This action will update the item
@@ -239,28 +239,6 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
       </b>{" "}
       and notify all users.
     </>
-  );
-  // different language support can be added later as this is for Admins anyhow
-  const modalActionButton = (
-    <button
-      onClick={() => setAgendaItemStatus(pendingAgendaItemStatus)}
-      disabled={loadingStatus}
-      className="action-button"
-    >
-      Update
-    </button>
-  );
-  const modalCancelButton = (
-    <button
-      type="button"
-      className="cancel-button"
-      onClick={() => {
-        setPendingAgendaItemStatus(agendaItemStatus);
-        closeConfirmationModal();
-      }}
-    >
-      {t("standard.buttons.cancel")}
-    </button>
   );
 
   useEffect(() => {
@@ -452,9 +430,14 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
                   closeModal={closeConfirmationModal}
                   headerText={modalHeaderText}
                   bodyText={modalBodyText}
-                  actionButton={modalActionButton}
-                  cancelButton={modalCancelButton}
-                  contentLabel="Update Agenda Item Status"
+                  confirmButtonText={t("standard.buttons.update")}
+                  onConfirm={() => setAgendaItemStatus(pendingAgendaItemStatus)}
+                  disableConfirm={loadingStatus}
+                  onCancel={() => {
+                    setPendingAgendaItemStatus(agendaItemStatus);
+                    closeConfirmationModal();
+                  }}
+                  contentLabel={t("meeting.tabs.agenda.status.modal.title")}
                 />
               )}
             </>
