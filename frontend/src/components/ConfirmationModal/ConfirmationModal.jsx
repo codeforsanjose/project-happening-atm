@@ -23,7 +23,7 @@ import classNames from "classnames";
  *		onConfirm
 				Callback function to be called when user (admin) clicks confirmation button
  *		disableConfirm
- *			Flag to indicate if confirmation button should be temporarily disabled (debounce purposes: avoid multi-clicks)
+ *			Boolean flag to indicate if confirmation button should be temporarily disabled (debounce purposes: avoid multi-clicks)
  *		onCancel
  *			Callback function to be called when user clicks cancel
  * 		className
