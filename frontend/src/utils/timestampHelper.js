@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import i18next from 'i18next';
 
 export function toDateString(timestamp, format) {
   // This function expects Unix timestamp in milliseconds (as String).
@@ -13,6 +14,24 @@ export function toTimeString(timestamp) {
 export function isFutureTimestamp(timestamp) {
   // This function expects Unix timestamp in milliseconds (as String).
   return dayjs().isBefore(dayjs(parseInt(timestamp, 10)));
+}
+
+// This function expects a Unix timestamp in milliseconds (as String) as input.
+// Function returns: internationalized month, weekday, and day strings of input timestamp.
+// (e.g. {Saturday, September, 17} for Saturday the 17th of the September)
+export function i18Date(timestamp) {
+  const i18DayIndex = new Date(Number(timestamp)).getDay();
+  const i18MonthIndex = new Date(Number(timestamp)).getMonth();
+
+  return {
+    i18Day: i18next.t('standard.weekdays', { returnObjects: true })[
+      i18DayIndex
+    ],
+    i18Month: i18next.t('standard.months', { returnObjects: true })[
+      i18MonthIndex
+    ],
+    i18DayNumber: toDateString(timestamp).split('/')[1],
+  };
 }
 
 /**
@@ -44,8 +63,18 @@ export function isFutureTimestamp(timestamp) {
 
 export function groupMeetingsByDate(meetings) {
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July',
-    'August', 'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
   const groups = {};
 
@@ -71,11 +100,11 @@ export function groupMeetingsByDate(meetings) {
 
     for (let i = 0; i < 12; i += 1) {
       if (yearMeetings[i] !== undefined) {
-        const sortedMeetings = yearMeetings[i]
-          .sort((a, b) =>
+        const sortedMeetings = yearMeetings[i].sort(
+          (a, b) =>
             parseInt(a.meeting_start_timestamp, 10) -
             parseInt(b.meeting_start_timestamp, 10)
-            );
+        );
 
         const monthObj = {
           year,

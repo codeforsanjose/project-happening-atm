@@ -1,112 +1,110 @@
 @import '../../utils/colors';
 
-.confirmation-modal{
-	margin-top: -6rem;
-	width: 23rem;
-	height: 17rem;
-  font-family: "Poppins", sans-serif;
-	font-size: 1rem;
+.confirmation-modal {
+  margin-top: -6rem;
+  width: 23rem;
+  height: 17rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
 
-	.modal-header {
-		position: relative;
-		display: flex;
-		justify-content: space-around;
-		background-color: $atmGold;
-		border-radius: 4px 4px 0 0;
-		text-align: center;
-		filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  .modal-header {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    background-color: $atmGold;
+    border-radius: 4px 4px 0 0;
+    text-align: center;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
-		h2 {
-			display: inline-block;
-			margin: 0;
-			color: $black;
-			font-weight: 600;
-			padding: 1rem 0.75rem;
-			vertical-align: baseline;
-		}
+    h2 {
+      display: inline-block;
+      margin: 0;
+      color: $black;
+      font-weight: 600;
+      padding: 1rem 0.75rem;
+      vertical-align: baseline;
+    }
 
-		.close-modal {
-			cursor: pointer;
-			color: $darkBlue;
-			fill: $darkBlue;
-			border: none;
-			background: none;			
-		}
-	}
+    .close-modal {
+      cursor: pointer;
+      color: $darkBlue;
+      fill: $darkBlue;
+      border: none;
+      background: none;
+    }
+  }
 
-	.modal-body {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 0.75rem 1.5rem;
-		row-gap: 0.5rem;
-		padding-bottom: 2rem;
-		background-color: $white;
-		border-radius: 0 0 4px 4px;
-		
-		.modal-body-text {
-			padding: 0;
-			text-align: center;
-		}
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    row-gap: 0.5rem;
+    padding-bottom: 2rem;
+    background-color: $white;
+    border-radius: 0 0 4px 4px;
 
-		.modal-buttons {
+    .modal-body-text {
+      padding: 0;
+      text-align: center;
+    }
+
+    .modal-buttons {
       display: flex;
       justify-content: center;
-			column-gap: 0.25rem;
+      column-gap: 0.25rem;
 
-			&.delete-meeting-modal {
-				min-width: 200px;
-				display: flex;
-				flex-direction: column;
-				row-gap: 0.75rem;
-			}
+      &.delete-meeting-modal {
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.75rem;
+      }
 
-    	button {
-				padding: 0.25em 1.95em;
-				border-radius: 6px;
-				color: $black;
-				font-size: 1em;
-				font-weight: 600;
-				cursor: pointer;
+      button {
+        padding: 0.25em 1.95em;
+        border-radius: 6px;
+        color: $black;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
 
-				&:hover {
-					background-color: $cityBronze;
-				}
-    	}
+        &:hover {
+          background-color: $cityBronze;
+        }
+      }
 
-			.action-button {
-				border: 4px solid transparent;
-				background-color: $atmGold;
-				margin-right: 1em;
+      .action-button {
+        border: 4px solid transparent;
+        background-color: $atmGold;
+        margin-right: 1em;
 
-				&.delete-meeting-modal {
-					background-color: $errorRed;
-					color: $white;
-				}
-	
-				&.delete-meeting-modal:hover {
-					background-color: $red; //#bd170f;
-				}	
+        &.delete-meeting-modal {
+          background-color: $errorRed;
+          color: $white;
+        }
 
-				&:disabled {
-					background-color: transparent;
-					border: 4px solid $cloudy;
-					color: $cloudy;
-					cursor: not-allowed;
-				}
-			}
+        &.delete-meeting-modal:hover {
+          background-color: $red; //#bd170f;
+        }
 
-			.cancel-button {
-				border: 4px solid transparent;
-				background-color: $offWhite;
-				margin-right: 1em;
-			}
+        &:disabled {
+          background-color: transparent;
+          border: 4px solid $cloudy;
+          color: $cloudy;
+          cursor: not-allowed;
+        }
+      }
 
-			.cancel-button:hover{
-				background-color: $pastGray;
-			}
+      .cancel-button {
+        border: 4px solid transparent;
+        background-color: $offWhite;
+        margin-right: 1em;
+      }
 
-		}
-
-	}
+      .cancel-button:hover {
+        background-color: $pastGray;
+      }
+    }
+  }
 }

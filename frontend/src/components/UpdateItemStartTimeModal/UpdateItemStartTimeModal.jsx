@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
 
-import Modal from "react-modal/lib/components/Modal";
-import { useTranslation } from "react-i18next";
-import { CloseIcon } from "../../utils/_icons";
-import { UPDATE_MEETING_ITEM } from "../../graphql/mutation";
+import Modal from 'react-modal/lib/components/Modal';
+import { useTranslation } from 'react-i18next';
+import { CloseIcon } from '../../utils/_icons';
+import { UPDATE_MEETING_ITEM } from '../../graphql/mutation';
 
-import "./UpdateItemStartTimeModal.scss";
+import './UpdateItemStartTimeModal.scss';
 
 const UpdateItemStartTimeModal = ({ args }) => {
   const { item, setDisplaySetStartTimeModal, refetchAllMeeting } = args;
@@ -19,9 +19,9 @@ const UpdateItemStartTimeModal = ({ args }) => {
     },
   });
   const [formFields, setFormFields] = useState({
-    hour: "",
-    minutes: "",
-    meridian: "",
+    hour: '',
+    minutes: '',
+    meridian: '',
     errors: {
       time: false,
       meridian: false,
@@ -29,17 +29,17 @@ const UpdateItemStartTimeModal = ({ args }) => {
   });
 
   useEffect(() => {
-    document.querySelector("body").style.overflow = "hidden";
+    document.querySelector('body').style.overflow = 'hidden';
 
     return () => {
-      document.querySelector("body").style.overflow = "visible";
+      document.querySelector('body').style.overflow = 'visible';
     };
   }, []);
 
   const modalOverlayStyle = {
     overlay: {
-      backgroundColor: "rgb(175, 178, 189, 0.5)",
-      backdropFilter: "blur(20px)",
+      backgroundColor: 'rgb(175, 178, 189, 0.5)',
+      backdropFilter: 'blur(20px)',
     },
   };
 
@@ -48,7 +48,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
   const validateNewTime = (hour, minutes, meridian) => {
     const { errors } = formFields;
     const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0);
-    const meridianError = meridian === "";
+    const meridianError = meridian === '';
     // no need to update state on submit unless it has changed
     if (errors.time !== timeError || errors.meridian !== meridianError) {
       displayFormErrors(timeError, meridianError);
@@ -81,7 +81,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
     const newMinutes = parseInt(minutes, 10);
     const isValidTime = validateNewTime(newHour, newMinutes, meridian);
     if (!isValidTime) return;
-    const isPM = meridian === "PM" ? true : false;
+    const isPM = meridian === 'PM' ? true : false;
 
     // if hour is 12 we set it to 0 to account for 12pm
     newHour = newHour === 12 ? 0 : newHour;
@@ -99,20 +99,20 @@ const UpdateItemStartTimeModal = ({ args }) => {
     });
   };
 
-  Modal.setAppElement("#root");
+  Modal.setAppElement('#root');
 
   return (
     <Modal style={modalOverlayStyle} className="updateStartTimeModal" isOpen>
       <div className="updateStartTimeWrapper">
         <div className="updateStartTimeHeader">
           <span className="headerText">
-            {t("meeting.tabs.agenda.status.modal.set-time.title")}
+            {t('meeting.tabs.agenda.status.modal.set-time.title')}
           </span>
           <button
             className="close"
             onClick={handleModalClose}
             onKeyPress={handleModalClose}
-            aria-label={t("standard.buttons.close")}
+            aria-label={t('standard.buttons.close')}
           >
             <CloseIcon />
           </button>
@@ -122,7 +122,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
             <span>Time</span>
             <div className="form-inputs">
               <label className="visually-hidden" htmlFor="hour">
-                {t("meeting.tabs.agenda.status.modal.set-time.label.hour")}
+                {t('meeting.tabs.agenda.status.modal.set-time.label.hour')}
               </label>
               <input
                 type="text"
@@ -135,7 +135,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
               />
               <span>:</span>
               <label className="visually-hidden" htmlFor="minutes">
-                {t("meeting.tabs.agenda.status.modal.set-time.label.minutes")}
+                {t('meeting.tabs.agenda.status.modal.set-time.label.minutes')}
               </label>
               <input
                 type="text"
@@ -168,25 +168,25 @@ const UpdateItemStartTimeModal = ({ args }) => {
               </label>
             </div>
             <div className="error">
-              <span className={formFields.errors.time ? "visible" : null}>
-                {t("meeting.tabs.agenda.status.modal.set-time.error.time")}
+              <span className={formFields.errors.time ? 'visible' : null}>
+                {t('meeting.tabs.agenda.status.modal.set-time.error.time')}
               </span>
-              <span className={formFields.errors.meridian ? "visible" : null}>
-                {t("meeting.tabs.agenda.status.modal.set-time.error.meridian")}
+              <span className={formFields.errors.meridian ? 'visible' : null}>
+                {t('meeting.tabs.agenda.status.modal.set-time.error.meridian')}
               </span>
             </div>
             <div className="publishOrCancelButtons">
               <input
                 type="button"
                 className="publish"
-                value={t("standard.buttons.publish")}
+                value={t('standard.buttons.publish')}
                 onClick={handleSubmit}
                 onKeyPress={handleSubmit}
               />
               <input
                 type="button"
                 className="cancel"
-                value={t("standard.buttons.cancel")}
+                value={t('standard.buttons.cancel')}
                 onClick={handleModalClose}
                 onKeyPress={handleModalClose}
               />

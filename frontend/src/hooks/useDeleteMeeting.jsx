@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useMutation } from "@apollo/client";
-import { toDateString, toTimeString } from "../utils/timestampHelper";
-import { DELETE_MEETING } from "../graphql/mutation";
-import ConfirmationModal from "../components/ConfirmationModal/ConfirmationModal";
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from '@apollo/client';
+import { toTimeString, i18Date } from '../utils/timestampHelper';
+import { DELETE_MEETING } from '../graphql/mutation';
+import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
 
 /**
  * Used to implement meeting deletion on a page.
@@ -41,7 +41,6 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
   };
 
   const [deleteMeeting, { loading, error }] = useMutation(DELETE_MEETING);
-  const date = toDateString(meeting_start_timestamp, "dddd, MMM D");
   const time = toTimeString(meeting_start_timestamp);
 
   const handleDelete = async () => {
@@ -53,24 +52,15 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
     }
   };
 
-  // internationalization (i.e. "i18") of days of week for meeting day/time display
-  const i18Date = () => {
-    const i18DayIndex = new Date(Number(meeting_start_timestamp)).getDay();
-    const i18MonthIndex = new Date(Number(meeting_start_timestamp)).getMonth();
-    return (
-      t("standard.weekdays", { returnObjects: true })[i18DayIndex] +
-      ", " +
-      t("standard.months", { returnObjects: true })[i18MonthIndex] +
-      " " +
-      date.split(" ")[2]
-    );
-  };
+  // internationalization (i.e. "i18") of days of week for meeting date/time display
+  const { i18Day, i18Month, i18DayNumber } = i18Date(meeting_start_timestamp);
+  const i18DateString = `${i18Day}, ${i18Month} ${i18DayNumber}`;
 
-  const modalHeaderText = t("meeting.list.delete-meeting.modal.title");
+  const modalHeaderText = t('meeting.list.delete-meeting.modal.title');
   // different language support can be added later as this is for Admins anyhow
   const modalBodyText = error
     ? `There was an error, Please try again. ${i18Date()} - ${time}`
-    : `${i18Date()} - ${time}`;
+    : `${i18DateString} - ${time}`;
 
   const DeleteModal = () =>
     showModal ? (
@@ -80,12 +70,12 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
         headerText={modalHeaderText}
         bodyText={modalBodyText}
         confirmButtonText={t(
-          "meeting.list.delete-meeting.modal.buttons.delete"
+          'meeting.list.delete-meeting.modal.buttons.delete'
         )}
         onConfirm={handleDelete}
         onCancel={() => closeModal()}
         className="delete-meeting-modal"
-        contentLabel={t("meeting.list.delete-meeting.modal.title")}
+        contentLabel={t('meeting.list.delete-meeting.modal.title')}
       />
     ) : null;
 

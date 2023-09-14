@@ -15,6 +15,7 @@ import {
 } from '../../../graphql/mutation';
 import isAdmin from '../../../utils/isAdmin';
 import { toTimeString } from '../../../utils/timestampHelper';
+import { buildDropdownAgendaItemStatuses } from '../../../utils/buildDropdownStatusClasses';
 
 import {
   buildSubscriptionQueryString,
@@ -28,9 +29,9 @@ import {
   CloseIcon,
   ScheduleBlueIcon,
 } from '../../../utils/_icons';
-import UpdateItemStartTimeModal from "../../UpdateItemStartTimeModal/UpdateItemStartTimeModal";
+import UpdateItemStartTimeModal from '../../UpdateItemStartTimeModal/UpdateItemStartTimeModal';
 import Dropdown from '../../Dropdown/Dropdown';
-import ConfirmationModal from "../../ConfirmationModal/ConfirmationModal";
+import ConfirmationModal from '../../ConfirmationModal/ConfirmationModal';
 
 /**
  *
@@ -113,7 +114,7 @@ function AgendaItemActionLink({ loading, handleSubmit, subscribed }) {
     return (
       <div className="link">
         <p className="subscribed">
-          {t("meeting.tabs.agenda.list.subscribe.button.done")}
+          {t('meeting.tabs.agenda.list.subscribe.button.done')}
         </p>
         <NotificationFilledIcon />
       </div>
@@ -121,10 +122,10 @@ function AgendaItemActionLink({ loading, handleSubmit, subscribed }) {
   }
   return (
     <div className="link" onClick={handleSubmit}>
-      <p className={loading ? "notify-me subscribing" : "notify-me"}>
+      <p className={loading ? 'notify-me subscribing' : 'notify-me'}>
         {loading
-          ? t("meeting.tabs.agenda.list.subscribe.button.doing")
-          : t("meeting.tabs.agenda.list.subscribe.button.do")}
+          ? t('meeting.tabs.agenda.list.subscribe.button.doing')
+          : t('meeting.tabs.agenda.list.subscribe.button.do')}
       </p>
     </div>
   );
@@ -148,33 +149,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const { t } = useTranslation();
 
   // possible agenda item statuses to be passed into dropdown w/ internationalization of item status labels
-  const agendaItemStatuses = [
-    {
-      label: "meeting.tabs.agenda.status.options.upcoming",
-      value: MeetingItemStates.UPCOMING,
-      class: "upcoming",
-    },
-    {
-      label: "meeting.tabs.agenda.status.options.in-progress",
-      value: MeetingItemStates.IN_PROGRESS,
-      class: "in-progress",
-    },
-    {
-      label: "meeting.tabs.agenda.status.options.on-hold",
-      value: MeetingItemStates.ON_HOLD,
-      class: "on-hold",
-    },
-    {
-      label: "meeting.tabs.agenda.status.options.completed",
-      value: MeetingItemStates.COMPLETED,
-      class: "completed",
-    },
-    {
-      label: "meeting.tabs.agenda.status.options.deferred",
-      value: MeetingItemStates.DEFERRED,
-      class: "deferred",
-    },
-  ];
+  const agendaItemStatuses = buildDropdownAgendaItemStatuses();
 
   // index map of different agenda item statuses
   const statusIndexMap = agendaItemStatuses.map((status) => status.value);
@@ -199,7 +174,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const itemRef = useRef(null);
   const modalRef = useRef(null);
   // check if time for item is set, store if it is
-  const isTimeSet = item.item_start_timestamp !== "0";
+  const isTimeSet = item.item_start_timestamp !== '0';
   const agendaItemTime = isTimeSet
     ? toTimeString(item.item_start_timestamp)
     : null;
@@ -221,23 +196,23 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   );
   // Define prop values for the confirmation modal for admins to change the agenda item status:
   // Note: different language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
-  const modalHeaderText = t("meeting.tabs.agenda.status.modal.title2"); // note: translation missing from yaml files
+  const modalHeaderText = t('meeting.tabs.agenda.status.modal.title2'); // note: translation missing from yaml files
   const modalBodyText = errorMsg ? (
     <>
-      There was an error, please try again. This action will update the item
-      status to{" "}
+      {`There was an error, please try again. This action will update the item
+      status to `}
       <b>
         <em>{t(pendingAgendaItemStatus.label)}</em>
-      </b>{" "}
-      and notify all users.`
+      </b>
+      {` and notify all users.`}
     </>
   ) : (
     <>
-      This action will update the item status to{" "}
+      {`This action will update the item status to `}
       <b>
         <em>{t(pendingAgendaItemStatus.label)}</em>
-      </b>{" "}
-      and notify all users.
+      </b>
+      {` and notify all users.`}
     </>
   );
 
@@ -373,7 +348,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
                 </div>
               ) : (
                 <button type="button" onClick={handleDisplaySetStartTimeModal}>
-                  {t("meeting.tabs.agenda.status.modal.set-time.title")}
+                  {t('meeting.tabs.agenda.status.modal.set-time.title')}
                 </button>
               )}
             </div>
@@ -430,14 +405,14 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
                   closeModal={closeConfirmationModal}
                   headerText={modalHeaderText}
                   bodyText={modalBodyText}
-                  confirmButtonText={t("standard.buttons.update")}
+                  confirmButtonText={t('standard.buttons.update')}
                   onConfirm={() => setAgendaItemStatus(pendingAgendaItemStatus)}
                   disableConfirm={loadingStatus}
                   onCancel={() => {
                     setPendingAgendaItemStatus(agendaItemStatus);
                     closeConfirmationModal();
                   }}
-                  contentLabel={t("meeting.tabs.agenda.status.modal.title")}
+                  contentLabel={t('meeting.tabs.agenda.status.modal.title')}
                 />
               )}
             </>
