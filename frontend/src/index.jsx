@@ -43,6 +43,8 @@ import LocalStorageTerms from "./constants/LocalStorageTerms";
 import verifyToken from "./utils/verifyToken";
 import "./i18n";
 
+const newrelic_plugin = require('@newrelic/apollo-server-plugin')
+
 const httpLink = new BatchHttpLink({
   uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
   batchMax: 100,
@@ -64,6 +66,7 @@ const authLink = setContext((_, { headers }) => {
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  plugins: [newrelic_plugin]
 });
 
 function SampleQuery() {
