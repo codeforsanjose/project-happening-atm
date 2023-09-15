@@ -53,3 +53,4 @@ jobs:
           REACT_APP_GRAPHQL_URL: ${{ vars.REACT_APP_GRAPHQL_URL }}
           PUBLIC_URL: ${{ vars.PUBLIC_URL }}
           REACT_APP_JWT_ISSUER: ${{ secrets.REACT_APP_JWT_ISSUER }}
+          REACT_APP_RECAPTCHAS_SITE_KEY: ${{ secrets.REACT_APP_RECAPTCHAS_SITE_KEY }}
