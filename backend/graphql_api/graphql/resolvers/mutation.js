@@ -379,7 +379,7 @@ module.exports = (logger) => {
     //Convert email to lowerCase
     email_address = email_address.toLowerCase().trim();
     if (context.token === null) {
-      const isAdmin = await authentication.verifyAdmin(dbClient, email_address);
+      const isAdmin = await authentication.verifyAdmin(dbClient, email_address); // local dev hack: change to true for admin user creation
       const roles = isAdmin ? "{ADMIN}" : "{USER}";
       const pd = await authentication.hashPassword(password);
       const token = authentication.randomToken();

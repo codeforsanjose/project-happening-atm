@@ -2,14 +2,14 @@
 
 .meeting-view {
   padding: 0;
-  padding-bottom: 2em;
   background-color: $blueSky;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+  margin: 0 3%;
 
-  @media only screen and (min-device-width: 812px) {
+
+  @media only screen and (min-width: 812px) {
     margin: 0 200px 0;
-    padding-bottom: 3em;
-    // JY 2023.07: per latest MVP designs
+    // JY 2023.07: per latest MVP designs for desktop:
     width: 50vw;
     margin-left: 25vw;
     margin-right: 25vw;

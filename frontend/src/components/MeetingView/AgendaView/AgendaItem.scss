@@ -1,5 +1,9 @@
 @import "../../../utils/_colors.scss";
 
+.dropdown-container {
+  position: relative;
+}
+
 .AgendaItem {
   box-sizing: border-box;
   margin-bottom: 1em;
@@ -23,6 +27,7 @@
   &.on-hold {
     border-color: $lightBlue;
   }
+  
   @media only screen and (min-device-width: 812px) {
     padding: 1.4em;
   }
@@ -63,7 +68,7 @@
     padding: 0;
     border: 0;
     background: none;
-    color: $lightBlue;
+    color: $black;
   }
 
   .form-error {
@@ -72,10 +77,10 @@
   }
 
   .item-links {
-    // changed to grid to align links properly
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    justify-content: space-between;
     align-items:center;
+    min-height: 45px; // ensure dropdown selector doesn't jump up/down when expanded
 
     .disabled .link {
       fill: $cloudy;
@@ -98,9 +103,9 @@
       color: $lightBlue;
       font-size: 0.8em;
       // more info link
-      &:first-child {
-        text-decoration: underline;
-        cursor: pointer;
+      &.more-info { // new class for more-info link
+         text-decoration: underline; 
+         cursor: pointer; 
       }
       // items in column 3 of the grid
       &:last-child,
@@ -122,6 +127,7 @@
         text-decoration: underline;
         font-size: 1em;
       }
+
       .time {
         display: flex;
         align-items: center;
@@ -156,6 +162,7 @@
         }
       }
 
+
       p {
         margin: 0;
         margin-left: 0.2em;
@@ -166,7 +173,7 @@
         }
       }
       // item status classes
-      p.complete {
+      p.completed {
         color: $darkGrayX;
         text-decoration: none;
         text-transform: capitalize;

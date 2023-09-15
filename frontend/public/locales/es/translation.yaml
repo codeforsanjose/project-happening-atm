@@ -127,6 +127,7 @@ meeting:
           closed: Cerrado
           removed: Eliminado para una Consideración Separada
           deferred: Diferido
+          on-hold: En espera
       upload-new:
         button: Subir Nueva Agenda
         modal:

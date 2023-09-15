@@ -12,9 +12,6 @@ function Footer() {
   return (
     <footer>
       <nav className="no-select">
-        <div className="separator">
-          <hr></hr>
-        </div>
         <div className="languages">
           <button
             type="button"
@@ -39,8 +36,16 @@ function Footer() {
           </button>
         </div>
         <div className="logos">
-          <a href="https://www.onlyinsj.org/" target='_blank' rel="noreferrer"><img className="OSJ" src={OSJ_Logo} alt='Only in San Jose'/></a>
-          <a href="https://www.codeforsanjose.org/" target='_blank' rel="noreferrer"><img className="CFSJ" src={CFSJ_Logo} alt='Code for San Jose'/></a>
+          <a href="https://www.onlyinsj.org/" target="_blank" rel="noreferrer">
+            <img className="OSJ" src={OSJ_Logo} alt="Only in San Jose" />
+          </a>
+          <a
+            href="www.opensourcesanjose.org"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img className="CFSJ" src={CFSJ_Logo} alt="Code for San Jose" />
+          </a>
         </div>
         <div className="legal">
           <NavLink to="/terms-of-use">Terms of Use</NavLink>

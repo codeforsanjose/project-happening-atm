@@ -1,10 +1,9 @@
 const MeetingItemStates = {
-  COMPLETED: 'COMPLETED',
+  UPCOMING: 'UPCOMING',
   IN_PROGRESS: 'IN PROGRESS',
-  MOVED: 'MOVED',
-  PENDING: 'PENDING',
-  DEFERRED: 'DEFERRED',
   ON_HOLD: 'ON HOLD',
+  COMPLETED: 'COMPLETED',  
+  DEFERRED: 'DEFERRED',
 };
 
 export default MeetingItemStates;
