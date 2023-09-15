@@ -22,6 +22,7 @@ jobs:
       contents: read
     environment:
       name: ${{ github.event.inputs.env }}
+      url: ${{ vars.PUBLIC_URL }}
     env:
       ENVIRONMENT: ${{ github.event.inputs.env }}
     steps:
