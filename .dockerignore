@@ -1,7 +1,21 @@
+# git files
 .github
 .gitignore
-node_modules
-docker
-docker-compose.yml
+.git
 LICENSE
 README.md
+
+# node / npm
+node_modules
+
+# docker
+docker
+docker-bake.hcl
+docker-compose.yml
+
+# helm / deploy
+charts
+deployments
+
+# exclude ignore
+!docker/frontend/nginx.conf
