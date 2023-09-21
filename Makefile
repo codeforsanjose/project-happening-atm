@@ -10,7 +10,8 @@ REFERENCE := $(shell git rev-parse HEAD)
 COMMIT_SHA := ${REFERENCE}
 
 # AWS EKS / Helm deployments
-DEPLOYMENT ?= happeningatm-dev
+APPLICATION := happeningatm
+ENVIRONMENT ?= dev
 EKS_CLUSTER_NAME := shared-cluster-prod
 
 .EXPORT_ALL_VARIABLES:
@@ -33,7 +34,7 @@ run: ## Run the app
 	docker compose up -d
 
 start-db: ## Start Postgres DB
-	docker compose up ra-master-db -d
+	docker compose up postgres -d
 
 logs: ## Tail docker compose logs
 	docker compose logs -f
@@ -68,24 +69,24 @@ login-eks-cluster: ## Update kubeconfig for AWS EKS Cluster
 
 deploy: login-eks-cluster
 deploy: ## Deploy Helm chart into AWS EKS
-	helm dependency update deployments/${DEPLOYMENT}
+	helm dependency update deployments/${APPLICATION}-${ENVIRONMENT}
 	helm upgrade \
 		--set global.image.tag=${COMMIT_SHA} \
-		${DEPLOYMENT} deployments/${DEPLOYMENT} \
+		${APPLICATION}-${ENVIRONMENT} deployments/${APPLICATION}-${ENVIRONMENT} \
 		--install --wait \
 		--dependency-update \
-		--namespace ${DEPLOYMENT}
+		--namespace ${APPLICATION}-${ENVIRONMENT}
 
 deploy-status: login-eks-cluster
 deploy-status: ## View status of Helm release/deploy
 	helm status \
-		${DEPLOYMENT} \
-		--namespace ${DEPLOYMENT} \
+		${APPLICATION}-${ENVIRONMENT} \
+		--namespace ${APPLICATION}-${ENVIRONMENT} \
 		--show-resources
 
 logs-%: login-eks-cluster
 logs-%: ## Tail logs for k8s deployment
-	kubectl logs deploy/$* -c $* -n ${DEPLOYMENT} -f
+	kubectl logs deploy/$* -c $* -n ${APPLICATION}-${ENVIRONMENT} -f
 
 aws-cli-creds:
 ifndef CI

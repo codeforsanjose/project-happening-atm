@@ -14,26 +14,27 @@ on:
 concurrency:
   group: ${{ github.event.inputs.env }}
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     environment:
       name: ${{ github.event.inputs.env }}
+      url: ${{ vars.PUBLIC_URL }}
     env:
-      DEPLOYMENT: ${{ github.event.inputs.env }}
-      AWS_ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/eimmigrate
+      ENVIRONMENT: ${{ github.event.inputs.env }}
     steps:
       - uses: actions/checkout@v3
-      - uses: aws-actions/configure-aws-credentials@v2
+      - uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
           role-session-name: gha
           aws-region: us-west-2
       - id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask: 'true'
       - run: make deploy
       - run: make deploy-status
