@@ -8,14 +8,13 @@ global:
 
 frontend:
   replicaCount: 1
-  command: ["npm", "run", "start"]
   cpu:
-    requests: 100m
+    requests: 50m
     limit: 1000m
   memory:
-    requests: 100Mi
+    requests: 50Mi
     limit: 1024Mi
-  port: 3000
+  port: 80
 
 backend:
   replicaCount: 1
