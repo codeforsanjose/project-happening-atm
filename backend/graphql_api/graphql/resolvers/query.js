@@ -2,9 +2,10 @@
 // ex: verify that ids exist, undefined values should be passed as empty strings, etc...
 const getAuthentication = require('./authentication');
 const getValidator = require('./validators');
+const getMutationResolver = require('./mutation');
 
 module.exports = (logger) => {
-
+  const mutationResolver = getMutationResolver(logger);
   const authentication = getAuthentication(logger);
   const validator = getValidator(logger);
 
@@ -15,7 +16,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetings();
     } catch (e) {
-      logger.error(`getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`);
+      logger.error(
+        `getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`
+      );
       throw e;
     }
     return res.rows;
@@ -37,7 +40,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetingItems();
     } catch (e) {
-      logger.error(`getAllMeetingItems resolver error - dbClient.getAllMeetingItems: ${e}`);
+      logger.error(
+        `getAllMeetingItems resolver error - dbClient.getAllMeetingItems: ${e}`
+      );
       throw e;
     }
     return res.rows;
@@ -48,7 +53,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItem(id);
     } catch (e) {
-      logger.error(`getMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
+      logger.error(
+        `getMeetingItem resolver error - dbClient.getMeetingItem: ${e}`
+      );
       throw e;
     }
     return res.rows[0];
@@ -67,7 +74,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItemsByMeetingID(id);
     } catch (e) {
-      logger.error(`getMeetingWithItems resolver error - dbClient.getMeetingItemsByMeetingID: ${e}`);
+      logger.error(
+        `getMeetingWithItems resolver error - dbClient.getMeetingItemsByMeetingID: ${e}`
+      );
       throw e;
     }
     const associatedItems = res.rows;
@@ -83,7 +92,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetingIDs();
     } catch (e) {
-      logger.error(`getAllMeetingsWithItems resolver error - dbClient.getAllMeetingIDs: ${e}`);
+      logger.error(
+        `getAllMeetingsWithItems resolver error - dbClient.getAllMeetingIDs: ${e}`
+      );
       throw e;
     }
 
@@ -101,7 +112,9 @@ module.exports = (logger) => {
         allMeetingsWithItems.push(meetingWithItems);
       }
     } catch (e) {
-      logger.error(`getAllMeetingsWithItems resolver error - getMeetingWithItems: ${e}`);
+      logger.error(
+        `getAllMeetingsWithItems resolver error - getMeetingWithItems: ${e}`
+      );
       throw e;
     }
 
@@ -113,23 +126,35 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscription(id);
     } catch (e) {
-      logger.error(`getSubscription resolver error - dbClient.getSubscription: ${e}`);
+      logger.error(
+        `getSubscription resolver error - dbClient.getSubscription: ${e}`
+      );
       throw e;
     }
     return res.rows[0];
   };
 
-  module.getSubscriptionsByEmailAndMeetingID = async (dbClient, args, context) => {
+  module.getSubscriptionsByEmailAndMeetingID = async (
+    dbClient,
+    args,
+    context
+  ) => {
     validator.validateUser(context);
     let res;
-    try{
-      res = await dbClient.getSubscriptionsByEmailAndMeetingID(args.phone_number, args.email_address, args.meeting_id);
-    }catch (e) {
-      loginGoogle.error(`getSubscriptionsByEmailAndMeetingID resolver error -dbClient.getSubscriptionsByEmailAndMeetingID: ${e}`);
+    try {
+      res = await dbClient.getSubscriptionsByEmailAndMeetingID(
+        args.phone_number,
+        args.email_address,
+        args.meeting_id
+      );
+    } catch (e) {
+      loginGoogle.error(
+        `getSubscriptionsByEmailAndMeetingID resolver error -dbClient.getSubscriptionsByEmailAndMeetingID: ${e}`
+      );
       throw e;
     }
     return res.rows;
-  }
+  };
 
   const getAllSubscriptions = async (dbClient, args, context) => {
     validator.validateAuthorization(context);
@@ -137,7 +162,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllSubscriptions();
     } catch (e) {
-      logger.error(`getAllSubscriptions resolver error - dbClient.getAllSubscriptions: ${e}`);
+      logger.error(
+        `getAllSubscriptions resolver error - dbClient.getAllSubscriptions: ${e}`
+      );
       throw e;
     }
     return res.rows;
@@ -147,31 +174,40 @@ module.exports = (logger) => {
     let token;
     let user;
     try {
-      if (password === undefined || password === null || password == "") {
-        logger.error('Unable to authenticate no password provided')
-        throw new Error('Unable to authenticate no password provided')
+      if (password === undefined || password === null || password == '') {
+        logger.error('Unable to authenticate no password provided');
+        throw new Error('Unable to authenticate no password provided');
       } else {
-        user = await authentication.verifyEmailPassword(dbClient, email_address, password);
-        validator.validateAuthType(user.rows[0].auth_type, "Local");
+        user = await authentication.verifyEmailPassword(
+          dbClient,
+          email_address,
+          password
+        );
+        validator.validateAuthType(user.rows[0].auth_type, 'Local');
         token = authentication.createJWT(user);
       }
     } catch (e) {
       logger.error(`loginLocal resolver error: ${e}`);
       throw e;
     }
-    return { token, email: email_address }
+    return { token, email: email_address };
   };
 
   const loginGoogle = async (dbClient, context) => {
     let token;
-    let user
+    let user;
     try {
       user = await authentication.verifyGoogleToken(dbClient, context.token);
-      if(!user.isRegistered) {
-        logger.error(`User not registered`);
-        throw new Error(`User not registered`);
+      if (!user.isRegistered) {
+        // Create new user if first time signing in w/ Google
+        user = await mutationResolver.createAccount(
+          dbClient,
+          { email_address: user.email_address },
+          context
+        );
+        return { token: user.token, email: user.email_address };
       }
-      token = authentication.createJWT({rows: [user]});
+      token = authentication.createJWT({ rows: [user] });
     } catch (e) {
       logger.error(`loginGoogle resolver error: ${e}`);
       throw e;
@@ -184,11 +220,11 @@ module.exports = (logger) => {
     let user;
     try {
       user = await authentication.verifyMicrosoftToken(dbClient, context.token);
-      if(!user.isRegistered) {
+      if (!user.isRegistered) {
         logger.error(`User not registered`);
         throw new Error(`User not registered`);
       }
-      token = authentication.createJWT({rows: [user]});
+      token = authentication.createJWT({ rows: [user] });
     } catch (e) {
       logger.error(`loginMicrosoft resolver error: ${e}`);
       throw e;
@@ -205,7 +241,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllAccounts();
     } catch (e) {
-      logger.error(`getAllAccounts resolver error - dbClient.getAllAccounts: ${e}`);
+      logger.error(
+        `getAllAccounts resolver error - dbClient.getAllAccounts: ${e}`
+      );
       throw e;
     }
     return res.rows;
@@ -216,7 +254,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAccountById(id);
     } catch (e) {
-      logger.error(`getAccountById resolver error - dbClient.getAccountById: ${e}`);
+      logger.error(
+        `getAccountById resolver error - dbClient.getAccountById: ${e}`
+      );
       throw e;
     }
     return res.rows[0];
@@ -227,7 +267,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAccountByEmail(email);
     } catch (e) {
-      logger.error(`getAccountByEmail resolver error - dbClient.getAccountByEmail: ${e}`);
+      logger.error(
+        `getAccountByEmail resolver error - dbClient.getAccountByEmail: ${e}`
+      );
       throw e;
     }
     return res.rows[0];
@@ -239,7 +281,9 @@ module.exports = (logger) => {
       logger.info(`getResetPasswordToken for id ${id}`);
       res = await dbClient.getResetPasswordToken(id);
     } catch (e) {
-      logger.error(`getResetPasswordToken resolver error - dbClient.getResetPasswordToken: ${e}`);
+      logger.error(
+        `getResetPasswordToken resolver error - dbClient.getResetPasswordToken: ${e}`
+      );
       throw e;
     }
     logger.info(`getResetPasswordToken: ${res.rows[0]}`);
