@@ -402,6 +402,7 @@ standard:
     deleting: Deleting
     publish: Publish
     publishing: Publishing
+    update: Update
     upload: Upload
     uploading: Uploading
     download: Download

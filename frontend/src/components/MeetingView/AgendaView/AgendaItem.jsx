@@ -15,6 +15,7 @@ import {
 } from '../../../graphql/mutation';
 import isAdmin from '../../../utils/isAdmin';
 import { toTimeString } from '../../../utils/timestampHelper';
+import { buildDropdownAgendaItemStatuses } from '../../../utils/buildDropdownStatusClasses';
 
 import {
   buildSubscriptionQueryString,
@@ -28,8 +29,9 @@ import {
   CloseIcon,
   ScheduleBlueIcon,
 } from '../../../utils/_icons';
-import UpdateItemStartTimeModal from '../../ChangeMeetingStatusModal/UpdateItemStartTime/UpdateItemStartTimeModal';
+import UpdateItemStartTimeModal from '../../UpdateItemStartTimeModal/UpdateItemStartTimeModal';
 import Dropdown from '../../Dropdown/Dropdown';
+import ConfirmationModal from '../../ConfirmationModal/ConfirmationModal';
 
 /**
  *
@@ -146,42 +148,28 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const [admin] = useState(isAdmin());
   const { t } = useTranslation();
 
-  // possible agenda item statuses to be passed into dropdown w/ internationalization of status labels
-  const agendaItemStatuses = [
-    {
-      label: 'meeting.tabs.agenda.status.options.upcoming',
-      value: MeetingItemStates.UPCOMING,
-      class: 'upcoming',
-    },
-    {
-      label: 'meeting.tabs.agenda.status.options.in-progress',
-      value: MeetingItemStates.IN_PROGRESS,
-      class: 'in-progress',
-    },
-    {
-      label: 'meeting.tabs.agenda.status.options.on-hold',
-      value: MeetingItemStates.ON_HOLD,
-      class: 'on-hold',
-    },
-    {
-      label: 'meeting.tabs.agenda.status.options.completed',
-      value: MeetingItemStates.COMPLETED,
-      class: 'completed',
-    },
-    {
-      label: 'meeting.tabs.agenda.status.options.deferred',
-      value: MeetingItemStates.DEFERRED,
-      class: 'deferred',
-    },
-  ];
+  // possible agenda item statuses to be passed into dropdown w/ internationalization of item status labels
+  const agendaItemStatuses = buildDropdownAgendaItemStatuses();
 
   // index map of different agenda item statuses
   const statusIndexMap = agendaItemStatuses.map((status) => status.value);
 
-  //
+  // current agenda item state
   const [agendaItemStatus, setAgendaItemStatus] = useState(
     agendaItemStatuses[statusIndexMap.indexOf(item.status)]
   );
+  // pending agenda item state
+  const [pendingAgendaItemStatus, setPendingAgendaItemStatus] =
+    useState(agendaItemStatus);
+
+  // open/close states for agenda item status change confirmation modal:
+  const [showConfirmationModal, setShowConfirmationModa] = useState(false);
+  const closeConfirmationModal = () => {
+    setShowConfirmationModa(false);
+  };
+  const openConfirmationModal = () => {
+    setShowConfirmationModa(true);
+  };
 
   const itemRef = useRef(null);
   const modalRef = useRef(null);
@@ -190,6 +178,43 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const agendaItemTime = isTimeSet
     ? toTimeString(item.item_start_timestamp)
     : null;
+
+  const [updateAgendaItemStatus, { loadingStatus, errorMsg }] = useMutation(
+    UPDATE_MEETING_ITEM,
+    {
+      onCompleted: () => {
+        try {
+          refetchAllMeeting(); // need to refetch meeting in case status changes to "In Progress"
+        } catch (error) {
+          console.log(`Error updating agenda item status: ${error.message}`);
+        }
+      },
+      onError: (error) => {
+        console.log(`Error updating agenda item status: ${error.message}`);
+      },
+    }
+  );
+  // Define prop values for the confirmation modal for admins to change the agenda item status:
+  // Note: different language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
+  const modalHeaderText = t('meeting.tabs.agenda.status.modal.title2'); // note: translation missing from yaml files
+  const modalBodyText = errorMsg ? (
+    <>
+      {`There was an error, please try again. This action will update the item
+      status to `}
+      <b>
+        <em>{t(pendingAgendaItemStatus.label)}</em>
+      </b>
+      {` and notify all users.`}
+    </>
+  ) : (
+    <>
+      {`This action will update the item status to `}
+      <b>
+        <em>{t(pendingAgendaItemStatus.label)}</em>
+      </b>
+      {` and notify all users.`}
+    </>
+  );
 
   useEffect(() => {
     if (subStatus && !admin) {
@@ -207,22 +232,6 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
         setSubscribed(true);
         setSubscriptions(data?.createSubscriptions ?? null);
         refetchSubs();
-      },
-    }
-  );
-
-  const [updateAgendaItemStatus, { loadingStatus, errorMsg }] = useMutation(
-    UPDATE_MEETING_ITEM,
-    {
-      onCompleted: () => {
-        try {
-          refetchAllMeeting(); // need to refetch meeting in case status changes to "In Progress"
-        } catch (error) {
-          console.log(`Error updating agenda item status: ${error.message}`);
-        }
-      },
-      onError: (error) => {
-        console.log(`Error updating agenda item status: ${error.message}`);
       },
     }
   );
@@ -245,12 +254,14 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
           status: agendaItemStatus.value,
         },
       });
+      if (!error) closeConfirmationModal();
     }
   }, [agendaItemStatus, item.status]);
 
   // handle new user selection for meeting status
   const handleSelectStatus = (option) => {
-    setAgendaItemStatus(option);
+    openConfirmationModal();
+    setPendingAgendaItemStatus(option);
   };
 
   const handleItemTimeReset = () => {
@@ -379,14 +390,32 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
             )}
 
           {admin && (
-            <div className="dropdown-container">
-              <Dropdown
-                options={agendaItemStatuses}
-                value={agendaItemStatus}
-                onChange={handleSelectStatus}
-                className="agenda-item-status"
-              />
-            </div>
+            <>
+              <div className="dropdown-container">
+                <Dropdown
+                  options={agendaItemStatuses}
+                  value={agendaItemStatus}
+                  onChange={handleSelectStatus}
+                  className="agenda-item-status"
+                />
+              </div>
+              {showConfirmationModal && (
+                <ConfirmationModal
+                  isOpen={showConfirmationModal}
+                  closeModal={closeConfirmationModal}
+                  headerText={modalHeaderText}
+                  bodyText={modalBodyText}
+                  confirmButtonText={t('standard.buttons.update')}
+                  onConfirm={() => setAgendaItemStatus(pendingAgendaItemStatus)}
+                  disableConfirm={loadingStatus}
+                  onCancel={() => {
+                    setPendingAgendaItemStatus(agendaItemStatus);
+                    closeConfirmationModal();
+                  }}
+                  contentLabel={t('meeting.tabs.agenda.status.modal.title')}
+                />
+              )}
+            </>
           )}
         </div>
       </div>

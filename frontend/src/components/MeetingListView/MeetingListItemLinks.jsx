@@ -97,8 +97,4 @@ function PendingMeetingItemLinks({ meeting, isInProgress }) {
   );
 }
 
-export {
-  AdminMeetingItemLinks,
-  PastMeetingItemLinks,
-  PendingMeetingItemLinks,
-};
+export { AdminMeetingItemLinks, PastMeetingItemLinks, PendingMeetingItemLinks };

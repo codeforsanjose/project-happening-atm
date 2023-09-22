@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .dropdown {
   $font-weight: 600;
@@ -41,6 +41,20 @@
     padding: 0.5rem 1rem 0.5rem 1rem;
     font-weight: $font-weight;
     font-size: $font-size;
+  }
+
+  input {
+    border: none;
+    color: inherit;
+    background-color: inherit;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  input:disabled {
+    cursor: default;
   }
 
   .dropdown-item-selected {

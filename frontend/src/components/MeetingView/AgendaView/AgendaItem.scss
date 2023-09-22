@@ -225,37 +225,6 @@
       }
     }
   }
-
-  //These styles are shared with ChangeMeetingStatus component
-  @import '../../../utils/statusButtons.scss';
-  .statusButtons {
-    input {
-      padding-right: 27px;
-      text-align: right;
-    }
-
-    .relativeWrapper {
-      position: relative;
-        right: 1.7rem;
-        top: 0.25rem;
-        cursor: pointer;
-        border: none;
-
-      .buttonDownArrow {
-        position: absolute;
-        border: none;
-        background: none;
-      }
-    }
-
-    .deffered {
-      background: $pastGray;
-    }
-  }
-}
-
-.active-item {
-  border: 3px solid $cityBronze;
 }
 
 @media (max-width: 768px) {

@@ -1,4 +1,4 @@
-@import '../../../utils/_colors';
+@import '../../utils/colors';
 
 .updateStartTimeModal {
   .updateStartTimeWrapper {
@@ -110,8 +110,6 @@
           }
         }
       }
-
-      @import '../../../utils/statusButtons.scss';
 
       .publishOrCancelButtons {
         display: flex;

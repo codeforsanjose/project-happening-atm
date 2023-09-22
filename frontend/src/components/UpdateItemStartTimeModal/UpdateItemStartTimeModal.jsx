@@ -3,21 +3,21 @@ import { useMutation } from '@apollo/client';
 
 import Modal from 'react-modal/lib/components/Modal';
 import { useTranslation } from 'react-i18next';
-import { CloseIcon } from '../../../utils/_icons';
-import { UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
+import { CloseIcon } from '../../utils/_icons';
+import { UPDATE_MEETING_ITEM } from '../../graphql/mutation';
 
 import './UpdateItemStartTimeModal.scss';
 
 const UpdateItemStartTimeModal = ({ args }) => {
-
-  const {
-    item, setDisplaySetStartTimeModal, refetchAllMeeting,
-  } = args;
-
+  const { item, setDisplaySetStartTimeModal, refetchAllMeeting } = args;
 
   const { t } = useTranslation();
-  const [updateItem, { error }] = useMutation(UPDATE_MEETING_ITEM,
-    { onCompleted: () => { refetchAllMeeting(); setDisplaySetStartTimeModal(false); } });
+  const [updateItem, { error }] = useMutation(UPDATE_MEETING_ITEM, {
+    onCompleted: () => {
+      refetchAllMeeting();
+      setDisplaySetStartTimeModal(false);
+    },
+  });
   const [formFields, setFormFields] = useState({
     hour: '',
     minutes: '',
@@ -39,7 +39,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
   const modalOverlayStyle = {
     overlay: {
       backgroundColor: 'rgb(175, 178, 189, 0.5)',
-      backdropFilter: 'blur(20px)'
+      backdropFilter: 'blur(20px)',
     },
   };
 
@@ -57,18 +57,18 @@ const UpdateItemStartTimeModal = ({ args }) => {
   };
 
   const displayFormErrors = (time, meridian) => {
-    setFormFields(prevFormFields => ({
+    setFormFields((prevFormFields) => ({
       ...prevFormFields,
       errors: {
         time,
-        meridian
-      }
+        meridian,
+      },
     }));
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormFields(prevFormFields => ({
+    setFormFields((prevFormFields) => ({
       ...prevFormFields,
       [name]: value,
     }));
@@ -94,7 +94,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
     updateItem({
       variables: {
         ...item,
-        item_start_timestamp: `${newTime.getTime()}`
+        item_start_timestamp: `${newTime.getTime()}`,
       },
     });
   };
@@ -130,7 +130,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
                 id="hour"
                 value={formFields.hour}
                 placeholder="00"
-                maxLength='2'
+                maxLength="2"
                 onChange={handleChange}
               />
               <span>:</span>
@@ -143,7 +143,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
                 id="minutes"
                 value={formFields.minutes}
                 placeholder="00"
-                maxLength='2'
+                maxLength="2"
                 onChange={handleChange}
               />
               <input
@@ -153,21 +153,21 @@ const UpdateItemStartTimeModal = ({ args }) => {
                 value="AM"
                 onChange={handleChange}
               />
-              <label className='meridian-btn' htmlFor="am">
+              <label className="meridian-btn" htmlFor="am">
                 <span>AM</span>
               </label>
               <input
                 type="radio"
                 name="meridian"
                 id="pm"
-                value='PM'
+                value="PM"
                 onChange={handleChange}
               />
-              <label className='meridian-btn' htmlFor="pm">
+              <label className="meridian-btn" htmlFor="pm">
                 <span>PM</span>
               </label>
             </div>
-            <div className='error'>
+            <div className="error">
               <span className={formFields.errors.time ? 'visible' : null}>
                 {t('meeting.tabs.agenda.status.modal.set-time.error.time')}
               </span>
