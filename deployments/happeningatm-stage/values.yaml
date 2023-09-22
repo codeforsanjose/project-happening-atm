@@ -1,0 +1,45 @@
+global:
+  image:
+    repository: 253016134262.dkr.ecr.us-west-2.amazonaws.com/happeningatm
+    tag: ""
+  deployed_url: happeningatm-stage.opensourcesanjose.org
+  eks_shared_environment: prod
+  doppler_secret_ref: happeningatm-stage-doppler-secrets
+
+frontend:
+  replicaCount: 1
+  cpu:
+    requests: 50m
+    limit: 1000m
+  memory:
+    requests: 50Mi
+    limit: 1024Mi
+  port: 80
+
+backend:
+  replicaCount: 1
+  command: ["npm", "run", "start"]
+  cpu:
+    requests: 100m
+    limit: 1000m
+  memory:
+    requests: 150Mi
+    limit: 1024Mi
+  port: 3002
+
+graphql:
+  replicaCount: 1
+  command: ["npm", "run", "start"]
+  cpu:
+    requests: 100m
+    limit: 1000m
+  memory:
+    requests: 150Mi
+    limit: 1024Mi
+  port: 3000
+
+serviceaccount:
+  create: false
+
+vpa:
+  create: false

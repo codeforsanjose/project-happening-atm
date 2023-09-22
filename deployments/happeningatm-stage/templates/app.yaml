@@ -1,0 +1,9 @@
+{{- include "shared-lib.serviceaccount" . }}
+---
+{{- include "shared-lib.frontend" . }}
+---
+{{- include "shared-lib.backend" . }}
+---
+{{- include "shared-lib.graphql" . }}
+---
+{{- include "shared-lib.ingress" . }}
