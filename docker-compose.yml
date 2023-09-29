@@ -60,6 +60,7 @@ services:
         # node-sass 4* needs node version 14
         build:
             dockerfile: docker/frontend/Dockerfile
+            target: dev
         image: happening-atm-frontend:latest
         ports:
             - "3001:3000"
