@@ -76,7 +76,7 @@ target "_common" {
 variable "PUBLIC_URL" { default = "http://localhost" }
 variable "REACT_APP_GRAPHQL_URL" { default = "http://localhost" }
 variable "REACT_APP_JWT_ISSUER" { default = "default-jwt" }
-target "frontend" {
+target "build" {
     dockerfile = "docker/frontend/Dockerfile"
     context = "./"
     target = "prod"
@@ -91,15 +91,15 @@ target "frontend" {
     cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-frontend"): ""]
 }
 
-// target "frontend" {
-//     dockerfile = "docker/frontend/Dockerfile"
-//     context = "./"
-//     target = "app"
-//     inherits = ["_common"]
-//     tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
-//     cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
-//     cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-frontend"): ""]
-// }
+target "frontend" {
+    dockerfile = "docker/frontend/Dockerfile"
+    context = "./"
+    target = "app"
+    inherits = ["_common"]
+    tags = dockerTag("happeningatm", "${DOCKER_TAG}", "frontend")
+    cache-from = [dockerS3Cache("${CACHE_ID}-frontend")]
+    cache-to   = [notequal("false",GITHUB_ACTIONS) ? dockerS3Cache("${CACHE_ID}-frontend"): ""]
+}
 
 target "backend" {
     dockerfile = "docker/backend/Dockerfile"
