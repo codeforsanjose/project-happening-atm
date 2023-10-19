@@ -93,9 +93,9 @@ When adding or updating fields that are used in the Graphql mutations, be sure t
 ### Login using a Microsoft Account
 
 - To login with a Microsoft account a Microsoft API client ID must be provided to the front and backend.
-- A Google API Client ID can be obtained by registering an APP here https://azure.microsoft.com/en-us/features/azure-portal/. Then search for Azure Active Directory. In the scroll bar on the left under manage select App registrations to register your App.
-- In the `.env` file located in `docker/graphql` and `docker/frontend`, add the provided ID to the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
-- As an alternative the provided value in the `.env` file can be used for now.
+- A Microsoft API Client ID can be obtained by registering an APP [here](https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-spa-app-registration#create-the-app-registration). Additional information on the registration and set up process can be found [here](https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-spa-app-registration#create-the-app-registration).  Note, for the purposes of Happening ATM (i.e. OpenID Connect authentication use case only), we are currently using the Microsoft Authentication Library version 1.0 (i.e. MSAL.JS 1.0) with "Implicit flow" as described in the aforementioned additional information link. The Redirect_URI for local dev environment would be "http://localhost:3001/login".
+- In the `.env` file located in `docker/graphql` and `docker/frontend`, add the provided ID from your app registration as the environment variables `MICROSOFT_CLIENT_ID` and `REACT_APP_MICROSOFT_ID`.
+- As an alternative, if available, any pre-populated values from other team members' registrations already provided in the `.env` file can be used for now.
    
 ### local account for local login.
 
