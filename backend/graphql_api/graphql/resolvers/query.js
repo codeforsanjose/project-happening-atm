@@ -221,8 +221,13 @@ module.exports = (logger) => {
     try {
       user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       if (!user.isRegistered) {
-        logger.error(`User not registered`);
-        throw new Error(`User not registered`);
+        // Create new user if first time signing in w/ Microsoft
+        user = await mutationResolver.createAccount(
+          dbClient,
+          { email_address: user.email_address },
+          context
+        );
+        return { token: user.token, email: user.email_address };
       }
       token = authentication.createJWT({ rows: [user] });
     } catch (e) {
