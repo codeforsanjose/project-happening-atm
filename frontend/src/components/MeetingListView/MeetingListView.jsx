@@ -35,7 +35,10 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
 function MeetingListView() {
   const { t } = useTranslation();
 
-  const { loading, error, data } = useQuery(GET_ALL_MEETINGS);
+  // poll to check for meeting status updates every 30 seconds
+  const { loading, error, data } = useQuery(GET_ALL_MEETINGS, {
+    pollInterval: 30000,
+  });
   const [navToggled, setNavToggled] = useState(false);
   const [meetings, setMeetings] = useState([]);
   const [showPastMeetings, setShowPastMeetings] = useState(false);
