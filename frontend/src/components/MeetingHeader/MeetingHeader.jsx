@@ -37,11 +37,13 @@ function MeetingHeader({
 
   // index map of different meeting statuses
   const statusIndexMap = statuses.map((status) => status.value);
-
   // define state for selected meeting status and the graphql mutation for updating meeting in DB
   const [meetingStatus, setMeetingStatus] = useState(
-    statuses[statusIndexMap.indexOf(MeetingStates.UPCOMING)]
-  ); //Set default status of meetings to Upcoming
+    meeting.status !== undefined
+      ? statuses[statusIndexMap.indexOf(meeting.status)]
+      : statuses[statusIndexMap.indexOf(MeetingStates.UPCOMING)]
+  );
+  //Set default status of meetings to Upcoming
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
   // open/close states for meeting status change confirmation modal:
   const [showModal, setShowModal] = useState(false);
@@ -75,7 +77,14 @@ function MeetingHeader({
     </>
   );
 
-  // re-render whenever meeting status changes
+  // re-render whenever prop meeting.status changes (e.g. by ano/ user)
+  useEffect(() => {
+    if (meetingStatus.value !== meeting.status && meeting.status) {
+      setMeetingStatus(statuses[statusIndexMap.indexOf(meeting.status)]);
+    }
+  }, [meeting.status]);
+
+  // re-render whenever user changes meetingStatus
   // Note: updateMeeting is async(?) mutation, so may need to revisit this, but works as is currently
   useEffect(() => {
     if (isAdmin() && meetingStatus.value !== MeetingStates.UPCOMING) {
@@ -86,10 +95,8 @@ function MeetingHeader({
         },
       });
       if (!error) closeModal();
-    } else if (meetingStatus.value !== meeting.status && meeting.status) {
-      setMeetingStatus(statuses[statusIndexMap.indexOf(meeting.status)]);
     }
-  }, [meetingStatus, meeting.status]);
+  }, [meetingStatus]);
 
   // JYIP: 2023.07 observation of inherited functionality (i.e. someone else built this) & potential issue:
   // FUNCTIONALITY: If any individual meeting agenda item status is changed to "In Progress" status, overall meeting status automatically
