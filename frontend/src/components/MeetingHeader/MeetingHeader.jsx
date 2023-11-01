@@ -38,12 +38,12 @@ function MeetingHeader({
   // index map of different meeting statuses
   const statusIndexMap = statuses.map((status) => status.value);
   // define state for selected meeting status and the graphql mutation for updating meeting in DB
+  //Set default status of meetings to Upcoming if no status exists yet
   const [meetingStatus, setMeetingStatus] = useState(
     meeting.status !== undefined
       ? statuses[statusIndexMap.indexOf(meeting.status)]
       : statuses[statusIndexMap.indexOf(MeetingStates.UPCOMING)]
   );
-  //Set default status of meetings to Upcoming
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
   // open/close states for meeting status change confirmation modal:
   const [showModal, setShowModal] = useState(false);
@@ -135,7 +135,11 @@ function MeetingHeader({
                     options={statuses}
                     value={meetingStatus}
                     onChange={(option) => handleSelectStatus(option)}
-                    className="meeting-status"
+                    className={classNames(
+                      progressStatus
+                        ? 'meeting-status in-progress'
+                        : 'meeting-status'
+                    )}
                   />
                 </div>
               </div>
