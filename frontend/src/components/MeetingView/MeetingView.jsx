@@ -37,7 +37,6 @@ function MeetingView() {
   const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
     fetchPolicy: 'network-only',
-    //pollInterval: 5000,
     onCompleted: (data) => {
       createMeeting(data, setMeetingWithItems);
     },
@@ -56,8 +55,7 @@ function MeetingView() {
 
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
-    fetchPolicy: 'network-only', //'cache-and-network',
-    // pollInterval: 5000,
+    fetchPolicy: 'network-only',
     onCompleted: (d) => {
       createMeeting(d, setMeetingWithItems);
     },
