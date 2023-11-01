@@ -85,7 +85,7 @@ function MeetingHeader({
   }, [meeting.status]);
 
   // re-render whenever user changes meetingStatus
-  // Note: updateMeeting is async(?) mutation, so may need to revisit this, but works as is currently
+  // (Note: updateMeeting is async(?) mutation, so may need to revisit this, but works as is currently)
   useEffect(() => {
     if (isAdmin() && meetingStatus.value !== MeetingStates.UPCOMING) {
       updateMeeting({
