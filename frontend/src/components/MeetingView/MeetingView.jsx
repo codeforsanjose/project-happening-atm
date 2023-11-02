@@ -73,7 +73,7 @@ function MeetingView() {
     // poll for any meeting or agenda item status changes by other (admin) users
     const timer = window.setInterval(() => {
       refetch();
-    }, 20000);
+    }, 15000);
     // clear interval timer when unmounting
     return () => {
       clearInterval(timer);
