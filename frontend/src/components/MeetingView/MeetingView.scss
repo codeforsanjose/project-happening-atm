@@ -3,9 +3,8 @@
 .meeting-view {
   padding: 0;
   background-color: $blueSky;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0 3%;
-
 
   @media only screen and (min-width: 812px) {
     margin: 0 200px 0;
@@ -17,7 +16,10 @@
 
   a {
     text-decoration: none;
+    display: inline-block;
+    width: fit-content;
   }
+
   .agend-pdf-link {
     text-decoration: underline;
     margin-left: calc(1rem + 10px); // match AgendaGroup styling
@@ -26,6 +28,7 @@
     color: $happeningBlue;
     background-color: $lightGreen;
     border-radius: 5px;
+    cursor: pointer;
 
     /* custom edits */
     border: none;

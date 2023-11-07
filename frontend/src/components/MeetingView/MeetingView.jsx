@@ -11,6 +11,7 @@ import MeetingHeader from '../MeetingHeader/MeetingHeader';
 // import ParticipateView from "./ParticipateView/ParticipateView";
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
+import MeetingZoomURL from '../../constants/MeetingZoomURL';
 import { JoinMeetingIcon } from '../../utils/_icons';
 /**
  * Component that displays a list of a meeting's agenda items.
@@ -33,9 +34,7 @@ function MeetingView() {
   const { id } = useParams();
 
   // queries
-  const {
-    loading, error, data, refetch,
-  } = useQuery(GET_MEETING_WITH_ITEMS, {
+  const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
     fetchPolicy: 'network-only',
   });
@@ -99,7 +98,7 @@ function MeetingView() {
 
   const agendaItemsPDFLink = meetingWithItems.agenda_pdf_link
     ? meetingWithItems.agenda_pdf_link
-    : "";
+    : '';
   const linktoPDFAgendaItems = !(loading || error) && data && (
     <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
       Recommendations & Attachments
@@ -116,27 +115,28 @@ function MeetingView() {
       />
       {loading && <Spinner />}
       {linktoPDFAgendaItems}
-      {!(loading || error) && data && "items" in meetingWithItems && (
+      {!(loading || error) && data && 'items' in meetingWithItems && (
         <a
           meeting={meetingWithItems}
-          href={meetingWithItems.virtual_meeting_url}
-          target="_blank"
+          href={
+            meetingWithItems.virtual_meeting_url
+              ? meetingWithItems.virtual_meeting_url
+              : MeetingZoomURL.LINK
+          }
+          target="_blank" // open link in new tab
           rel="noopener noreferrer"
+          className="join-meeting"
         >
-          <button type="button" className="join-meeting">
-            <JoinMeetingIcon />
-            <p>
-              {t(
-                'meeting.tabs.participate.section.join.description.number-2.button',
-              )}
-            </p>
-          </button>
+          <JoinMeetingIcon />
+          <p>
+            {t(
+              'meeting.tabs.participate.section.join.description.number-2.button'
+            )}
+          </p>
         </a>
       )}
       {!(loading || error) && data && 'items' in meetingWithItems && (
-        <AgendaView
-          args={agendaViewArgs}
-        />
+        <AgendaView args={agendaViewArgs} />
       )}
       {error && <p className="error">{error.message}</p>}
     </div>
