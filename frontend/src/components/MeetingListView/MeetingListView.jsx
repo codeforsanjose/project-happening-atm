@@ -6,7 +6,11 @@ import {
   groupMeetingsByDate,
   isFutureTimestamp,
 } from '../../utils/timestampHelper';
-import { GET_ALL_MEETINGS } from '../../graphql/query';
+import {
+  GET_ALL_MEETINGS,
+  GET_ALL_UPCOMING_MEETINGS,
+} from '../../graphql/query';
+
 import isAdmin from '../../utils/isAdmin';
 import './MeetingListView.scss';
 
@@ -15,7 +19,7 @@ import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import { AdminMeetingListViewLinks } from './MeetingListViewLinks';
 import MeetingListGroup from './MeetingListGroup';
 import Spinner from '../Spinner/Spinner';
-
+import PollIntervals from '../../constants/PollStatusIntervals';
 // Asset imports
 import cityLogo from '../../assets/SanJoseCityLogo.png';
 import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
@@ -35,7 +39,7 @@ import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
 function MeetingListView() {
   const { t } = useTranslation();
 
-  const { loading, error, data, refetch } = useQuery(GET_ALL_MEETINGS);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_UPCOMING_MEETINGS);
 
   const [navToggled, setNavToggled] = useState(false);
   const [meetings, setMeetings] = useState([]);
@@ -48,12 +52,12 @@ function MeetingListView() {
 
   useEffect(() => {
     if (data) {
-      setMeetings(data.getAllMeetings);
+      setMeetings(data.getAllUpcomingMeetings);
     }
     // poll for any meeting or agenda item status changes by other (admin) users
     const timer = window.setInterval(() => {
       refetch();
-    }, 20000);
+    }, PollIntervals.HALF_MINUTE_IN_MILLISECONDS);
     // clear interval polling timer when unmounting (e.g. user leaves page)
     return () => {
       clearInterval(timer);
@@ -62,7 +66,7 @@ function MeetingListView() {
 
   const meetingsToDisplay = showPastMeetings
     ? meetings
-    : meetings.filter(
+    : meetings?.filter(
         (m) =>
           m.status === 'IN PROGRESS' ||
           isFutureTimestamp(m.meeting_start_timestamp)

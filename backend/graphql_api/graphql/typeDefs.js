@@ -1,9 +1,10 @@
 const { gql } = require('apollo-server');
 
 module.exports = gql`
-type Query {
+  type Query {
     getMeeting(id: Int!): meeting
     getAllMeetings: [meeting]
+    getAllUpcomingMeetings: [meeting]
 
     getMeetingItem(id: Int!): meeting_item
     getAllMeetingItems: [meeting_item]
@@ -12,7 +13,11 @@ type Query {
     getAllMeetingsWithItems: [meeting_with_items]
 
     getSubscription(id: Int!): subscription
-    getSubscriptionsByEmailAndMeetingID(phone_number: String!, email_address: String!, meeting_id: Int!): [subscription]
+    getSubscriptionsByEmailAndMeetingID(
+      phone_number: String!
+      email_address: String!
+      meeting_id: Int!
+    ): [subscription]
     getAllSubscriptions: [subscription]
 
     getAllAccounts: [account]
@@ -103,17 +108,21 @@ type Query {
 
     updatePhoneNumber(id: Int!, phone_number: String!): account
 
-    createAccount(email_address: String, password: String, phone_number: String, roles: roles): auth_data
+    createAccount(
+      email_address: String
+      password: String
+      phone_number: String
+      roles: roles
+    ): auth_data
 
     deleteMeeting(id: Int!): String
 
     forgotPassword(emailAddress: String): ID
-    resetPassword(id: Int, password: String ): ID
-    updatePassword(currentPassword: String, newPassword: String ): ID
+    resetPassword(id: Int, password: String): ID
+    updatePassword(currentPassword: String, newPassword: String): ID
+  }
 
-}
-
-type subscription {
+  type subscription {
     id: Int
     phone_number: String
     email_address: String
@@ -121,18 +130,18 @@ type subscription {
     meeting_id: Int
     created_timestamp: String
     updated_timestamp: String
-}
+  }
 
-input meetingInput {
+  input meetingInput {
     meeting_item_id: Int
-}
+  }
 
-type meeting_with_items {
+  type meeting_with_items {
     meeting: meeting
     items: [meeting_item]
-}
+  }
 
-type meeting {
+  type meeting {
     id: Int
     status: String
     meeting_type: String
@@ -164,33 +173,32 @@ type meeting {
     content_categories: String
     description_loc_key: String
     title_loc_key: String
-}
+  }
 
-type account {
-  id: Int
-  first_name: String
-  last_name: String
-  unsubscribe_token: String
-  email_address: String
-  phone_number: String
-  phone_number_subscribed: Boolean
-  email_address_subscribed: Boolean
-  password: String
-  password_reset_token: String
-  password_reset_expire: String
-  roles: [roles]!
-  created_timestamp: String
-  updated_timestamp: String
-}
+  type account {
+    id: Int
+    first_name: String
+    last_name: String
+    unsubscribe_token: String
+    email_address: String
+    phone_number: String
+    phone_number_subscribed: Boolean
+    email_address_subscribed: Boolean
+    password: String
+    password_reset_token: String
+    password_reset_expire: String
+    roles: [roles]!
+    created_timestamp: String
+    updated_timestamp: String
+  }
 
-enum roles{
-  ADMIN
-  USER
-}
+  enum roles {
+    ADMIN
+    USER
+  }
 
-
-type auth_data {
-  token: String!
-  email: String
-}
+  type auth_data {
+    token: String!
+    email: String
+  }
 `;

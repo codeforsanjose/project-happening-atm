@@ -1,6 +1,6 @@
-const { Client } = require("pg");
-const { migrate } = require("postgres-migrations");
-const format = require("pg-format");
+const { Client } = require('pg');
+const { migrate } = require('postgres-migrations');
+const format = require('pg-format');
 
 module.exports = async (logger) => {
   const module = {};
@@ -13,7 +13,7 @@ module.exports = async (logger) => {
     password: process.env.HAPPENINGATM_DB_PASSWORD,
   });
 
-  client.on("error", (err) => {
+  client.on('error', (err) => {
     logger.error(`Error with DB: ${err.stack}`);
   });
 
@@ -31,10 +31,12 @@ module.exports = async (logger) => {
   module.init = async () => {
     try {
       await client.connect();
-      logger.info("DB connected - line 34 - backend/graphql_api/db/dbClient.js");
+      logger.info(
+        'DB connected - line 34 - backend/graphql_api/db/dbClient.js'
+      );
 
-      await migrate({ client }, "./migrations");
-      logger.info("Migrations completed successfully.");
+      await migrate({ client }, './migrations');
+      logger.info('Migrations completed successfully.');
     } catch (e) {
       logger.error(`DB connection error: ${e.stack}`);
       throw e;
@@ -43,8 +45,9 @@ module.exports = async (logger) => {
 
   module.end = async () => {
     await client.end();
-    logger.info("DB disconnected - line 46 - backend/graphql_api/db/dbClient.js");
-
+    logger.info(
+      'DB disconnected - line 46 - backend/graphql_api/db/dbClient.js'
+    );
   };
 
   const convertMsToSeconds = (milliseconds) => milliseconds / 1000;
@@ -64,7 +67,7 @@ module.exports = async (logger) => {
     youtubeLink,
     agendaPDFLink
   ) => {
-    logger.info("dbClient: createMeeting");
+    logger.info('dbClient: createMeeting');
     logger.info(virtualMeetingId);
     const now = Date.now();
     const createdTimestamp = now;
@@ -106,19 +109,44 @@ module.exports = async (logger) => {
   };
 
   module.getAllMeetings = async () => {
-    logger.info("dbClient: getAllMeetings");
-    return query("SELECT * FROM meeting");
+    logger.info('dbClient: getAllMeetings');
+    return query('SELECT * FROM meeting');
+  };
+
+  // query only returns current and future meetings
+  module.getAllUpcomingMeetings = async () => {
+    let today = new Date().toLocaleDateString();
+
+    logger.info('dbClient: getAllUpcomingMeetings');
+    return query(
+      `SELECT * FROM meeting WHERE meeting_start_timestamp >= timestamp '${today}'`
+    );
+  };
+
+  // query that only returns meetings for the next 30 days (for polling purposes)
+  module.getAllMeetingsNext30Days = async () => {
+    let today = new Date().toLocaleDateString();
+    let next30Days = new Date();
+    next30Days.setDate(next30Days.getDate() + 30);
+    next30Days = new Date(next30Days);
+    next30Days = next30Days.toLocaleDateString();
+
+    logger.info('dbClient: getAllMeetingsNext30Days ');
+    return query(
+      `SELECT * FROM meeting WHERE meeting_start_timestamp >= timestamp '${today}' 
+				AND meeting_start_timestamp <= timestamp '${next30Days}'`
+    );
   };
 
   module.getMeeting = async (id) => {
-    logger.info("dbClient: getMeeting");
-    const queryString = "SELECT * FROM meeting WHERE id = $1";
+    logger.info('dbClient: getMeeting');
+    const queryString = 'SELECT * FROM meeting WHERE id = $1';
     return query(queryString, [id]);
   };
 
   module.deleteMeeting = async (id) => {
-    logger.info("dbClient: deleteMeeting");
-    const queryString = "DELETE FROM meeting WHERE id = $1";
+    logger.info('dbClient: deleteMeeting');
+    const queryString = 'DELETE FROM meeting WHERE id = $1';
     return query(queryString, [id]);
   };
 
@@ -133,7 +161,7 @@ module.exports = async (logger) => {
     titleLocKey,
     parentMeetingItemId
   ) => {
-    logger.info("dbClient: createMeetingItem");
+    logger.info('dbClient: createMeetingItem');
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -160,29 +188,29 @@ module.exports = async (logger) => {
   };
 
   module.getAllMeetingItems = async () => {
-    logger.info("dbClient: getAllMeetingItems");
-    return query("SELECT * FROM meeting_item");
+    logger.info('dbClient: getAllMeetingItems');
+    return query('SELECT * FROM meeting_item');
   };
 
   module.getMeetingItem = async (id) => {
-    logger.info("dbClient: getMeetingItem");
-    const queryString = "SELECT * FROM meeting_item WHERE id = $1";
+    logger.info('dbClient: getMeetingItem');
+    const queryString = 'SELECT * FROM meeting_item WHERE id = $1';
     return query(queryString, [id]);
   };
 
   module.getMeetingItemsByMeetingID = async (meetingId) => {
-    logger.info("dbClient: getMeetingItemsByMeetingID");
-    const queryString = "SELECT * FROM meeting_item WHERE meeting_id = $1";
+    logger.info('dbClient: getMeetingItemsByMeetingID');
+    const queryString = 'SELECT * FROM meeting_item WHERE meeting_id = $1';
     return query(queryString, [meetingId]);
   };
 
   module.getAllMeetingIDs = async () => {
-    logger.info("dbClient: getAllMeetingIDs");
-    return query("SELECT id FROM meeting");
+    logger.info('dbClient: getAllMeetingIDs');
+    return query('SELECT id FROM meeting');
   };
 
   module.createSubscriptions = async (phoneNumber, emailAddress, meetings) => {
-    logger.info("dbClient: createSubscriptions");
+    logger.info('dbClient: createSubscriptions');
 
     // Aggregate meetings into an array so we can INSERT in a single query.
     const itemIds = meetings.map((meeting) =>
@@ -194,7 +222,7 @@ module.exports = async (logger) => {
     const queryString = `
       INSERT INTO subscription(phone_number, email_address, meeting_item_id, meeting_id)
       (SELECT $1 AS phone_number, $2 AS email_address, id AS meeting_item_id, meeting_id AS meeting_id 
-        FROM meeting_item WHERE id IN (${idParams.join(", ")}))
+        FROM meeting_item WHERE id IN (${idParams.join(', ')}))
       RETURNING id;`;
 
     return query(queryString, [phoneNumber, emailAddress, ...itemIds]);
@@ -206,9 +234,9 @@ module.exports = async (logger) => {
     meeting_id,
     meeting_item_id
   ) => {
-    logger.info("dbClient: deleteSubscription");
+    logger.info('dbClient: deleteSubscription');
     const queryString =
-      "DELETE FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3 AND meeting_item_id = $4";
+      'DELETE FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3 AND meeting_item_id = $4';
     return query(queryString, [
       phone_number,
       email_address,
@@ -218,24 +246,24 @@ module.exports = async (logger) => {
   };
 
   module.getSubscription = async (ids) => {
-    logger.info("dbClient: getSubscription");
+    logger.info('dbClient: getSubscription');
     let paramIndex = 1;
     const idParams = ids.map((id) => `\$${paramIndex++}`);
     const queryString = `SELECT * FROM subscription WHERE id IN (${idParams.join(
-      ", "
+      ', '
     )})`;
     return query(queryString, [...ids]);
   };
 
   module.getSubscriptionsByMeetingID = async (id) => {
-    logger.info("dbClient: getSubscriptionsByMeetingID");
-    const queryString = "SELECT * FROM subscription WHERE meeting_id = $1";
+    logger.info('dbClient: getSubscriptionsByMeetingID');
+    const queryString = 'SELECT * FROM subscription WHERE meeting_id = $1';
     return query(queryString, [id]);
   };
 
   module.getSubscriptionsByMeetingItemID = async (id) => {
-    logger.info("dbClient: getSubscriptionsByMeetingItemID");
-    const queryString = "SELECT * FROM subscription WHERE meeting_item_id = $1";
+    logger.info('dbClient: getSubscriptionsByMeetingItemID');
+    const queryString = 'SELECT * FROM subscription WHERE meeting_item_id = $1';
     return query(queryString, [id]);
   };
 
@@ -244,19 +272,19 @@ module.exports = async (logger) => {
     email_address,
     meeting_id
   ) => {
-    logger.info("dbClient: getSubscriptsByEmailAndMeetingID");
+    logger.info('dbClient: getSubscriptsByEmailAndMeetingID');
     const queryString =
-      "SELECT * FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3";
+      'SELECT * FROM subscription WHERE phone_number = $1 AND email_address = $2 AND meeting_id = $3';
     return query(queryString, [phone_number, email_address, meeting_id]);
   };
 
   module.getAllSubscriptions = async () => {
-    logger.info("dbClient: getAllSubscriptions");
-    return query("SELECT * FROM subscription");
+    logger.info('dbClient: getAllSubscriptions');
+    return query('SELECT * FROM subscription');
   };
 
   module.getResetPasswordToken = async (id) => {
-    logger.info("dbClient: getResetPasswordToken");
+    logger.info('dbClient: getResetPasswordToken');
     const queryString = `SELECT password_reset_token FROM account where id=${id}`;
     return query(queryString);
   };
@@ -272,7 +300,7 @@ module.exports = async (logger) => {
     titleLocKey,
     parentMeetingItemId
   ) => {
-    logger.info("dbClient: updateMeetingItem");
+    logger.info('dbClient: updateMeetingItem');
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting_item
@@ -317,7 +345,7 @@ module.exports = async (logger) => {
     youtubeLink,
     agendaPDFLink
   ) => {
-    logger.info("dbClient: updateMeeting");
+    logger.info('dbClient: updateMeeting');
     const updatedTimestamp = Date.now();
     const queryString = `
         UPDATE meeting
@@ -355,16 +383,16 @@ module.exports = async (logger) => {
   };
 
   module.getSubscriptionsByMeetingIDList = async (idList) => {
-    logger.info("dbClient: getSubscriptionsByMeetingIDList");
-    let idListString = "";
+    logger.info('dbClient: getSubscriptionsByMeetingIDList');
+    let idListString = '';
     idList.forEach((id) => {
-      if (idListString === "") {
+      if (idListString === '') {
         idListString += `(${id}`;
       } else {
         idListString += `, ${id}`;
       }
     });
-    idListString += ")";
+    idListString += ')';
     // fix for notifying next up agenda item:
     return query(
       `SELECT * FROM subscription WHERE meeting_item_id IN ${[idListString]}`
@@ -375,15 +403,15 @@ module.exports = async (logger) => {
   };
 
   module.getAdminByEmail = async (email) => {
-    logger.info("dbClient: getAdminByEmail");
-    const queryString = "SELECT * FROM admin WHERE email_address = $1";
+    logger.info('dbClient: getAdminByEmail');
+    const queryString = 'SELECT * FROM admin WHERE email_address = $1';
     return query(queryString, [email]);
   };
 
   module.toogleConfirmByToken = async (token, toogleBoolean) => {
-    logger.info("dbClient: unconfirmUserByToken");
+    logger.info('dbClient: unconfirmUserByToken');
     const queryString =
-      "UPDATE account SET email_address_subscribed = $1 WHERE token = $2";
+      'UPDATE account SET email_address_subscribed = $1 WHERE token = $2';
     return query(queryString, [toogleBoolean, token]);
   };
 
@@ -395,7 +423,7 @@ module.exports = async (logger) => {
     auth_type,
     token
   ) => {
-    logger.info("dbClient: createAccount");
+    logger.info('dbClient: createAccount');
     const now = Date.now();
     const createdTimestamp = now;
     const updatedTimestamp = now;
@@ -407,17 +435,17 @@ module.exports = async (logger) => {
   };
 
   module.getAllAccounts = async () => {
-    logger.info("dbClient: getAllAccounts");
-    return query("SELECT * FROM account");
+    logger.info('dbClient: getAllAccounts');
+    return query('SELECT * FROM account');
   };
 
   module.getAccountByEmail = async (email) => {
-    logger.info("dbClient: getAccountByEmail");
+    logger.info('dbClient: getAccountByEmail');
     return query(`SELECT * FROM account WHERE email_address = '${email}'`);
   };
 
   module.getAccountById = async (id) => {
-    logger.info("dbClient: getAccountById ");
+    logger.info('dbClient: getAccountById ');
     return query(`SELECT * FROM account WHERE id = ${id}`);
   };
 
@@ -425,7 +453,7 @@ module.exports = async (logger) => {
     userId,
     passwordResetToken
   ) => {
-    logger.info("dbClient: updatePasswordResetTokenForAccount");
+    logger.info('dbClient: updatePasswordResetTokenForAccount');
     const queryString = `UPDATE account SET password_reset_token='${passwordResetToken}'
     WHERE id = ${userId}
     RETURNING id;`;
@@ -433,7 +461,7 @@ module.exports = async (logger) => {
   };
 
   module.resetPassword = async (id, password) => {
-    logger.info("dbClient: resetPassword");
+    logger.info('dbClient: resetPassword');
     const queryString = `UPDATE account SET password='${password}'
     WHERE id = ${id}
     RETURNING id;`;
@@ -441,14 +469,14 @@ module.exports = async (logger) => {
   };
 
   module.updateEmail = async (id, email_address) => {
-    logger.info("dbClient: updateEmail");
+    logger.info('dbClient: updateEmail');
     const queryString = `UPDATE account SET email_address=$2
     WHERE id=$1`;
     return query(queryString, [id, email_address]);
   };
 
   module.updatePhoneNumber = async (id, phone_number) => {
-    logger.info("dbClient: updatePhoneNumber");
+    logger.info('dbClient: updatePhoneNumber');
     const queryString = `UPDATE account SET phone_number=$2
     WHERE id=$1`;
     return query(queryString, [id, phone_number]);

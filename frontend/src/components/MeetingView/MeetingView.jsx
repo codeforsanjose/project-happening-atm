@@ -12,6 +12,7 @@ import MeetingHeader from '../MeetingHeader/MeetingHeader';
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
 import { JoinMeetingIcon } from '../../utils/_icons';
+import PollIntervals from '../../constants/PollStatusIntervals';
 /**
  * Component that displays a list of a meeting's agenda items.
  * Utilizes react-accessible-accordion to display groups of items.
@@ -23,7 +24,6 @@ import { JoinMeetingIcon } from '../../utils/_icons';
  *      A boolean value indicating if the header nav component is open
  */
 const createMeeting = (data, setMeetingWithItems) => {
-  console.log('data:', data);
   const meeting = { ...data.getMeetingWithItems.meeting };
   meeting.items = data.getMeetingWithItems.items;
   setMeetingWithItems(meeting);
@@ -73,7 +73,7 @@ function MeetingView() {
     // poll for any meeting or agenda item status changes by other (admin) users
     const timer = window.setInterval(() => {
       refetch();
-    }, 15000);
+    }, PollIntervals.THIRD_MINUTE_IN_MILLISECONDS);
     // clear interval timer when unmounting
     return () => {
       clearInterval(timer);
