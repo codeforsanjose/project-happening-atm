@@ -24,6 +24,19 @@ module.exports = (logger) => {
     return res.rows;
   };
 
+  const getAllUpcomingMeetings = async (dbClient) => {
+    let res;
+    try {
+      res = await dbClient.getAllUpcomingMeetings();
+    } catch (e) {
+      logger.error(
+        `getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`
+      );
+      throw e;
+    }
+    return res.rows;
+  };
+
   const getMeeting = async (dbClient, id) => {
     let res;
     try {
@@ -296,6 +309,7 @@ module.exports = (logger) => {
   };
 
   module.getAllMeetings = getAllMeetings;
+  module.getAllUpcomingMeetings = getAllUpcomingMeetings;
   module.getMeeting = getMeeting;
   module.getAllMeetingItems = getAllMeetingItems;
   module.getMeetingItem = getMeetingItem;
