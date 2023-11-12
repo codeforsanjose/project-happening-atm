@@ -62,7 +62,9 @@ function Dropdown({ options, value, onChange, className }) {
         value={t(option.label)}
         disabled={
           option.value === value.value ||
-          (propsClassName === 'meeting-status' && option.value === 'UPCOMING') // indicate can't revert mtg status to 'upcoming'
+          (propsClassName === 'meeting-status' &&
+            option.value === 'UPCOMING') || // can't revert mtg status to 'upcoming'
+          propsClassName === 'meeting-status in-progress' // can't update mtg status if any agenda items are in progress
             ? true
             : false
         }

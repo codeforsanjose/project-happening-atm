@@ -12,6 +12,7 @@ import MeetingHeader from '../MeetingHeader/MeetingHeader';
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
 import { JoinMeetingIcon } from '../../utils/_icons';
+import PollIntervals from '../../constants/PollStatusIntervals';
 /**
  * Component that displays a list of a meeting's agenda items.
  * Utilizes react-accessible-accordion to display groups of items.
@@ -33,11 +34,12 @@ function MeetingView() {
   const { id } = useParams();
 
   // queries
-  const {
-    loading, error, data, refetch,
-  } = useQuery(GET_MEETING_WITH_ITEMS, {
+  const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
     fetchPolicy: 'network-only',
+    onCompleted: (data) => {
+      createMeeting(data, setMeetingWithItems);
+    },
   });
 
   // states
@@ -53,7 +55,7 @@ function MeetingView() {
 
   // lazy queries
   const [getMeetingWithItems] = useLazyQuery(GET_MEETING_WITH_ITEMS, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     onCompleted: (d) => {
       createMeeting(d, setMeetingWithItems);
     },
@@ -63,11 +65,19 @@ function MeetingView() {
     setNavToggled(!navToggled);
   }
 
-  // this handles the initial query only
+  // this handles the initial query and polling
   useEffect(() => {
     if (data) {
       createMeeting(data, setMeetingWithItems);
     }
+    // poll for any meeting or agenda item status changes by other (admin) users
+    const timer = window.setInterval(() => {
+      refetch();
+    }, PollIntervals.THIRD_MINUTE_IN_MILLISECONDS);
+    // clear interval timer when unmounting
+    return () => {
+      clearInterval(timer);
+    };
   }, [data]);
 
   // // disabled participate view while mutators are being processed by backend
@@ -99,7 +109,7 @@ function MeetingView() {
 
   const agendaItemsPDFLink = meetingWithItems.agenda_pdf_link
     ? meetingWithItems.agenda_pdf_link
-    : "";
+    : '';
   const linktoPDFAgendaItems = !(loading || error) && data && (
     <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
       Recommendations & Attachments
@@ -116,7 +126,7 @@ function MeetingView() {
       />
       {loading && <Spinner />}
       {linktoPDFAgendaItems}
-      {!(loading || error) && data && "items" in meetingWithItems && (
+      {!(loading || error) && data && 'items' in meetingWithItems && (
         <a
           meeting={meetingWithItems}
           href={meetingWithItems.virtual_meeting_url}
@@ -127,16 +137,14 @@ function MeetingView() {
             <JoinMeetingIcon />
             <p>
               {t(
-                'meeting.tabs.participate.section.join.description.number-2.button',
+                'meeting.tabs.participate.section.join.description.number-2.button'
               )}
             </p>
           </button>
         </a>
       )}
       {!(loading || error) && data && 'items' in meetingWithItems && (
-        <AgendaView
-          args={agendaViewArgs}
-        />
+        <AgendaView args={agendaViewArgs} />
       )}
       {error && <p className="error">{error.message}</p>}
     </div>

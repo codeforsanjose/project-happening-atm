@@ -91,9 +91,18 @@
     }
   }
 
-  // indicate: can't change status back to Upcoming
+  // indicate can't change meeting status back to Upcoming
   .dropdown-open.meeting-status .upcoming {
     cursor: not-allowed;
+  }
+
+  // indicate can't change meeting status if any agenda item is still in progress
+  .dropdown-open.meeting-status.in-progress {
+    .in-recess,
+    .ended,
+    .deferred {
+      cursor: not-allowed;
+    }
   }
 
   .in-progress {

@@ -245,7 +245,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
     },
   });
 
-  // re-render whenever agenda item status changes
+  // re-render whenever user changes agenda item status
   useEffect(() => {
     if (isAdmin() && item?.status && agendaItemStatus.value !== item.status) {
       updateAgendaItemStatus({
@@ -256,7 +256,16 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
       });
       if (!error) closeConfirmationModal();
     }
-  }, [agendaItemStatus, item.status]);
+  }, [agendaItemStatus]);
+
+  // re-render whenever agenda item status prop changes (e.g. by ano/ user)
+  useEffect(() => {
+    if (item?.status && agendaItemStatus.value !== item.status) {
+      setAgendaItemStatus(
+        agendaItemStatuses[statusIndexMap.indexOf(item.status)]
+      );
+    }
+  }, [item.status]);
 
   // handle new user selection for meeting status
   const handleSelectStatus = (option) => {
