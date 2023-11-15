@@ -41,7 +41,6 @@ function MeetingView() {
 
   // queries
   const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
-  const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
@@ -116,7 +115,6 @@ function MeetingView() {
 
   const agendaItemsPDFLink = meetingWithItems.agenda_pdf_link
     ? meetingWithItems.agenda_pdf_link
-    : '';
     : '';
   const linktoPDFAgendaItems = !(loading || error) && data && (
     <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
