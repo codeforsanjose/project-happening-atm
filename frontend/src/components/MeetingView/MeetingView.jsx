@@ -138,7 +138,6 @@ function MeetingView() {
             }
             target="_blank" // open link in new tab
             rel="noopener noreferrer"
-            // className="join-meeting"
           >
             <span className="join-meeting">
               <JoinMeetingIcon />
