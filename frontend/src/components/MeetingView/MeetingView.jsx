@@ -11,7 +11,7 @@ import MeetingHeader from '../MeetingHeader/MeetingHeader';
 // import ParticipateView from "./ParticipateView/ParticipateView";
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
-import MeetingZoomURL from '../../constants/MeetingZoomURL';
+import MEETING_ZOOM_URL from '../../constants/MeetingZoomURL';
 import { JoinMeetingIcon } from '../../utils/_icons';
 import PollIntervals from '../../constants/PollStatusIntervals';
 /**
@@ -35,7 +35,6 @@ function MeetingView() {
   const { id } = useParams();
 
   // queries
-  const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
   const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
     variables: { id: parseInt(id, 10) },
     fetchPolicy: 'network-only',
@@ -112,7 +111,6 @@ function MeetingView() {
   const agendaItemsPDFLink = meetingWithItems.agenda_pdf_link
     ? meetingWithItems.agenda_pdf_link
     : '';
-    : '';
   const linktoPDFAgendaItems = !(loading || error) && data && (
     <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
       Recommendations & Attachments
@@ -128,28 +126,31 @@ function MeetingView() {
         progressStatus={progressStatus}
       />
       {loading && <Spinner />}
-      {linktoPDFAgendaItems}
-      {!(loading || error) && data && 'items' in meetingWithItems && (
-      {!(loading || error) && data && 'items' in meetingWithItems && (
-        <a
-          meeting={meetingWithItems}
-          href={
-            meetingWithItems.virtual_meeting_url
-              ? meetingWithItems.virtual_meeting_url
-              : MeetingZoomURL.LINK
-          }
-          target="_blank" // open link in new tab
-          rel="noopener noreferrer"
-          className="join-meeting"
-        >
-          <JoinMeetingIcon />
-          <p>
-            {t(
-              'meeting.tabs.participate.section.join.description.number-2.button'
-            )}
-          </p>
-        </a>
-      )}
+      <div className="meeting-links">
+        {linktoPDFAgendaItems}
+        {!(loading || error) && data && 'items' in meetingWithItems && (
+          <a
+            meeting={meetingWithItems}
+            href={
+              meetingWithItems.virtual_meeting_url
+                ? meetingWithItems.virtual_meeting_url
+                : MEETING_ZOOM_URL.LINK
+            }
+            target="_blank" // open link in new tab
+            rel="noopener noreferrer"
+            // className="join-meeting"
+          >
+            <span className="join-meeting">
+              <JoinMeetingIcon />
+              <p>
+                {t(
+                  'meeting.tabs.participate.section.join.description.number-2.button'
+                )}
+              </p>
+            </span>
+          </a>
+        )}
+      </div>
       {!(loading || error) && data && 'items' in meetingWithItems && (
         <AgendaView args={agendaViewArgs} />
       )}

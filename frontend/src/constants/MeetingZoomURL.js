@@ -1,6 +1,7 @@
 // City Council Meeting Zoom Link URL
-const MeetingZoomURL = {
-  LINK: 'https://sanjoseca.zoom.us/j/88471470054',
+
+const MEETING_ZOOM_URL = {
+  LINK: process.env.REACT_APP_MEETING_ZOOM_URL,
 };
 
-export default MeetingZoomURL;
+export default MEETING_ZOOM_URL;

@@ -13,42 +13,43 @@
     margin-left: 25vw;
     margin-right: 25vw;
   }
-
+  .meeting-links {
+    display: flex;
+    flex-direction: column;
+  }
   a {
     text-decoration: none;
     display: inline-block;
-    width: fit-content;
+    max-width: fit-content;
+    margin-left: calc(1rem + 10px); // match AgendaGroup styling
   }
 
   .agend-pdf-link {
     text-decoration: underline;
-    margin-left: calc(1rem + 10px); // match AgendaGroup styling
+    margin-bottom: 0.5rem;
+    color: $black;
   }
+
   .join-meeting {
     color: $happeningBlue;
     background-color: $lightGreen;
     border-radius: 5px;
     cursor: pointer;
-
     /* custom edits */
     border: none;
     display: flex;
     align-items: center;
-    margin: 1em;
-    margin-left: calc(1rem + 10px); // match AgendaGroup styling
-    padding: 0.5em;
-    padding-left: 1.25em;
-    padding-right: 1.25em;
+    justify-content: space-evenly;
+    width: 155px;
+    height: 48px;
+    padding-right: 15px;
 
     p {
       /* Join Zoom Meeting */
       position: static;
-      width: 88px;
+      width: 75px;
       height: 36px;
-      right: 14px;
-      top: calc(50% - 36px / 2);
-
-      //font-family: 'Poppins';
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
@@ -56,15 +57,12 @@
       display: flex;
       align-items: center;
       text-align: center;
-
-      /* happening blue: 1F2847 */
-      color: #1f2847;
+      color: $happeningBlue;
 
       /* Inside auto layout */
       flex: none;
       order: 1;
       flex-grow: 0;
-      margin: 0px 4px;
     }
   }
 
