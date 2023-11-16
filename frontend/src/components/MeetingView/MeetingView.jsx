@@ -11,6 +11,7 @@ import MeetingHeader from '../MeetingHeader/MeetingHeader';
 // import ParticipateView from "./ParticipateView/ParticipateView";
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
+import MEETING_ZOOM_URL from '../../constants/MeetingZoomURL';
 import { JoinMeetingIcon } from '../../utils/_icons';
 import PollIntervals from '../../constants/PollStatusIntervals';
 /**
@@ -125,24 +126,30 @@ function MeetingView() {
         progressStatus={progressStatus}
       />
       {loading && <Spinner />}
-      {linktoPDFAgendaItems}
-      {!(loading || error) && data && 'items' in meetingWithItems && (
-        <a
-          meeting={meetingWithItems}
-          href={meetingWithItems.virtual_meeting_url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <button type="button" className="join-meeting">
-            <JoinMeetingIcon />
-            <p>
-              {t(
-                'meeting.tabs.participate.section.join.description.number-2.button'
-              )}
-            </p>
-          </button>
-        </a>
-      )}
+      <div className="meeting-links">
+        {linktoPDFAgendaItems}
+        {!(loading || error) && data && 'items' in meetingWithItems && (
+          <a
+            meeting={meetingWithItems}
+            href={
+              meetingWithItems.virtual_meeting_url
+                ? meetingWithItems.virtual_meeting_url
+                : MEETING_ZOOM_URL.LINK
+            }
+            target="_blank" // open link in new tab
+            rel="noopener noreferrer"
+          >
+            <span className="join-meeting">
+              <JoinMeetingIcon />
+              <p>
+                {t(
+                  'meeting.tabs.participate.section.join.description.number-2.button'
+                )}
+              </p>
+            </span>
+          </a>
+        )}
+      </div>
       {!(loading || error) && data && 'items' in meetingWithItems && (
         <AgendaView args={agendaViewArgs} />
       )}
