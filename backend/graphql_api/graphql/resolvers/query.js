@@ -24,6 +24,19 @@ module.exports = (logger) => {
     return res.rows;
   };
 
+  const getAllUpcomingMeetings = async (dbClient) => {
+    let res;
+    try {
+      res = await dbClient.getAllUpcomingMeetings();
+    } catch (e) {
+      logger.error(
+        `getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`
+      );
+      throw e;
+    }
+    return res.rows;
+  };
+
   const getMeeting = async (dbClient, id) => {
     let res;
     try {
@@ -221,8 +234,13 @@ module.exports = (logger) => {
     try {
       user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       if (!user.isRegistered) {
-        logger.error(`User not registered`);
-        throw new Error(`User not registered`);
+        // Create new user if first time signing in w/ Microsoft
+        user = await mutationResolver.createAccount(
+          dbClient,
+          { email_address: user.email_address },
+          context
+        );
+        return { token: user.token, email: user.email_address };
       }
       token = authentication.createJWT({ rows: [user] });
     } catch (e) {
@@ -291,6 +309,7 @@ module.exports = (logger) => {
   };
 
   module.getAllMeetings = getAllMeetings;
+  module.getAllUpcomingMeetings = getAllUpcomingMeetings;
   module.getMeeting = getMeeting;
   module.getAllMeetingItems = getAllMeetingItems;
   module.getMeetingItem = getMeetingItem;

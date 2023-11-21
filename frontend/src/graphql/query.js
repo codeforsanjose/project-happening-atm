@@ -1,11 +1,20 @@
 import { gql } from '@apollo/client';
 
-
 export const GET_ALL_MEETINGS = gql`
   query {
     getAllMeetings {
-      id,
-      meeting_start_timestamp,
+      id
+      meeting_start_timestamp
+      status
+    }
+  }
+`;
+
+export const GET_ALL_UPCOMING_MEETINGS = gql`
+  query {
+    getAllUpcomingMeetings {
+      id
+      meeting_start_timestamp
       status
     }
   }
@@ -86,7 +95,7 @@ export const GET_MEETING_WITH_ITEMS = gql`
 export const GET_ALL_ACCOUNT_EMAILS = gql`
   query {
     getAllAccountEmails {
-      id,
+      id
       email_address
     }
   }
@@ -96,39 +105,38 @@ export const GET_ALL_ACCOUNT_EMAILS = gql`
 
 export const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email_address: String) {
-    getAccountByEmail(email_address: $email_address){
-      id,
-      email_address,
+    getAccountByEmail(email_address: $email_address) {
+      id
+      email_address
       phone_number
     }
   }
 `;
 
 export const GET_RESET_PASSWORD_TOKEN = gql`
-query GetResetPasswordToken(
-  $id: Int
-){
-  getResetPasswordToken(
-    id: $id
-){
-  password_reset_token
-}
-}
+  query GetResetPasswordToken($id: Int) {
+    getResetPasswordToken(id: $id) {
+      password_reset_token
+    }
+  }
 `;
 
 export const GET_SUB_BY_EMAIL_MEETINGID = gql`
-query GetSubByEmailAndID(
-  $phone_number: String!, 
-  $meeting_id: Int!, 
-  $email_address: String!){
-    getSubscriptionsByEmailAndMeetingID(phone_number:$phone_number,
-      email_address: $email_address,
-      meeting_id: $meeting_id,){
-      id,
-      phone_number,
-      email_address,
-      meeting_item_id,
-      meeting_id,
+  query GetSubByEmailAndID(
+    $phone_number: String!
+    $meeting_id: Int!
+    $email_address: String!
+  ) {
+    getSubscriptionsByEmailAndMeetingID(
+      phone_number: $phone_number
+      email_address: $email_address
+      meeting_id: $meeting_id
+    ) {
+      id
+      phone_number
+      email_address
+      meeting_item_id
+      meeting_id
     }
-}
+  }
 `;
