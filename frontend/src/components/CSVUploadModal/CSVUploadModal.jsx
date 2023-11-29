@@ -73,7 +73,10 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
     setSelectedFile(null);
     setUploadSuccessful(false);
     closeModal();
-    history.go(0);
+    // force refresh (i.e. after replacing agenda on mtg page)
+    if (uploadSuccessful) {
+      history.go(0);
+    }
   }
 
   function redirectToMeeting() {
