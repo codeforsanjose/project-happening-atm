@@ -21,6 +21,7 @@ import { ReactComponent as DeleteIcon } from '../assets/icons/delete-24px.svg';
 import { ReactComponent as DoneOutlineIcon } from '../assets/icons/done_outline-24px.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit-24px.svg';
 import { ReactComponent as EmailIcon } from '../assets/icons/email-24px.svg';
+import { ReactComponent as ExternalSite } from '../assets/icons/external-site.svg';
 import { ReactComponent as FaqIcon } from '../assets/icons/faq.svg';
 import { ReactComponent as FeedbackIcon } from '../assets/icons/feedback-24px.svg';
 import { ReactComponent as FormatListNumberedIcon } from '../assets/icons/format_list_numbered-24px.svg';
@@ -86,6 +87,7 @@ export {
   DoneOutlineIcon,
   EditIcon,
   EmailIcon,
+  ExternalSite,
   FaqIcon,
   FeedbackIcon,
   FormatListNumberedIcon,
