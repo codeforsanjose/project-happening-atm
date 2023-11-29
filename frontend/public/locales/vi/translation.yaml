@@ -31,6 +31,7 @@ meeting:
           date: Ngày
           time: Thời gian
     upload-new-agenda: Tải lên Văn Kiện mới
+    replace-agenda: Tải lên Văn Kiện
     join:
       zoom: Tham gia cuộc họp Zoom
     watch: Xem buổi Phát thanh của cuộc họp 
