@@ -13,20 +13,27 @@
     margin-left: 25vw;
     margin-right: 25vw;
   }
-  .meeting-links {
+
+  .meeting-view-links {
     display: flex;
     flex-direction: column;
+    row-gap: 1.1rem;
   }
+
   a {
     text-decoration: none;
     display: inline-block;
     max-width: fit-content;
     margin-left: calc(1rem + 10px); // match AgendaGroup styling
+
+    .translate-down {
+      // translate external site icon down
+      transform: translate(0, 25%);
+    }
   }
 
   .agend-pdf-link {
     text-decoration: underline;
-    margin-bottom: 0.5rem;
     color: $black;
   }
 
@@ -38,11 +45,16 @@
     /* custom edits */
     border: none;
     display: flex;
+    column-gap: 1rem;
     align-items: center;
     justify-content: space-evenly;
-    width: 155px;
-    height: 48px;
-    padding-right: 15px;
+    height: 3.3rem;
+    padding: 15px 20px;
+
+    @media screen and (max-width: 500px) {
+      column-gap: 0.5rem;
+      padding: 10px 15px;
+    }
 
     p {
       /* Join Zoom Meeting */
@@ -63,6 +75,9 @@
       flex: none;
       order: 1;
       flex-grow: 0;
+      @media screen and (max-width: 500px) {
+        font-size: 13px;
+      }
     }
   }
 

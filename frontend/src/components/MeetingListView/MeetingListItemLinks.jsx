@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import useCSVUpload from '../../hooks/useCSVUpload';
 import useDeleteMeeting from '../../hooks/useDeleteMeeting';
 import { isFutureTimestamp } from '../../utils/timestampHelper';
+import './MeetingListItemLinks.scss';
 import '../../utils/generalStyles.scss';
 
 // Asset imports
@@ -21,6 +23,7 @@ function AdminMeetingItemLinks({ meeting }) {
   const { t } = useTranslation();
   const [openUploadModal, UploadModal] = useCSVUpload(meeting);
   const [openDeleteModal, DeleteModal] = useDeleteMeeting(meeting);
+  const history = useHistory();
 
   const isFutureItem = isFutureTimestamp(meeting.meeting_start_timestamp);
   const pastClasses = 'meeting-links visibility-hidden';
@@ -35,7 +38,11 @@ function AdminMeetingItemLinks({ meeting }) {
           onClick={openUploadModal}
         >
           <ViewAgendaIcon />
-          <p>{t('meeting.actions.upload-new-agenda')}</p>
+          <p>
+            {history.location.pathname === '/'
+              ? t('meeting.actions.upload-new-agenda')
+              : t('meeting.actions.replace-agenda')}
+          </p>
         </button>
       </Link>
       <Link to="#">

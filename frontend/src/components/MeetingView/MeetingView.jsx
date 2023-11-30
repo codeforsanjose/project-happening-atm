@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_MEETING_WITH_ITEMS } from '../../graphql/query';
+import isAdmin from '../../utils/isAdmin';
 
 import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import MeetingHeader from '../MeetingHeader/MeetingHeader';
@@ -12,8 +13,11 @@ import MeetingHeader from '../MeetingHeader/MeetingHeader';
 import AgendaView from './AgendaView/AgendaView';
 import Spinner from '../Spinner/Spinner';
 import MEETING_ZOOM_URL from '../../constants/MeetingZoomURL';
-import { JoinMeetingIcon } from '../../utils/_icons';
+import { JoinMeetingIcon, ExternalSite } from '../../utils/_icons';
 import PollIntervals from '../../constants/PollStatusIntervals';
+
+// Component imports
+import { AdminMeetingItemLinks } from '../MeetingListView/MeetingListItemLinks';
 /**
  * Component that displays a list of a meeting's agenda items.
  * Utilizes react-accessible-accordion to display groups of items.
@@ -33,6 +37,7 @@ const createMeeting = (data, setMeetingWithItems) => {
 function MeetingView() {
   const { t } = useTranslation();
   const { id } = useParams();
+  const isCurrentUserAdmin = isAdmin();
 
   // queries
   const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
@@ -114,8 +119,12 @@ function MeetingView() {
   const linktoPDFAgendaItems = !(loading || error) && data && (
     <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
       Recommendations & Attachments
+      <ExternalSite className="translate-down" />
     </a>
   );
+
+  const MeetingItemLinks = isCurrentUserAdmin ? AdminMeetingItemLinks : '';
+
   return (
     <div className="meeting-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -126,7 +135,7 @@ function MeetingView() {
         progressStatus={progressStatus}
       />
       {loading && <Spinner />}
-      <div className="meeting-links">
+      <div className="meeting-view-links">
         {linktoPDFAgendaItems}
         {!(loading || error) && data && 'items' in meetingWithItems && (
           <a
@@ -149,6 +158,12 @@ function MeetingView() {
             </span>
           </a>
         )}
+        {!(loading || error) &&
+          data &&
+          isCurrentUserAdmin &&
+          'items' in meetingWithItems && (
+            <MeetingItemLinks meeting={meetingWithItems} />
+          )}
       </div>
       {!(loading || error) && data && 'items' in meetingWithItems && (
         <AgendaView args={agendaViewArgs} />
