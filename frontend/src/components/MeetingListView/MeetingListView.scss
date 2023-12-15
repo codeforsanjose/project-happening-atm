@@ -1,11 +1,11 @@
-@import "../../utils/colors";
+@import '../../utils/colors';
 
 .MeetingListView {
   margin-top: 8em;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: $backgroundWhite;
 
   @media screen and (max-width: 768px) {
@@ -63,7 +63,7 @@
       }
     }
 
-    @media only screen and (min-width: 991px){
+    @media only screen and (min-width: 991px) {
       margin: 0 8em;
       padding-left: 4.5em;
 
@@ -111,12 +111,21 @@
     .past-meetings {
       text-align: center;
       margin-top: 5em;
-
       p {
-        margin: 0
+        margin: 0;
+      }
+
+      a > p {
+        color: $black;
+        text-decoration: underline;
+      }
+
+      .translate-down {
+        // translate external site icon down
+        transform: translate(0, 25%);
       }
     }
-    
+
     @media screen and (max-width: 768px) {
       padding: 0 5rem 5rem 5rem;
     }
