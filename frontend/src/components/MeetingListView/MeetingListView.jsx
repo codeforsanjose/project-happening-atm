@@ -21,8 +21,13 @@ import MeetingListGroup from './MeetingListGroup';
 import Spinner from '../Spinner/Spinner';
 import PollIntervals from '../../constants/PollStatusIntervals';
 // Asset imports
+import MEETINGS_ARCHIVE_URL from '../../constants/MeetingsArchiveURL';
 import cityLogo from '../../assets/SanJoseCityLogo.png';
-import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../utils/_icons';
+import {
+  CheckedCheckboxIcon,
+  UncheckedCheckboxIcon,
+  ExternalSite,
+} from '../../utils/_icons';
 
 /**
  * Main view component to display a list of upcoming/past meetings.
@@ -112,8 +117,14 @@ function MeetingListView() {
         {error && <div className="loader">{`Error! ${error.message}`}</div>}
         <div className="past-meetings">
           <p>{t('meeting.list.look-for-past')}</p>
-          <a href="/archive">
-            <p>{t('meeting.list.show-past')}</p>
+          <a
+            href={MEETINGS_ARCHIVE_URL.LINK}
+            target="_blank" // open link in new tab
+            rel="noopener noreferrer"
+          >
+            <p>
+              Search the archive <ExternalSite className="translate-down" />
+            </p>
           </a>
         </div>
         {/* <button
