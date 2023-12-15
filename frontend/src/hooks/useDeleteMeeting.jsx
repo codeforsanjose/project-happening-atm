@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
 import { toTimeString, i18Date } from '../utils/timestampHelper';
@@ -25,6 +26,13 @@ import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal
 
 const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
   const history = useHistory();
+  // allow mtg list page to refresh after deleting mtg from indiv. mtg view page
+  // https://stackoverflow.com/questions/53963060/react-router-navigating-through-history-push-refreshes-the-page
+  const historyBrowser = createBrowserHistory({
+    basename: process.env.PUBLIC_URL,
+    forceRefresh: true,
+  });
+
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
@@ -33,7 +41,11 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
 
   const clearAndCloseModal = () => {
     setShowModal(false);
-    history.go(0);
+    // refresh page if on mtg list page o/wise if on
+    // indiv. mtg view page, navigate to mtg list page and refresh
+    history.location.pathname === '/'
+      ? history.go(0)
+      : historyBrowser.push('/');
   };
 
   const openModal = () => {

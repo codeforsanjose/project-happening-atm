@@ -31,6 +31,7 @@ meeting:
           date: Fecha
           time: Tiempo
     upload-new-agenda: Subir Nueva Agenda
+    replace-agenda: Reemplazar Agenda
     join:
       zoom: Unirse a la Reunión Zoom
     watch: Ver Transmisión de Reunión

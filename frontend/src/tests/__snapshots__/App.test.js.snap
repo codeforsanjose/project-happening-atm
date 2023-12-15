@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders admin mtg links on view mtg page that matches snapshot 1`] = `
+<div
+  className="meeting-links visibility-hidden"
+>
+  <button
+    className="link upload-agenda-button"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg>
+      view_agenda-24px.svg
+    </svg>
+    <p>
+      meeting.actions.upload-new-agenda
+    </p>
+  </button>
+  <button
+    className="link delete-agenda-button"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg>
+      delete-24px.svg
+    </svg>
+    <p>
+      meeting.list.delete-meeting.button
+    </p>
+  </button>
+</div>
+`;
+
+exports[`renders admin mtg links on view mtgs dashboard page that matches snapshot 1`] = `
+<div
+  className="meeting-links visibility-hidden"
+>
+  <button
+    className="link upload-agenda-button"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg>
+      view_agenda-24px.svg
+    </svg>
+    <p>
+      meeting.actions.upload-new-agenda
+    </p>
+  </button>
+  <button
+    className="link delete-agenda-button"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg>
+      delete-24px.svg
+    </svg>
+    <p>
+      meeting.list.delete-meeting.button
+    </p>
+  </button>
+</div>
+`;

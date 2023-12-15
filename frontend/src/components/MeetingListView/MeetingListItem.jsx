@@ -37,21 +37,30 @@ function MeetingListItem({ item }) {
   const isEnded = status === 'ENDED';
 
   const isCurrentUserAdmin = isAdmin();
-  const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
-  const MeetingItemLinks = isCurrentUserAdmin ? AdminMeetingItemLinks : PublicLinks;
+  const PublicLinks =
+    status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  const MeetingItemLinks = isCurrentUserAdmin
+    ? AdminMeetingItemLinks
+    : PublicLinks;
 
   return (
-    <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
+    <div
+      className={classnames('MeetingListItem', { 'in-progress': isInProgress })}
+    >
       <Link to={`meeting/${id}`} className="meeting-date">
-        <h3>
-          {date}
-        </h3>
+        <h3>{date}</h3>
       </Link>
-      <div className={classnames('meeting-status', { 'progress-wrapper-started': isInProgress })}>
-        {isInProgress && <>
-          <StatusInProgress className="status-icon"/>
-          <span>{t('meeting.status.short.in-progress')}</span>
-        </>}
+      <div
+        className={classnames('meeting-status', {
+          'progress-wrapper-started': isInProgress,
+        })}
+      >
+        {isInProgress && (
+          <>
+            <StatusInProgress className="status-icon" />
+            <span>{t('meeting.status.short.in-progress')}</span>
+          </>
+        )}
       </div>
       <Link to={`meeting/${id}`} className="meeting-time">
         <div>{time}</div>

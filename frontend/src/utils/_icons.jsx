@@ -21,6 +21,7 @@ import { ReactComponent as DeleteIcon } from '../assets/icons/delete-24px.svg';
 import { ReactComponent as DoneOutlineIcon } from '../assets/icons/done_outline-24px.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit-24px.svg';
 import { ReactComponent as EmailIcon } from '../assets/icons/email-24px.svg';
+import { ReactComponent as ExternalSite } from '../assets/icons/external-site.svg';
 import { ReactComponent as FaqIcon } from '../assets/icons/faq.svg';
 import { ReactComponent as FeedbackIcon } from '../assets/icons/feedback-24px.svg';
 import { ReactComponent as FormatListNumberedIcon } from '../assets/icons/format_list_numbered-24px.svg';
@@ -40,7 +41,7 @@ import { ReactComponent as NewReleasesIcon } from '../assets/icons/new_releases-
 import { ReactComponent as NotificationsIcon } from '../assets/icons/notifications-24px.svg';
 import { ReactComponent as NotificationFilledIcon } from '../assets/icons/notifications filled.svg';
 import { ReactComponent as OnDemandVideoIcon } from '../assets/icons/ondemand_video-24px.svg';
-import { ReactComponent as PlayWithCircleOutlineIcon } from '../assets/icons/play_circle_outline-24px(1).svg';
+import { ReactComponent as PlayWithCircleOutlineIcon } from '../assets/icons/play_circle_outline-24px.svg';
 import { ReactComponent as PublishIcon } from '../assets/icons/publish-24px.svg';
 import { ReactComponent as ProfileIcon } from '../assets/icons/profile.svg';
 import { ReactComponent as RemoveIcon } from '../assets/icons/remove-24px.svg';
@@ -86,6 +87,7 @@ export {
   DoneOutlineIcon,
   EditIcon,
   EmailIcon,
+  ExternalSite,
   FaqIcon,
   FeedbackIcon,
   FormatListNumberedIcon,

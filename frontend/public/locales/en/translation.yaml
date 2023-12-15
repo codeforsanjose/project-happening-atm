@@ -31,6 +31,7 @@ meeting:
           date: Date
           time: Time
     upload-new-agenda: Upload Agenda
+    replace-agenda: Replace Agenda
     join:
       zoom: Join Zoom Meeting
     watch: Watch Meeting Broadcast

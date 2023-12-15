@@ -1,21 +1,21 @@
 /* eslint-disable no-console */
-import React, { useState, useRef, useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import Modal from "react-modal";
-import "./CSVUploadModal.scss";
-import uploadCSV from "../../utils/uploadHelper";
+import React, { useState, useRef, useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import Modal from 'react-modal';
+import './CSVUploadModal.scss';
+import uploadCSV from '../../utils/uploadHelper';
 
-import DragAndDrop from "./DragAndDrop";
-import Spinner from "../Spinner/Spinner";
-import SuccessModal from "../SuccessModal/SuccessModal";
+import DragAndDrop from './DragAndDrop';
+import Spinner from '../Spinner/Spinner';
+import SuccessModal from '../SuccessModal/SuccessModal';
 import {
   PublishIcon,
   CancelIcon,
   DocumentIcon,
   DeleteIcon,
-} from "../../utils/_icons";
-import { Desktop, TabletOrMobile } from "../../utils/mediaquery";
+} from '../../utils/_icons';
+import { Desktop, TabletOrMobile } from '../../utils/mediaquery';
 
 /**
  * A modal to handle CSV Uploads.
@@ -59,12 +59,12 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   }
 
   const handleFileDrop = useCallback((files) => {
-    if (files.length === 0 || files[0].type !== "text/csv") return;
+    if (files.length === 0 || files[0].type !== 'text/csv') return;
     setSelectedFile(files[0]);
   }, []);
 
   function clearSelectedFile() {
-    fileInputRef.current.value = "";
+    fileInputRef.current.value = '';
     setSelectedFile(null);
   }
 
@@ -73,6 +73,10 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
     setSelectedFile(null);
     setUploadSuccessful(false);
     closeModal();
+    // force refresh (i.e. after replacing agenda on mtg page)
+    if (uploadSuccessful) {
+      history.go(0);
+    }
   }
 
   function redirectToMeeting() {
@@ -95,12 +99,12 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
     }
   }
 
-  const redirect = pathname === "/";
+  const redirect = pathname === '/';
   const publishButtonText = isLoading
-    ? "Uploading and Publishing"
-    : "Upload and Publish";
+    ? 'Uploading and Publishing'
+    : 'Upload and Publish';
 
-  Modal.setAppElement("#root");
+  Modal.setAppElement('#root');
 
   if (uploadSuccessful) {
     return (
@@ -109,7 +113,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
         closeModal={clearAndCloseModal}
         headerText="Agenda Successfully Uploaded!"
         confirmModal={redirect ? redirectToMeeting : clearAndCloseModal}
-        confirmText={redirect ? "Go to Meeting" : "Close"}
+        confirmText={redirect ? 'Go to Meeting' : 'Close'}
       />
     );
   }
@@ -227,7 +231,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
                   className="delete-button modal-button"
                   onClick={closeModal}
                 >
-                  {t("meeting.list.delete-meeting.modal.buttons.cancel")}
+                  {t('meeting.list.delete-meeting.modal.buttons.cancel')}
                 </button>
               </div>
             </>
