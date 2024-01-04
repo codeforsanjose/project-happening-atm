@@ -1,4 +1,5 @@
 navbar:
+  calendar: Calendar
   city: City of San Jose
   menu: Menu
   browse-meetings: Browse Meetings
