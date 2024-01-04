@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .nav-links {
   display: flex;
@@ -28,9 +28,7 @@
     padding: 0;
 
     li {
-      text-indent: -2.6em;
       padding-left: 2.6em;
-      max-width: 90%;
       &:last-child {
         .nav-link-separator {
           display: none;

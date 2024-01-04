@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 $navMargin: 2.5em;
 
@@ -14,14 +14,13 @@ $navMargin: 2.5em;
     background: transparent;
     color: $black;
     cursor: pointer;
-    border-left: 8px solid transparent;
     text-decoration: none;
 
     .button-group {
       display: flex;
 
       .button-group-inner {
-        padding: 0 1em;
+        padding: 0 0em;
       }
     }
 
@@ -58,7 +57,7 @@ $navMargin: 2.5em;
   }
 
   @media (max-width: 1225px) {
-    .button-text{
+    .button-text {
       font-size: 0.9em;
     }
   }
