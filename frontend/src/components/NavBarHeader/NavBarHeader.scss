@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .no-select {
   /* prevent blue highlighting */
@@ -31,8 +31,7 @@ header {
 
     * {
       color: $offWhite;
-      cursor: pointer;
-      font-family: "Poppins", sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
     a {
       text-decoration: none;
@@ -73,13 +72,17 @@ header {
       font-weight: 500;
     }
 
+    .button-icon {
+      cursor: pointer;
+    }
+
     .nav-links {
       width: 100%;
       height: 100vh;
       margin: 0;
       box-sizing: border-box;
       //background-color: $cityBlue;
-      background: linear-gradient(180deg, #254276 14.83%, #1F2847 71.34%);
+      background: linear-gradient(180deg, #254276 14.83%, #1f2847 71.34%);
       position: absolute;
       top: 3em;
       left: 0;
@@ -114,17 +117,16 @@ header {
 }
 
 @media (max-width: 1440px) {
-  header nav .nav-bar{
+  header nav .nav-bar {
     padding: 1em 3vw;
   }
 }
 
 @media (max-width: 1375px) {
-  header nav .nav-bar{
+  header nav .nav-bar {
     padding: 1em 2vw;
   }
 }
-
 
 @media (max-width: 991px) {
   button.sign-out {

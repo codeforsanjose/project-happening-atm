@@ -1,25 +1,22 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { Redirect } from "react-router-dom";
-import HamburgerIcon from "./HamburgerIcon";
-import NavLinks from "./NavLinks";
-import "./NavBarHeader.scss";
-import NavigationLink from "./NavigationLink";
-import {
-  ATMLogoPinRainbowIcon,
-  ATMLogoRainbowIcon,
-  CaratDownIcon,
-  FaqIcon,
-  GlobeIcon,
-  HomeIcon,
-  ProfileIcon,
-} from "../../utils/_icons";
-import LoginContext from "../LoginContext/LoginContext";
-import LanguageDropdown from "../LanguageDropdown/LanguageDropdown";
-import Signout from "./Signout";
-import { Desktop, TabletOrMobile } from "../../utils/mediaquery";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocation, Redirect } from 'react-router-dom';
+
+import HamburgerIcon from './HamburgerIcon';
+import BackNavigation from '../BackNavigation/BackNavigation';
+import NavLinks from './NavLinks';
+import './NavBarHeader.scss';
+import NavigationLink from './NavigationLink';
+import { ATMLogoPinRainbowIcon } from '../../utils/_icons';
+import LoginContext from '../LoginContext/LoginContext';
+import LanguageDropdown from '../LanguageDropdown/LanguageDropdown';
+import Signout from './Signout';
+import { Desktop, TabletOrMobile } from '../../utils/mediaquery';
 
 function Header({ toggled, handleToggle }) {
+  const { pathname } = useLocation();
+  const meetingCalendar = pathname === '/';
+
   const { t } = useTranslation();
 
   const loginContext = React.useContext(LoginContext);
@@ -27,50 +24,26 @@ function Header({ toggled, handleToggle }) {
   return (
     <header>
       <nav className="no-select">
-        {loginContext.signedIn ? "" : <Redirect to="/login" />}
+        {loginContext.signedIn ? '' : <Redirect to="/login" />}
         <div className="nav-bar">
-          <Desktop>
-            <ATMLogoRainbowIcon className="button-icon home-button-icon" />
-          </Desktop>
-          <TabletOrMobile>
-            <div className="home-button-group">
-              <ATMLogoPinRainbowIcon className="button-icon home-button-icon" />
-              <span className="home-button-text">{t("navbar.city")}</span>
-            </div>
-          </TabletOrMobile>
-          <Desktop>
-            <div className="nav-link-group">
-              <NavigationLink
-                Icon={<HomeIcon className="button-icon" />}
-                linkText={t("header.my-city-agenda")}
-                path="/"
-              />
-              <NavigationLink
-                Icon={<FaqIcon className="button-icon" />}
-                linkText={t("navbar.faq")}
-                path="/faq"
-              />
-              <NavigationLink
-                Icon={<ATMLogoPinRainbowIcon className="button-icon" />}
-                linkText={t("navbar.about")}
-                path="/about"
-              />
-              <LanguageDropdown />
-              <NavigationLink
-                Icon={<ProfileIcon className="button-icon" />}
-                linkText={t("navbar.profile")}
-                path="/profile"
-              />
-            </div>
-            <Signout t={t} />
-          </Desktop>
-          <TabletOrMobile>
-            <HamburgerIcon onClick={handleToggle} toggled={toggled} />
-          </TabletOrMobile>
+          <div className="home-button-group">
+            {meetingCalendar ? (
+              <>
+                <ATMLogoPinRainbowIcon className="home-button-icon" />
+                <span className="home-button-text">{t('navbar.city')}</span>
+              </>
+            ) : (
+              <BackNavigation />
+            )}
+          </div>
+          {meetingCalendar ? '' : <ATMLogoPinRainbowIcon />}
+          <HamburgerIcon
+            className="button-icon"
+            onClick={handleToggle}
+            toggled={toggled}
+          />
         </div>
-        <TabletOrMobile>
-          <NavLinks toggled={toggled} t={t} />
-        </TabletOrMobile>
+        <NavLinks toggled={toggled} t={t} />
       </nav>
     </header>
   );
