@@ -32,6 +32,7 @@ function loginRoute(logger) {
     finally {
       client.end();
     }
+    console.log('user being returned', user)
     res.status(200).json({ user });
   });
 

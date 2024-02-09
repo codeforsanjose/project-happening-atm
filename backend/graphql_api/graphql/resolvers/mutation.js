@@ -371,20 +371,22 @@ module.exports = (logger) => {
 
   module.createAccount = async (
     dbClient,
-    { email_address, password, phone_number, captcha_value },
+    argsPassed,
     context
   ) => {
     let res;
     let user;
+    const { email_address, password, phone_number, captcha_value } = argsPassed
+
     //Convert email to lowerCase
-    email_address = email_address.toLowerCase().trim();
+    const updated_email_address = email_address.toLowerCase().trim();
     if (context.token === null) {
-      const isAdmin = await authentication.verifyAdmin(dbClient, email_address); // local dev hack: change to true for admin user creation
-      const roles = isAdmin ? "{ADMIN}" : "{USER}";
+      const isAdmin = await authentication.verifyAdmin(dbClient, updated_email_address); // local dev hack: change to true for admin user creation
+      const roles = isAdmin ? ["{ADMIN}"] : ["{USER}"];
       const pd = await authentication.hashPassword(password);
       const token = authentication.randomToken();
       user = {
-        email_address: email_address,
+        email_address: updated_email_address,
         phone_number,
         roles,
         pd,
@@ -398,7 +400,7 @@ module.exports = (logger) => {
         user = await authentication.verifyGoogleToken(dbClient, context.token);
       }
       // Creating account for Microsoft Auth
-      if (issuer.startsWith("https://login.microsoftonline.com")) {
+      if (issuer && issuer.startsWith("https://login.microsoftonline.com")) {
         user = await authentication.verifyMicrosoftToken(
           dbClient,
           context.token
@@ -407,15 +409,30 @@ module.exports = (logger) => {
     }
     // Creating Account in DB
     try {
-      validator.validateCreateAccount(user);
+      validator.validateCreateAccount({
+        email_address: updated_email_address, phone_number
+      });
+
       // Looking to see if email already in use
-      const dbResponse = await dbClient.getAccountByEmail(email_address);
+      const dbResponse = await dbClient.getAccountByEmail(updated_email_address);
       if (dbResponse.rows.length > 0) {
         logger.error("Email already signed up. Please login.");
         throw new Error("Email already signed up. Please login.");
       } else {
+        const isAdmin = true//await authentication.verifyAdmin(dbClient, updated_email_address); // local dev hack: change to true for admin user creation
+        const roles = isAdmin ? ["{ADMIN}"] : ["{USER}"];
+        const pd = await authentication.hashPassword(password);
+        const token = authentication.randomToken();
+        user = {
+          email_address: updated_email_address,
+          phone_number,
+          roles,
+          pd,
+          auth_type: "Local",
+          token,
+        };
         res = await dbClient.createAccount(
-          email_address,
+          updated_email_address,
           user.phone_number,
           user.pd,
           user.roles,
@@ -445,7 +462,7 @@ module.exports = (logger) => {
       throw new Error(e);
     }
 
-    return { token: res, email: email_address };
+    return { token: res, email: updated_email_address };
   };
 
   module.forgotPassword = async (dbClient, { emailAddress }, context) => {

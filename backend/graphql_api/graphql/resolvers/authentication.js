@@ -141,7 +141,6 @@ module.exports = (logger) => {
     email_address = email_address.toLowerCase().trim();
     try {
       const dbUser = await dbClient.getAccountByEmail(email_address);
-      console.log("the returned user?", dbUser);
       if (dbUser.rows.length === 0) {
         logger.error("Email does not match our records please sign up");
         throw new Error("Email does not match our records please sign up");

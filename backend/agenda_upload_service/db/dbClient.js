@@ -215,8 +215,6 @@ module.exports = async (logger) => {
   };
 
   module.getAccountByEmail = async (email) => {
-    //logger.info("dbClient: getAccountByEmail");
-    console.log("ohhhhh hererere finally", email);
     return query(`SELECT * FROM account WHERE email_address = '${email}'`);
   };
 
