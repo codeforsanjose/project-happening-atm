@@ -1,6 +1,0 @@
-dependencies:
-- name: happeningatm
-  repository: file://../../charts/happeningatm
-  version: 0.0.1
-digest: sha256:a818f1be9e3742aa1316d69ae928930b850d9509f973bb348492fd0234abfc2b
-generated: "2023-07-24T05:45:50.469735-07:00"
