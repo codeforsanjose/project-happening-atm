@@ -1,5 +1,0 @@
-apiVersion: v2
-name: eimmigrate
-description: This Chart defines eimmigrate deployment
-type: library
-version: 0.0.1
