@@ -16,7 +16,7 @@ export function validatePhone(phone) {
     return REQUIRED_FIELD_ERROR;
   }
   const phoneDigits = getPhoneDigits(phone);
-  console.log('which one i get to?', phoneDigits)
+
   if (!phoneDigits.startsWith('1')) {
     return WRONG_COUNTRY_CODE;
   }

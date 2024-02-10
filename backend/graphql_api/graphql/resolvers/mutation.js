@@ -419,7 +419,7 @@ module.exports = (logger) => {
         logger.error("Email already signed up. Please login.");
         throw new Error("Email already signed up. Please login.");
       } else {
-        const isAdmin = true//await authentication.verifyAdmin(dbClient, updated_email_address); // local dev hack: change to true for admin user creation
+        const isAdmin = await authentication.verifyAdmin(dbClient, updated_email_address); // local dev hack: change to true for admin user creation
         const roles = isAdmin ? ["{ADMIN}"] : ["{USER}"];
         const pd = await authentication.hashPassword(password);
         const token = authentication.randomToken();

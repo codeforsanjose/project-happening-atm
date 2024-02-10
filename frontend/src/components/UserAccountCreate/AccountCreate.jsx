@@ -343,7 +343,7 @@ function AccountCreate() {
             disabled={Object.entries(fieldErrors || {}).length > 0}
             onClick={createAccountHandler}
           >
-            Sign Up!!!!
+            Sign Up
           </button>
         </div>
       </div>
