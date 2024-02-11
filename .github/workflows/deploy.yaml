@@ -41,10 +41,10 @@ jobs:
           cache: 'pip'
       - run: pip install -r .github/scripts/requirements.txt
       - name: deploy
-        run: >-
-          python -m .github/scripts/argocd_deploy
-            --application=happeningatm-${{ env.ENVIRONMENT }}
-            --docker_tag=$(git rev-parse HEAD)
+        run: |-
+          python .github/scripts/argocd_deploy.py \
+          --application=happeningatm-${{ env.ENVIRONMENT }} \
+          --docker_tag=$(git rev-parse HEAD)
         env:
           ARGO_CD_SERVER: ${{ secrets.ARGO_CD_SERVER }}
           ARGO_CD_USERNAME: ${{ secrets.ARGO_CD_USERNAME }}
