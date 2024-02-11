@@ -15,7 +15,7 @@ class ArgoCDeployer:
     def __init__(self, application: str, docker_tag: str) -> None:
         self.application = application or getenv('ARGO_CD_APPLICATION', environ['DEPLOYMENT'])
         self.docker_tag = docker_tag or environ['DOCKER_TAG']
-        self.image_tag_parameter = getenv('IMAGE_TAG_PARAMETER', 'image.tag=')
+        self.image_tag_parameter = getenv('IMAGE_TAG_PARAMETER', 'global.image.tag=')
         self.argo_cd_credentials = [
             f'--username={environ["ARGO_CD_USERNAME"]}',
             f'--password={environ["ARGO_CD_PASSWORD"]}',

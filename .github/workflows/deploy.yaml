@@ -49,4 +49,3 @@ jobs:
           ARGO_CD_SERVER: ${{ secrets.ARGO_CD_SERVER }}
           ARGO_CD_USERNAME: ${{ secrets.ARGO_CD_USERNAME }}
           ARGO_CD_PASSWORD: ${{ secrets.ARGO_CD_PASSWORD }}
-          IMAGE_TAG_PARAMETER: 'global.image.tag'
