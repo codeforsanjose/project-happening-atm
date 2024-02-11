@@ -1,13 +1,10 @@
 ---
 name: ci
-run-name: ci ${{ github.event_name}} ${{ github.ref_name }} by ${{ github.actor }}
+run-name: ci ${{ github.event_name}} ${{ github.ref_name }}
 on:
-  schedule:
-    - cron: '20 11 * * *'
   pull_request:
   push:
-    branches: ['develop']
-  workflow_dispatch:
+    branches: ['main']
 
 concurrency:
   group: ci-${{ github.head_ref || github.run_id }}
@@ -26,19 +23,17 @@ jobs:
       matrix:
         image: [frontend, backend, graphql]
     steps:
-      - uses: aws-actions/configure-aws-credentials@v3
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REFERENCE }}
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
           role-session-name: gha
           aws-region: us-west-2
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ env.REFERENCE }}
-      - uses: docker/setup-buildx-action@v2
-        with:
-          version: latest
+      - uses: docker/setup-buildx-action@v3
       - id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
         with:
           mask-password: 'true'
       - run: make build-${{ matrix.image }}
