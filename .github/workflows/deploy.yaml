@@ -1,15 +1,16 @@
 ---
 name: deploy
-run-name: ${{ github.event.inputs.env }} deploy ${{ github.ref_name }} ${{ github.event_name }} by ${{ github.actor }}
+run-name: ${{ github.event.inputs.env }} deploy ${{ github.ref_name }}
 on:
   workflow_dispatch:
     inputs:
       env:
         type: environment
+        description: 'ArgoCD Deployed environment'
       ref:
         description: 'Branch, Tag, or Full SHA'
         required: true
-        default: 'develop'
+        default: 'main'
 
 concurrency:
   group: ${{ github.event.inputs.env }}
@@ -26,15 +27,24 @@ jobs:
     env:
       ENVIRONMENT: ${{ github.event.inputs.env }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: aws-actions/configure-aws-credentials@v3
+      - uses: actions/checkout@v4
+      - uses: clowdhaus/argo-cd-action/@main
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
-          role-session-name: gha
-          aws-region: us-west-2
-      - id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+          version: 2.10.0
+          command: version
+          options: --client
+      - uses: actions/setup-python@v4
         with:
-          mask: 'true'
-      - run: make deploy
-      - run: make deploy-status
+          python-version-file: '.python-version'
+          cache: 'pip'
+      - run: pip install -r .github/scipts/requirements.txt
+      - name: deploy
+        run: >-
+          python -m .github/scripts/argocd_deploy
+            --application=happeningatm-${{ env.ENVIRONMENT }}
+            --docker_tag=$(git rev-parse HEAD)
+        env:
+          ARGO_CD_SERVER: ${{ secrets.ARGO_CD_SERVER }}
+          ARGO_CD_USERNAME: ${{ secrets.ARGO_CD_USERNAME }}
+          ARGO_CD_PASSWORD: ${{ secrets.ARGO_CD_PASSWORD }}
+          IMAGE_TAG_PARAMETER: 'global.image.tag'

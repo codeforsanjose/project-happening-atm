@@ -1,6 +1,6 @@
 ---
 name: ci
-run-name: ci ${{ github.event_name}} ${{ github.ref_name }}
+run-name: ci ${{ github.event_name }} ${{ github.ref_name }}
 on:
   pull_request:
   push:
