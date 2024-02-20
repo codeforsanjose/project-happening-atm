@@ -225,7 +225,7 @@ module.exports = (logger) => {
     typeDefs,
     resolvers,
     playground: {
-      endpoint: '/dev/agendapi',
+      endpoint: process.env.AGENDA_API_LINK_PLAYGROUND,
     },
     // Empty implementation for local and deployed dev use:
     // TODO: Auth needs to be refactored for AWS

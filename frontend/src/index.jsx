@@ -44,7 +44,7 @@ import verifyToken from "./utils/verifyToken";
 import "./i18n";
 
 const httpLink = new BatchHttpLink({
-  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql/`,
   batchMax: 100,
 });
 
