@@ -72,8 +72,6 @@ function SampleQuery() {
   // eslint-disable-next-line no-console
   if (error) console.log("THE Error: ", error);
 
-  // eslint-disable-next-line no-console
-  // console.log(data);
   return null;
 }
 
