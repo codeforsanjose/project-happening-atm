@@ -8,7 +8,6 @@ import {
   ApolloProvider,
   useQuery,
 } from "@apollo/client";
-
 import { setContext } from "@apollo/client/link/context";
 import "./index.scss";
 import classnames from "classnames";
@@ -63,6 +62,7 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+
 
 function SampleQuery() {
   const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
