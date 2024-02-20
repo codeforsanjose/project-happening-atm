@@ -10,7 +10,6 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import "./index.scss";
-
 import classnames from "classnames";
 import { useTranslation } from "react-i18next";
 import MeetingListView from "./components/MeetingListView/MeetingListView";
