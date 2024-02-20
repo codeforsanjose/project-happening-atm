@@ -224,6 +224,7 @@ module.exports = (logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: process.env.TURN_ON_INTROSPECTION,
     playground: {
       endpoint: process.env.AGENDA_API_LINK_PLAYGROUND,
     },
