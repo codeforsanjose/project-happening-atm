@@ -8,9 +8,9 @@ import {
   ApolloProvider,
   useQuery,
 } from "@apollo/client";
+
 import { setContext } from "@apollo/client/link/context";
 import "./index.scss";
-
 import classnames from "classnames";
 import { useTranslation } from "react-i18next";
 import MeetingListView from "./components/MeetingListView/MeetingListView";
@@ -35,8 +35,6 @@ import TermsOfUse from "./components/TermsOfUse/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import SendFeedback from "./components/SendFeedback/SendFeedback";
 import * as serviceWorker from "./serviceWorker";
-
-// import parseJwt from './utils/parseJwt.js';
 import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/query";
 import AdminPaths from "./constants/AdminPaths";
 import LocalStorageTerms from "./constants/LocalStorageTerms";
@@ -44,7 +42,7 @@ import verifyToken from "./utils/verifyToken";
 import "./i18n";
 
 const httpLink = new BatchHttpLink({
-  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
+  uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql/`,
   batchMax: 100,
 });
 
@@ -74,8 +72,6 @@ function SampleQuery() {
   // eslint-disable-next-line no-console
   if (error) console.log("THE Error: ", error);
 
-  // eslint-disable-next-line no-console
-  // console.log(data);
   return null;
 }
 

@@ -43,3 +43,6 @@ jobs:
           PUBLIC_URL: ${{ vars.PUBLIC_URL }}
           REACT_APP_JWT_ISSUER: ${{ secrets.REACT_APP_JWT_ISSUER }}
           REACT_APP_RECAPTCHAS_SITE_KEY: ${{ secrets.REACT_APP_RECAPTCHAS_SITE_KEY }}
+          REACT_APP_MICROSOFT_ID: ${{ secrets.REACT_APP_MICROSOFT_ID }}
+          REACT_APP_GOOGLE_ID: ${{ secrets.REACT_APP_GOOGLE_ID }}
+          MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}

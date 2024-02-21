@@ -18,9 +18,19 @@ FROM local as build
 LABEL org.opensourcesanjose.app="happening-atm"
 ARG PUBLIC_URL
 ARG REACT_APP_GRAPHQL_URL
-ARG REACT_APP_JWT_ISSUER
-ARG REACT_APP_RECAPTCHAS_SITE_KEY
-RUN npm run build
+RUN --mount=type=secret,id=REACT_APP_RECAPTCHAS_SITE_KEY \
+    --mount=type=secret,id=REACT_APP_JWT_ISSUER \
+    --mount=type=secret,id=REACT_APP_MICROSOFT_ID \
+    --mount=type=secret,id=REACT_APP_GOOGLE_ID \
+    --mount=type=secret,id=MICROSOFT_CLIENT_ID \
+    REACT_APP_RECAPTCHAS_SITE_KEY=$(cat /run/secrets/REACT_APP_RECAPTCHAS_SITE_KEY) \
+    REACT_APP_JWT_ISSUER=$(cat /run/secrets/REACT_APP_JWT_ISSUER) \
+    REACT_APP_MICROSOFT_ID=$(cat /run/secrets/REACT_APP_MICROSOFT_ID) \
+    REACT_APP_GOOGLE_ID=$(cat /run/secrets/REACT_APP_GOOGLE_ID) \
+    MICROSOFT_CLIENT_ID=$(cat /run/secrets/MICROSOFT_CLIENT_ID) \
+      npm run build
+
+
 
 FROM nginx as nginx-build
 LABEL org.opensourcesanjose.app="happening-atm"

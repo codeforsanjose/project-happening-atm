@@ -114,15 +114,15 @@ module.exports = (logger) => {
         );
       },
       loginLocal: async (_parent, args) => {
-        const loginLocalUserResult = await loginUser(
-          args.email_address,
-          args.password
-        );
+        // const loginLocalUserResult = await loginUser(
+        //   args.email_address,
+        //   args.password,
+        // );
         // create signed JWT to relay logged in user info in hashed token
-        let token = authentication.createJWT({ rows: [loginLocalUserResult] });
+        // let token = authentication.createJWT({ rows: [loginLocalUserResult] });
         logger.info('Initiating LoginLocal Query resolver');
-        //return await resolverHandler(queryResolver.loginLocal, args.email_address, args.password); // original loginLocal logic (prior to refactor)
-        return { token: token, email: loginLocalUserResult.email_address }; // mirrors return args from orig. loginLocal function in backend/graphql_api/graphql/resolvers/query.js
+        return await resolverHandler(queryResolver.loginLocal, args.email_address, args.password); // original loginLocal logic (prior to refactor)
+        // return { token: token, email: loginLocalUserResult.email_address }; // mirrors return args from orig. loginLocal function in backend/graphql_api/graphql/resolvers/query.js
       },
       loginGoogle: async (_parent, args, context) => {
         logger.info('Initiating LoginGoogle Query resolver');
@@ -224,8 +224,9 @@ module.exports = (logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: process.env.TURN_ON_INTROSPECTION,
     playground: {
-      endpoint: '/dev/agendapi',
+      endpoint: process.env.AGENDA_API_LINK_PLAYGROUND,
     },
     // Empty implementation for local and deployed dev use:
     // TODO: Auth needs to be refactored for AWS
