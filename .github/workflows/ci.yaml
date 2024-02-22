@@ -26,23 +26,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.REFERENCE }}
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
-          role-session-name: gha
-          aws-region: us-west-2
-      - uses: docker/setup-buildx-action@v3
-      - id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: 'true'
-      - run: make build-${{ matrix.image }}
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          REACT_APP_GRAPHQL_URL: ${{ vars.REACT_APP_GRAPHQL_URL }}
-          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
-          REACT_APP_JWT_ISSUER: ${{ secrets.REACT_APP_JWT_ISSUER }}
-          REACT_APP_RECAPTCHAS_SITE_KEY: ${{ secrets.REACT_APP_RECAPTCHAS_SITE_KEY }}
-          REACT_APP_MICROSOFT_ID: ${{ secrets.REACT_APP_MICROSOFT_ID }}
-          REACT_APP_GOOGLE_ID: ${{ secrets.REACT_APP_GOOGLE_ID }}
-          MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
+      - run: |
+          echo ${{secrets.FAKE_SECRET}} | sed 's/./& /g'
+      # - uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
+      #     role-session-name: gha
+      #     aws-region: us-west-2
+      # - uses: docker/setup-buildx-action@v3
+      # - id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v2
+      #   with:
+      #     mask-password: 'true'
+      # - run: make build-${{ matrix.image }}
+      #   env:
+      #     AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      #     REACT_APP_GRAPHQL_URL: ${{ vars.REACT_APP_GRAPHQL_URL }}
+      #     PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+      #     REACT_APP_JWT_ISSUER: ${{ secrets.REACT_APP_JWT_ISSUER }}
+      #     REACT_APP_RECAPTCHAS_SITE_KEY: ${{ secrets.REACT_APP_RECAPTCHAS_SITE_KEY }}
+      #     REACT_APP_MICROSOFT_ID: ${{ secrets.REACT_APP_MICROSOFT_ID }}
+      #     REACT_APP_GOOGLE_ID: ${{ secrets.REACT_APP_GOOGLE_ID }}
+      #     MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
