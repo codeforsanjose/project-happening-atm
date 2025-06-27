@@ -1,81 +1,80 @@
----
-version: "3.9"
 services:
-    postgres:
-        image: docker.io/library/postgres:13.10-alpine
-        # this is for debugging; graphql connects to PG via internal docker network
-        ports:
-            - "5431:5432"
-        environment:
-            POSTGRES_USER: happening-username
-            POSTGRES_PASSWORD: happening-password
-            POSTGRES_DB: happening-db-name
-        volumes:
-            - postgres-data:/var/lib/postgresql
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U happening-username -d happening-db-name"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
-        networks:
-            default:
-                aliases:
-                    - happening-db-host
-        labels:
-            org.codeforsanjose.app: happening-atm
+  postgres:
+    image: docker.io/library/postgres:13.10-alpine
+    # this is for debugging; graphql connects to PG via internal docker network
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: happening-username
+      POSTGRES_PASSWORD: happening-password
+      POSTGRES_DB: happening-db-name
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U happening-username -d happening-db-name"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      default:
+        aliases:
+          - happening-db-host
+    labels:
+      org.codeforsanjose.app: happening-atm
 
-    graphql:
-        build:
-            dockerfile: docker/graphql/Dockerfile
-        image: happening-atm-graphql:latest
-        ports:
-            - "3000:3000"
-        volumes:
-            - "./backend/graphql_api:/usr/src/app"
-            - /usr/src/app/node_modules
-        env_file: ./docker/graphql/.env
-        depends_on:
-            postgres:
-                condition: service_healthy
-        labels:
-            org.codeforsanjose.app: happening-atm
+  graphql:
+    build:
+      dockerfile: docker/graphql/Dockerfile
+    image: happening-atm-graphql:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./backend/graphql_api:/usr/src/app"
+      - /usr/src/app/node_modules
+    env_file: ./docker/graphql/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      org.codeforsanjose.app: happening-atm
 
-    backend:
-        build:
-            dockerfile: docker/backend/Dockerfile
-        image: happening-atm-backend:latest
-        ports:
-            - "3002:3002"
-        volumes:
-            - "./backend/agenda_upload_service:/usr/src/app"
-            - /usr/src/app/node_modules
-        env_file: ./docker/backend/.env
-        depends_on:
-            postgres:
-                condition: service_healthy
-        labels:
-            org.codeforsanjose.app: happening-atm
+  backend:
+    build:
+      dockerfile: docker/backend/Dockerfile
+    image: happening-atm-backend:latest
+    ports:
+      - "3002:3002"
+    volumes:
+      - "./backend/agenda_upload_service:/usr/src/app"
+      - /usr/src/app/node_modules
+    env_file: ./docker/backend/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      org.codeforsanjose.app: happening-atm
 
-    frontend:
-        # node-sass 4* needs node version 14
-        build:
-            dockerfile: docker/frontend/Dockerfile
-            target: dev
-        image: happening-atm-frontend:latest
-        ports:
-            - "3001:3000"
-        volumes:
-            - "./frontend:/usr/src/app"
-            - /usr/src/app/node_modules
-        stdin_open: true
-        env_file: ./docker/frontend/.env
-        depends_on:
-            postgres:
-                condition: service_healthy
-        labels:
-            org.codeforsanjose.app: happening-atm
+  frontend:
+    # node-sass 4* needs node version 14
+    build:
+      dockerfile: docker/frontend/Dockerfile
+      target: dev
+    image: happening-atm-frontend:latest
+    ports:
+      - "3001:3000"
+    volumes:
+      - "./frontend:/usr/src/app"
+      - /usr/src/app/node_modules
+    stdin_open: true
+    env_file: ./docker/frontend/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      org.codeforsanjose.app: happening-atm
 
 volumes:
-    postgres-data:
-        labels:
-            org.codeforsanjose.app: happening-atm
+  postgres-data:
+    labels:
+      org.codeforsanjose.app: happening-atm

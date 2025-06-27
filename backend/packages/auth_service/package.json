@@ -1,5 +1,5 @@
 {
-  "name": "gov-agenda-notifier",
+  "name": "auth-service",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
