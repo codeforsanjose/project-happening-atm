@@ -6,8 +6,18 @@ const { UserInputError, ForbiddenError } = require('apollo-server');
 
 // TODO: We might want to have these set up in a config file for easy modification
 // JYIP: Need to filter to latest statuses per MVP designs
-const possibleStatuses = ['UPCOMING', 'NOT STARTED', 'PENDING', 'IN PROGRESS', 
-  'IN RECESS', 'COMPLETED', 'DEFERRED', 'ON HOLD', 'CANCELLED', 'ENDED',];
+const possibleStatuses = [
+  'UPCOMING',
+  'NOT STARTED',
+  'PENDING',
+  'IN PROGRESS',
+  'IN RECESS',
+  'COMPLETED',
+  'DEFERRED',
+  'ON HOLD',
+  'CANCELLED',
+  'ENDED',
+];
 const possibleTypes = ['test'];
 const possibleContentCategories = ['test', 'gov', 'tech', 'lol'];
 
@@ -53,7 +63,7 @@ module.exports = (logger) => {
   const isNumericString = (string) => /^\d+$/.test(string);
 
   const validateTimestamp = (ts, fieldName, context) => {
-    if(ts != '0'){
+    if (ts !== '0') {
       const tsIsNumeric = isNumericString(ts);
       if (!tsIsNumeric) {
         const msg = `Invalid "${fieldName}" field. Timestamp is not numeric: ${ts}`;
@@ -80,12 +90,15 @@ module.exports = (logger) => {
 
   const validateURL = (url, fieldName, context) => {
     // Taken from: https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
-    const pattern = new RegExp('^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-      + '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i',
+    ); // fragment locator
     const isvalidURL = pattern.test(url);
 
     if (!isvalidURL) {
@@ -96,7 +109,8 @@ module.exports = (logger) => {
 
   const isValidEmailString = (email) => {
     // Taken from: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
@@ -128,7 +142,9 @@ module.exports = (logger) => {
     const isAdmin = context.user.roles.includes('ADMIN');
 
     if (!isAdmin) {
-      logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without admin credentials`);
+      logger.debug(
+        `${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without admin credentials`,
+      );
       throw new ForbiddenError('No admin credentials provided.');
     }
   };
@@ -138,7 +154,9 @@ module.exports = (logger) => {
     const roles = ['USER', 'ADMIN'];
     const isUser = context.user.roles.some((role) => roles.includes(role));
     if (!isUser) {
-      logger.debug(`${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without user credentials`);
+      logger.debug(
+        `${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without user credentials`,
+      );
       throw new ForbiddenError('No user credentials provided. Please log in.');
     }
   };
@@ -146,16 +164,16 @@ module.exports = (logger) => {
   module.validateAuthType = (authType, loginMethod) => {
     const isMatch = authType === loginMethod;
     if (!isMatch) {
-      logger.debug(`Incorrect login type: User auth type is ${authType} and tried to login with ${loginMethod} type.`);
+      logger.debug(
+        `Incorrect login type: User auth type is ${authType} and tried to login with ${loginMethod} type.`,
+      );
       throw new ForbiddenError('Incorrect authentication type');
     }
   };
 
   module.validateCreateMeeting = (args) => {
     const context = 'validateCreateMeeting';
-    const {
-      status, meeting_start_timestamp, virtual_meeting_url, meeting_type,
-    } = args;
+    const { meeting_start_timestamp } = args;
 
     validateFutureTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
   };
@@ -163,13 +181,19 @@ module.exports = (logger) => {
   module.validateUpdateMeeting = (args) => {
     const context = 'validateUpdateMeeting';
     const {
-      status, meeting_start_timestamp, meeting_end_timestamp, virtual_meeting_url, meeting_type,
+      status,
+      meeting_start_timestamp,
+      meeting_end_timestamp,
+      virtual_meeting_url,
+      meeting_type,
     } = args;
 
     // No need to validate ID here because the graphQL schema takes care of it well enough
 
-    if (meeting_start_timestamp) validateTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
-    if (meeting_end_timestamp) validateTimestamp(meeting_end_timestamp, 'meeting_end_timestamp', context);
+    if (meeting_start_timestamp)
+      validateTimestamp(meeting_start_timestamp, 'meeting_start_timestamp', context);
+    if (meeting_end_timestamp)
+      validateTimestamp(meeting_end_timestamp, 'meeting_end_timestamp', context);
     if (virtual_meeting_url) validateURL(virtual_meeting_url, 'virtual_meeting_url', context);
     if (meeting_type) validateType(meeting_type, 'meeting_type', context);
     if (status) validateStatus(status, 'status', context);
@@ -184,7 +208,10 @@ module.exports = (logger) => {
     // to anything - additional validation is not required for them yet
 
     const {
-      item_start_timestamp, item_end_timestamp, status, content_categories,
+      item_start_timestamp,
+      item_end_timestamp,
+      status,
+      content_categories,
       // description_loc_key, title_loc_key,
     } = args;
 
@@ -203,7 +230,10 @@ module.exports = (logger) => {
     // to anything - additional validation is not required for them yet
 
     const {
-      item_start_timestamp, item_end_timestamp, status, content_categories,
+      item_start_timestamp,
+      item_end_timestamp,
+      status,
+      content_categories,
       // description_loc_key, title_loc_key,
     } = args;
 
@@ -216,9 +246,7 @@ module.exports = (logger) => {
   module.validateCreateSubscriptions = (args) => {
     const context = 'createSubscriptions';
 
-    const {
-      phone_number, email_address,
-    } = args;
+    const { phone_number, email_address } = args;
 
     // Check that at least one method is specified.
     if (phone_number === '' && email_address === '') {
@@ -238,22 +266,24 @@ module.exports = (logger) => {
     const { email_address, phone_number } = args;
 
     validateEmail(email_address, 'email_address', context);
-    if (phone_number && phone_number.length > 0) validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+    if (phone_number && phone_number.length > 0)
+      validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
   };
 
   module.validateUpdateEmail = (args) => {
-    const context = 'updateEmail'
+    const context = 'updateEmail';
     const { email_address } = args;
 
     validateEmail(email_address, 'email_address', context);
-  }
+  };
 
   module.validateUpdatePhoneNumber = (args) => {
-    const context = 'updatePhoneNumber'
+    const context = 'updatePhoneNumber';
     const { phone_number } = args;
 
-    if (phone_number && phone_number.length > 0) validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
-  }
+    if (phone_number && phone_number.length > 0)
+      validateTwilioSafePhoneNumber(phone_number, 'phone_number', context);
+  };
 
   return module;
 };

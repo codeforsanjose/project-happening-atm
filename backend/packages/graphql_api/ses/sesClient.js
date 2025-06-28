@@ -12,8 +12,8 @@ module.exports = (logger) => {
     region: process.env.AWS_DEFAULT_REGION,
   });
 
-  const sendEmail = (recipientEmailAddress, body, subject) => {
-    subject = subject || body;
+  const sendEmail = (recipientEmailAddress, body, subjectMaybe) => {
+    const subject = subjectMaybe || body;
 
     logger.info(`Sending email to ${recipientEmailAddress} with subject: ${subject} body: ${body}`);
 

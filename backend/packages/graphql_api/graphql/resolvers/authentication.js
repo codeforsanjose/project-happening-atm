@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 module.exports = (logger) => {
   const module = {};
@@ -28,7 +28,7 @@ module.exports = (logger) => {
 
   // Used for subscriber email verification and password reset random token strings.
   const randomToken = () => {
-    const token = crypto.randomBytes(20).toString("hex");
+    const token = crypto.randomBytes(20).toString('hex');
     return token;
   };
 
@@ -44,7 +44,7 @@ module.exports = (logger) => {
       phone_number: user.rows[0].phone_number, // add phone # for text notifications
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: '1h',
     });
     return token;
   };
@@ -55,12 +55,12 @@ module.exports = (logger) => {
       const payload = jwt.decode(token);
       const { email, email_verified, given_name, family_name, exp } = payload;
       if (!email_verified) {
-        logger.error("Google account email is not verified");
-        throw new Error("Google account email is not verified");
+        logger.error('Google account email is not verified');
+        throw new Error('Google account email is not verified');
       }
       if (exp < new Date().getTime() / 1000) {
-        logger.error("Google Id Token is Expired");
-        throw new Error("Google Id Token is Expired");
+        logger.error('Google Id Token is Expired');
+        throw new Error('Google Id Token is Expired');
       }
       // Check if user in database
       const dbUser = await dbClient.getAccountByEmail(email);
@@ -70,7 +70,7 @@ module.exports = (logger) => {
       } else {
         // Verify if admin email in admin whitelist
         const isAdmin = await verifyAdmin(dbClient, email);
-        const roles = isAdmin ? "{ADMIN}" : "{USER}";
+        const roles = isAdmin ? '{ADMIN}' : '{USER}';
         const token = await randomToken();
         user = {
           first_name: given_name,
@@ -78,7 +78,7 @@ module.exports = (logger) => {
           email_address: email,
           roles,
           password: null,
-          auth_type: "Google",
+          auth_type: 'Google',
           token,
         };
       }
@@ -94,19 +94,17 @@ module.exports = (logger) => {
 
     try {
       const payload = jwt.decode(token);
-      let { email, preferred_username, name, exp } = payload;
+      let { email } = payload;
+      const { preferred_username, name, exp } = payload;
       // Microsoft Accounts don't require a personal name
-      //this assigns default first and last name in that case
-      const [first_name, last_name] = name.split(" ") || [
-        "First Name",
-        "Last Name",
-      ];
+      // this assigns default first and last name in that case
+      const [first_name, last_name] = name.split(' ') || ['First Name', 'Last Name'];
       // Email sometimes as preferred_username
       email = email || preferred_username;
       // TODO: Need to find way to verify email
       if (exp < new Date().getTime() / 1000) {
-        logger.error("Microsoft Id Token is Expired");
-        throw new Error("Microsoft Id Token is Expired");
+        logger.error('Microsoft Id Token is Expired');
+        throw new Error('Microsoft Id Token is Expired');
       }
       // Check if user in database
       const dbUser = await dbClient.getAccountByEmail(email);
@@ -116,7 +114,7 @@ module.exports = (logger) => {
       } else {
         // Verify if admin email in admin whitelist
         const isAdmin = await verifyAdmin(dbClient, email);
-        const roles = isAdmin ? "{ADMIN}" : "{USER}";
+        const roles = isAdmin ? '{ADMIN}' : '{USER}';
         const token = randomToken();
         user = {
           first_name,
@@ -124,7 +122,7 @@ module.exports = (logger) => {
           email_address: email,
           roles,
           password: null,
-          auth_type: "Microsoft",
+          auth_type: 'Microsoft',
           token,
         };
       }
@@ -137,23 +135,23 @@ module.exports = (logger) => {
 
   const verifyEmailPassword = async (dbClient, email_address, password) => {
     let user;
-    //Convert email to lowerCase
-    email_address = email_address.toLowerCase().trim();
+    // Convert email to lowerCase
+    const formattedEmail = email_address.toLowerCase().trim();
     try {
-      const dbUser = await dbClient.getAccountByEmail(email_address);
+      const dbUser = await dbClient.getAccountByEmail(formattedEmail);
       if (dbUser.rows.length === 0) {
-        logger.error("Email does not match our records please sign up");
-        throw new Error("Email does not match our records please sign up");
+        logger.error('Email does not match our records please sign up');
+        throw new Error('Email does not match our records please sign up');
       }
       const dbPassword = dbUser.rows[0].password;
       if (!dbPassword) {
-        logger.error("Sign in with your Google or Microsoft account");
-        throw new Error("Sign in with your Google or Microsoft account");
+        logger.error('Sign in with your Google or Microsoft account');
+        throw new Error('Sign in with your Google or Microsoft account');
       }
       const isAuthenticated = await comparePassword(password, dbPassword);
       if (!isAuthenticated) {
-        logger.error("Email and Password do not match");
-        throw new Error("Email and Password do not match");
+        logger.error('Email and Password do not match');
+        throw new Error('Email and Password do not match');
       }
       user = dbUser;
     } catch (e) {
@@ -165,7 +163,7 @@ module.exports = (logger) => {
 
   const getToken = (authHeaders) => {
     // Splitting bearer off authentication header
-    const token = authHeaders.split(" ")[1];
+    const token = authHeaders.split(' ')[1];
     const context = {};
     try {
       const issuer = identifyTokenIssuer(token);

@@ -14,12 +14,16 @@ opts.secretOrKey = process.env.JWT_SECRET;
 
 passport.use(new JwtStrategy(opts, (jwtPayload, done) => done(null, jwtPayload.data)));
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.OAUTH_CLIENT_ID,
-  clientSecret: process.env.OAUTH_CLIENT_SECRET,
-  callbackURL: process.env.OAUTH_CALLBACK_URL,
-},
-(accessToken, refreshToken, profile, done) => done(null, profile)));
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.OAUTH_CLIENT_ID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      callbackURL: process.env.OAUTH_CALLBACK_URL,
+    },
+    (accessToken, refreshToken, profile, done) => done(null, profile),
+  ),
+);
 
 passport.serializeUser((user, done) => {
   /*

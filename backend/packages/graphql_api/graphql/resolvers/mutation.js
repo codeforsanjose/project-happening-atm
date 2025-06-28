@@ -1,13 +1,14 @@
 // TODO: error handling and data validation is required here
 // ex: verify that ids exist in related tables, undefined
 // values should be passed as empty strings, etc...
-const getSubscriptionController = require("../../controllers/subscriptionsController");
-const getValidator = require("./validators");
-const getAuthentication = require("./authentication");
-const getsesClient = require("../../ses/sesClient");
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const getSubscriptionController = require('../../controllers/subscriptionsController');
+const getValidator = require('./validators');
+const getAuthentication = require('./authentication');
+const getsesClient = require('../../ses/sesClient');
+
 const JWTSecret = process.env.JWT_SECRET;
-const CLIENT_URL = process.env.CLIENT_URL;
+const { CLIENT_URL } = process.env;
 
 module.exports = (logger) => {
   const subscriptionController = getSubscriptionController(logger);
@@ -21,9 +22,7 @@ module.exports = (logger) => {
     try {
       await dbClient.toogleConfirmByToken(args.token, true);
     } catch (e) {
-      logger.error(
-        `createMeeting resolver error - dbClient.createMeeting: ${e}`
-      );
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
       throw e;
     }
 
@@ -34,9 +33,7 @@ module.exports = (logger) => {
     try {
       await dbClient.toogleConfirmByToken(args.token, false);
     } catch (e) {
-      logger.error(
-        `createMeeting resolver error - dbClient.createMeeting: ${e}`
-      );
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
       throw e;
     }
 
@@ -44,9 +41,8 @@ module.exports = (logger) => {
   };
 
   module.updateEmail = async (dbClient, args) => {
-    let res;
     try {
-      res = await dbClient.updateEmail(args.id, args.email_address);
+      await dbClient.updateEmail(args.id, args.email_address);
     } catch (e) {
       logger.error(`updateEmail resolver error - dbClient.updateEmail: ${e}`);
       throw e;
@@ -54,13 +50,10 @@ module.exports = (logger) => {
   };
 
   module.updatePhoneNumber = async (dbClient, args) => {
-    let res;
     try {
-      res = await dbClient.updatePhoneNumber(args.id, args.phone_number);
+      await dbClient.updatePhoneNumber(args.id, args.phone_number);
     } catch (e) {
-      logger.error(
-        `updatePhoneNumber resolver error - dbClient.updatePhoneNumber: ${e}`
-      );
+      logger.error(`updatePhoneNumber resolver error - dbClient.updatePhoneNumber: ${e}`);
       throw e;
     }
   };
@@ -83,12 +76,10 @@ module.exports = (logger) => {
         args.eComment,
         args.city_of_san_jose_meeting,
         args.agenda_pdf_link,
-        args.youtube_link
+        args.youtube_link,
       );
     } catch (e) {
-      logger.error(
-        `createMeeting resolver error - dbClient.createMeeting: ${e}`
-      );
+      logger.error(`createMeeting resolver error - dbClient.createMeeting: ${e}`);
       throw e;
     }
 
@@ -97,25 +88,19 @@ module.exports = (logger) => {
       try {
         res = await dbClient.getMeeting(newId);
       } catch (e) {
-        logger.error(
-          `createMeeting resolver error - dbClient.getMeeting: ${e}`
-        );
+        logger.error(`createMeeting resolver error - dbClient.getMeeting: ${e}`);
         throw e;
       }
     } else {
-      logger.error(
-        "createMeeting resolver error - dbClient.createMeeting response is null"
-      );
-      throw Error("Internal Error");
+      logger.error('createMeeting resolver error - dbClient.createMeeting response is null');
+      throw Error('Internal Error');
     }
 
     if (res != null) {
       return res.rows[0];
     }
-    logger.error(
-      "createMeeting resolver error - dbClient.getMeeting response is null"
-    );
-    throw Error("Internal Error");
+    logger.error('createMeeting resolver error - dbClient.getMeeting response is null');
+    throw Error('Internal Error');
   };
 
   module.createMeetingItem = async (dbClient, args, context) => {
@@ -133,12 +118,10 @@ module.exports = (logger) => {
         args.content_categories,
         args.description_loc_key,
         args.title_loc_key,
-        args.parent_meeting_item_id
+        args.parent_meeting_item_id,
       );
     } catch (e) {
-      logger.error(
-        `createMeetingItem resolver error - dbClient.createMeetingItem: ${e}`
-      );
+      logger.error(`createMeetingItem resolver error - dbClient.createMeetingItem: ${e}`);
       throw e;
     }
     const newId = res.rows[0].id;
@@ -146,9 +129,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItem(newId);
     } catch (e) {
-      logger.error(
-        `createMeetingItem resolver error - dbClient.getMeetingItem: ${e}`
-      );
+      logger.error(`createMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
       throw e;
     }
     return res.rows[0];
@@ -163,12 +144,10 @@ module.exports = (logger) => {
       res = await dbClient.createSubscriptions(
         args.phone_number,
         args.email_address,
-        args.meetings
+        args.meetings,
       );
     } catch (e) {
-      logger.error(
-        `createSubscriptions resolver error - dbClient.createSubscriptions: ${e}`
-      );
+      logger.error(`createSubscriptions resolver error - dbClient.createSubscriptions: ${e}`);
       throw e;
     }
 
@@ -180,9 +159,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscription(ids);
     } catch (e) {
-      logger.error(
-        `createSubscriptions resolver error - dbClient.getSubscriptions: ${e}`
-      );
+      logger.error(`createSubscriptions resolver error - dbClient.getSubscriptions: ${e}`);
       throw e;
     }
     return res.rows;
@@ -190,18 +167,15 @@ module.exports = (logger) => {
 
   module.deleteSubscription = async (dbClient, args, context) => {
     validator.validateUser(context);
-    let res;
     try {
-      res = await dbClient.deleteSubscription(
+      await dbClient.deleteSubscription(
         args.phone_number,
         args.email_address,
         args.meeting_id,
-        args.meeting_item_id
+        args.meeting_item_id,
       );
     } catch (e) {
-      logger.error(
-        `deleteSubscription resolver error -dbClient.deleteSubscription: ${e}`
-      );
+      logger.error(`deleteSubscription resolver error -dbClient.deleteSubscription: ${e}`);
       throw e;
     }
     return true;
@@ -222,12 +196,10 @@ module.exports = (logger) => {
         args.content_categories,
         args.description_loc_key,
         args.title_loc_key,
-        args.parent_meeting_item_id
+        args.parent_meeting_item_id,
       );
     } catch (e) {
-      logger.error(
-        `updateMeetingItem resolver error - dbClient.updateMeetingItem: ${e}`
-      );
+      logger.error(`updateMeetingItem resolver error - dbClient.updateMeetingItem: ${e}`);
       throw e;
     }
 
@@ -236,33 +208,31 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItem(args.id);
     } catch (e) {
-      logger.error(
-        `updateMeetingItem resolver error - dbClient.getMeetingItem: ${e}`
-      );
+      logger.error(`updateMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
       throw e;
     }
     const meetingItem = res.rows[0];
 
     // TODO: Validation required: only send notifications if update was successful
     switch (args.status) {
-      case "COMPLETED":
+      case 'COMPLETED':
         try {
           await subscriptionController.notifyItemSubscribers(
             dbClient,
             args.id,
-            "ITEM(S) COMPLETED: "
+            'ITEM(S) COMPLETED: ',
           );
         } catch (e) {
           logger.error(`Error notifying item subscribers: ${e}`);
         }
         break;
 
-      case "IN PROGRESS":
+      case 'IN PROGRESS':
         try {
           await subscriptionController.notifyItemSubscribers(
             dbClient,
             args.id,
-            "ITEM(S) IN PROGRESS: "
+            'ITEM(S) IN PROGRESS: ',
           );
         } catch (e) {
           logger.error(`Error notifying item subscribers: ${e}`);
@@ -271,7 +241,7 @@ module.exports = (logger) => {
           await subscriptionController.notifyNextItemSubscribers(
             dbClient,
             meetingItem,
-            "YOUR ITEM(S) IS/ARE UP NEXT: "
+            'YOUR ITEM(S) IS/ARE UP NEXT: ',
           );
         } catch (e) {
           logger.error(`Error notifying "next" item subscribers: ${e}`);
@@ -303,41 +273,39 @@ module.exports = (logger) => {
         args.email_during_meeting,
         args.eComment,
         args.city_of_san_jose_meeting,
-        args.youtube_link
+        args.youtube_link,
       );
     } catch (e) {
-      logger.error(
-        `updateMeeting resolver error - dbClient.updateMeeting: ${e}`
-      );
+      logger.error(`updateMeeting resolver error - dbClient.updateMeeting: ${e}`);
       throw e;
     }
 
     // TODO: Validation required: only send notifications if update was successful
     switch (args.status) {
-      case "COMPLETED":
+      case 'COMPLETED':
         try {
           await subscriptionController.notifyMeetingSubscribers(
             dbClient,
             args.id,
-            "MEETING COMPLETE: "
+            'MEETING COMPLETE: ',
           );
         } catch (e) {
           logger.error(
-            `updateMeeting resolver error - subscriptionController.notifyMeetingSubscribers: ${e}`
+            `updateMeeting resolver error - subscriptionController.notifyMeetingSubscribers: ${e}`,
           );
           throw e;
         }
         break;
-      case "IN PROGRESS":
+      case 'IN PROGRESS':
         try {
           await subscriptionController.notifyMeetingSubscribers(
             dbClient,
             args.id,
-            "MEETING IN PROGRESS: "
+            'MEETING IN PROGRESS: ',
           );
         } catch (e) {
           logger.error(
-            `updateMeeting resolver error - subscriptionController.notifyMeetingSubscribers: ${e}`
+            `updateMeeting resolver error - subscriptionController.notifyMeetingSubscribers: ${e}`,
           );
           throw e;
         }
@@ -361,28 +329,22 @@ module.exports = (logger) => {
     try {
       await dbClient.deleteMeeting(args.id);
     } catch (e) {
-      logger.error(
-        `deleteMeeting resolver error - dbClient.deleteMeeting: ${e}`
-      );
+      logger.error(`deleteMeeting resolver error - dbClient.deleteMeeting: ${e}`);
       throw e;
     }
     return true;
   };
 
-  module.createAccount = async (
-    dbClient,
-    argsPassed,
-    context
-  ) => {
+  module.createAccount = async (dbClient, argsPassed, context) => {
     let res;
     let user;
-    const { email_address, password, phone_number, captcha_value } = argsPassed
+    const { email_address, password, phone_number } = argsPassed;
 
-    //Convert email to lowerCase
+    // Convert email to lowerCase
     const updated_email_address = email_address.toLowerCase().trim();
     if (context.token === null) {
       const isAdmin = await authentication.verifyAdmin(dbClient, updated_email_address); // local dev hack: change to true for admin user creation
-      const roles = isAdmin ? ["{ADMIN}"] : ["{USER}"];
+      const roles = isAdmin ? ['{ADMIN}'] : ['{USER}'];
       const pd = await authentication.hashPassword(password);
       const token = authentication.randomToken();
       user = {
@@ -390,37 +352,35 @@ module.exports = (logger) => {
         phone_number,
         roles,
         pd,
-        auth_type: "Local",
+        auth_type: 'Local',
         token,
       };
     } else {
       const issuer = await authentication.identifyTokenIssuer(context.token);
       // Creating account for Google Auth
-      if (issuer === "accounts.google.com") {
+      if (issuer === 'accounts.google.com') {
         user = await authentication.verifyGoogleToken(dbClient, context.token);
       }
       // Creating account for Microsoft Auth
-      if (issuer && issuer.startsWith("https://login.microsoftonline.com")) {
-        user = await authentication.verifyMicrosoftToken(
-          dbClient,
-          context.token
-        );
+      if (issuer && issuer.startsWith('https://login.microsoftonline.com')) {
+        user = await authentication.verifyMicrosoftToken(dbClient, context.token);
       }
     }
     // Creating Account in DB
     try {
       validator.validateCreateAccount({
-        email_address: updated_email_address, phone_number
+        email_address: updated_email_address,
+        phone_number,
       });
 
       // Looking to see if email already in use
       const dbResponse = await dbClient.getAccountByEmail(updated_email_address);
       if (dbResponse.rows.length > 0) {
-        logger.error("Email already signed up. Please login.");
-        throw new Error("Email already signed up. Please login.");
+        logger.error('Email already signed up. Please login.');
+        throw new Error('Email already signed up. Please login.');
       } else {
         const isAdmin = await authentication.verifyAdmin(dbClient, updated_email_address); // local dev hack: change to true for admin user creation
-        const roles = isAdmin ? ["{ADMIN}"] : ["{USER}"];
+        const roles = isAdmin ? ['{ADMIN}'] : ['{USER}'];
         const pd = await authentication.hashPassword(password);
         const token = authentication.randomToken();
         user = {
@@ -428,7 +388,7 @@ module.exports = (logger) => {
           phone_number,
           roles,
           pd,
-          auth_type: "Local",
+          auth_type: 'Local',
           token,
         };
         res = await dbClient.createAccount(
@@ -437,13 +397,11 @@ module.exports = (logger) => {
           user.pd,
           user.roles,
           user.auth_type,
-          user.token
+          user.token,
         );
       }
     } catch (e) {
-      logger.error(
-        `createAccount resolver error - dbClient.createAccount: ${e}`
-      );
+      logger.error(`createAccount resolver error - dbClient.createAccount: ${e}`);
       throw new Error(e);
     }
 
@@ -451,51 +409,43 @@ module.exports = (logger) => {
     try {
       const dbUser = await dbClient.getAccountById(res.rows[0].id);
       res = authentication.createJWT(dbUser);
-      sesClient.sendConfirmEmail(
-        dbUser.rows[0].email_address,
-        dbUser.rows[0].token
-      );
+      sesClient.sendConfirmEmail(dbUser.rows[0].email_address, dbUser.rows[0].token);
     } catch (e) {
-      logger.error(
-        `createAccount resolver error - dbClient.createAccount ${e}`
-      );
+      logger.error(`createAccount resolver error - dbClient.createAccount ${e}`);
       throw new Error(e);
     }
 
     return { token: res, email: updated_email_address };
   };
 
-  module.forgotPassword = async (dbClient, { emailAddress }, context) => {
-    //Convert email to lowerCase
-    emailAddress = emailAddress.toLowerCase().trim();
-    logger.info(
-      `Backend: Inside forgotPassword mutation resolver ${emailAddress}`
-    );
+  module.forgotPassword = async (dbClient, { emailAddress }) => {
+    // Convert email to lowerCase
+    const formattedEmail = emailAddress.toLowerCase().trim();
+    logger.info(`Backend: Inside forgotPassword mutation resolver ${formattedEmail}`);
     try {
       // Verify if user exists in the system.
-      const dbResponse = await dbClient.getAccountByEmail(emailAddress);
-      if (dbResponse.rows.length == 0) {
-        logger.error("This user is not registered in our system.");
-        throw new Error("This user is not registered in our system.");
+      const dbResponse = await dbClient.getAccountByEmail(formattedEmail);
+      if (dbResponse.rows.length === 0) {
+        logger.error('This user is not registered in our system.');
+        throw new Error('This user is not registered in our system.');
       }
-      const password = dbResponse.rows[0].password;
-      const id = dbResponse.rows[0].id;
+      // const { password } = dbResponse.rows[0];
+      const { id } = dbResponse.rows[0];
 
       // Step 1: Create a jwt token with expiry time
-      const token = jwt.sign({ _id: id }, JWTSecret, { expiresIn: "20m" });
+      const token = jwt.sign({ _id: id }, JWTSecret, { expiresIn: '20m' });
 
       /* Step 2: Call DB Client.
-          Update account table for that accountID, set password_reset_token to token       
+          Update account table for that accountID, set password_reset_token to token
       */
-      const dbUpdateResponse =
-        await dbClient.updatePasswordResetTokenForAccount(id, token);
+      // const dbUpdateResponse = await dbClient.updatePasswordResetTokenForAccount(id, token);
 
       // Step 3: Generate password reset link.
       const link = `${CLIENT_URL}/reset-password?token=${token}`;
       logger.info(`Backend: Reset Password Link: ${link}`);
 
       // Step 4: Call Send email
-      sesClient.sendForgotPasswordEmail(emailAddress, link);
+      sesClient.sendForgotPasswordEmail(formattedEmail, link);
       return link;
     } catch (e) {
       logger.error(`forgotPassword mutation resolver error -  ${e}`);
@@ -503,7 +453,7 @@ module.exports = (logger) => {
     }
   };
 
-  module.resetPassword = async (dbClient, { id, password }, context) => {
+  module.resetPassword = async (dbClient, { id, password }) => {
     logger.info(`Backend: Inside resetPassword mutation resolver for id ${id}`);
     const pd = await authentication.hashPassword(password);
     let res;
@@ -517,26 +467,17 @@ module.exports = (logger) => {
       throw new Error(e);
     }
   };
-  module.updatePassword = async (
-    dbClient,
-    { currentPassword, newPassword },
-    context
-  ) => {
-    //Validate user, to ensure authentication
+  module.updatePassword = async (dbClient, { currentPassword, newPassword }, context) => {
+    // Validate user, to ensure authentication
     validator.validateUser(context);
     const id = context.user.sub;
-    logger.info(
-      `Backend: Inside updatePassword mutation resolver for id ${id}`
-    );
+    logger.info(`Backend: Inside updatePassword mutation resolver for id ${id}`);
     const res = await dbClient.getAccountById(id);
     const { password } = res.rows[0];
-    const passwordMatched = await authentication.comparePassword(
-      currentPassword,
-      password
-    );
+    const passwordMatched = await authentication.comparePassword(currentPassword, password);
     if (!passwordMatched) {
-      logger.error(`current password for is incorrect`);
-      throw new Error("current password is incorrect");
+      logger.error('current password for is incorrect');
+      throw new Error('current password is incorrect');
     }
     const hashedPassword = await authentication.hashPassword(newPassword);
     try {

@@ -16,9 +16,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetings();
     } catch (e) {
-      logger.error(
-        `getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`
-      );
+      logger.error(`getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`);
       throw e;
     }
     return res.rows;
@@ -29,9 +27,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllUpcomingMeetings();
     } catch (e) {
-      logger.error(
-        `getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`
-      );
+      logger.error(`getAllMeetings resolver error - dbClient.getAllMeetings: ${e}`);
       throw e;
     }
     return res.rows;
@@ -53,9 +49,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetingItems();
     } catch (e) {
-      logger.error(
-        `getAllMeetingItems resolver error - dbClient.getAllMeetingItems: ${e}`
-      );
+      logger.error(`getAllMeetingItems resolver error - dbClient.getAllMeetingItems: ${e}`);
       throw e;
     }
     return res.rows;
@@ -66,9 +60,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItem(id);
     } catch (e) {
-      logger.error(
-        `getMeetingItem resolver error - dbClient.getMeetingItem: ${e}`
-      );
+      logger.error(`getMeetingItem resolver error - dbClient.getMeetingItem: ${e}`);
       throw e;
     }
     return res.rows[0];
@@ -88,7 +80,7 @@ module.exports = (logger) => {
       res = await dbClient.getMeetingItemsByMeetingID(id);
     } catch (e) {
       logger.error(
-        `getMeetingWithItems resolver error - dbClient.getMeetingItemsByMeetingID: ${e}`
+        `getMeetingWithItems resolver error - dbClient.getMeetingItemsByMeetingID: ${e}`,
       );
       throw e;
     }
@@ -105,9 +97,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllMeetingIDs();
     } catch (e) {
-      logger.error(
-        `getAllMeetingsWithItems resolver error - dbClient.getAllMeetingIDs: ${e}`
-      );
+      logger.error(`getAllMeetingsWithItems resolver error - dbClient.getAllMeetingIDs: ${e}`);
       throw e;
     }
 
@@ -125,9 +115,7 @@ module.exports = (logger) => {
         allMeetingsWithItems.push(meetingWithItems);
       }
     } catch (e) {
-      logger.error(
-        `getAllMeetingsWithItems resolver error - getMeetingWithItems: ${e}`
-      );
+      logger.error(`getAllMeetingsWithItems resolver error - getMeetingWithItems: ${e}`);
       throw e;
     }
 
@@ -139,30 +127,24 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscription(id);
     } catch (e) {
-      logger.error(
-        `getSubscription resolver error - dbClient.getSubscription: ${e}`
-      );
+      logger.error(`getSubscription resolver error - dbClient.getSubscription: ${e}`);
       throw e;
     }
     return res.rows[0];
   };
 
-  module.getSubscriptionsByEmailAndMeetingID = async (
-    dbClient,
-    args,
-    context
-  ) => {
+  module.getSubscriptionsByEmailAndMeetingID = async (dbClient, args, context) => {
     validator.validateUser(context);
     let res;
     try {
       res = await dbClient.getSubscriptionsByEmailAndMeetingID(
         args.phone_number,
         args.email_address,
-        args.meeting_id
+        args.meeting_id,
       );
     } catch (e) {
       loginGoogle.error(
-        `getSubscriptionsByEmailAndMeetingID resolver error -dbClient.getSubscriptionsByEmailAndMeetingID: ${e}`
+        `getSubscriptionsByEmailAndMeetingID resolver error -dbClient.getSubscriptionsByEmailAndMeetingID: ${e}`,
       );
       throw e;
     }
@@ -175,9 +157,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllSubscriptions();
     } catch (e) {
-      logger.error(
-        `getAllSubscriptions resolver error - dbClient.getAllSubscriptions: ${e}`
-      );
+      logger.error(`getAllSubscriptions resolver error - dbClient.getAllSubscriptions: ${e}`);
       throw e;
     }
     return res.rows;
@@ -187,15 +167,11 @@ module.exports = (logger) => {
     let token;
     let user;
     try {
-      if (password === undefined || password === null || password == '') {
+      if (password === undefined || password === null || password === '') {
         logger.error('Unable to authenticate no password provided');
         throw new Error('Unable to authenticate no password provided');
       } else {
-        user = await authentication.verifyEmailPassword(
-          dbClient,
-          email_address,
-          password
-        );
+        user = await authentication.verifyEmailPassword(dbClient, email_address, password);
         validator.validateAuthType(user.rows[0].auth_type, 'Local');
         token = authentication.createJWT(user);
       }
@@ -216,7 +192,7 @@ module.exports = (logger) => {
         user = await mutationResolver.createAccount(
           dbClient,
           { email_address: user.email_address },
-          context
+          context,
         );
         return { token: user.token, email: user.email_address };
       }
@@ -238,7 +214,7 @@ module.exports = (logger) => {
         user = await mutationResolver.createAccount(
           dbClient,
           { email_address: user.email_address },
-          context
+          context,
         );
         return { token: user.token, email: user.email_address };
       }
@@ -250,8 +226,9 @@ module.exports = (logger) => {
     return { token, email: user.email_address };
   };
 
+  // eslint-disable-next-line no-unused-vars
   const verifyToken = async (dbClient, context) => {
-    //TODO: add logic to verify a token if sent to the server
+    // TODO: add logic to verify a token if sent to the server
   };
 
   const getAllAccounts = async (dbClient) => {
@@ -259,9 +236,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAllAccounts();
     } catch (e) {
-      logger.error(
-        `getAllAccounts resolver error - dbClient.getAllAccounts: ${e}`
-      );
+      logger.error(`getAllAccounts resolver error - dbClient.getAllAccounts: ${e}`);
       throw e;
     }
     return res.rows;
@@ -272,9 +247,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAccountById(id);
     } catch (e) {
-      logger.error(
-        `getAccountById resolver error - dbClient.getAccountById: ${e}`
-      );
+      logger.error(`getAccountById resolver error - dbClient.getAccountById: ${e}`);
       throw e;
     }
     return res.rows[0];
@@ -285,9 +258,7 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getAccountByEmail(email);
     } catch (e) {
-      logger.error(
-        `getAccountByEmail resolver error - dbClient.getAccountByEmail: ${e}`
-      );
+      logger.error(`getAccountByEmail resolver error - dbClient.getAccountByEmail: ${e}`);
       throw e;
     }
     return res.rows[0];
@@ -299,9 +270,7 @@ module.exports = (logger) => {
       logger.info(`getResetPasswordToken for id ${id}`);
       res = await dbClient.getResetPasswordToken(id);
     } catch (e) {
-      logger.error(
-        `getResetPasswordToken resolver error - dbClient.getResetPasswordToken: ${e}`
-      );
+      logger.error(`getResetPasswordToken resolver error - dbClient.getResetPasswordToken: ${e}`);
       throw e;
     }
     logger.info(`getResetPasswordToken: ${res.rows[0]}`);

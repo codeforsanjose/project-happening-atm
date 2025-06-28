@@ -100,7 +100,7 @@ module.exports = (logger) => {
     // }
 
     try {
-      await sendMessages(emailMap, sesClient.sendEmail)
+      await sendMessages(emailMap, sesClient.sendEmail);
     } catch (e) {
       logger.error(`Error sending emails: ${e}`);
     }
@@ -112,7 +112,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscriptionsByMeetingItemID(id);
     } catch (e) {
-      logger.error(`notifyItemSubscribers controller error - getTidbClient.getSubscriptionsByMeetingItemID: ${e}`);
+      logger.error(
+        `notifyItemSubscribers controller error - getTidbClient.getSubscriptionsByMeetingItemID: ${e}`,
+      );
       throw e;
     }
 
@@ -130,7 +132,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getSubscriptionsByMeetingID(id);
     } catch (e) {
-      logger.error(`notifyMeetingSubscribers controller error - dbClient.getSubscriptionsByMeetingID: ${e}`);
+      logger.error(
+        `notifyMeetingSubscribers controller error - dbClient.getSubscriptionsByMeetingID: ${e}`,
+      );
       throw e;
     }
 
@@ -151,7 +155,9 @@ module.exports = (logger) => {
     try {
       res = await dbClient.getMeetingItemsByMeetingID(meetingID);
     } catch (e) {
-      logger.error(`notifyNextItemSubscribers controller error - dbClient.getMeetingItemsByMeetingID: ${e}`);
+      logger.error(
+        `notifyNextItemSubscribers controller error - dbClient.getMeetingItemsByMeetingID: ${e}`,
+      );
       throw e;
     }
     const meetingItems = res.rows;
@@ -167,7 +173,9 @@ module.exports = (logger) => {
     try {
       subscriptionsRes = await dbClient.getSubscriptionsByMeetingIDList(nextItemsids);
     } catch (e) {
-      logger.error(`notifyNextItemSubscribers controller error - dbClient.getSubscriptionsByMeetingIDList: ${e}`);
+      logger.error(
+        `notifyNextItemSubscribers controller error - dbClient.getSubscriptionsByMeetingIDList: ${e}`,
+      );
       throw e;
     }
 

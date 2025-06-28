@@ -1,10 +1,11 @@
-const { format } = require("date-fns");
+const { format } = require('date-fns');
 
-const DATE_FORMAT = "yyyy-MM-dd";
+const DATE_FORMAT = 'yyyy-MM-dd';
 // TODO: find library that has more readable string replacement
 
 // similar code to query & dbClient, but didn't re-use since dbClient was graphql specific
-// could have tried to create through graphql but wanted something separated from it, so could be reusable/used as is
+// could have tried to create through graphql but wanted something separated from it, so
+// could be reusable/used as is.
 const getMeetingQuery = (meeting) => {
   const {
     meeting_type,
@@ -64,19 +65,25 @@ const getMeetingItemQuery = (meetingItem) => {
 };
 
 const getAccountQuery = (accountItem) => {
-  const { firstName, lastName, emailAddress, phoneNumber, password: hashedPassword, authType, token } =
-    accountItem;
+  const {
+    firstName,
+    lastName,
+    emailAddress,
+    phoneNumber,
+    password: hashedPassword,
+    authType,
+    token,
+  } = accountItem;
   return `INSERT INTO account(first_name, last_name, email_address, phone_number, password, auth_type, token) values('${firstName}', '${lastName}', '${emailAddress}', '${phoneNumber}', '${hashedPassword}', '${authType}', '${token}');`;
 };
 
 // email address is used as username
-const getAdminQuery = (emailAddress) => {
-  return `INSERT INTO admin(email_address) values('${emailAddress}')`
-}
+const getAdminQuery = (emailAddress) =>
+  `INSERT INTO admin(email_address) values('${emailAddress}')`;
 
 module.exports = {
   getMeetingQuery,
   getMeetingItemQuery,
   getAccountQuery,
-  getAdminQuery
+  getAdminQuery,
 };

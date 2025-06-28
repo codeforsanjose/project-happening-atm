@@ -1,11 +1,11 @@
-const { Client } = require("pg");
+const { Client } = require('pg');
 
-const logger = require("../logger");
-require("dotenv").config({ path: "../../.env" });
+const logger = require('../logger');
+require('dotenv').config({ path: '../../.env' });
 
-const authentication = require('../../graphql/resolvers/authentication.js');
+const authentication = require('../../graphql/resolvers/authentication');
 
-const { getAccountQuery, getAdminQuery } = require("./queries");
+const { getAccountQuery, getAdminQuery } = require('./queries');
 
 async function generateAdminAccount(account) {
   this.client = await setupClient();
@@ -36,32 +36,33 @@ async function generateAdminAccount(account) {
    * @param {Array<Object>} meetings
    */
   async function createAccount() {
-    const hashedPassword = await auth.hashPassword(account.password)
-    const token = auth.randomToken()
+    const hashedPassword = await auth.hashPassword(account.password);
+    const token = auth.randomToken();
 
-    const accountInfo = { ...account, password: hashedPassword, token }
+    const accountInfo = { ...account, password: hashedPassword, token };
 
     const insertAccountQuery = getAccountQuery(accountInfo);
-    await this.client.query(insertAccountQuery, async (err, res) => {
+    await this.client.query(insertAccountQuery, async (err, _res) => {
       if (err) {
         logger.error(`error creating account ${err}`);
         return;
       }
 
-      const { emailAddress } = account
-      logger.info(`account with username: ${emailAddress} and password ${account.password} successfully created`);
+      const { emailAddress } = account;
+      logger.info(
+        `account with username: ${emailAddress} and password ${account.password} successfully created`,
+      );
 
-      await this.client.query(getAdminQuery(emailAddress), async (err, res) => {
+      await this.client.query(getAdminQuery(emailAddress), async (err, _res) => {
         if (err) {
           logger.error(`error creating admin account for ${emailAddress}`);
           return;
         }
 
-        logger.info(`successfully created admin role for ${emailAddress}`)
-      })
+        logger.info(`successfully created admin role for ${emailAddress}`);
+      });
     });
   }
-
 }
 
 module.exports = generateAdminAccount;

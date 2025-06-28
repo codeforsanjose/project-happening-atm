@@ -23,9 +23,7 @@ module.exports = (logger) => {
     let dbClient;
     try {
       dbClient = await getDBClient(logger);
-      logger.info(
-        'Initiating DB Client - backend/graphql_api/graphql/apolloServer.js'
-      );
+      logger.info('Initiating DB Client - backend/graphql_api/graphql/apolloServer.js');
       await dbClient.init();
       return await resolverFunc(dbClient, args, context);
     } catch (err) {
@@ -33,9 +31,7 @@ module.exports = (logger) => {
       throw err;
     } finally {
       try {
-        logger.info(
-          'Ending DB connection - backend/graphql_api/graphql/apolloServer.js'
-        );
+        logger.info('Ending DB connection - backend/graphql_api/graphql/apolloServer.js');
         await dbClient.end();
       } catch (err) {
         logger.error(`Error ending DB connection: ${err.stack}`);
@@ -78,22 +74,12 @@ module.exports = (logger) => {
         return resolverHandler(queryResolver.getSubscription, args.id, context);
       },
       getSubscriptionsByEmailAndMeetingID: async (_parent, args, context) => {
-        logger.info(
-          'Initiating getSubscriptionsByEmailAndMeetingID Query resolver'
-        );
-        return resolverHandler(
-          queryResolver.getSubscriptionsByEmailAndMeetingID,
-          args,
-          context
-        );
+        logger.info('Initiating getSubscriptionsByEmailAndMeetingID Query resolver');
+        return resolverHandler(queryResolver.getSubscriptionsByEmailAndMeetingID, args, context);
       },
       getAllSubscriptions: async (_parent, args, context) => {
         logger.info('Initiating GetAllSubscriptions Query resolver');
-        return resolverHandler(
-          queryResolver.getAllSubscriptions,
-          args,
-          context
-        );
+        return resolverHandler(queryResolver.getAllSubscriptions, args, context);
       },
       getAllAccounts: async () => {
         logger.info('Initiating getAllAccounts Query resolver');
@@ -104,25 +90,16 @@ module.exports = (logger) => {
         return resolverHandler(queryResolver.getAccountById, args.id);
       },
       getAccountByEmail: async (_parent, args) => {
-        logger.info(
-          'Initiating GetAccountByEmail Query resolver: args: ',
-          args.email_address
-        );
-        return resolverHandler(
-          queryResolver.getAccountByEmail,
-          args.email_address
-        );
+        logger.info('Initiating GetAccountByEmail Query resolver: args: ', args.email_address);
+        return resolverHandler(queryResolver.getAccountByEmail, args.email_address);
       },
       loginLocal: async (_parent, args) => {
-        const loginLocalUserResult = await loginUser(
-          args.email_address,
-          args.password
-        );
+        const loginLocalUserResult = await loginUser(args.email_address, args.password);
         // create signed JWT to relay logged in user info in hashed token
-        let token = authentication.createJWT({ rows: [loginLocalUserResult] });
+        const token = authentication.createJWT({ rows: [loginLocalUserResult] });
         logger.info('Initiating LoginLocal Query resolver');
-        //return await resolverHandler(queryResolver.loginLocal, args.email_address, args.password); // original loginLocal logic (prior to refactor)
-        return { token: token, email: loginLocalUserResult.email_address }; // mirrors return args from orig. loginLocal function in backend/graphql_api/graphql/resolvers/query.js
+        // return await resolverHandler(queryResolver.loginLocal, args.email_address, args.password); // original loginLocal logic (prior to refactor)
+        return { token, email: loginLocalUserResult.email_address }; // mirrors return args from orig. loginLocal function in backend/graphql_api/graphql/resolvers/query.js
       },
       loginGoogle: async (_parent, args, context) => {
         logger.info('Initiating LoginGoogle Query resolver');
@@ -133,10 +110,7 @@ module.exports = (logger) => {
         return resolverHandler(queryResolver.loginMicrosoft, context);
       },
       getResetPasswordToken: async (_parent, args) => {
-        logger.info(
-          'Initiating GetResetPasswordToken Query resolver: args: ',
-          args.id
-        );
+        logger.info('Initiating GetResetPasswordToken Query resolver: args: ', args.id);
         return resolverHandler(queryResolver.getResetPasswordToken, args.id);
       },
     },
@@ -155,35 +129,19 @@ module.exports = (logger) => {
       },
       createMeetingItem: async (_parent, args, context) => {
         logger.info('Initiating CreateMeetingItem Mutation resolver');
-        return resolverHandler(
-          mutationResolver.createMeetingItem,
-          args,
-          context
-        );
+        return resolverHandler(mutationResolver.createMeetingItem, args, context);
       },
       updateMeetingItem: async (_parent, args, context) => {
         logger.info('Initiating UpdateMeetingItem Mutation resolver');
-        return resolverHandler(
-          mutationResolver.updateMeetingItem,
-          args,
-          context
-        );
+        return resolverHandler(mutationResolver.updateMeetingItem, args, context);
       },
       createSubscriptions: async (_parent, args, context) => {
         logger.info('Initiating CreateSubscriptions Mutation resolver');
-        return resolverHandler(
-          mutationResolver.createSubscriptions,
-          args,
-          context
-        );
+        return resolverHandler(mutationResolver.createSubscriptions, args, context);
       },
       deleteSubscription: async (_parent, args, context) => {
         logger.info('Initiating deleteSubscription Mutation resolver');
-        return resolverHandler(
-          mutationResolver.deleteSubscription,
-          args,
-          context
-        );
+        return resolverHandler(mutationResolver.deleteSubscription, args, context);
       },
       confirmEmail: async (_parent, args) => {
         logger.info('Initiating ConfirmEmail Mutation resolver');
@@ -224,21 +182,21 @@ module.exports = (logger) => {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    playground: {
-      endpoint: '/dev/agendapi',
-    },
+    // playground: {
+    //   endpoint: '/dev/agendapi',
+    // }, TODO: They took this out in Apollo Server 3, so we need to find a new way to enable the playground
+
     // Empty implementation for local and deployed dev use:
     // TODO: Auth needs to be refactored for AWS
     context: ({ req }) => {
       if (req.headers.authorization) {
         const context = authentication.getToken(req.headers.authorization);
         return context;
-      } else {
-        // if no token in headers setting token to null
-        return {
-          token: null,
-        };
       }
+      // if no token in headers setting token to null
+      return {
+        token: null,
+      };
     },
   });
 };

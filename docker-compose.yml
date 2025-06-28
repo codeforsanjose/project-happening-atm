@@ -30,7 +30,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - "./backend/graphql_api:/usr/src/app"
+      - "./backend/packages/graphql_api:/usr/src/app"
       - /usr/src/app/node_modules
     env_file: ./docker/graphql/.env
     depends_on:

@@ -4,12 +4,13 @@
   "description": "",
   "main": "handler.js",
   "engines": {
-    "node": "14.x"
+    "node": "22.x",
+    "npm": "10.x"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.4",
-    "apollo-server": "^2.18.2",
+    "apollo-server": "^3.13.0",
     "aws-sdk": "^2.830.0",
+    "axios": "^1.10.0",
     "bcrypt": "^5.0.1",
     "classnames": "^2.2.6",
     "date-fns": "^2.25.0",
@@ -19,6 +20,9 @@
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^1.12.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.1",
     "pg": "^8.3.3",
     "pg-format": "^1.0.4",
     "postgres-migrations": "^5.1.1",
@@ -27,20 +31,22 @@
     "yargs": "^17.2.1"
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
+    "eslint": "^8.57.1",
     "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^5.5.1",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
     "nodemon": "^2.0.5",
+    "prettier": "^3.6.2",
     "serverless-pseudo-parameters": "^2.5.0"
   },
   "scripts": {
+    "format": "prettier -w .",
+    "lint": "eslint ./**/*.js",
     "start": "nodemon handler"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "repository": {
     "type": "git",

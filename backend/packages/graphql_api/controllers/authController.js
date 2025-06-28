@@ -30,9 +30,13 @@ module.exports = (logger, dbClient) => {
     const dbResponse = await dbClient.getAdminByEmail(user.email);
     user.admin = dbResponse.rows.length > 0;
 
-    const token = jwt.sign({
-      data: user,
-    }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(
+      {
+        data: user,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' },
+    );
 
     res.cookie('jwt', token);
     res.redirect('/good');
@@ -51,6 +55,10 @@ module.exports = (logger, dbClient) => {
     // deserialized it by this point...
     // I couldn't find much info on this issue so for the time being
     // I'm manually decoding the jwt token here to get around the problem.
+
+    // Hi Trace. I suspect it is beacuse passportSetup.js has not been imported, but
+    // without running it myself I can't be sure. This comment is mainly for me to remember
+    // to investigate this later.
 
     const jwtToken = req.cookies.jwt;
 
