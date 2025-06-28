@@ -1,6 +1,4 @@
-import React from "react";
-
-export const termsOfUseLanguages = (language = 'en') => {
+export default (language = 'en') => {
   const allLanguages = {
     en: (
       <>

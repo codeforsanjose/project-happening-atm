@@ -1,9 +1,8 @@
-import React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import NavBarHeader from "../NavBarHeader/NavBarHeader";
-import { sendFeedbackLanguages } from "./SendFeedbackLanguageHTMLBlocks";
 import "../Footer/Footer.scss";
+import NavBarHeader from "../NavBarHeader/NavBarHeader";
+import sendFeedbackLanguages from "./SendFeedbackLanguageHTMLBlocks";
 
 function SendFeedback() {
   const { i18n } = useTranslation();

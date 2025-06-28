@@ -101,9 +101,8 @@ export function groupMeetingsByDate(meetings) {
     for (let i = 0; i < 12; i += 1) {
       if (yearMeetings[i] !== undefined) {
         const sortedMeetings = yearMeetings[i].sort(
-          (a, b) =>
-            parseInt(a.meeting_start_timestamp, 10) -
-            parseInt(b.meeting_start_timestamp, 10)
+          (a, b) => parseInt(a.meeting_start_timestamp, 10)
+            - parseInt(b.meeting_start_timestamp, 10),
         );
 
         const monthObj = {

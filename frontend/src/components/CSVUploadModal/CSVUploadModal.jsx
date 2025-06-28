@@ -200,15 +200,16 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
                         />
                       </label>
                     </>
-                  ) : (
-                    <div
+                    ) : (
+                        <button
+                      type="button"
                       className="remove-csv"
                       onClick={() => clearSelectedFile()}
                       ref={fileInputRef}
                     >
                       <DeleteIcon />
                       <p>Remove file</p>
-                    </div>
+                    </button>
                   )}
                 </div>
               </DragAndDrop>

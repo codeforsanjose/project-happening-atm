@@ -1,6 +1,6 @@
-import parseJwt from "./parseJwt";
-import LocalStorageTerms from "../constants/LocalStorageTerms";
-import UserRoles from "../constants/UserRoles";
+import parseJwt from './parseJwt';
+import LocalStorageTerms from '../constants/LocalStorageTerms';
+import UserRoles from '../constants/UserRoles';
 
 // returns true if the user is an admin
 const isAdmin = () => {

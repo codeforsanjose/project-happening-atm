@@ -9,9 +9,10 @@ import "./AboutUs.scss";
  *
  */
 
-function AboutUs({}) {
+function AboutUs(_params) {
   const [navToggled, setNavToggled] = useState(false);
-  function handleToggle() {
+
+  const handleToggle = () => {
     setNavToggled(!navToggled);
   }
 
@@ -20,7 +21,7 @@ function AboutUs({}) {
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
       <div className="about-us-body">
         <h2>About Us</h2>
-        <p>#atm is a web based notification app centered on making public meetings in the City of San José more accessible to community members. The project is a collaborative effort between Code for San José and Only in San José. Our goal is to help everyday residents find relevant information and connect to what's happening #atm in local government. We share the belief that local government should be more accessible and that is our aim with this new community and volunteer driven technology.
+        <p>#atm is a web based notification app centered on making public meetings in the City of San José more accessible to community members. The project is a collaborative effort between Code for San José and Only in San José. Our goal is to help everyday residents find relevant information and connect to what&apos;s happening #atm in local government. We share the belief that local government should be more accessible and that is our aim with this new community and volunteer driven technology.
         </p>
         <h3>Mission</h3>
         <p>

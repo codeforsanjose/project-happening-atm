@@ -5,7 +5,8 @@
     "extends": [
         "react-app",
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb",
+        "prettier"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,11 +16,22 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "prettier"
     ],
     "rules": {
-        "react/prop-types": [
-            0
-        ]
+        "consistent-return": [0],
+        "jsx-a11y/alt-text": [0], // TODO: add all jsx-a11y rules back later
+        "jsx-a11y/click-events-have-key-events": [0],
+        "jsx-a11y/control-has-associated-label": [0],
+        "jsx-a11y/label-has-associated-control": [0],
+        "jsx-a11y/no-noninteractive-element-interactions": [0],
+        "no-shadow": [0],
+        "no-underscore-dangle": [0],
+        "no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
+        "react/jsx-no-bind": [0],
+        "react/jsx-props-no-spreading": [0],
+        "react/prop-types": [0],
+        "react/react-in-jsx-scope": [0]
     }
 }

@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // Necessary as dnd sort uses prop spreading for its listeners and props
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   AccordionItem,
-  AccordionItemHeading,
   AccordionItemButton,
+  AccordionItemHeading,
   AccordionItemPanel,
 } from 'react-accessible-accordion';
 import './AgendaGroup.scss';
@@ -16,11 +16,11 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import { StatusInProgress, AddIcon, RemoveIcon } from '../../../utils/_icons';
+import { AddIcon, RemoveIcon } from '../../../utils/_icons';
 
 import MeetingItemStates from '../../../constants/MeetingItemStates';
-import AgendaItem from './AgendaItem';
 import StatusDontSort from '../../../constants/StatusDontSort';
+import AgendaItem from './AgendaItem';
 
 import isAdmin from '../../../utils/isAdmin';
 
@@ -129,20 +129,20 @@ const buildAccordianClass = (active, next, completed) => {
   return accordianItemClass;
 };
 
-// outputs the class name for the icon
-const buildIconClass = (active, next, completed) => {
-  const baseIconClass = 'baseIcon';
-  const nextIcon = ' nextIcon';
-  const completedIcon = ' completedIcon';
-  let iconClass = baseIconClass;
-  if (active || next) {
-    iconClass += nextIcon;
-  } else if (!completed) {
-    iconClass += completedIcon;
-  }
+// // outputs the class name for the icon
+// const buildIconClass = (active, next, completed) => {
+//   const baseIconClass = 'baseIcon';
+//   const nextIcon = ' nextIcon';
+//   const completedIcon = ' completedIcon';
+//   let iconClass = baseIconClass;
+//   if (active || next) {
+//     iconClass += nextIcon;
+//   } else if (!completed) {
+//     iconClass += completedIcon;
+//   }
 
-  return iconClass;
-};
+//   return iconClass;
+// };
 
 // splits the title between the numerical portion and its text
 const splitTitle = (title) => {

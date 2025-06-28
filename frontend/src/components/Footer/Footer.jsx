@@ -1,10 +1,9 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { NavLink } from "react-router-dom";
 import "./Footer.scss";
 
-import CFSJ_Logo from "../../assets/CFSJ_Logo.svg";
-import OSJ_Logo from "../../assets/OSJ_LogoWhite.png";
+import CFSJLogo from "../../assets/CFSJ_Logo.svg";
+import OSJLogo from "../../assets/OSJ_LogoWhite.png";
 
 function Footer() {
   const { i18n } = useTranslation();
@@ -37,14 +36,14 @@ function Footer() {
         </div>
         <div className="logos">
           <a href="https://www.onlyinsj.org/" target="_blank" rel="noreferrer">
-            <img className="OSJ" src={OSJ_Logo} alt="Only in San Jose" />
+            <img className="OSJ" src={OSJLogo} alt="Only in San Jose" />
           </a>
           <a
             href="www.opensourcesanjose.org"
             target="_blank"
             rel="noreferrer"
           >
-            <img className="CFSJ" src={CFSJ_Logo} alt="Code for San Jose" />
+            <img className="CFSJ" src={CFSJLogo} alt="Code for San Jose" />
           </a>
         </div>
         <div className="legal">

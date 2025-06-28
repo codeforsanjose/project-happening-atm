@@ -38,7 +38,7 @@ class CustomDropdown extends Component {
     this.setState({
       isOpen: !isOpen,
     });
-    onChange && onChange(!isOpen);
+    if (onChange) onChange(!isOpen);
   }
 
   // If click is outside the dropdown button or display area, close the dropdown
@@ -49,7 +49,7 @@ class CustomDropdown extends Component {
       this.setState({
         isOpen: false,
       });
-      onChange && onChange(false);
+      if (onChange) onChange(false);
     }
   }
 

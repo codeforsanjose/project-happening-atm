@@ -1,20 +1,22 @@
-import React, { useEffect,useRef,useState } from 'react';
+// eslint-disable 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CaratDownIcon, GlobeIcon } from '../../utils/_icons';
 import { NavLink } from 'react-router-dom';
+import { CaratDownIcon, GlobeIcon } from '../../utils/_icons';
 import "./LanguageDropdown.scss";
 
 function LanguageDropdown() {
     const { i18n } = useTranslation();
     const { t } = useTranslation();
-    const [clickedOutside, setClickedOutside] = useState(false);
+    // TODO: What is this state for? setClickedOutside used but not _clickedOutside 
+    // const [clickedOutside, setClickedOutside] = useState(false);
     const [expanded, setExpanded] = useState(false);
     
     const myRef = useRef();
     
     const handleClickOutside = e => {
         if (!myRef.current.contains(e.target)) {
-            setClickedOutside(true);
+            // setClickedOutside(true);
             setExpanded(false);
         }
     };
@@ -24,7 +26,7 @@ function LanguageDropdown() {
     }
 
     const handleLanguageChange = (val) => {
-        setClickedOutside(false);
+        // setClickedOutside(false);
         i18n.changeLanguage(val);
     }
      

@@ -1,6 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import {NavLink} from 'react-router-dom';
-import { useLocation } from 'react-router';
+import {NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import queryString from 'query-string';
 import { useMutation, useLazyQuery } from '@apollo/client';
@@ -73,8 +72,8 @@ function SetNewPassword (){
     }
 
     useEffect(() => {
-        resetPasswordData ? setResetSuccess(true): setResetSuccess(false)
-        if(resetPasswordError){
+        setResetSuccess(resetPasswordData);
+        if (resetPasswordError) {
             setResetSuccess(false);
             setInvalidError(`Password reset failed ${resetPasswordError}`);
         }
@@ -85,6 +84,7 @@ function SetNewPassword (){
             setInvalidError(`Password Reset Link is invalid or expired ${resetTokenError}`);
         }
         if(resetTokenData){
+            // eslint-disable-next-line no-console
             console.log("reset token received: ", resetTokenData);
             if( !resetTokenData.getResetPasswordToken || !resetTokenData.getResetPasswordToken.password_reset_token){
                 setInvalidError(`Password Reset Link is invalid or expired`);
@@ -103,7 +103,7 @@ function SetNewPassword (){
         setResetTokenQueryString(token);
         const tokenObj = parseJwt(token);
         const userid = parseInt(tokenObj._id, 10);
-        setUserId(userid);  
+        setUserId(userid);
         const seconds = new Date() / 1000;   
         if(tokenObj != null && tokenObj.exp > seconds){
             // Get reset token from DB for token verification.

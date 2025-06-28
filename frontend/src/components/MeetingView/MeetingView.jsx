@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './MeetingView.scss';
 import { useParams } from 'react-router-dom';
+import './MeetingView.scss';
 
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_MEETING_WITH_ITEMS } from '../../graphql/query';
 import isAdmin from '../../utils/isAdmin';
 
-import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import MeetingHeader from '../MeetingHeader/MeetingHeader';
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
 // import ParticipateView from "./ParticipateView/ParticipateView";
-import AgendaView from './AgendaView/AgendaView';
-import Spinner from '../Spinner/Spinner';
 import MEETING_ZOOM_URL from '../../constants/MeetingZoomURL';
-import { JoinMeetingIcon, ExternalSite } from '../../utils/_icons';
 import PollIntervals from '../../constants/PollStatusIntervals';
+import { ExternalSite, JoinMeetingIcon } from '../../utils/_icons';
+import Spinner from '../Spinner/Spinner';
+import AgendaView from './AgendaView/AgendaView';
 
 // Component imports
 import { AdminMeetingItemLinks } from '../MeetingListView/MeetingListItemLinks';
@@ -38,6 +38,10 @@ function MeetingView() {
   const { t } = useTranslation();
   const { id } = useParams();
   const isCurrentUserAdmin = isAdmin();
+  
+  // states
+  const [meetingWithItems, setMeetingWithItems] = useState({});
+  const [navToggled, setNavToggled] = useState(false);
 
   // queries
   const { loading, error, data, refetch } = useQuery(GET_MEETING_WITH_ITEMS, {
@@ -48,9 +52,6 @@ function MeetingView() {
     },
   });
 
-  // states
-  const [meetingWithItems, setMeetingWithItems] = useState({});
-  const [navToggled, setNavToggled] = useState(false);
   // flag to indicate meeting items need to be saved
   const [saveMeetingItems, setSaveMeetingItems] = useState(false);
   // flag to indicate meeting items were updated by mutators
@@ -84,6 +85,7 @@ function MeetingView() {
     return () => {
       clearInterval(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: for refetch  
   }, [data]);
 
   // // disabled participate view while mutators are being processed by backend
@@ -117,7 +119,7 @@ function MeetingView() {
     ? meetingWithItems.agenda_pdf_link
     : '';
   const linktoPDFAgendaItems = !(loading || error) && data && (
-    <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank">
+    <a className="agend-pdf-link" href={agendaItemsPDFLink} target="_blank" rel="noreferrer">
       Recommendations & Attachments
       <ExternalSite className="translate-down" />
     </a>
@@ -139,7 +141,6 @@ function MeetingView() {
         {linktoPDFAgendaItems}
         {!(loading || error) && data && 'items' in meetingWithItems && (
           <a
-            meeting={meetingWithItems}
             href={
               meetingWithItems.virtual_meeting_url
                 ? meetingWithItems.virtual_meeting_url

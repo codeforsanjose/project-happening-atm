@@ -1,20 +1,19 @@
 /* eslint-disable no-console */
-import React, { useCallback, useState, forwardRef } from "react";
-import { useHistory } from "react-router-dom";
-import Modal from "react-modal";
-import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client";
+import { forwardRef, useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Modal from "react-modal";
+import { useHistory } from "react-router-dom";
 
-//date picker functionality
-import DatePicker from "react-datepicker";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// date picker functionality
 import es from "date-fns/locale/es";
 import vi from "date-fns/locale/vi";
+import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { CREATE_MEETING } from "../../graphql/mutation";
-import "./CreateMeetingModal.scss";
 import Spinner from "../Spinner/Spinner";
+import "./CreateMeetingModal.scss";
 
 // Asset imports
 import { CalendarBlueIcon, ScheduleBlueIcon } from "../../utils/_icons";
@@ -39,14 +38,14 @@ function CreateMeetingModal({ isOpen, closeModal }) {
   const { t } = useTranslation();
   registerLocale("es", es);
   registerLocale("vi", vi);
-  const language = useTranslation("home").i18n.language;
+  const {language} = useTranslation("home").i18n;
   setDefaultLocale(language);
   const [createMeeting, { loading }] = useMutation(CREATE_MEETING);
   const [createSuccessful, setCreateSuccessful] = useState(false);
   const [zoomLink, setZoomLink] = useState("");
 
-  //date picker functionality
-  var tomorrow = new Date();
+  // date picker functionality
+  const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const [date, setDate] = useState(tomorrow);
 
@@ -55,7 +54,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
   };
 
   const getMinDate = () => {
-    var tomorrow = new Date();
+    const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow;
   };
@@ -84,6 +83,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
     try {
       const timestamp = date.getTime();
       if (date < new Date()) {
+        // eslint-disable-next-line no-alert -- TODO: no alert in production
         alert(
           "Warning: Meeting start time is in the past.  Please select a different start time."
         );
@@ -108,7 +108,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
 
   // custom input for calendar icon in date selector input field
   const CustomCalendarInput = forwardRef(
-    ({ onChange, value, placeholderText, onClick }, ref) => (
+    ({ onChange, value, placeholderText, onClick }, _ref) => (
       <label>
         <input
           placeholder={placeholderText}
@@ -123,7 +123,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
 
   // custom input for clock icon (aka schedule icon) in time selector input field
   const CustomTimeInput = forwardRef(
-    ({ onChange, value, placeholderText, onClick }, ref) => (
+    ({ onChange, value, placeholderText, onClick }, _ref) => (
       <label>
         <input
           placeholder={placeholderText}
@@ -184,7 +184,7 @@ function CreateMeetingModal({ isOpen, closeModal }) {
                 showTimeSelectOnly
                 timeIntervals={30}
                 dateFormat="h:mm aa"
-                showTimeSelect={true}
+                showTimeSelect
                 customInput={<CustomTimeInput />}
               />
             </div>

@@ -1,17 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 
-import HamburgerIcon from './HamburgerIcon';
-import BackNavigation from '../BackNavigation/BackNavigation';
-import NavLinks from './NavLinks';
-import './NavBarHeader.scss';
-import NavigationLink from './NavigationLink';
 import { ATMLogoPinRainbowIcon } from '../../utils/_icons';
+import BackNavigation from '../BackNavigation/BackNavigation';
 import LoginContext from '../LoginContext/LoginContext';
-import LanguageDropdown from '../LanguageDropdown/LanguageDropdown';
-import Signout from './Signout';
-import { Desktop, TabletOrMobile } from '../../utils/mediaquery';
+import HamburgerIcon from './HamburgerIcon';
+import './NavBarHeader.scss';
+import NavLinks from './NavLinks';
 
 function Header({ toggled, handleToggle }) {
   const { pathname } = useLocation();

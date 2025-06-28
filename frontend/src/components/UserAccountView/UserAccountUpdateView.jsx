@@ -3,6 +3,8 @@ import React from 'react';
 
 const UserAccountUpdateForm = () => {
   const handleResetPassword = () => {
+    // TODO: no alert in production
+    // eslint-disable-next-line no-alert
     alert('Password Reset Link Sent to {your email}');
   };
 

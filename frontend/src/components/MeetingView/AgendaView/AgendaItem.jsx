@@ -121,13 +121,13 @@ function AgendaItemActionLink({ loading, handleSubmit, subscribed }) {
     );
   }
   return (
-    <div className="link" onClick={handleSubmit}>
+    <button className="link" onClick={handleSubmit} type="button">
       <p className={loading ? 'notify-me subscribing' : 'notify-me'}>
         {loading
           ? t('meeting.tabs.agenda.list.subscribe.button.doing')
           : t('meeting.tabs.agenda.list.subscribe.button.do')}
       </p>
-    </div>
+    </button>
   );
 }
 
@@ -186,10 +186,12 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
         try {
           refetchAllMeeting(); // need to refetch meeting in case status changes to "In Progress"
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(`Error updating agenda item status: ${error.message}`);
         }
       },
       onError: (error) => {
+        // eslint-disable-next-line no-console
         console.log(`Error updating agenda item status: ${error.message}`);
       },
     }
@@ -241,6 +243,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
       refetchAllMeeting();
     },
     onError: (error) => {
+      // eslint-disable-next-line no-console
       console.log(`Error resetting time: ${error.message}`);
     },
   });
@@ -256,6 +259,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
       });
       if (!error) closeConfirmationModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: error, item, updateAgendaItemStatus
   }, [agendaItemStatus]);
 
   // re-render whenever agenda item status prop changes (e.g. by ano/ user)
@@ -265,6 +269,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
         agendaItemStatuses[statusIndexMap.indexOf(item.status)]
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: for agendaItemStatus
   }, [item.status]);
 
   // handle new user selection for meeting status
@@ -306,7 +311,8 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   };
 
   const closeConfirmation = () => {
-    modalRef.current && modalRef.current.portal.close();
+    if (modalRef.current) modalRef.current.portal.close();
+
   };
 
   const changeItemStartTimeArgs = {

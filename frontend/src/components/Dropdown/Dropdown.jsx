@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
+
 import { KeyboardArrowDownIcon } from '../../utils/_icons';
 import './Dropdown.scss';
-import { useTranslation } from 'react-i18next';
 
 /*
  * A re-usable dropdown component for viewing/managing dropdown selections such as
@@ -48,8 +48,7 @@ function Dropdown({ options, value, onChange, className }) {
   };
 
   // construct open dropdown w/ diff selection options
-  const renderedOptions = options.map((option) => {
-    return (
+  const renderedOptions = options.map((option) => (
       <input
         key={option.value}
         type="button"
@@ -61,17 +60,14 @@ function Dropdown({ options, value, onChange, className }) {
         )}
         value={t(option.label)}
         disabled={
-          option.value === value.value ||
+          !!(option.value === value.value ||
           (propsClassName === 'meeting-status' &&
             option.value === 'UPCOMING') || // can't revert mtg status to 'upcoming'
-          propsClassName === 'meeting-status in-progress' // can't update mtg status if any agenda items are in progress
-            ? true
-            : false
+          propsClassName === 'meeting-status in-progress')
         }
         onClick={() => handleOptionClick(option)}
-      ></input>
-    );
-  });
+       />
+    ));
 
   return (
     <div ref={dropDownRef} className="dropdown">

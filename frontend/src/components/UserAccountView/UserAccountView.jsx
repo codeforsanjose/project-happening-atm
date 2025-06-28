@@ -4,7 +4,7 @@ import { GET_ACCOUNT_BY_EMAIL } from '../../graphql/query';
 // import { useTranslation } from 'react-i18next';
 
 import './UserAccountView.scss';
-import UserAccountUpdateForm from './UserAccountUpdateView';
+// import UserAccountUpdateForm from './UserAccountUpdateView';
 
 // Component imports
 import NavBarHeader from '../NavBarHeader/NavBarHeader';

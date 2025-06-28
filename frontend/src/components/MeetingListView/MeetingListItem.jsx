@@ -1,11 +1,10 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { toDateString, toTimeString } from '../../utils/timestampHelper';
-import './MeetingListItem.scss';
 import { StatusInProgress } from '../../utils/_icons';
 import isAdmin from '../../utils/isAdmin';
+import { toDateString, toTimeString } from '../../utils/timestampHelper';
+import './MeetingListItem.scss';
 
 // Component imports
 import {
@@ -34,7 +33,6 @@ function MeetingListItem({ item }) {
   const date = toDateString(meeting_start_timestamp, 'dddd, MMM D');
   const time = toTimeString(meeting_start_timestamp);
   const isInProgress = status === 'IN PROGRESS';
-  const isEnded = status === 'ENDED';
 
   const isCurrentUserAdmin = isAdmin();
   const PublicLinks =

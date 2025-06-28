@@ -9,7 +9,7 @@ import "./FAQ.scss";
  *
  */
 
-function FAQ({}) {
+function FAQ(_params) {
   const [navToggled, setNavToggled] = useState(false);
   function handleToggle() {
     setNavToggled(!navToggled);

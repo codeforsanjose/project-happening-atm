@@ -36,7 +36,7 @@ function CustomizedTable(props) {
     <SortableTable
       distance={1}
       rowRenderer={rowRenderer}
-      rowGetter={({ index }) => props.items[index]}
+      rowGetter={({ index }) => items[index]}
       width={735}
       height={height}
       headerHeight={20}
@@ -62,7 +62,7 @@ function CustomizedTable(props) {
         cellRenderer={({ cellData }) => (
           <CustomDropdown
             cellData={cellData}
-            remainingOptions={props.remainingOptions(cellData)}
+            remainingOptions={remainingOptions(cellData)}
           />
         )}
       />
@@ -259,7 +259,7 @@ class SortableCustomizedTable extends Component {
     });
   }
 
-  render(props) {
+  render(_props) {
     const { items } = this.state;
     return (
       <CustomizedTable

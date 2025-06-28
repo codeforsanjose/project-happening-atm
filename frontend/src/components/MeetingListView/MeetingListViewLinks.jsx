@@ -7,7 +7,7 @@ import useCreateMeeting from "../../hooks/useCreateMeeting";
 // Asset imports
 import { JoinMeetingIcon } from "../../utils/_icons";
 
-function AdminMeetingListViewLinks() {
+export default function AdminMeetingListViewLinks() {
   const { t } = useTranslation();
   const [openCreateModal, CreateModal] = useCreateMeeting();
   /* component texts */
@@ -28,4 +28,3 @@ function AdminMeetingListViewLinks() {
   );
 }
 
-export { AdminMeetingListViewLinks };

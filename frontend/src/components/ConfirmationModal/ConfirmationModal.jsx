@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import Modal from 'react-modal';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import Modal from 'react-modal';
 import { CloseIcon } from '../../utils/_icons';
 import './ConfirmationModal.scss';
-import classNames from 'classnames';
 
 /**
  * A common re-usable confirmation modal used to confirm requested admin action

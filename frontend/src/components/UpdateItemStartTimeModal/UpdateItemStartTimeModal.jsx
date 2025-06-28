@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
+import { useEffect, useState } from 'react';
 
-import Modal from 'react-modal/lib/components/Modal';
 import { useTranslation } from 'react-i18next';
-import { CloseIcon } from '../../utils/_icons';
+import Modal from 'react-modal/lib/components/Modal';
 import { UPDATE_MEETING_ITEM } from '../../graphql/mutation';
+import { CloseIcon } from '../../utils/_icons';
 
 import './UpdateItemStartTimeModal.scss';
 
@@ -45,6 +45,16 @@ const UpdateItemStartTimeModal = ({ args }) => {
 
   const handleModalClose = () => setDisplaySetStartTimeModal(false);
 
+  const displayFormErrors = (time, meridian) => {
+      setFormFields((prevFormFields) => ({
+        ...prevFormFields,
+        errors: {
+          time,
+          meridian,
+        },
+      }));
+    };
+    
   const validateNewTime = (hour, minutes, meridian) => {
     const { errors } = formFields;
     const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0);
@@ -53,18 +63,8 @@ const UpdateItemStartTimeModal = ({ args }) => {
     if (errors.time !== timeError || errors.meridian !== meridianError) {
       displayFormErrors(timeError, meridianError);
     }
-    return !timeError && !meridianError ? true : false;
-  };
-
-  const displayFormErrors = (time, meridian) => {
-    setFormFields((prevFormFields) => ({
-      ...prevFormFields,
-      errors: {
-        time,
-        meridian,
-      },
-    }));
-  };
+    return !!(!timeError && !meridianError);
+  };  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,13 +81,13 @@ const UpdateItemStartTimeModal = ({ args }) => {
     const newMinutes = parseInt(minutes, 10);
     const isValidTime = validateNewTime(newHour, newMinutes, meridian);
     if (!isValidTime) return;
-    const isPM = meridian === 'PM' ? true : false;
+    const isPM = meridian === 'PM';
 
     // if hour is 12 we set it to 0 to account for 12pm
     newHour = newHour === 12 ? 0 : newHour;
 
     if (isPM) {
-      newHour = newHour + 12;
+      newHour += 12;
     }
     newTime.setHours(newHour, newMinutes, 0);
 
@@ -113,6 +113,7 @@ const UpdateItemStartTimeModal = ({ args }) => {
             onClick={handleModalClose}
             onKeyPress={handleModalClose}
             aria-label={t('standard.buttons.close')}
+            type="button"
           >
             <CloseIcon />
           </button>

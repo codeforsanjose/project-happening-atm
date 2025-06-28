@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { getUserId } from "../../utils/verifyToken";
+import { useState } from "react";
 import { UPDATE_EMAIL } from "../../graphql/userAccount";
 import {
   isNullOrEmpty, validEmail
 } from '../../utils/validations';
+import { getUserId } from "../../utils/verifyToken";
 
 // Component imports
-import NavBarHeader from "../NavBarHeader/NavBarHeader";
 import { CancelIcon } from '../../utils/_icons';
+import NavBarHeader from "../NavBarHeader/NavBarHeader";
 import "../UserAccountView/UserAccountView.scss";
 
 const UpdateUserEmail = () => {
@@ -18,7 +18,14 @@ const UpdateUserEmail = () => {
   const [updateEmailSuccessful, setUpdateEmailSuccessful] = useState(false);
 
   const [updateEmail] = useMutation(UPDATE_EMAIL);
-
+  
+  const verifyEmailAddressFormat = () => {
+    if (isNullOrEmpty(newEmail) || !validEmail(newEmail)) {
+      setFieldErrors('Please enter a valid email address');
+    } else {
+      setFieldErrors('');
+    }
+  };
   function handleToggle() {
     setNavToggled(!navToggled);
   }
@@ -42,14 +49,6 @@ const UpdateUserEmail = () => {
     setNewEmail(value)
     verifyEmailAddressFormat();
   }
-
-  const verifyEmailAddressFormat = () => {
-    if (isNullOrEmpty(newEmail) || !validEmail(newEmail)) {
-      setFieldErrors('Please enter a valid email address');
-    } else {
-      setFieldErrors('');
-    }
-  };
 
   return (
     <div className="update-user-email-view">
@@ -88,10 +87,10 @@ const UpdateUserEmail = () => {
               ? <p className="inline-error">{fieldErrors}</p> : ''}
             </div>
             <button 
-              className={`user-account-update-btn${fieldErrors || !newEmail ? ' disabled' : ''}`}
-              type="button"
-              onClick={(!fieldErrors && newEmail) && handleSubmit}
-              disabled={fieldErrors ? true : false}
+                className={`user-account-update-btn${fieldErrors || !newEmail ? ' disabled' : ''}`}
+                type="button"
+                onClick={(!fieldErrors && newEmail) && handleSubmit}
+                disabled={fieldErrors}
             >
               Change Email
             </button>

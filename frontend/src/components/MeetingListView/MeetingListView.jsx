@@ -1,32 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import { Accordion } from 'react-accessible-accordion';
+import { useTranslation } from 'react-i18next';
+import {
+  GET_ALL_UPCOMING_MEETINGS
+} from '../../graphql/query';
 import {
   groupMeetingsByDate,
   isFutureTimestamp,
 } from '../../utils/timestampHelper';
-import {
-  GET_ALL_MEETINGS,
-  GET_ALL_UPCOMING_MEETINGS,
-} from '../../graphql/query';
 
 import isAdmin from '../../utils/isAdmin';
 import './MeetingListView.scss';
 
 // Component imports
-import NavBarHeader from '../NavBarHeader/NavBarHeader';
-import { AdminMeetingListViewLinks } from './MeetingListViewLinks';
-import MeetingListGroup from './MeetingListGroup';
-import Spinner from '../Spinner/Spinner';
 import PollIntervals from '../../constants/PollStatusIntervals';
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import Spinner from '../Spinner/Spinner';
+import MeetingListGroup from './MeetingListGroup';
+import AdminMeetingListViewLinks from './MeetingListViewLinks';
 // Asset imports
 import MEETINGS_ARCHIVE_URL from '../../constants/MeetingsArchiveURL';
-import cityLogo from '../../assets/SanJoseCityLogo.png';
 import {
-  CheckedCheckboxIcon,
-  UncheckedCheckboxIcon,
-  ExternalSite,
+  ExternalSite
 } from '../../utils/_icons';
 
 /**
@@ -48,7 +44,7 @@ function MeetingListView() {
 
   const [navToggled, setNavToggled] = useState(false);
   const [meetings, setMeetings] = useState([]);
-  const [showPastMeetings, setShowPastMeetings] = useState(false);
+  const [showPastMeetings] = useState(false);
   const isCurrentUserAdmin = isAdmin();
 
   function handleToggle() {
@@ -67,6 +63,7 @@ function MeetingListView() {
     return () => {
       clearInterval(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: for refetch
   }, [data]);
 
   const meetingsToDisplay = showPastMeetings

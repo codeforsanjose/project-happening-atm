@@ -8,7 +8,7 @@ import { GET_ACCOUNT_BY_EMAIL } from '../../graphql/query';
 import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import LoginContext from '../LoginContext/LoginContext';
 import UserRoles from '../../constants/UserRoles';
-import { InfoIcon, ATMLogoRainbowIcon } from '../../utils/_icons';
+import { InfoIcon } from '../../utils/_icons';
 import atmLogo from '../../assets/ATM_Logo_Rainbow.png';
 import {
   isNullOrEmpty, isNumericString, validEmail, isPasswordValid,
@@ -48,7 +48,7 @@ function AccountCreate() {
   const [createAccount] = useMutation(
     CREATE_ACCOUNT,
     {
-      onCompleted: (createAccountData) => {
+      onCompleted: (_createAccountData) => {
         setSignupSuccess(true);
       },
     },
@@ -67,8 +67,8 @@ function AccountCreate() {
 
   const verifyEmailAddressFormat = () => {
     const currentErrors = { ...fieldErrors };
-    const { email_address } = userInfo;
-    if (isNullOrEmpty(email_address) || !validEmail(email_address)) {
+    const { email_address: emailAddress } = userInfo;
+    if (isNullOrEmpty(emailAddress) || !validEmail(emailAddress)) {
       currentErrors.email_address = 'Please enter a valid email address';
     } else {
       delete currentErrors.email_address;
@@ -115,13 +115,13 @@ function AccountCreate() {
   // Phone number field validation
   const verifyPhoneNumberFormat = () => {
     const currentErrors = { ...fieldErrors };
-    const { phone_number } = userInfo;
-    if (!isNullOrEmpty(phone_number)) {
-      if (!isNumericString(phone_number)) {
+    const { phone_number: phoneNumber } = userInfo;
+    if (!isNullOrEmpty(phoneNumber)) {
+      if (!isNumericString(phoneNumber)) {
         currentErrors.phone_number = 'Phone number not numeric';
-      } else if (phone_number.charAt(0) !== '1') {
+      } else if (phoneNumber.charAt(0) !== '1') {
         currentErrors.phone_number = 'Country code is required to be 1';
-      } else if (phone_number.length !== 11) {
+      } else if (phoneNumber.length !== 11) {
         currentErrors.phone_number = 'We support only US phone numbers ex. +1(234)567-8910';
       } else {
         delete currentErrors.phone_number;
@@ -150,8 +150,10 @@ function AccountCreate() {
       if (existingUsersData.getAccountByEmail) {
         currentErrors.email_address = 'This mail address is already registered. Please log in instead';
       }
+      // TODO: Seek to refactor this to avoid mutating state directly.
       setFieldErrors(currentErrors);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingUsersData]);
 
   useEffect(() => {
@@ -234,7 +236,6 @@ function AccountCreate() {
             placeholder="*"
             className={fieldErrors.email_address ? 'input-error' : ''}
             value={userInfo.email_address}
-            autoFocus
             noValidate
             onChange={(e) => gatherUserInfo(e.target)}
             onBlur={validateEmailExists}

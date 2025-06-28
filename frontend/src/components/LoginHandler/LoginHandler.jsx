@@ -1,31 +1,27 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useTranslation } from "react-i18next";
-import "./LoginHandler.scss";
-import { Redirect, NavLink } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
 import { GoogleLogin } from "react-google-login";
+import { useTranslation } from "react-i18next";
 import MicrosoftLogin from "react-microsoft-login";
+import { NavLink, Redirect } from "react-router-dom";
+import "./LoginHandler.scss";
 
+import ErrorMessagesGraphQL from "../../constants/ErrorMessagesGraphQL";
+import LocalStorageTerms from "../../constants/LocalStorageTerms";
+import CLIENT_ID from "../../constants/OauthClientID";
 import {
-  LOGIN_LOCAL,
   LOGIN_GOOGLE,
+  LOGIN_LOCAL,
   LOGIN_MICROSOFT,
 } from "../../graphql/mutation";
-import LocalStorageTerms from "../../constants/LocalStorageTerms";
-import ErrorMessagesGraphQL from "../../constants/ErrorMessagesGraphQL";
+import LoginContext from "../LoginContext/LoginContext";
 import googleIcon from "./assets/btn_google_signin_light_normal_web@2x.png";
 import microsoftIcon from "./assets/microsoft_PNG18.png";
-import LoginContext from "../LoginContext/LoginContext";
-import CLIENT_ID from "../../constants/OauthClientID";
 
-import { ATMLogoRainbowIcon, CFSJLogo, InfoIcon } from "../../utils/_icons";
+import { InfoIcon } from "../../utils/_icons";
 
 import atmLogoLarge from "../../assets/ATM_Logo_Rainbow.png";
 
-import {
-  getLocalStorageItemByKey,
-  setLocalStorageItemByKey,
-} from "../../utils/storageUtils";
 
 // global constant options
 const OPTIONS = {
@@ -75,7 +71,7 @@ function LoginHandler() {
   sessionStorage.clear();
 
   // Response if the google connection attempt failed
-  const responseGoogle = (response) => {
+  const responseGoogle = (_response) => {
     setOtherError(true);
   };
 
@@ -153,6 +149,7 @@ function LoginHandler() {
         setOtherError(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: username
   }, [data, loginContext, error]);
 
   return (
@@ -255,9 +252,10 @@ function LoginHandler() {
             </button>
           </MicrosoftLogin>
           <p className="tool-tip-wrapper">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid -- TODO: Implement */}
             <a href="">or take a look first</a>
             <span className="tool-tip-text">
-              You'll need an account to sign up for notifications.
+              You&apos;ll need an account to sign up for notifications.
             </span>
             <InfoIcon />
           </p>

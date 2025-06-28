@@ -15,6 +15,7 @@ export const validUSPhoneNumber = (value) => {
     }
     return true;
   }
+  throw new Error('validUSPhoneNumber: value is null or undefined');
 };
 
 export const isPasswordValid = (str) => {

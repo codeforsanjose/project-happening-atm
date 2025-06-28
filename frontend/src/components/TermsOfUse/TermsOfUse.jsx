@@ -1,9 +1,8 @@
-import React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import NavBarHeader from "../NavBarHeader/NavBarHeader";
-import { termsOfUseLanguages } from "./TermsOfUseLanguageHTMLBlocks";
 import '../Footer/Footer.scss';
+import NavBarHeader from "../NavBarHeader/NavBarHeader";
+import termsOfUseLanguages from "./TermsOfUseLanguageHTMLBlocks";
 
 const TermsOfUse = () => {
   const { i18n } = useTranslation();

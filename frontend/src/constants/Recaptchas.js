@@ -3,4 +3,3 @@ const RECAPTCHAS = {
 };
 
 export default RECAPTCHAS;
-

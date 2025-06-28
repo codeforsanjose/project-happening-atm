@@ -1,14 +1,12 @@
-import React from 'react';
-import './NavLinks.scss';
 import {
-  CalendarTodayIcon,
   ATMLogoPinRainbowIcon,
+  CalendarTodayIcon,
   FaqIcon,
-  HomeIcon,
-  ProfileIcon,
+  ProfileIcon
 } from '../../utils/_icons';
-import NavigationLink from './NavigationLink';
 import LanguageDropdown from '../LanguageDropdown/LanguageDropdown';
+import NavigationLink from './NavigationLink';
+import './NavLinks.scss';
 import Signout from './Signout';
 
 function NavLinks({ toggled, t }) {

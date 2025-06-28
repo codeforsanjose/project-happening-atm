@@ -28,8 +28,8 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPasswordRequest";
 import SetNewPassword from "./components/ForgotPassword/SetNewPassword";
 import UpdateUserEmail from "./components/UpdateUserInfo/UpdateUserEmail";
 import UpdateUserNumber from "./components/UpdateUserInfo/UpdateUserNumber";
-import FAQ from "./components/FAQ/FAQ.jsx";
-import About from "./components/AboutUs/AboutUs.jsx";
+import FAQ from "./components/FAQ/FAQ";
+import About from "./components/AboutUs/AboutUs";
 import UserAccountView from "./components/UserAccountView/UserAccountView";
 import TermsOfUse from "./components/TermsOfUse/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
@@ -67,7 +67,7 @@ const client = new ApolloClient({
 });
 
 function SampleQuery() {
-  const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
+  const { loading, error } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
   // eslint-disable-next-line no-console
   if (loading) console.log("THE Loading: ", loading);

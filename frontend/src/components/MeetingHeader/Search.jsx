@@ -19,7 +19,7 @@ function Search() {
         ]}
         shouldItemRender={(item, val) => item.label.toLowerCase().indexOf(val.toLowerCase()) > -1}
         getItemValue={(item) => item.label}
-        renderItem={(item, highlighted) => (
+        renderItem={(item) => (
           <div
             key={item.id}
             className="menu-item"

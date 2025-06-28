@@ -1,6 +1,4 @@
-import React from "react";
-
-export const privacyPolicyLanguages = (language = "en") => {
+export default (language = "en") => {
   const allLanguages = {
     en: (
       <>

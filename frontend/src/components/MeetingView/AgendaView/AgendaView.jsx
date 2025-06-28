@@ -1,41 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Accordion } from 'react-accessible-accordion';
-import './AgendaView.scss';
 import {
   useMutation,
   useQuery,
 } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import { Accordion } from 'react-accessible-accordion';
+import './AgendaView.scss';
 
 import {
+  closestCorners,
   DndContext,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  closestCorners,
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 
 import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
-import { CheckedCheckboxIcon, UncheckedCheckboxIcon } from '../../../utils/_icons';
 
 // components used by this component
 import AgendaGroups from './AgendaGroups';
 
 // functions used by this component
-import { handleDragStart, handleDragOver, handleDragEnd } from './agendaViewFunctions/dndKitFunctions';
+import isAdmin from '../../../utils/isAdmin';
+import { handleDragEnd, handleDragOver, handleDragStart } from './agendaViewFunctions/dndKitFunctions';
+import getProgressStatus from './agendaViewFunctions/getProgressStatus';
 import groupMeetingItems from './agendaViewFunctions/groupMeetingItems';
-import createRenderedGroups from './agendaViewFunctions/createRenderedGroups';
 import saveReOrder from './agendaViewFunctions/saveReOrder';
 import DragOverlayHandler from './DragOverlayHandlers/DragOverlayHandlers';
-import isAdmin from '../../../utils/isAdmin';
-import getProgressStatus from './agendaViewFunctions/getProgressStatus';
 
-import { GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/query';
 import { UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
+import { GET_SUB_BY_EMAIL_MEETINGID } from '../../../graphql/query';
 
 /**
  * Used to display a list of a meeting's agenda items and controls to
@@ -76,7 +73,7 @@ function AgendaView({
     setMeetingItemsUpdated, setProgressStatus, refetchAllMeetings,
   } = args;
 
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const [agendaGroups, setAgendaGroups] = useState(
     groupMeetingItems(meeting.items, OPTIONS.dropIdPostfix),
   );

@@ -29,6 +29,20 @@ const UpdateUserNumber = () => {
   const handleShowInfo = () => {
     setShowInfo(prevShowInfo => !prevShowInfo)
   }
+  
+  const verifyPhoneNumberFormat = () => {
+    if (!isNullOrEmpty(newNumber)) {
+      if (!isNumericString(newNumber)) {
+        setFieldErrors('Phone number not numeric');
+      } else if (newNumber.charAt(0) !== '1') {
+        setFieldErrors('Country code is required to be 1');
+      } else if (newNumber.length > 10) {
+        setFieldErrors('We support only US phone numbers ex. +1(234)567-8910');
+      } else {
+        setFieldErrors('');
+      }
+    }
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -50,20 +64,6 @@ const UpdateUserNumber = () => {
     verifyPhoneNumberFormat();
   }
 
-  const verifyPhoneNumberFormat = () => {
-    if (!isNullOrEmpty(newNumber)) {
-      if (!isNumericString(newNumber)) {
-        setFieldErrors('Phone number not numeric');
-      } else if (newNumber.charAt(0) !== '1') {
-        setFieldErrors('Country code is required to be 1');
-      } else if (newNumber.length > 10) {
-        setFieldErrors('We support only US phone numbers ex. +1(234)567-8910');
-      } else {
-        setFieldErrors('');
-      }
-    }
-  };
-
   return (
     <div className="update-user-number-view">
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
@@ -79,7 +79,7 @@ const UpdateUserNumber = () => {
             {showInfo && 
               <span className='info-message'>We only support US phone numbers</span>
             }
-            <button className='info-button' onClick={handleShowInfo}>
+            <button className='info-button' onClick={handleShowInfo} type="button">
               <span className='sr-only'>Info</span>
               <InfoIcon/>
             </button>
@@ -93,7 +93,6 @@ const UpdateUserNumber = () => {
                 name="phone-number"
                 className="form-input"
                 placeholder="Phone Number"
-                autoFocus
                 noValidate
                 onChange={(e) => checkingPhoneNumber(e.target.value)}
               />
@@ -109,8 +108,9 @@ const UpdateUserNumber = () => {
             <button className={`user-account-update-btn${fieldErrors || !newNumber ? ' disabled' : ''}`}
               type="button"
               // need to do this so that you can not submit button on initial page load
+              // eslint-disable-next-line no-unneeded-ternary
               {...!fieldErrors && newNumber ? { onClick: handleSubmit} : {}}
-              disabled={fieldErrors ? true : false}
+              disabled={fieldErrors}
             >
               Change Phone Number
             </button>

@@ -4,51 +4,60 @@
   "description": "",
   "main": "server/app.js",
   "engines": {
-    "node": "14.x"
+    "node": "22.x",
+    "npm": "10.x"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.5",
-    "@dnd-kit/core": "^2.1.2",
-    "@dnd-kit/sortable": "^2.0.1",
+    "@apollo/client": "^3.13.8",
+    "@dnd-kit/core": "^3.1.1",
+    "@dnd-kit/sortable": "^3.1.0",
     "@dnd-kit/utilities": "^1.0.3",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
     "classnames": "^2.2.6",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.10.4",
     "graphql": "^15.4.0",
+    "history": "^4.10.1",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-http-backend": "^1.0.24",
     "js-yaml": "^4.0.0",
-    "react": "^16.14.0",
-    "react-accessible-accordion": "^3.3.3",
+    "query-string": "^9.2.1",
+    "react": "^17.0.2",
+    "react-accessible-accordion": "^4.0.0",
     "react-autocomplete": "^1.8.1",
     "react-datepicker": "4.2.1",
-    "react-dom": "^16.14.0",
+    "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
-    "react-google-recaptcha": "^2.1.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-i18next": "^11.8.5",
-    "react-microsoft-login": "^1.15.0",
+    "react-microsoft-login": "^2.0.1",
     "react-modal": "^3.12.1",
     "react-responsive": "^9.0.0-beta.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
-    "react-sortable-hoc": "^1.11.0",
+    "react-router-dom-v5-compat": "^6.30.0",
+    "react-scripts": "^5.0.1",
+    "react-sortable-hoc": "^2.0.0",
     "react-test-renderer": "^17.0.2",
-    "react-virtualized": "^9.22.2",
+    "react-virtualized": "^9.22.6",
     "sass": "^1.89.2"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "nodemon": "^2.0.5"
+    "nodemon": "^2.0.5",
+    "prettier": "^3.6.2"
   },
   "scripts": {
     "dev": "nodemon server/app.js",
+    "lint": "eslint src/**/*.{js,jsx}",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -75,5 +84,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "react-google-recaptcha": {
+      "react": "^17.0.2"
+    },
+    "react-async-script": {
+      "react": "^17.0.2"
+    },
+    "react-autocomplete": {
+      "react": "^17.0.2",
+      "react-dom": "^17.0.2"
+    }
   }
 }

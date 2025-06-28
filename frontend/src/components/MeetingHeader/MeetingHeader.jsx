@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './MeetingHeader.scss';
+import classNames from 'classnames';
+import { useMutation } from '@apollo/client';
 import Spinner from '../Spinner/Spinner';
 import MeetingStates from '../../constants/MeetingStates';
 import Dropdown from '../Dropdown/Dropdown';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
-import classNames from 'classnames';
 
 import { toTimeString, i18Date } from '../../utils/timestampHelper';
 import { buildDropdownMeetingStatuses } from '../../utils/buildDropdownStatusClasses';
 
-import { useMutation } from '@apollo/client';
 import { UPDATE_MEETING } from '../../graphql/mutation';
 
 // Asset imports
@@ -23,7 +23,6 @@ import isAdmin from '../../utils/isAdmin';
 function MeetingHeader({
   loading,
   meeting,
-  setSaveMeetingItems, // this prop doesn't appear to be used. Follow-up to see if can remove
   progressStatus,
 }) {
   const { t } = useTranslation();
@@ -38,7 +37,7 @@ function MeetingHeader({
   // index map of different meeting statuses
   const statusIndexMap = statuses.map((status) => status.value);
   // define state for selected meeting status and the graphql mutation for updating meeting in DB
-  //Set default status of meetings to Upcoming if no status exists yet
+  // Set default status of meetings to Upcoming if no status exists yet
   const [meetingStatus, setMeetingStatus] = useState(
     meeting.status !== undefined
       ? statuses[statusIndexMap.indexOf(meeting.status)]
@@ -53,7 +52,7 @@ function MeetingHeader({
   const openModal = () => {
     setShowModal(true);
   };
-  let [pendingStatus, setPendingStatus] = useState(meetingStatus);
+  const [pendingStatus, setPendingStatus] = useState(meetingStatus);
 
   // Define prop values for the confirmation modal when admins change the meeting status:
   // Note: local language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
@@ -82,6 +81,7 @@ function MeetingHeader({
     if (meetingStatus.value !== meeting.status && meeting.status) {
       setMeetingStatus(statuses[statusIndexMap.indexOf(meeting.status)]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: statuses, statusIndexMap
   }, [meeting.status]);
 
   // re-render whenever user changes meetingStatus
@@ -96,6 +96,7 @@ function MeetingHeader({
       });
       if (!error) closeModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO:error, meeting, updateMeeting
   }, [meetingStatus]);
 
   // JYIP: 2023.07 observation of inherited functionality (i.e. someone else built this) & potential issue:
@@ -107,6 +108,7 @@ function MeetingHeader({
     if (progressStatus) {
       setMeetingStatus(statuses[statusIndexMap.indexOf('IN PROGRESS')]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: statusIndexMap && statuses
   }, [progressStatus]);
 
   // handle new user selection for meeting status
@@ -175,9 +177,9 @@ function MeetingHeader({
             {!loading && (
               <div className="date-status-wrapper">
                 <div className="date">
-                  {i18DateString +
-                    ', ' +
-                    toTimeString(meeting.meeting_start_timestamp)}
+                  {`${i18DateString 
+                    }, ${ 
+                    toTimeString(meeting.meeting_start_timestamp)}`}
                 </div>
                 {/* display meeting status for community users: */}
                 {!isAdmin() && (

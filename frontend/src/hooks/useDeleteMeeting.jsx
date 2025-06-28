@@ -43,23 +43,26 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
     setShowModal(false);
     // refresh page if on mtg list page o/wise if on
     // indiv. mtg view page, navigate to mtg list page and refresh
-    history.location.pathname === '/'
-      ? history.go(0)
-      : historyBrowser.push('/');
+    if (history.location.pathname !== '/') {
+      historyBrowser.go(0);
+    } else {
+      history.go(0);
+    }
   };
 
   const openModal = () => {
     setShowModal(true);
   };
 
-  const [deleteMeeting, { loading, error }] = useMutation(DELETE_MEETING);
+  const [deleteMeeting, { error }] = useMutation(DELETE_MEETING);
   const time = toTimeString(meeting_start_timestamp);
 
   const handleDelete = async () => {
-    await deleteMeeting({ variables: { id: id } });
+    await deleteMeeting({ variables: { id } });
     if (!error) {
       clearAndCloseModal();
     } else if (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   };
@@ -74,22 +77,21 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
     ? `There was an error, Please try again. ${i18Date()} - ${time}`
     : `${i18DateString} - ${time}`;
 
-  const DeleteModal = () =>
-    showModal ? (
-      <ConfirmationModal
-        isOpen={showModal}
-        closeModal={closeModal}
-        headerText={modalHeaderText}
-        bodyText={modalBodyText}
-        confirmButtonText={t(
-          'meeting.list.delete-meeting.modal.buttons.delete'
-        )}
-        onConfirm={handleDelete}
-        onCancel={() => closeModal()}
-        className="delete-meeting-modal"
-        contentLabel={t('meeting.list.delete-meeting.modal.title')}
-      />
-    ) : null;
+  const DeleteModal = () => (showModal ? (
+    <ConfirmationModal
+      isOpen={showModal}
+      closeModal={closeModal}
+      headerText={modalHeaderText}
+      bodyText={modalBodyText}
+      confirmButtonText={t(
+        'meeting.list.delete-meeting.modal.buttons.delete',
+      )}
+      onConfirm={handleDelete}
+      onCancel={() => closeModal()}
+      className="delete-meeting-modal"
+      contentLabel={t('meeting.list.delete-meeting.modal.title')}
+    />
+  ) : null);
 
   return [openModal, DeleteModal];
 };
