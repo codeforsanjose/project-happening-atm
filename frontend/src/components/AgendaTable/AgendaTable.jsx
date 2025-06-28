@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  arrayMove,
-  SortableContainer,
-  SortableElement,
-} from 'react-sortable-hoc';
+import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { defaultTableRowRenderer, Table, Column } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import './AgendaTable.scss';
@@ -36,7 +32,7 @@ function CustomizedTable(props) {
     <SortableTable
       distance={1}
       rowRenderer={rowRenderer}
-      rowGetter={({ index }) => props.items[index]}
+      rowGetter={({ index }) => items[index]}
       width={735}
       height={height}
       headerHeight={20}
@@ -47,23 +43,20 @@ function CustomizedTable(props) {
     >
       <Column
         style={{ 'text-align': 'center' }}
-        label="Select"
-        dataKey="checkbox"
+        label='Select'
+        dataKey='checkbox'
         width={60}
         cellRenderer={({ cellData }) => <CustomCheckbox checked={cellData} />}
       />
-      <Column label="Agenda Item" dataKey="agendaItem" width={500} />
+      <Column label='Agenda Item' dataKey='agendaItem' width={500} />
       {/* Please note you can't just add an onClick prop: https://github.com/clauderic/react-sortable-hoc#click-events-being-swallowed */}
       <Column
         style={{ 'text-align': 'center' }}
-        label="Status"
-        dataKey="agendaStatus"
+        label='Status'
+        dataKey='agendaStatus'
         width={175}
         cellRenderer={({ cellData }) => (
-          <CustomDropdown
-            cellData={cellData}
-            remainingOptions={props.remainingOptions(cellData)}
-          />
+          <CustomDropdown cellData={cellData} remainingOptions={remainingOptions(cellData)} />
         )}
       />
     </SortableTable>
@@ -139,7 +132,7 @@ class SortableCustomizedTable extends Component {
           agendaStatus: 'closed',
           height: 89,
         },
-        { 
+        {
           id: 4,
           parent_meeting_item_id: null,
           checkbox: false,
@@ -167,8 +160,7 @@ class SortableCustomizedTable extends Component {
           id: 7,
           parent_meeting_item_id: null,
           checkbox: false,
-          agendaItem:
-            '3.1 Report of the City Manager, David Sykes (Verbal Report)',
+          agendaItem: '3.1 Report of the City Manager, David Sykes (Verbal Report)',
           agendaStatus: 'deferred',
           height: 89,
         },
@@ -192,8 +184,7 @@ class SortableCustomizedTable extends Component {
           id: 10,
           parent_meeting_item_id: null,
           checkbox: false,
-          agendaItem:
-            '3.4 Coronavirus Relief Funds for Resident Assistance Efforts',
+          agendaItem: '3.4 Coronavirus Relief Funds for Resident Assistance Efforts',
           agendaStatus: 'deferred',
           height: 89,
         },
@@ -227,17 +218,11 @@ class SortableCustomizedTable extends Component {
 
   /* remainingOptions takes the current status, cellData, and returns
   an array of strings of the options other than currentStatus */
-  remainingOptions = (cellData) => {
+  remainingOptions = cellData => {
     // compare with a hard coded array of all the options and return a new array
     const remainingOptions = [];
-    const allOptions = [
-      'in progress',
-      'deferred',
-      'closed',
-      'completed',
-      'pending',
-    ];
-    allOptions.forEach((option) => {
+    const allOptions = ['in progress', 'deferred', 'closed', 'completed', 'pending'];
+    allOptions.forEach(option => {
       if (option !== cellData) {
         remainingOptions.push(option);
       } else {
@@ -245,11 +230,11 @@ class SortableCustomizedTable extends Component {
       }
     });
     return remainingOptions;
-  }
+  };
 
-  registerTableRef = (tableInstance) => {
+  registerTableRef = tableInstance => {
     this.Table = tableInstance;
-  }
+  };
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex === newIndex) return;
@@ -257,9 +242,9 @@ class SortableCustomizedTable extends Component {
     this.setState({
       items: arrayMove(items, oldIndex, newIndex),
     });
-  }
+  };
 
-  render(props) {
+  render(_props) {
     const { items } = this.state;
     return (
       <CustomizedTable
@@ -267,7 +252,7 @@ class SortableCustomizedTable extends Component {
         getRef={this.registerTableRef}
         onSortEnd={this.onSortEnd}
         remainingOptions={this.remainingOptions}
-      // recalculatePageHeight={this.props.recalculatePageHeight}
+        // recalculatePageHeight={this.props.recalculatePageHeight}
       />
     );
   }

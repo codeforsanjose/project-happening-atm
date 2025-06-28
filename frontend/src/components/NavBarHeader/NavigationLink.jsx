@@ -13,12 +13,12 @@ import './NavigationLink.scss';
 
 function NavigationLink({ Icon, linkText, path }) {
   return (
-    <li className="header-nav-link">
-      <NavLink activeClassName="button-active" to={path}>
-        <div className="button-group">
-          <div className="button-group-inner">
+    <li className='header-nav-link'>
+      <NavLink activeClassName='button-active' to={path}>
+        <div className='button-group'>
+          <div className='button-group-inner'>
             {Icon}
-            <span className="button-text">{linkText}</span>
+            <span className='button-text'>{linkText}</span>
           </div>
         </div>
       </NavLink>

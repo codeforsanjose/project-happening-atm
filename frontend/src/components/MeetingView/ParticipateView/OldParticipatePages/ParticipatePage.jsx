@@ -9,11 +9,11 @@ import BackNavigation from '../../../BackNavigation/BackNavigation';
  * props:
  *    Component
  *      The component to render
-*/
+ */
 
 function ParticipatePage({ Component }) {
   return (
-    <div className="ParticipatePage">
+    <div className='ParticipatePage'>
       <BackNavigation />
       <Component />
     </div>

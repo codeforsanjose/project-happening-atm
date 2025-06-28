@@ -19,33 +19,21 @@ import { ConfirmationIcon } from '../../utils/_icons';
  *      A string displayed on the confirmation button of the modal
  */
 
-function SuccessModal({
-  isOpen,
-  closeModal,
-  headerText,
-  confirmModal,
-  confirmText,
-}) {
+function SuccessModal({ isOpen, closeModal, headerText, confirmModal, confirmText }) {
   return (
     <Modal
       isOpen={isOpen}
-      className="SuccessModal"
-      overlayClassName="modal-overlay"
+      className='SuccessModal'
+      overlayClassName='modal-overlay'
       onRequestClose={closeModal}
     >
-      <div className="modal-header">
+      <div className='modal-header'>
         <ConfirmationIcon />
       </div>
-      <div className="modal-body">
-        <h4>
-          {headerText}
-        </h4>
-        <div className="row">
-          <button
-            type="button"
-            className='modal-button'
-            onClick={confirmModal}
-          >
+      <div className='modal-body'>
+        <h4>{headerText}</h4>
+        <div className='row'>
+          <button type='button' className='modal-button' onClick={confirmModal}>
             {confirmText}
           </button>
         </div>

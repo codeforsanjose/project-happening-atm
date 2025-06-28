@@ -1,11 +1,10 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { toDateString, toTimeString } from '../../utils/timestampHelper';
-import './MeetingListItem.scss';
 import { StatusInProgress } from '../../utils/_icons';
 import isAdmin from '../../utils/isAdmin';
+import { toDateString, toTimeString } from '../../utils/timestampHelper';
+import './MeetingListItem.scss';
 
 // Component imports
 import {
@@ -34,20 +33,14 @@ function MeetingListItem({ item }) {
   const date = toDateString(meeting_start_timestamp, 'dddd, MMM D');
   const time = toTimeString(meeting_start_timestamp);
   const isInProgress = status === 'IN PROGRESS';
-  const isEnded = status === 'ENDED';
 
   const isCurrentUserAdmin = isAdmin();
-  const PublicLinks =
-    status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
-  const MeetingItemLinks = isCurrentUserAdmin
-    ? AdminMeetingItemLinks
-    : PublicLinks;
+  const PublicLinks = status === 'CLOSED' ? PastMeetingItemLinks : PendingMeetingItemLinks;
+  const MeetingItemLinks = isCurrentUserAdmin ? AdminMeetingItemLinks : PublicLinks;
 
   return (
-    <div
-      className={classnames('MeetingListItem', { 'in-progress': isInProgress })}
-    >
-      <Link to={`meeting/${id}`} className="meeting-date">
+    <div className={classnames('MeetingListItem', { 'in-progress': isInProgress })}>
+      <Link to={`meeting/${id}`} className='meeting-date'>
         <h3>{date}</h3>
       </Link>
       <div
@@ -57,12 +50,12 @@ function MeetingListItem({ item }) {
       >
         {isInProgress && (
           <>
-            <StatusInProgress className="status-icon" />
+            <StatusInProgress className='status-icon' />
             <span>{t('meeting.status.short.in-progress')}</span>
           </>
         )}
       </div>
-      <Link to={`meeting/${id}`} className="meeting-time">
+      <Link to={`meeting/${id}`} className='meeting-time'>
         <div>{time}</div>
       </Link>
       <MeetingItemLinks meeting={item} isInProgress={isInProgress} />

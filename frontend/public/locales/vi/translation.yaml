@@ -35,7 +35,7 @@ meeting:
     replace-agenda: Tải lên Văn Kiện
     join:
       zoom: Tham gia cuộc họp Zoom
-    watch: Xem buổi Phát thanh của cuộc họp 
+    watch: Xem buổi Phát thanh của cuộc họp
   status:
     label: Trạng thái cuộc họp
     short:
@@ -63,7 +63,7 @@ meeting:
         in-1-day: Sẽ diễn ra trong vòng 1 ngày
         in-0-day: Sẽ diễn ra trong vòng vài giờ nữa
       long:
-        in-progress: Cuộc họp đang diễn ra 
+        in-progress: Cuộc họp đang diễn ra
         in-1-week: Sẽ diễn ra trong vòng 1 tuần
         in-6-days: Sẽ diễn ra trong vòng 6 ngày
         in-5-days: Sẽ diễn ra trong vòng 5 ngày
@@ -85,9 +85,9 @@ meeting:
           outlook: Outlook Calendar
     agenda:
       button: Chương trình nghị sự
-    minutes: 
+    minutes:
       button: Ghi chú cuộc họp
-    recording: 
+    recording:
       button: Bản thu hình
     new-meeting:
       button: Tạo cuộc họp mới
@@ -192,7 +192,7 @@ meeting:
                 label: Tài liệu đính kèm
                 upload-new: Tải tài liêu mới
       details:
-        recommendation: Gợi ý 
+        recommendation: Gợi ý
         attatchments: Tài liệu đính kèm
         presentation: Bài thuyết trình
     participate:
@@ -249,7 +249,7 @@ meeting:
               button: Đến kênh Youtube
             number-3:
               title: Trang Web của Thành phố
-              subtitle: Tìm cuộc họp và nhấn vào "Đang diễn ra" 
+              subtitle: Tìm cuộc họp và nhấn vào "Đang diễn ra"
               button: Đến Trang Web của Thành phố
         comment:
           title: Nhập Bình luận Công khai
@@ -301,19 +301,19 @@ forgotPassword:
     button:
       sendemail: vi - Send password reset email
     input:
-      email: vi - Email  
+      email: vi - Email
     link:
-      signIn: vi - Sign In 
+      signIn: vi - Sign In
 
 setNewPassword:
-  header: vi - Change password   
+  header: vi - Change password
   body:
     heading1: vi - Enter your new password
     button:
       changePassword: vi - Change Password
     input:
       newPassword: vi - New Password
-      confirmNewPassword: vi - Confirm Password          
+      confirmNewPassword: vi - Confirm Password
 
 footer:
   language:
@@ -348,7 +348,7 @@ standard:
     - Thứ Năm
     - Thứ Sáu
     - Thứ Bảy
-  months: 
+  months:
     - Tháng Một
     - Tháng Hai
     - Tháng Ba
@@ -406,7 +406,7 @@ standard:
     city: thành phố
     cities: các thành phố
     council: hội đồng
-    meeting: cuộc họp 
+    meeting: cuộc họp
     meetings: các cuộc họp
     agenda: văn kiện
     status: trạng thái

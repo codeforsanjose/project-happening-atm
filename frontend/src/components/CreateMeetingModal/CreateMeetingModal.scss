@@ -2,7 +2,7 @@
 
 .CreateMeetingModal {
   position: absolute;
-  box-shadow: rgba(0,0,0,0.8) 0 0 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px;
   background-color: $blueSky;
   border-radius: 6px;
   font-family: 'Poppins', sans-serif;
@@ -35,7 +35,7 @@
     width: calc(236px * 2.2);
     min-width: calc(236px * 2.2);
     padding: 0 1.5rem 1.5rem 1.5rem;
-    
+
     @media only screen and (max-width: 812px) {
       width: 100%;
       min-width: 100%;
@@ -49,7 +49,8 @@
       @media only screen and (max-width: 812px) {
         flex-direction: column;
         margin-top: 1.5em;
-        margin-bottom: 0.5em;      }
+        margin-bottom: 0.5em;
+      }
     }
 
     .date-time-title {
@@ -60,7 +61,7 @@
 
     .date-time-picker {
       width: 100%;
-      
+
       @media only screen and (max-width: 812px) {
         margin-top: -2em;
       }
@@ -76,18 +77,22 @@
       line-height: 250%;
       text-indent: 7px;
     }
-    
+
     input:focus {
       outline: none;
     }
 
-
-    .calendar-icon, .time-icon  {
+    .calendar-icon,
+    .time-icon {
       transform: translate(200px, -30px);
       margin-bottom: 0px;
     }
 
-    button, .modal-button, .modal-buttons, .cancel-button, .create-button {
+    button,
+    .modal-button,
+    .modal-buttons,
+    .cancel-button,
+    .create-button {
       font-family: 'Poppins', sans-serif;
       cursor: pointer;
     }
@@ -104,7 +109,7 @@
       font-size: 1em;
       font-weight: 600;
 
-      @media only screen and (max-width:812px) {
+      @media only screen and (max-width: 812px) {
         padding: 0.25em 1.5em;
       }
 
@@ -159,22 +164,22 @@
   display: none;
 }
 
-.react-datepicker-popper[data-placement^=bottom]{
-   padding-top: 0px;
+.react-datepicker-popper[data-placement^='bottom'] {
+  padding-top: 0px;
 }
 
 .react-datepicker__time-container {
   width: 236px;
 }
 
-.react-datepicker__current-month, 
-.react-datepicker-time__header, 
+.react-datepicker__current-month,
+.react-datepicker-time__header,
 .react-datepicker-year-header {
   padding-bottom: 5px;
 }
 
 .react-datepicker-time__header {
-   display: none;
+  display: none;
 }
 
 .react-datepicker__header {
@@ -184,7 +189,10 @@
   padding-left: 10px;
 }
 
-.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list {
   text-align: start;
   padding-left: 5px;
   box-sizing: border-box;
@@ -200,13 +208,19 @@
     right: 25px;
   }
 }
-.react-datepicker__year-read-view--down-arrow, .react-datepicker__month-read-view--down-arrow, .react-datepicker__month-year-read-view--down-arrow, .react-datepicker__navigation-icon::before {
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
   border-color: $black;
   border-style: solid;
   border-width: 1px 1px 0 0;
 }
 
-.react-datepicker__year-read-view--down-arrow, .react-datepicker__month-read-view--down-arrow, .react-datepicker__month-year-read-view--down-arrow, .react-datepicker__navigation-icon::before {
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
   border-color: $black;
   border-width: 2px 2px 0 0;
   height: 7px;

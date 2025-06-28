@@ -1,47 +1,42 @@
-import React, { Suspense, useState } from "react";
-import { BatchHttpLink } from "@apollo/client/link/batch-http";
-import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-} from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import "./index.scss";
+import React, { Suspense, useState } from 'react';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider, useQuery } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import './index.scss';
 
-import classnames from "classnames";
-import { useTranslation } from "react-i18next";
-import MeetingListView from "./components/MeetingListView/MeetingListView";
-import AgendaTable from "./components/AgendaTable/AgendaTable";
-import MeetingView from "./components/MeetingView/MeetingView";
-import Subscribe from "./components/Subscribe/Subscribe";
-import AdminView from "./components/AdminView/AdminView";
-import EmailConfirmPage from "./components/EmailConfirmPage/EmailConfirmPage";
-import Footer from "./components/Footer/Footer";
-import LoginHandler from "./components/LoginHandler/LoginHandler";
-import AuthRoute from "./components/AuthRoute/AuthRoute";
-import LoginContext from "./components/LoginContext/LoginContext";
-import AccountCreate from "./components/UserAccountCreate/AccountCreate";
-import ForgotPassword from "./components/ForgotPassword/ForgotPasswordRequest";
-import SetNewPassword from "./components/ForgotPassword/SetNewPassword";
-import UpdateUserEmail from "./components/UpdateUserInfo/UpdateUserEmail";
-import UpdateUserNumber from "./components/UpdateUserInfo/UpdateUserNumber";
-import FAQ from "./components/FAQ/FAQ.jsx";
-import About from "./components/AboutUs/AboutUs.jsx";
-import UserAccountView from "./components/UserAccountView/UserAccountView";
-import TermsOfUse from "./components/TermsOfUse/TermsOfUse";
-import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
-import SendFeedback from "./components/SendFeedback/SendFeedback";
-import * as serviceWorker from "./serviceWorker";
+import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
+import MeetingListView from './components/MeetingListView/MeetingListView';
+import AgendaTable from './components/AgendaTable/AgendaTable';
+import MeetingView from './components/MeetingView/MeetingView';
+import Subscribe from './components/Subscribe/Subscribe';
+import AdminView from './components/AdminView/AdminView';
+import EmailConfirmPage from './components/EmailConfirmPage/EmailConfirmPage';
+import Footer from './components/Footer/Footer';
+import LoginHandler from './components/LoginHandler/LoginHandler';
+import AuthRoute from './components/AuthRoute/AuthRoute';
+import LoginContext from './components/LoginContext/LoginContext';
+import AccountCreate from './components/UserAccountCreate/AccountCreate';
+import ForgotPassword from './components/ForgotPassword/ForgotPasswordRequest';
+import SetNewPassword from './components/ForgotPassword/SetNewPassword';
+import UpdateUserEmail from './components/UpdateUserInfo/UpdateUserEmail';
+import UpdateUserNumber from './components/UpdateUserInfo/UpdateUserNumber';
+import FAQ from './components/FAQ/FAQ';
+import About from './components/AboutUs/AboutUs';
+import UserAccountView from './components/UserAccountView/UserAccountView';
+import TermsOfUse from './components/TermsOfUse/TermsOfUse';
+import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
+import SendFeedback from './components/SendFeedback/SendFeedback';
+import * as serviceWorker from './serviceWorker';
 
 // import parseJwt from './utils/parseJwt.js';
-import { GET_ALL_MEETINGS_WITH_ITEMS } from "./graphql/query";
-import AdminPaths from "./constants/AdminPaths";
-import LocalStorageTerms from "./constants/LocalStorageTerms";
-import verifyToken from "./utils/verifyToken";
-import "./i18n";
+import { GET_ALL_MEETINGS_WITH_ITEMS } from './graphql/query';
+import AdminPaths from './constants/AdminPaths';
+import LocalStorageTerms from './constants/LocalStorageTerms';
+import verifyToken from './utils/verifyToken';
+import './i18n';
 
 const httpLink = new BatchHttpLink({
   uri: `${process.env.REACT_APP_GRAPHQL_URL}/graphql`,
@@ -56,7 +51,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token && verifyToken() ? `Bearer ${token}` : "",
+      authorization: token && verifyToken() ? `Bearer ${token}` : '',
     },
   };
 });
@@ -67,12 +62,12 @@ const client = new ApolloClient({
 });
 
 function SampleQuery() {
-  const { loading, error, data } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
+  const { loading, error } = useQuery(GET_ALL_MEETINGS_WITH_ITEMS);
 
   // eslint-disable-next-line no-console
-  if (loading) console.log("THE Loading: ", loading);
+  if (loading) console.log('THE Loading: ', loading);
   // eslint-disable-next-line no-console
-  if (error) console.log("THE Error: ", error);
+  if (error) console.log('THE Error: ', error);
 
   // eslint-disable-next-line no-console
   // console.log(data);
@@ -81,8 +76,7 @@ function SampleQuery() {
 
 const initializeSignIn = () => {
   // localStorage.getItem returns string, so need to convert to boolean
-  const tokenSignedIn =
-    window.localStorage.getItem(LocalStorageTerms.SIGNED_IN) === "true";
+  const tokenSignedIn = window.localStorage.getItem(LocalStorageTerms.SIGNED_IN) === 'true';
   // provides verification to the front-end the login status
   // 1st verify user is signed in before attempting token verification
   const loggedIn = tokenSignedIn && verifyToken();
@@ -99,55 +93,55 @@ function App() {
     <React.StrictMode>
       <ApolloProvider client={client}>
         <LoginContext.Provider value={{ setSignedIn, signedIn }}>
-          <div className={classnames("app-root")}>
+          <div className={classnames('app-root')}>
             <Router>
               <Switch>
-                <AuthRoute exact path="/" signedIn={signedIn}>
+                <AuthRoute exact path='/' signedIn={signedIn}>
                   <MeetingListView />
                 </AuthRoute>
-                <AuthRoute path="/subscribe" signedIn={signedIn}>
+                <AuthRoute path='/subscribe' signedIn={signedIn}>
                   <Subscribe />
                 </AuthRoute>
-                <AuthRoute path="/meeting/:id" signedIn={signedIn}>
+                <AuthRoute path='/meeting/:id' signedIn={signedIn}>
                   <MeetingView />
                 </AuthRoute>
-                <AuthRoute path="/confirm/:token/:action" signedIn={signedIn}>
+                <AuthRoute path='/confirm/:token/:action' signedIn={signedIn}>
                   <EmailConfirmPage />
                 </AuthRoute>
-                <Route path="/login">
+                <Route path='/login'>
                   <LoginHandler />
                 </Route>
-                <Route path="/account-create">
+                <Route path='/account-create'>
                   <AccountCreate />
                 </Route>
-                <Route path="/forgot-password">
+                <Route path='/forgot-password'>
                   <ForgotPassword />
                 </Route>
-                <Route path="/reset-password">
+                <Route path='/reset-password'>
                   <SetNewPassword />
                 </Route>
-                <Route path="/update-email">
+                <Route path='/update-email'>
                   <UpdateUserEmail />
                 </Route>
-                <Route path="/update-number">
+                <Route path='/update-number'>
                   <UpdateUserNumber />
                 </Route>
-                <Route exact path="/faq">
+                <Route exact path='/faq'>
                   <FAQ />
                 </Route>
-                <Route exact path="/about">
+                <Route exact path='/about'>
                   <About />
                 </Route>
-                <Route exact path="/profile">
+                <Route exact path='/profile'>
                   <UserAccountView />
                 </Route>
-                <Route exact path="/terms-of-use">
+                <Route exact path='/terms-of-use'>
                   <TermsOfUse />
                 </Route>
-                <Route exact path="/privacy-policy">
+                <Route exact path='/privacy-policy'>
                   <PrivacyPolicy />
                 </Route>
-                <Route exact path="/send-feedback">
+                <Route exact path='/send-feedback'>
                   <SendFeedback />
                 </Route>
                 {/* <Route exact path="/participate/join">
@@ -163,24 +157,15 @@ function App() {
                   <ParticipatePage Component={ParticipateRequest} />
                 </Route> */}
 
-                <AuthRoute
-                  path={`${AdminPaths.EDIT_MEETING}/:id`}
-                  signedIn={signedIn}
-                >
+                <AuthRoute path={`${AdminPaths.EDIT_MEETING}/:id`} signedIn={signedIn}>
                   <AdminView
-                    headerText={t("meeting.actions.edit-info.label")}
+                    headerText={t('meeting.actions.edit-info.label')}
                     component={() => <div>Placeholder for Edit Meeting</div>}
                   />
                 </AuthRoute>
 
-                <AuthRoute
-                  path={`${AdminPaths.EDIT_AGENDA}/:id`}
-                  signedIn={signedIn}
-                >
-                  <AdminView
-                    headerText="Edit Agenda Items"
-                    component={AgendaTable}
-                  />
+                <AuthRoute path={`${AdminPaths.EDIT_AGENDA}/:id`} signedIn={signedIn}>
+                  <AdminView headerText='Edit Agenda Items' component={AgendaTable} />
                 </AuthRoute>
               </Switch>
               <Footer />
@@ -197,7 +182,7 @@ ReactDOM.render(
   <Suspense fallback={<div>Loading translation files...</div>}>
     <App />
   </Suspense>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

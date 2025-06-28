@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import Modal from 'react-modal';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import Modal from 'react-modal';
 import { CloseIcon } from '../../utils/_icons';
 import './ConfirmationModal.scss';
-import classNames from 'classnames';
 
 /**
  * A common re-usable confirmation modal used to confirm requested admin action
@@ -54,14 +53,14 @@ function ConfirmationModal({
       isOpen={isOpen}
       onRequestClose={closeModal}
       className={classNames('confirmation-modal', className)}
-      overlayClassName="modal-overlay"
+      overlayClassName='modal-overlay'
       contentLabel={contentLabel}
     >
-      <div className="modal-header">
+      <div className='modal-header'>
         <h2>{headerText}</h2>
         <button
-          type="button"
-          className="close-modal"
+          type='button'
+          className='close-modal'
           onClick={closeModal}
           aria-label={t('standard.buttons.close')}
         >
@@ -69,10 +68,10 @@ function ConfirmationModal({
         </button>
       </div>
       <div className={classNames('modal-body', className)}>
-        <p className="modal-body-text">{bodyText}</p>
+        <p className='modal-body-text'>{bodyText}</p>
         <div className={classNames('modal-buttons', className)}>
           <button
-            type="button"
+            type='button'
             onClick={onConfirm}
             disabled={disableConfirm}
             className={classNames('action-button', className)}
@@ -80,7 +79,7 @@ function ConfirmationModal({
             {confirmButtonText}
           </button>
           <button
-            type="button"
+            type='button'
             className={classNames('cancel-button', className)}
             onClick={onCancel}
           >

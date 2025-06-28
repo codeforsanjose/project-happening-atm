@@ -1,17 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 
-import HamburgerIcon from './HamburgerIcon';
-import BackNavigation from '../BackNavigation/BackNavigation';
-import NavLinks from './NavLinks';
-import './NavBarHeader.scss';
-import NavigationLink from './NavigationLink';
 import { ATMLogoPinRainbowIcon } from '../../utils/_icons';
+import BackNavigation from '../BackNavigation/BackNavigation';
 import LoginContext from '../LoginContext/LoginContext';
-import LanguageDropdown from '../LanguageDropdown/LanguageDropdown';
-import Signout from './Signout';
-import { Desktop, TabletOrMobile } from '../../utils/mediaquery';
+import HamburgerIcon from './HamburgerIcon';
+import './NavBarHeader.scss';
+import NavLinks from './NavLinks';
 
 function Header({ toggled, handleToggle }) {
   const { pathname } = useLocation();
@@ -23,25 +19,21 @@ function Header({ toggled, handleToggle }) {
 
   return (
     <header>
-      <nav className="no-select">
-        {loginContext.signedIn ? '' : <Redirect to="/login" />}
-        <div className="nav-bar">
-          <div className="home-button-group">
+      <nav className='no-select'>
+        {loginContext.signedIn ? '' : <Redirect to='/login' />}
+        <div className='nav-bar'>
+          <div className='home-button-group'>
             {meetingCalendar ? (
               <>
-                <ATMLogoPinRainbowIcon className="home-button-icon" />
-                <span className="home-button-text">{t('navbar.city')}</span>
+                <ATMLogoPinRainbowIcon className='home-button-icon' />
+                <span className='home-button-text'>{t('navbar.city')}</span>
               </>
             ) : (
               <BackNavigation />
             )}
           </div>
           {meetingCalendar ? '' : <ATMLogoPinRainbowIcon />}
-          <HamburgerIcon
-            className="button-icon"
-            onClick={handleToggle}
-            toggled={toggled}
-          />
+          <HamburgerIcon className='button-icon' onClick={handleToggle} toggled={toggled} />
         </div>
         <NavLinks toggled={toggled} t={t} />
       </nav>

@@ -1,6 +1,4 @@
-import {
-  arrayMove,
-} from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 import StatusDontSort from '../../../../constants/StatusDontSort';
 
 // This file will hold functions needed for the proper functioning of dnd kit with AgendaView.jsx
@@ -9,9 +7,7 @@ import StatusDontSort from '../../../../constants/StatusDontSort';
 const shouldItSort = (statusToCheck, itemToCheck) => {
   let dontSort = false;
 
-  dontSort = statusToCheck.some(
-    (elem) => elem === itemToCheck?.status,
-  );
+  dontSort = statusToCheck.some(elem => elem === itemToCheck?.status);
 
   return !dontSort;
 };
@@ -22,7 +18,7 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
 
   // if statement only entered when the agendaitem is over a valid drop location
   if (over != null && active.id !== over.id) {
-    setAgendaGroups((parents) => {
+    setAgendaGroups(parents => {
       const newParents = JSON.parse(JSON.stringify(parents));
 
       let parentIndex; // index of the agendaGroup currently hovered over
@@ -48,13 +44,15 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
 
       // prevents putting another item into the unsortable item
       if (sort) {
-        sort = shouldItSort(StatusDontSort.ITEMS_DONT_SORT,
-          newParents[parentIndex].items[oldIndex]);
+        sort = shouldItSort(
+          StatusDontSort.ITEMS_DONT_SORT,
+          newParents[parentIndex].items[oldIndex],
+        );
       }
 
       // ensures that sorting only happens when moving items within a group
       if (sort) {
-        sort = newParents[parentIndex].items.some((elem) => elem.id === over.id);
+        sort = newParents[parentIndex].items.some(elem => elem.id === over.id);
       }
       // prevents moving any items inside an unsortable group
       if (sort) {
@@ -69,7 +67,7 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
   }
 
   // resort the agendaItems after a drop
-  setAgendaGroups((parents) => {
+  setAgendaGroups(parents => {
     const newParents = JSON.parse(JSON.stringify(parents));
 
     for (let i = 0; i < newParents.length; i += 1) {
@@ -87,7 +85,7 @@ export const handleDragEnd = (event, { setAgendaGroups, oNumStart }) => {
 export const handleDragOver = (event, { setAgendaGroups }) => {
   const { active, over } = event;
 
-  setAgendaGroups((parents) => {
+  setAgendaGroups(parents => {
     const newParents = JSON.parse(JSON.stringify(parents));
 
     // these are used in the conditional expressions
@@ -100,8 +98,8 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
     const overIsNull = over === null;
     if (!overIsNull) {
       activeIsOver = active.id === over.id;
-      overIsContainer = parents.filter((parent) => parent.id === over.id).length > 0;
-      activeIsContainer = parents.filter((parent) => parent.id === active.id).length > 0;
+      overIsContainer = parents.filter(parent => parent.id === over.id).length > 0;
+      activeIsContainer = parents.filter(parent => parent.id === active.id).length > 0;
     }
 
     // item swapping is handled within
@@ -131,8 +129,10 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
 
       // prevent moving unsortable items between containers
       if (sort) {
-        sort = shouldItSort(StatusDontSort.ITEMS_DONT_SORT,
-          newParents[activeContainerIndex].items[activeIndex]);
+        sort = shouldItSort(
+          StatusDontSort.ITEMS_DONT_SORT,
+          newParents[activeContainerIndex].items[activeIndex],
+        );
       }
 
       // prevent moving items out of a unsortable container
@@ -142,7 +142,7 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
 
       // entered when the dragOverlay has entered a new agenda group
       if (activeContainerIndex !== overContainerIndex && sort) {
-        const overIsDropId = newParents.filter((parent) => parent.dropID === over.id).length > 0;
+        const overIsDropId = newParents.filter(parent => parent.dropID === over.id).length > 0;
         // Moving a item to a group below it.
         const sortingFromAbove = activeContainerIndex < overContainerIndex;
 
@@ -154,7 +154,8 @@ export const handleDragOver = (event, { setAgendaGroups }) => {
           sortingFromAbove
             ? newParents[overContainerIndex].items.splice(overIndex, 0, itemToMove)
             : newParents[overContainerIndex].items.splice(overIndex + 1, 0, itemToMove);
-        } else { // entered when the overlay is on top of the header
+        } else {
+          // entered when the overlay is on top of the header
           newParents.forEach((parent, i) => {
             if (parent.dropID === over.id) {
               overContainerIndex = i;
@@ -182,10 +183,10 @@ export const handleDragStart = (event, { setActiveId, agendaGroups }) => {
   // need to find out which agendaGroups and items are sortable,
   // and then only set active those items that are sortable, and in a sortable container
 
-  activeGroup = agendaGroups.filter((group) => group.items.some((item) => item.id === active.id));
+  activeGroup = agendaGroups.filter(group => group.items.some(item => item.id === active.id));
   [activeGroup] = activeGroup;
 
-  activeItem = activeGroup.items.filter((item) => item.id === active.id);
+  activeItem = activeGroup.items.filter(item => item.id === active.id);
   [activeItem] = activeItem;
 
   if (sort) {

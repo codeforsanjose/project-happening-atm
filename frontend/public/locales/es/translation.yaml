@@ -8,7 +8,7 @@ navbar:
   language: Idioma
   submit-feedback: Enviar Sugerencias
   sign-in: Iniciar Sesión
-  sign-out: Cerrar Sesión 
+  sign-out: Cerrar Sesión
   profile: Perfil
 
 header:
@@ -101,7 +101,7 @@ meeting:
         buttons:
           create-meeting: Crear
           creating-meeting: Creando Nueva Reunión
-          cancel: Cancelar          
+          cancel: Cancelar
     delete-meeting:
       button: Borrar Reunión
       modal:
@@ -139,7 +139,7 @@ meeting:
             alt: O Cargue Desde su Computadora
           buttons:
             upload: Cargar y Publicar
-            uploading: Cargando y Publicándo 
+            uploading: Cargando y Publicándo
       list:
         show-closed: Mostrar Elementos Cerrados
         no-agenda: ¡No se Encontraron Elementos de la Agenda!
@@ -232,7 +232,7 @@ meeting:
           edit:
             button: Editar
             modal:
-              title: Editar Información de Transmisión de Reunión 
+              title: Editar Información de Transmisión de Reunión
               button:
                 do: Publicar Cambios
                 doing: Publicando Cambios
@@ -257,7 +257,7 @@ meeting:
           edit:
             button: Editar
             modal:
-              title: Editar Información de Comentario Público 
+              title: Editar Información de Comentario Público
               button:
                 do: Publicar Cambios
                 doing: Publicando Cambios
@@ -265,13 +265,13 @@ meeting:
               inputs:
                 email-before-meeting: Correo Electrónico - Antes de Reunión
                 email-after-meeting: Correo Electrónico - Después de Reunión
-                e-comment: Comentario Electrónico 
+                e-comment: Comentario Electrónico
           description:
             before-meeting:
               title: Antes de Reunión
               number-1:
                 title: Envíe un correo electrónico a city.clerk@sanjoseca.gov antes de las 10:00 a.m. del día de la reunión
-                subtitle: Por favor, identifique el número de artículo de la agenda en el asunto de su correo electrónico. Los correos electrónicos se adjuntarán al artículo del Consejo bajo “Cartas del público”, pero no se leerán en voz alta durante la reunión.            
+                subtitle: Por favor, identifique el número de artículo de la agenda en el asunto de su correo electrónico. Los correos electrónicos se adjuntarán al artículo del Consejo bajo “Cartas del público”, pero no se leerán en voz alta durante la reunión.
               number-2:
                 title: A través del enlace de eComment
                 subtitle: eComments se envían directamente al personal del Consejo y del Comité.
@@ -302,19 +302,19 @@ forgotPassword:
     button:
       sendemail: es - Send password reset email
     input:
-      email: es - Email  
+      email: es - Email
     link:
-      signIn: es - Sign In 
+      signIn: es - Sign In
 
 setNewPassword:
-  header: es - Change password   
+  header: es - Change password
   body:
     heading1: es - Enter your new password
     button:
       changePassword: es - Change Password
     input:
       newPassword: es - New Password
-      confirmNewPassword: es - Confirm Password          
+      confirmNewPassword: es - Confirm Password
 
 footer:
   language:
@@ -349,7 +349,7 @@ standard:
     - jueves
     - viernes
     - sabado
-  months: 
+  months:
     - Enero
     - Febrero
     - Marzo
@@ -376,7 +376,7 @@ standard:
     deleting: Borrando
     publish: Publicar
     publishing: Publicando
-    update: Actualizar    
+    update: Actualizar
     upload: Subir
     uploading: Subiendo
     download: Descargar

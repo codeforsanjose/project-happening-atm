@@ -1,10 +1,10 @@
-@import "../../utils/_colors.scss";
-@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+@import '../../utils/_colors.scss';
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
 
 .MeetingListGroup {
   .group-header {
     margin-bottom: 0.8em;
-    
+
     .group-button {
       padding: 1em;
       border-radius: 4px;
@@ -31,7 +31,7 @@
 
       &[aria-expanded='true'] .group-main-text::before,
       &[aria-selected='true'] .group-main-text::before {
-          transform: rotate(90deg);
+        transform: rotate(90deg);
       }
 
       .button-text {

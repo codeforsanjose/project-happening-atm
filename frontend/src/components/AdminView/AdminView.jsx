@@ -67,10 +67,10 @@ function AdminView({ headerText, component: ComponentToRender }) {
   }, [meetingId, setMeetingId, history]);
 
   return (
-    <div className="admin-view">
+    <div className='admin-view'>
       <AdminNavigation meetingId={meetingId} />
 
-      <div className="wrapper">
+      <div className='wrapper'>
         <AdminHeader
           headerText={headerText}
           meetingIdList={meetingIdList}

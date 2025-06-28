@@ -35,12 +35,12 @@ const LINKS = [
 
 function AdminNavigation({ meetingId }) {
   return (
-    <div className="admin-navigation">
-      <img className="logo" src={cityLogo} alt="logo" />
+    <div className='admin-navigation'>
+      <img className='logo' src={cityLogo} alt='logo' />
 
-      <div className="links">
+      <div className='links'>
         <ul>
-          {LINKS.map((link) => (
+          {LINKS.map(link => (
             <AdminNavigationLink
               key={link.key}
               Icon={link.icon}
@@ -52,8 +52,8 @@ function AdminNavigation({ meetingId }) {
       </div>
 
       <button
-        type="button"
-        className="admin-publish-button"
+        type='button'
+        className='admin-publish-button'
         // eslint-disable-next-line no-console
         onClick={() => console.log('publish clicked')} // DEBUG: replace with publish action
         // TODO: https://github.com/codeforsanjose/gov-agenda-notifier/issues/84

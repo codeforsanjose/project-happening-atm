@@ -1,0 +1,6 @@
+
+C:\Users\logan\Documents\github\project-happening-atm\frontend\src\utils\parseJwt.js
+  12:5  warning  Unexpected console statement  no-console
+
+✖ 1 problem (0 errors, 1 warning)
+

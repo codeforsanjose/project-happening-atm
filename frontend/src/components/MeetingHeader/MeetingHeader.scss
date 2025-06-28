@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 $font-size: 1rem;
 
@@ -12,7 +12,7 @@ $font-size: 1rem;
   letter-spacing: 1.1px;
   padding-top: 65px;
 
-  .selector-panel{
+  .selector-panel {
     position: absolute;
     left: 0;
     width: 100%;
@@ -27,7 +27,7 @@ $font-size: 1rem;
     display: flex;
     justify-content: flex-start;
     column-gap: 2rem;
-    align-items:center;
+    align-items: center;
 
     @media (max-width: 811px) {
       padding-left: calc(3% + 1rem + 10px);
@@ -40,10 +40,10 @@ $font-size: 1rem;
   }
 
   .upcoming {
-    background:$pendingBlueBackground;
-    color:$darkBlue;
-    svg{
-        fill:$darkBlue;
+    background: $pendingBlueBackground;
+    color: $darkBlue;
+    svg {
+      fill: $darkBlue;
     }
   }
 
@@ -53,26 +53,26 @@ $font-size: 1rem;
   }
 
   .ended {
-    background:$pastGray;
-    color:$mediumGray;
-    svg{
-        fill:$mediumGray;
+    background: $pastGray;
+    color: $mediumGray;
+    svg {
+      fill: $mediumGray;
     }
   }
 
   .in-recess {
-    background:$white;
-    color:$darkBlue;
-    svg{
-        fill:$darkBlue;
+    background: $white;
+    color: $darkBlue;
+    svg {
+      fill: $darkBlue;
     }
   }
 
-  .deferred{
-    background:$pastGray;
-    color:$errorRed;
-    svg{
-        fill:$errorRed;
+  .deferred {
+    background: $pastGray;
+    color: $errorRed;
+    svg {
+      fill: $errorRed;
     }
   }
 
@@ -109,7 +109,7 @@ $font-size: 1rem;
       column-gap: 2rem;
       font-size: 1rem;
       font-weight: 300;
-      padding-right: calc(1rem + 10px);      
+      padding-right: calc(1rem + 10px);
       margin-bottom: 0.3rem;
     }
 
@@ -130,5 +130,4 @@ $font-size: 1rem;
       margin-bottom: 1.7em;
     }
   }
-
 }

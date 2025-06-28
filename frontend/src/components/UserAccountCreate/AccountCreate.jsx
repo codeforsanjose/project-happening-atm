@@ -8,17 +8,21 @@ import { GET_ACCOUNT_BY_EMAIL } from '../../graphql/query';
 import LocalStorageTerms from '../../constants/LocalStorageTerms';
 import LoginContext from '../LoginContext/LoginContext';
 import UserRoles from '../../constants/UserRoles';
-import { InfoIcon, ATMLogoRainbowIcon } from '../../utils/_icons';
+import { InfoIcon } from '../../utils/_icons';
 import atmLogo from '../../assets/ATM_Logo_Rainbow.png';
 import {
-  isNullOrEmpty, isNumericString, validEmail, isPasswordValid,
+  isNullOrEmpty,
+  isNumericString,
+  validEmail,
+  isPasswordValid,
 } from '../../utils/validations';
 import RECAPTCHAS from '../../constants/Recaptchas';
 
 function AccountCreate() {
   // TODO: Add Site key.
   const RECAPTCHA_SITE_KEY = RECAPTCHAS.ACCOUNT_CREATION;
-  const PASSWORD_TEXT = 'Passwords must have 6 characters, a uppercase, a lowercase, a number and a special character ';
+  const PASSWORD_TEXT =
+    'Passwords must have 6 characters, a uppercase, a lowercase, a number and a special character ';
 
   // User specific variables to be sent to backend.
   const [userInfo, setUserInfo] = useState({
@@ -45,14 +49,11 @@ function AccountCreate() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [getUsers, { data: existingUsersData }] = useLazyQuery(GET_ACCOUNT_BY_EMAIL);
 
-  const [createAccount] = useMutation(
-    CREATE_ACCOUNT,
-    {
-      onCompleted: (createAccountData) => {
-        setSignupSuccess(true);
-      },
+  const [createAccount] = useMutation(CREATE_ACCOUNT, {
+    onCompleted: _createAccountData => {
+      setSignupSuccess(true);
     },
-  );
+  });
 
   // Login related variables
   const [login, { data: loginData, error: loginError }] = useLazyQuery(LOGIN_LOCAL);
@@ -67,8 +68,8 @@ function AccountCreate() {
 
   const verifyEmailAddressFormat = () => {
     const currentErrors = { ...fieldErrors };
-    const { email_address } = userInfo;
-    if (isNullOrEmpty(email_address) || !validEmail(email_address)) {
+    const { email_address: emailAddress } = userInfo;
+    if (isNullOrEmpty(emailAddress) || !validEmail(emailAddress)) {
       currentErrors.email_address = 'Please enter a valid email address';
     } else {
       delete currentErrors.email_address;
@@ -115,13 +116,13 @@ function AccountCreate() {
   // Phone number field validation
   const verifyPhoneNumberFormat = () => {
     const currentErrors = { ...fieldErrors };
-    const { phone_number } = userInfo;
-    if (!isNullOrEmpty(phone_number)) {
-      if (!isNumericString(phone_number)) {
+    const { phone_number: phoneNumber } = userInfo;
+    if (!isNullOrEmpty(phoneNumber)) {
+      if (!isNumericString(phoneNumber)) {
         currentErrors.phone_number = 'Phone number not numeric';
-      } else if (phone_number.charAt(0) !== '1') {
+      } else if (phoneNumber.charAt(0) !== '1') {
         currentErrors.phone_number = 'Country code is required to be 1';
-      } else if (phone_number.length !== 11) {
+      } else if (phoneNumber.length !== 11) {
         currentErrors.phone_number = 'We support only US phone numbers ex. +1(234)567-8910';
       } else {
         delete currentErrors.phone_number;
@@ -131,7 +132,7 @@ function AccountCreate() {
   };
 
   // Terms of Service validation
-  const verifyTosChecked = (target) => {
+  const verifyTosChecked = target => {
     const currentErrors = { ...fieldErrors };
     if (target.checked) {
       delete currentErrors.tos;
@@ -148,10 +149,13 @@ function AccountCreate() {
     if (existingUsersData) {
       const currentErrors = { ...fieldErrors };
       if (existingUsersData.getAccountByEmail) {
-        currentErrors.email_address = 'This mail address is already registered. Please log in instead';
+        currentErrors.email_address =
+          'This mail address is already registered. Please log in instead';
       }
+      // TODO: Seek to refactor this to avoid mutating state directly.
       setFieldErrors(currentErrors);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingUsersData]);
 
   useEffect(() => {
@@ -176,14 +180,14 @@ function AccountCreate() {
   }, [loginData, loginContext, loginError]);
 
   // Erase individual field errors (if shown) when user clicks back into the field
-  const eraseFieldError = (element) => {
+  const eraseFieldError = element => {
     const currentErrors = { ...fieldErrors };
     if (element in currentErrors) delete currentErrors[element];
     setFieldErrors(currentErrors);
   };
 
   // Set input values to user object
-  const gatherUserInfo = (target) => {
+  const gatherUserInfo = target => {
     const currentUser = { ...userInfo };
     currentUser[target.name] = target.value;
     setUserInfo(currentUser);
@@ -216,130 +220,148 @@ function AccountCreate() {
   };
 
   return (
-    <div className="main-container">
-      {loginContext.signedIn ? <Redirect to="/" /> : ''}
-      <div className="page-header">
-        <img src={atmLogo}/>
+    <div className='main-container'>
+      {loginContext.signedIn ? <Redirect to='/' /> : ''}
+      <div className='page-header'>
+        <img src={atmLogo} />
         <p>Create an account to get started</p>
         <hr />
       </div>
-      <div className="form-wrapper">
-
-        <div className="form-fields">
-          <label htmlFor="email_address">Email (this will be your username)</label>
+      <div className='form-wrapper'>
+        <div className='form-fields'>
+          <label htmlFor='email_address'>Email (this will be your username)</label>
           <input
-            type="email"
-            id="email_address"
-            name="email_address"
-            placeholder="*"
+            type='email'
+            id='email_address'
+            name='email_address'
+            placeholder='*'
             className={fieldErrors.email_address ? 'input-error' : ''}
             value={userInfo.email_address}
-            autoFocus
             noValidate
-            onChange={(e) => gatherUserInfo(e.target)}
+            onChange={e => gatherUserInfo(e.target)}
             onBlur={validateEmailExists}
-            onFocus={(e) => eraseFieldError(e.target.name)}
+            onFocus={e => eraseFieldError(e.target.name)}
           />
-          {fieldErrors.email_address
-            ? <p className="inline-error">{fieldErrors.email_address}</p> : ''}
+          {fieldErrors.email_address ? (
+            <p className='inline-error'>{fieldErrors.email_address}</p>
+          ) : (
+            ''
+          )}
         </div>
 
-        <div className="form-fields">
-          <label htmlFor="password">Password</label>
+        <div className='form-fields'>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="*"
+            type='password'
+            id='password'
+            name='password'
+            placeholder='*'
             className={fieldErrors && fieldErrors.password ? 'input-error' : ''}
             value={userInfo.password}
             noValidate
             onBlur={verifyPasswordFormat}
-            onChange={(e) => gatherUserInfo(e.target)}
-            onFocus={(e) => eraseFieldError(e.target.name)}
+            onChange={e => gatherUserInfo(e.target)}
+            onFocus={e => eraseFieldError(e.target.name)}
           />
-          {fieldErrors && fieldErrors.password
-            ? <p className="inline-error">{fieldErrors.password}</p> : ''}
+          {fieldErrors && fieldErrors.password ? (
+            <p className='inline-error'>{fieldErrors.password}</p>
+          ) : (
+            ''
+          )}
         </div>
 
-        <div className="form-fields">
-          <label htmlFor="confirmPassword">Re-enter Password</label>
+        <div className='form-fields'>
+          <label htmlFor='confirmPassword'>Re-enter Password</label>
           <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="*"
+            type='password'
+            id='confirmPassword'
+            name='confirmPassword'
+            placeholder='*'
             className={fieldErrors && fieldErrors.confirmPassword ? 'input-error' : ''}
             value={confirmPassword}
             noValidate
             onBlur={verifyConfirmPasswordFormat}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            onFocus={(e) => eraseFieldError(e.target.name)}
+            onChange={e => setConfirmPassword(e.target.value)}
+            onFocus={e => eraseFieldError(e.target.name)}
           />
-          {fieldErrors && fieldErrors.confirmPassword
-            ? <p className="inline-error">{fieldErrors.confirmPassword}</p> : ''}
+          {fieldErrors && fieldErrors.confirmPassword ? (
+            <p className='inline-error'>{fieldErrors.confirmPassword}</p>
+          ) : (
+            ''
+          )}
         </div>
 
-        <div className="form-fields">
-          <div className="phone-mark">
-            <label htmlFor="phone_number">Phone (optional)</label>
-            <div className="tooltip-wrapper">
-              <span className="tooltiptext">Only US phone numbers supported</span>
+        <div className='form-fields'>
+          <div className='phone-mark'>
+            <label htmlFor='phone_number'>Phone (optional)</label>
+            <div className='tooltip-wrapper'>
+              <span className='tooltiptext'>Only US phone numbers supported</span>
               <InfoIcon />
             </div>
           </div>
           <input
-            type="tel"
-            id="phone_number"
-            name="phone_number"
+            type='tel'
+            id='phone_number'
+            name='phone_number'
             className={fieldErrors && fieldErrors.phone_number ? 'input-error' : ''}
             value={userInfo.phone_number || ''}
             noValidate
-            onChange={(e) => gatherUserInfo(e.target)}
+            onChange={e => gatherUserInfo(e.target)}
             onBlur={verifyPhoneNumberFormat}
-            onFocus={(e) => eraseFieldError(e.target.name)}
+            onFocus={e => eraseFieldError(e.target.name)}
           />
-          {fieldErrors && fieldErrors.phone_number
-            ? <p className="inline-error">{fieldErrors.phone_number}</p> : ''}
+          {fieldErrors && fieldErrors.phone_number ? (
+            <p className='inline-error'>{fieldErrors.phone_number}</p>
+          ) : (
+            ''
+          )}
         </div>
 
-        <div className="form-fields">
-          <div className="form-check">
+        <div className='form-fields'>
+          <div className='form-check'>
             <input
-              type="checkbox"
-              id="tos"
-              name="tos"
-              className="tos-input"
-              onChange={(e) => verifyTosChecked(e.target)}
-              onBlur={(e) => verifyTosChecked(e.target)}
+              type='checkbox'
+              id='tos'
+              name='tos'
+              className='tos-input'
+              onChange={e => verifyTosChecked(e.target)}
+              onBlur={e => verifyTosChecked(e.target)}
             />
-            <label htmlFor="tos"> I have read, understood and agreed with your <a href="/terms-of-use">Terms of Use</a> and <a href="/privacy-policy">Privacy Policy</a></label>
+            <label htmlFor='tos'>
+              {' '}
+              I have read, understood and agreed with your <a href='/terms-of-use'>
+                Terms of Use
+              </a>{' '}
+              and <a href='/privacy-policy'>Privacy Policy</a>
+            </label>
             <label style={{ color: 'red' }}>*</label>
           </div>
-          {fieldErrors && fieldErrors.tos
-            ? <p className="inline-error">{fieldErrors.tos}</p> : ''}
+          {fieldErrors && fieldErrors.tos ? <p className='inline-error'>{fieldErrors.tos}</p> : ''}
         </div>
 
-        <div className="form-fields">
-          <div className="g-recaptcha">
+        <div className='form-fields'>
+          <div className='g-recaptcha'>
             <ReCAPTCHA
-              size="normal"
-              data-theme="dark"
-              render="explicit"
+              size='normal'
+              data-theme='dark'
+              render='explicit'
               sitekey={RECAPTCHA_SITE_KEY}
               onChange={handleCaptcha}
             />
             <label style={{ color: 'red' }}>*</label>
-            {fieldErrors && fieldErrors.captcha_check
-              ? <p className="inline-error">{fieldErrors.captcha_check}</p> : ''}
+            {fieldErrors && fieldErrors.captcha_check ? (
+              <p className='inline-error'>{fieldErrors.captcha_check}</p>
+            ) : (
+              ''
+            )}
           </div>
         </div>
 
-        <div className="form-fields">
+        <div className='form-fields'>
           <button
-            type="submit"
-            className="signup-cta"
-            value="create"
+            type='submit'
+            className='signup-cta'
+            value='create'
             disabled={Object.entries(fieldErrors || {}).length > 0}
             onClick={createAccountHandler}
           >

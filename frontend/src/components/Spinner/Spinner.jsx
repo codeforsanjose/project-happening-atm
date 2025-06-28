@@ -5,7 +5,7 @@ import classnames from 'classnames';
 export default function Spinner() {
   return (
     <div className={classnames('spinner-wrapper')}>
-      <div className="spinner" />
+      <div className='spinner' />
     </div>
   );
 }

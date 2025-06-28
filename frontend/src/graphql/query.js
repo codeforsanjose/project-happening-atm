@@ -122,11 +122,7 @@ export const GET_RESET_PASSWORD_TOKEN = gql`
 `;
 
 export const GET_SUB_BY_EMAIL_MEETINGID = gql`
-  query GetSubByEmailAndID(
-    $phone_number: String!
-    $meeting_id: Int!
-    $email_address: String!
-  ) {
+  query GetSubByEmailAndID($phone_number: String!, $meeting_id: Int!, $email_address: String!) {
     getSubscriptionsByEmailAndMeetingID(
       phone_number: $phone_number
       email_address: $email_address

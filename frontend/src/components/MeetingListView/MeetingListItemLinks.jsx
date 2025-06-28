@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+
 import useCSVUpload from '../../hooks/useCSVUpload';
 import useDeleteMeeting from '../../hooks/useDeleteMeeting';
 import { isFutureTimestamp } from '../../utils/timestampHelper';
@@ -31,12 +31,8 @@ function AdminMeetingItemLinks({ meeting }) {
 
   return (
     <div className={isFutureItem ? futureClasses : pastClasses}>
-      <Link to="#">
-        <button
-          type="button"
-          className="link upload-agenda-button"
-          onClick={openUploadModal}
-        >
+      <Link to='#'>
+        <button type='button' className='link upload-agenda-button' onClick={openUploadModal}>
           <ViewAgendaIcon />
           <p>
             {history.location.pathname === '/'
@@ -45,12 +41,8 @@ function AdminMeetingItemLinks({ meeting }) {
           </p>
         </button>
       </Link>
-      <Link to="#">
-        <button
-          type="button"
-          className="link delete-agenda-button"
-          onClick={openDeleteModal}
-        >
+      <Link to='#'>
+        <button type='button' className='link delete-agenda-button' onClick={openDeleteModal}>
           <DeleteIcon />
           <p>{t('meeting.list.delete-meeting.button')}</p>
         </button>
@@ -66,15 +58,15 @@ function PastMeetingItemLinks() {
   const { t } = useTranslation();
 
   return (
-    <div className="meeting-links">
-      <Link to="#">
-        <div className="link">
+    <div className='meeting-links'>
+      <Link to='#'>
+        <div className='link'>
           <FormatListNumberedIcon />
           <p>{t('meeting.list.minutes.button')}</p>
         </div>
       </Link>
-      <Link to="#">
-        <div className="link">
+      <Link to='#'>
+        <div className='link'>
           <PlayWithCircleOutlineIcon />
           <p>{t('meeting.list.recording.button')}</p>
         </div>
@@ -87,15 +79,15 @@ function PendingMeetingItemLinks({ meeting, isInProgress }) {
   const { t } = useTranslation();
 
   return (
-    <div className="meeting-links">
-      <Link to="#" className={classnames({ 'disabled-link': isInProgress })}>
-        <div className="link">
+    <div className='meeting-links'>
+      <Link to='#' className={classnames({ 'disabled-link': isInProgress })}>
+        <div className='link'>
           <CalendarTodayIcon />
           <p>{t('meeting.list.calendar-export.button')}</p>
         </div>
       </Link>
       <Link to={`meeting/${meeting.id}`}>
-        <div className="link">
+        <div className='link'>
           <ViewAgendaIcon />
           <p>{t('meeting.list.agenda.button')}</p>
         </div>

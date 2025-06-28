@@ -20,39 +20,41 @@ function EmailConfirmPage() {
     }
   }, [data]);
 
-  if (!validActions.has(action)) return <Redirect to="/" />;
+  if (!validActions.has(action)) return <Redirect to='/' />;
 
   // TODO: add loading and error handling
   if (loading) return 'Loading...';
   if (error) return `An error occured: ${error}`;
 
   return (
-    <div className="EmailConfirmPage">
+    <div className='EmailConfirmPage'>
       <p>
-        {
-          action === 'subscribe'
-            ? 'Confirm email subscription'
-            : 'Unsubscribe from email notification'
-        }
+        {action === 'subscribe'
+          ? 'Confirm email subscription'
+          : 'Unsubscribe from email notification'}
       </p>
 
-      <button
-        type="submit"
-        onClick={() => callMutation(token)}
-      >
-        {
-          action === 'subscribe'
-            ? 'Confirm Email'
-            : 'Unsubscribe'
-        }
+      <button type='submit' onClick={() => callMutation(token)}>
+        {action === 'subscribe' ? 'Confirm Email' : 'Unsubscribe'}
       </button>
 
       {/* DEBUG */}
-      <div style={{width: '600px', margin: '20px auto', backgroundColor: '#eee', color: '#361515', padding: '10px 20px', border: '1px solid #aaa'}}>
+      <div
+        style={{
+          width: '600px',
+          margin: '20px auto',
+          backgroundColor: '#eee',
+          color: '#361515',
+          padding: '10px 20px',
+          border: '1px solid #aaa',
+        }}
+      >
         <p>{`Action: ${action}`}</p>
         <p>{`Token: ${token}`}</p>
         <p>Data:</p>
-        <div><pre>{JSON.stringify(data, null, 2)}</pre></div>
+        <div>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
       </div>
       {/* END DEBUG */}
     </div>

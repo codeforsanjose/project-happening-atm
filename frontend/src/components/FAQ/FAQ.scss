@@ -1,22 +1,21 @@
-.FAQ{
+.FAQ {
   width: 50%;
   margin: 6em auto;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 
-  .FAQ-body{
-
-    h3{
+  .FAQ-body {
+    h3 {
       margin-bottom: 0em;
-      }
+    }
 
-    p{
+    p {
       margin-top: 0.5em;
       margin-bottom: 1.5em;
       line-height: 1.5em;
-     }
+    }
 
     @media only screen and (max-width: 812px) {
       margin-left: 20%;
@@ -24,5 +23,3 @@
     }
   }
 }
-
-

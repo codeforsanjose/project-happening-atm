@@ -1,8 +1,8 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .subscribe-confirmation {
   max-width: 90vw;
-  box-shadow: rgba(0,0,0,0.8) 0 0 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px;
   position: absolute;
   top: 50%;
   left: 10%;
@@ -69,5 +69,4 @@
       }
     }
   }
-
 }

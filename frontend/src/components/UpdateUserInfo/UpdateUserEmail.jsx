@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
-import { getUserId } from "../../utils/verifyToken";
-import { UPDATE_EMAIL } from "../../graphql/userAccount";
-import {
-  isNullOrEmpty, validEmail
-} from '../../utils/validations';
+import { useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { UPDATE_EMAIL } from '../../graphql/userAccount';
+import { isNullOrEmpty, validEmail } from '../../utils/validations';
+import { getUserId } from '../../utils/verifyToken';
 
 // Component imports
-import NavBarHeader from "../NavBarHeader/NavBarHeader";
 import { CancelIcon } from '../../utils/_icons';
-import "../UserAccountView/UserAccountView.scss";
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import '../UserAccountView/UserAccountView.scss';
 
 const UpdateUserEmail = () => {
   const [navToggled, setNavToggled] = useState(false);
-  const [newEmail, setNewEmail] = useState("");
+  const [newEmail, setNewEmail] = useState('');
   const [fieldErrors, setFieldErrors] = useState(null);
   const [updateEmailSuccessful, setUpdateEmailSuccessful] = useState(false);
 
   const [updateEmail] = useMutation(UPDATE_EMAIL);
 
+  const verifyEmailAddressFormat = () => {
+    if (isNullOrEmpty(newEmail) || !validEmail(newEmail)) {
+      setFieldErrors('Please enter a valid email address');
+    } else {
+      setFieldErrors('');
+    }
+  };
   function handleToggle() {
     setNavToggled(!navToggled);
   }
@@ -33,65 +38,56 @@ const UpdateUserEmail = () => {
           email: newEmail,
         },
       });
-  
+
       setUpdateEmailSuccessful(true);
     }
   }
 
-  const checkingEmail = (value) => {
-    setNewEmail(value)
+  const checkingEmail = value => {
+    setNewEmail(value);
     verifyEmailAddressFormat();
-  }
-
-  const verifyEmailAddressFormat = () => {
-    if (isNullOrEmpty(newEmail) || !validEmail(newEmail)) {
-      setFieldErrors('Please enter a valid email address');
-    } else {
-      setFieldErrors('');
-    }
   };
 
   return (
-    <div className="update-user-email-view">
+    <div className='update-user-email-view'>
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
 
       {updateEmailSuccessful ? (
-        <div className="user-account-header">
-          <p className="title">Email was successfully updated!</p>
+        <div className='user-account-header'>
+          <p className='title'>Email was successfully updated!</p>
         </div>
       ) : (
         <>
-          <div className="user-account-header">
-            <p className="title">Email</p>
+          <div className='user-account-header'>
+            <p className='title'>Email</p>
           </div>
 
           <form>
             <div>
-              <label htmlFor="email" className='sr-only'>
+              <label htmlFor='email' className='sr-only'>
                 Email
               </label>
               <input
-                type="email"
-                id="email"
-                name="email"
-                className="form-input"
-                placeholder="Email"
-                onChange={(e) => checkingEmail(e.target.value)}
+                type='email'
+                id='email'
+                name='email'
+                className='form-input'
+                placeholder='Email'
+                onChange={e => checkingEmail(e.target.value)}
               />
-              {newEmail &&
+              {newEmail && (
                 <button type='button' className='clear-form-input'>
                   <span className='sr-only'>Clear email</span>
-                  <CancelIcon/>
+                  <CancelIcon />
                 </button>
-              }
-              {fieldErrors
-              ? <p className="inline-error">{fieldErrors}</p> : ''}
+              )}
+              {fieldErrors ? <p className='inline-error'>{fieldErrors}</p> : ''}
             </div>
-            <button 
+            <button
               className={`user-account-update-btn${fieldErrors || !newEmail ? ' disabled' : ''}`}
-              type="button"
-              onClick={(!fieldErrors && newEmail) && handleSubmit}
-              disabled={fieldErrors ? true : false}
+              type='button'
+              onClick={!fieldErrors && newEmail && handleSubmit}
+              disabled={fieldErrors}
             >
               Change Email
             </button>

@@ -19,11 +19,11 @@ import { ChevronRightIcon } from '../../../../utils/_icons';
 
 function ParticipateLink({ Icon, linkText, path }) {
   return (
-    <div className="ParticipateLink">
+    <div className='ParticipateLink'>
       <Link to={path}>
-        <div className="button-group">
-          <Icon className="button-icon" />
-          <span className="button-text">{linkText}</span>
+        <div className='button-group'>
+          <Icon className='button-icon' />
+          <span className='button-text'>{linkText}</span>
           <ChevronRightIcon />
         </div>
       </Link>

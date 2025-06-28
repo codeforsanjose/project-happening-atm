@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
+import { useEffect, useState } from 'react';
 
-import Modal from 'react-modal/lib/components/Modal';
 import { useTranslation } from 'react-i18next';
-import { CloseIcon } from '../../utils/_icons';
+import Modal from 'react-modal/lib/components/Modal';
 import { UPDATE_MEETING_ITEM } from '../../graphql/mutation';
+import { CloseIcon } from '../../utils/_icons';
 
 import './UpdateItemStartTimeModal.scss';
 
@@ -45,19 +45,8 @@ const UpdateItemStartTimeModal = ({ args }) => {
 
   const handleModalClose = () => setDisplaySetStartTimeModal(false);
 
-  const validateNewTime = (hour, minutes, meridian) => {
-    const { errors } = formFields;
-    const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0);
-    const meridianError = meridian === '';
-    // no need to update state on submit unless it has changed
-    if (errors.time !== timeError || errors.meridian !== meridianError) {
-      displayFormErrors(timeError, meridianError);
-    }
-    return !timeError && !meridianError ? true : false;
-  };
-
   const displayFormErrors = (time, meridian) => {
-    setFormFields((prevFormFields) => ({
+    setFormFields(prevFormFields => ({
       ...prevFormFields,
       errors: {
         time,
@@ -66,9 +55,20 @@ const UpdateItemStartTimeModal = ({ args }) => {
     }));
   };
 
-  const handleChange = (e) => {
+  const validateNewTime = (hour, minutes, meridian) => {
+    const { errors } = formFields;
+    const timeError = !(hour <= 12 && hour > 0 && minutes < 60 && minutes >= 0);
+    const meridianError = meridian === '';
+    // no need to update state on submit unless it has changed
+    if (errors.time !== timeError || errors.meridian !== meridianError) {
+      displayFormErrors(timeError, meridianError);
+    }
+    return !!(!timeError && !meridianError);
+  };
+
+  const handleChange = e => {
     const { name, value } = e.target;
-    setFormFields((prevFormFields) => ({
+    setFormFields(prevFormFields => ({
       ...prevFormFields,
       [name]: value,
     }));
@@ -81,13 +81,13 @@ const UpdateItemStartTimeModal = ({ args }) => {
     const newMinutes = parseInt(minutes, 10);
     const isValidTime = validateNewTime(newHour, newMinutes, meridian);
     if (!isValidTime) return;
-    const isPM = meridian === 'PM' ? true : false;
+    const isPM = meridian === 'PM';
 
     // if hour is 12 we set it to 0 to account for 12pm
     newHour = newHour === 12 ? 0 : newHour;
 
     if (isPM) {
-      newHour = newHour + 12;
+      newHour += 12;
     }
     newTime.setHours(newHour, newMinutes, 0);
 
@@ -102,72 +102,59 @@ const UpdateItemStartTimeModal = ({ args }) => {
   Modal.setAppElement('#root');
 
   return (
-    <Modal style={modalOverlayStyle} className="updateStartTimeModal" isOpen>
-      <div className="updateStartTimeWrapper">
-        <div className="updateStartTimeHeader">
-          <span className="headerText">
-            {t('meeting.tabs.agenda.status.modal.set-time.title')}
-          </span>
+    <Modal style={modalOverlayStyle} className='updateStartTimeModal' isOpen>
+      <div className='updateStartTimeWrapper'>
+        <div className='updateStartTimeHeader'>
+          <span className='headerText'>{t('meeting.tabs.agenda.status.modal.set-time.title')}</span>
           <button
-            className="close"
+            className='close'
             onClick={handleModalClose}
             onKeyPress={handleModalClose}
             aria-label={t('standard.buttons.close')}
+            type='button'
           >
             <CloseIcon />
           </button>
         </div>
-        <div className="updateStartTimeModalBody">
+        <div className='updateStartTimeModalBody'>
           <form>
             <span>Time</span>
-            <div className="form-inputs">
-              <label className="visually-hidden" htmlFor="hour">
+            <div className='form-inputs'>
+              <label className='visually-hidden' htmlFor='hour'>
                 {t('meeting.tabs.agenda.status.modal.set-time.label.hour')}
               </label>
               <input
-                type="text"
-                name="hour"
-                id="hour"
+                type='text'
+                name='hour'
+                id='hour'
                 value={formFields.hour}
-                placeholder="00"
-                maxLength="2"
+                placeholder='00'
+                maxLength='2'
                 onChange={handleChange}
               />
               <span>:</span>
-              <label className="visually-hidden" htmlFor="minutes">
+              <label className='visually-hidden' htmlFor='minutes'>
                 {t('meeting.tabs.agenda.status.modal.set-time.label.minutes')}
               </label>
               <input
-                type="text"
-                name="minutes"
-                id="minutes"
+                type='text'
+                name='minutes'
+                id='minutes'
                 value={formFields.minutes}
-                placeholder="00"
-                maxLength="2"
+                placeholder='00'
+                maxLength='2'
                 onChange={handleChange}
               />
-              <input
-                type="radio"
-                name="meridian"
-                id="am"
-                value="AM"
-                onChange={handleChange}
-              />
-              <label className="meridian-btn" htmlFor="am">
+              <input type='radio' name='meridian' id='am' value='AM' onChange={handleChange} />
+              <label className='meridian-btn' htmlFor='am'>
                 <span>AM</span>
               </label>
-              <input
-                type="radio"
-                name="meridian"
-                id="pm"
-                value="PM"
-                onChange={handleChange}
-              />
-              <label className="meridian-btn" htmlFor="pm">
+              <input type='radio' name='meridian' id='pm' value='PM' onChange={handleChange} />
+              <label className='meridian-btn' htmlFor='pm'>
                 <span>PM</span>
               </label>
             </div>
-            <div className="error">
+            <div className='error'>
               <span className={formFields.errors.time ? 'visible' : null}>
                 {t('meeting.tabs.agenda.status.modal.set-time.error.time')}
               </span>
@@ -175,23 +162,23 @@ const UpdateItemStartTimeModal = ({ args }) => {
                 {t('meeting.tabs.agenda.status.modal.set-time.error.meridian')}
               </span>
             </div>
-            <div className="publishOrCancelButtons">
+            <div className='publishOrCancelButtons'>
               <input
-                type="button"
-                className="publish"
+                type='button'
+                className='publish'
                 value={t('standard.buttons.publish')}
                 onClick={handleSubmit}
                 onKeyPress={handleSubmit}
               />
               <input
-                type="button"
-                className="cancel"
+                type='button'
+                className='cancel'
                 value={t('standard.buttons.cancel')}
                 onClick={handleModalClose}
                 onKeyPress={handleModalClose}
               />
             </div>
-            {error && <p className="error">An Error has Occured</p>}
+            {error && <p className='error'>An Error has Occured</p>}
           </form>
         </div>
       </div>
