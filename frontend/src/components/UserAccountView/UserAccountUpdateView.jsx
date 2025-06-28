@@ -9,36 +9,49 @@ const UserAccountUpdateForm = () => {
   };
 
   return (
-    <div className="user-data">
+    <div className='user-data'>
       <div>
-        <label htmlFor="firstName">
+        <label htmlFor='firstName'>
           First Name
-          <input type="text" id="firstName" className="user-data-form" placeholder="First Name" />
+          <input type='text' id='firstName' className='user-data-form' placeholder='First Name' />
         </label>
-        <button type="submit">Edit</button>
+        <button type='submit'>Edit</button>
       </div>
       <div>
-        <label htmlFor="lastName">
+        <label htmlFor='lastName'>
           Last Name
-          <input type="text" id="lastName" className="user-data-form" placeholder="Last Name" />
+          <input type='text' id='lastName' className='user-data-form' placeholder='Last Name' />
         </label>
-        <button type="submit">Edit</button>
+        <button type='submit'>Edit</button>
       </div>
       <div>
-        <label htmlFor="email">
+        <label htmlFor='email'>
           Email
-          <input type="email" id="email" className="user-data-form" placeholder="Email" value="Your Email (Cannot Edit)" />
+          <input
+            type='email'
+            id='email'
+            className='user-data-form'
+            placeholder='Email'
+            value='Your Email (Cannot Edit)'
+          />
         </label>
       </div>
       <div>
-        <label htmlFor="email">
+        <label htmlFor='email'>
           Phone
-          <input type="tel" id="phone" name="phone" className="user-data-form" placeholder="510-555-5555" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
+          <input
+            type='tel'
+            id='phone'
+            name='phone'
+            className='user-data-form'
+            placeholder='510-555-5555'
+            pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
+          />
         </label>
-        <button type="submit">Edit</button>
+        <button type='submit'>Edit</button>
       </div>
-      <span className="user-data-form">
-        <button type="submit" onClick={handleResetPassword}>
+      <span className='user-data-form'>
+        <button type='submit' onClick={handleResetPassword}>
           Reset Password
         </button>
       </span>

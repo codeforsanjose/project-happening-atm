@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { getUserId } from "../../utils/verifyToken";
-import { UPDATE_PHONE_NUMBER } from "../../graphql/userAccount";
-import {
-  isNullOrEmpty, isNumericString
-} from '../../utils/validations';
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { getUserId } from '../../utils/verifyToken';
+import { UPDATE_PHONE_NUMBER } from '../../graphql/userAccount';
+import { isNullOrEmpty, isNumericString } from '../../utils/validations';
 
 // Component imports
-import NavBarHeader from "../NavBarHeader/NavBarHeader";
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
 import { CancelIcon, InfoIcon } from '../../utils/_icons';
-import "../UserAccountView/UserAccountView.scss";
+import '../UserAccountView/UserAccountView.scss';
 
 // TODO: fix validation, issues with input length
 // TODO: update to use correct form pattern
@@ -19,7 +17,7 @@ const UpdateUserNumber = () => {
   const [newNumber, setNewNumber] = useState('');
   const [fieldErrors, setFieldErrors] = useState(null);
   const [updateNumberSuccessful, setUpdateNumberSuccessful] = useState(false);
-  const [showInfo, setShowInfo] = useState(false)
+  const [showInfo, setShowInfo] = useState(false);
   const [updatePhoneNumber] = useMutation(UPDATE_PHONE_NUMBER);
 
   function handleToggle() {
@@ -27,9 +25,9 @@ const UpdateUserNumber = () => {
   }
 
   const handleShowInfo = () => {
-    setShowInfo(prevShowInfo => !prevShowInfo)
-  }
-  
+    setShowInfo(prevShowInfo => !prevShowInfo);
+  };
+
   const verifyPhoneNumberFormat = () => {
     if (!isNullOrEmpty(newNumber)) {
       if (!isNumericString(newNumber)) {
@@ -59,57 +57,55 @@ const UpdateUserNumber = () => {
     }
   }
 
-  const checkingPhoneNumber = (value) => {
-    setNewNumber(value)
+  const checkingPhoneNumber = value => {
+    setNewNumber(value);
     verifyPhoneNumberFormat();
-  }
+  };
 
   return (
-    <div className="update-user-number-view">
+    <div className='update-user-number-view'>
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
 
       {updateNumberSuccessful ? (
-        <div className="user-account-header success">
-          <p className="title">Phone number was successfully updated!</p>
+        <div className='user-account-header success'>
+          <p className='title'>Phone number was successfully updated!</p>
         </div>
       ) : (
         <>
-          <div className="user-account-header">
-            <p className="title">Phone Number</p>
-            {showInfo && 
-              <span className='info-message'>We only support US phone numbers</span>
-            }
-            <button className='info-button' onClick={handleShowInfo} type="button">
+          <div className='user-account-header'>
+            <p className='title'>Phone Number</p>
+            {showInfo && <span className='info-message'>We only support US phone numbers</span>}
+            <button className='info-button' onClick={handleShowInfo} type='button'>
               <span className='sr-only'>Info</span>
-              <InfoIcon/>
+              <InfoIcon />
             </button>
           </div>
 
           <form>
             <div>
               <input
-                type="tel"
-                id="phone-number"
-                name="phone-number"
-                className="form-input"
-                placeholder="Phone Number"
+                type='tel'
+                id='phone-number'
+                name='phone-number'
+                className='form-input'
+                placeholder='Phone Number'
                 noValidate
-                onChange={(e) => checkingPhoneNumber(e.target.value)}
+                onChange={e => checkingPhoneNumber(e.target.value)}
               />
-              {newNumber &&
+              {newNumber && (
                 <button type='button' className='clear-form-input'>
                   <span className='sr-only'>Clear phone number</span>
-                  <CancelIcon/>
+                  <CancelIcon />
                 </button>
-              }
+              )}
             </div>
-            {fieldErrors
-            ? <p className="inline-error">{fieldErrors}</p> : ''}
-            <button className={`user-account-update-btn${fieldErrors || !newNumber ? ' disabled' : ''}`}
-              type="button"
+            {fieldErrors ? <p className='inline-error'>{fieldErrors}</p> : ''}
+            <button
+              className={`user-account-update-btn${fieldErrors || !newNumber ? ' disabled' : ''}`}
+              type='button'
               // need to do this so that you can not submit button on initial page load
               // eslint-disable-next-line no-unneeded-ternary
-              {...!fieldErrors && newNumber ? { onClick: handleSubmit} : {}}
+              {...(!fieldErrors && newNumber ? { onClick: handleSubmit } : {})}
               disabled={fieldErrors}
             >
               Change Phone Number

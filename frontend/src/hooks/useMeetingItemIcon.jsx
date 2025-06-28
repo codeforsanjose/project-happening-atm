@@ -47,7 +47,7 @@ const useMeetingItemIcon = ({ meetingItemState }) => {
     return [
       classname,
       <div className={classnames('meeting-item-icon', classname)}>
-        <i className="background-circle fas fa-circle fa-2x" />
+        <i className='background-circle fas fa-circle fa-2x' />
         {icons}
       </div>,
       statusStrings,

@@ -24,7 +24,7 @@ function Dropdown({ options, value, onChange, className }) {
   };
 
   useEffect(() => {
-    const handler = (event) => {
+    const handler = event => {
       // 1st check to ensure dropdown (ref) element is currently visible on screen
       if (!dropDownRef.current) return;
       // then check if click is outside dropdown
@@ -40,7 +40,7 @@ function Dropdown({ options, value, onChange, className }) {
     };
   }, []);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = option => {
     // Close Dropdown
     setIsOpen(false);
     // handle the option the user selected (clicked):
@@ -48,52 +48,41 @@ function Dropdown({ options, value, onChange, className }) {
   };
 
   // construct open dropdown w/ diff selection options
-  const renderedOptions = options.map((option) => (
-      <input
-        key={option.value}
-        type="button"
-        className={classNames(
-          // apply addtl styling to indicate currently selected option
-          option.value === value.value ? 'dropdown-item-selected' : '',
-          'dropdown-item', // apply standard styling for all options
-          option.class
-        )}
-        value={t(option.label)}
-        disabled={
-          !!(option.value === value.value ||
-          (propsClassName === 'meeting-status' &&
-            option.value === 'UPCOMING') || // can't revert mtg status to 'upcoming'
-          propsClassName === 'meeting-status in-progress')
-        }
-        onClick={() => handleOptionClick(option)}
-       />
-    ));
+  const renderedOptions = options.map(option => (
+    <input
+      key={option.value}
+      type='button'
+      className={classNames(
+        // apply addtl styling to indicate currently selected option
+        option.value === value.value ? 'dropdown-item-selected' : '',
+        'dropdown-item', // apply standard styling for all options
+        option.class,
+      )}
+      value={t(option.label)}
+      disabled={
+        !!(
+          option.value === value.value ||
+          (propsClassName === 'meeting-status' && option.value === 'UPCOMING') || // can't revert mtg status to 'upcoming'
+          propsClassName === 'meeting-status in-progress'
+        )
+      }
+      onClick={() => handleOptionClick(option)}
+    />
+  ));
 
   return (
-    <div ref={dropDownRef} className="dropdown">
+    <div ref={dropDownRef} className='dropdown'>
       {!isOpen && (
         <button
-          type="button"
-          className={classNames(
-            value.class,
-            'dropdown-item',
-            'selector',
-            className,
-            'panel'
-          )}
+          type='button'
+          className={classNames(value.class, 'dropdown-item', 'selector', className, 'panel')}
           onClick={handleClick}
         >
           {t(value?.label) || 'Select...'}
-          <KeyboardArrowDownIcon
-            className={classNames(className, 'dropdown-arrow')}
-          />
+          <KeyboardArrowDownIcon className={classNames(className, 'dropdown-arrow')} />
         </button>
       )}
-      {isOpen && (
-        <div className={classNames('dropdown-open', className)}>
-          {renderedOptions}
-        </div>
-      )}
+      {isOpen && <div className={classNames('dropdown-open', className)}>{renderedOptions}</div>}
     </div>
   );
 }

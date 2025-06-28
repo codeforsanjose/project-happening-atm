@@ -24,12 +24,8 @@ export function i18Date(timestamp) {
   const i18MonthIndex = new Date(Number(timestamp)).getMonth();
 
   return {
-    i18Day: i18next.t('standard.weekdays', { returnObjects: true })[
-      i18DayIndex
-    ],
-    i18Month: i18next.t('standard.months', { returnObjects: true })[
-      i18MonthIndex
-    ],
+    i18Day: i18next.t('standard.weekdays', { returnObjects: true })[i18DayIndex],
+    i18Month: i18next.t('standard.months', { returnObjects: true })[i18MonthIndex],
     i18DayNumber: toDateString(timestamp).split('/')[1],
   };
 }
@@ -79,7 +75,7 @@ export function groupMeetingsByDate(meetings) {
   const groups = {};
 
   // Fill hash table with meetings organized by year and month
-  meetings.forEach((meeting) => {
+  meetings.forEach(meeting => {
     const date = dayjs(parseInt(meeting.meeting_start_timestamp, 10));
     const month = date.month();
     const year = date.year();
@@ -95,14 +91,14 @@ export function groupMeetingsByDate(meetings) {
   const result = [];
   const sortedYears = Object.keys(groups).sort();
 
-  sortedYears.forEach((year) => {
+  sortedYears.forEach(year => {
     const yearMeetings = groups[year];
 
     for (let i = 0; i < 12; i += 1) {
       if (yearMeetings[i] !== undefined) {
         const sortedMeetings = yearMeetings[i].sort(
-          (a, b) => parseInt(a.meeting_start_timestamp, 10)
-            - parseInt(b.meeting_start_timestamp, 10),
+          (a, b) =>
+            parseInt(a.meeting_start_timestamp, 10) - parseInt(b.meeting_start_timestamp, 10),
         );
 
         const monthObj = {

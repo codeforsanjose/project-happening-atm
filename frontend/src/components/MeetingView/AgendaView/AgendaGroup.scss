@@ -1,4 +1,4 @@
-@import "../../../utils/_colors.scss";
+@import '../../../utils/_colors.scss';
 
 .AgendaGroup {
   .group-header {
@@ -44,7 +44,7 @@
           .expansionIconStatus {
             position: absolute;
             right: 2.5em;
-            
+
             .baseIcon {
               transform: scale(1.25);
             }
@@ -58,9 +58,9 @@
             }
           }
 
-          @media screen and (min-width:812px) {
+          @media screen and (min-width: 812px) {
             .expansionIconStatus {
-              right: 15.05em;      
+              right: 15.05em;
             }
           }
         }

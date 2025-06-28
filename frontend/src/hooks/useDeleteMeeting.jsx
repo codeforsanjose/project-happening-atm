@@ -77,21 +77,20 @@ const useDeleteMeeting = ({ id, meeting_start_timestamp }) => {
     ? `There was an error, Please try again. ${i18Date()} - ${time}`
     : `${i18DateString} - ${time}`;
 
-  const DeleteModal = () => (showModal ? (
-    <ConfirmationModal
-      isOpen={showModal}
-      closeModal={closeModal}
-      headerText={modalHeaderText}
-      bodyText={modalBodyText}
-      confirmButtonText={t(
-        'meeting.list.delete-meeting.modal.buttons.delete',
-      )}
-      onConfirm={handleDelete}
-      onCancel={() => closeModal()}
-      className="delete-meeting-modal"
-      contentLabel={t('meeting.list.delete-meeting.modal.title')}
-    />
-  ) : null);
+  const DeleteModal = () =>
+    showModal ? (
+      <ConfirmationModal
+        isOpen={showModal}
+        closeModal={closeModal}
+        headerText={modalHeaderText}
+        bodyText={modalBodyText}
+        confirmButtonText={t('meeting.list.delete-meeting.modal.buttons.delete')}
+        onConfirm={handleDelete}
+        onCancel={() => closeModal()}
+        className='delete-meeting-modal'
+        contentLabel={t('meeting.list.delete-meeting.modal.title')}
+      />
+    ) : null;
 
   return [openModal, DeleteModal];
 };

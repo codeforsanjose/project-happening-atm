@@ -11,10 +11,10 @@ class CustomDropdown extends Component {
     super(props);
     // this.dropTogglerRef = React.createRef();
     // this.displayAreaRef = React.createRef();
-    this.setDropTogglerRef = (ref) => {
+    this.setDropTogglerRef = ref => {
       this.dropTogglerRef = ref;
     };
-    this.setDisplayAreaRef = (ref) => {
+    this.setDisplayAreaRef = ref => {
       this.displayAreaRef = ref;
     };
     this.state = {
@@ -39,10 +39,10 @@ class CustomDropdown extends Component {
       isOpen: !isOpen,
     });
     if (onChange) onChange(!isOpen);
-  }
+  };
 
   // If click is outside the dropdown button or display area, close the dropdown
-  handleClickOutside = (Event) => {
+  handleClickOutside = Event => {
     const path = Event.composedPath(); // Gets the ancestor's hierarchy as an array
     const { onChange } = this.props;
     if (!path.includes(this.displayAreaRef) && !path.includes(this.dropTogglerRef)) {
@@ -51,24 +51,16 @@ class CustomDropdown extends Component {
       });
       if (onChange) onChange(false);
     }
-  }
+  };
 
   render() {
     const { cellData, remainingOptions } = this.props;
     const { isOpen } = this.state;
     return (
-      <div
-        className="dropdown-wrapper"
-        id={isOpen && 'dropdown-wrapper-active'}
-      >
-
-        <div
-          className="current-status"
-          onClick={this.toggleDropDown}
-          ref={this.setDropTogglerRef}
-        >
+      <div className='dropdown-wrapper' id={isOpen && 'dropdown-wrapper-active'}>
+        <div className='current-status' onClick={this.toggleDropDown} ref={this.setDropTogglerRef}>
           <span>{cellData}</span>
-          <span className="arrow-icon">
+          <span className='arrow-icon'>
             {isOpen ? (
               <KeyboardArrowUpIcon style={{ fill: 'white' }} />
             ) : (
@@ -76,11 +68,11 @@ class CustomDropdown extends Component {
             )}
           </span>
         </div>
-        <div className="remaining-options">
+        <div className='remaining-options'>
           {isOpen && (
             <div ref={this.setDisplayAreaRef}>
-              {remainingOptions.map((option) => (
-                <div className="status-option">{option}</div>
+              {remainingOptions.map(option => (
+                <div className='status-option'>{option}</div>
               ))}
             </div>
           )}

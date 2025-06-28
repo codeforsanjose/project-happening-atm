@@ -1,4 +1,4 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 .subscribe-view {
   z-index: 30;
@@ -19,8 +19,7 @@
     margin: 0 1.25em;
     margin-top: 5em;
 
-    @media screen
-    and (min-width: 812px) {
+    @media screen and (min-width: 812px) {
       max-width: 812px;
       margin: 5em auto;
     }

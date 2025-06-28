@@ -44,7 +44,7 @@ meeting:
       in-progress: In Progress
       in-recess: In Recess
       ended: Ended
-      deferred: Deferred      
+      deferred: Deferred
       cancelled: Cancelled
     long:
       in-progress: Meeting is in progress
@@ -101,7 +101,7 @@ meeting:
         buttons:
           create-meeting: Create
           creating-meeting: Creating New Meeting
-          cancel: Cancel          
+          cancel: Cancel
     delete-meeting:
       button: Delete Meeting
       modal:
@@ -319,7 +319,7 @@ login:
 createAccount:
   span: Don't have an account?
   link: Create Account
-        
+
 forgotPassword:
   header:
     resetPassword: Reset your password
@@ -329,20 +329,20 @@ forgotPassword:
     button:
       sendemail: Send password reset email
     input:
-      email: Email  
+      email: Email
     link:
-      signIn: Sign In    
+      signIn: Sign In
 
 setNewPassword:
-  header: Change password   
+  header: Change password
   body:
     heading1: Enter your new password
     button:
       changePassword: Change Password
     input:
       newPassword: New Password
-      confirmNewPassword: Confirm Password    
-      
+      confirmNewPassword: Confirm Password
+
 footer:
   language:
     change:
@@ -377,7 +377,7 @@ standard:
     - Thursday
     - Friday
     - Saturday
-  months: 
+  months:
     - January
     - February
     - March

@@ -16,11 +16,8 @@ export default function BackNavigation() {
 
   return (
     <div className={classnames('back-navigation')}>
-      <div className="back-wrapper">
-        <button
-          type="button"
-          onClick={goBack}
-        >
+      <div className='back-wrapper'>
+        <button type='button' onClick={goBack}>
           <ChevronLeftIcon />
           {t('standard.buttons.back')}
         </button>

@@ -9,10 +9,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { getUserEmail, getUserPhone } from '../../../utils/verifyToken';
 import SubscribeConfirmation from '../../Subscribe/SubscribeConfirmation';
 import './AgendaItem.scss';
-import {
-  CREATE_SUBSCRIPTIONS,
-  UPDATE_MEETING_ITEM,
-} from '../../../graphql/mutation';
+import { CREATE_SUBSCRIPTIONS, UPDATE_MEETING_ITEM } from '../../../graphql/mutation';
 import isAdmin from '../../../utils/isAdmin';
 import { toTimeString } from '../../../utils/timestampHelper';
 import { buildDropdownAgendaItemStatuses } from '../../../utils/buildDropdownStatusClasses';
@@ -80,8 +77,10 @@ function AgendaItem({ item, subStatus, args }) {
   const { refetchAllMeeting, refetchSubs, getSubError } = args;
 
   const [disableSort, setDisableSort] = useState(false);
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id, disabled: disableSort });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: item.id,
+    disabled: disableSort,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -112,16 +111,14 @@ function AgendaItemActionLink({ loading, handleSubmit, subscribed }) {
   const { t } = useTranslation();
   if (subscribed) {
     return (
-      <div className="link">
-        <p className="subscribed">
-          {t('meeting.tabs.agenda.list.subscribe.button.done')}
-        </p>
+      <div className='link'>
+        <p className='subscribed'>{t('meeting.tabs.agenda.list.subscribe.button.done')}</p>
         <NotificationFilledIcon />
       </div>
     );
   }
   return (
-    <button className="link" onClick={handleSubmit} type="button">
+    <button className='link' onClick={handleSubmit} type='button'>
       <p className={loading ? 'notify-me subscribing' : 'notify-me'}>
         {loading
           ? t('meeting.tabs.agenda.list.subscribe.button.doing')
@@ -143,8 +140,7 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
 
   const [subscriptions, setSubscriptions] = useState(null);
   const [subscribed, setSubscribed] = useState(subStatus);
-  const [displaySetStartTimeModal, setDisplaySetStartTimeModal] =
-    useState(false);
+  const [displaySetStartTimeModal, setDisplaySetStartTimeModal] = useState(false);
   const [admin] = useState(isAdmin());
   const { t } = useTranslation();
 
@@ -152,15 +148,14 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const agendaItemStatuses = buildDropdownAgendaItemStatuses();
 
   // index map of different agenda item statuses
-  const statusIndexMap = agendaItemStatuses.map((status) => status.value);
+  const statusIndexMap = agendaItemStatuses.map(status => status.value);
 
   // current agenda item state
   const [agendaItemStatus, setAgendaItemStatus] = useState(
-    agendaItemStatuses[statusIndexMap.indexOf(item.status)]
+    agendaItemStatuses[statusIndexMap.indexOf(item.status)],
   );
   // pending agenda item state
-  const [pendingAgendaItemStatus, setPendingAgendaItemStatus] =
-    useState(agendaItemStatus);
+  const [pendingAgendaItemStatus, setPendingAgendaItemStatus] = useState(agendaItemStatus);
 
   // open/close states for agenda item status change confirmation modal:
   const [showConfirmationModal, setShowConfirmationModa] = useState(false);
@@ -175,27 +170,22 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   const modalRef = useRef(null);
   // check if time for item is set, store if it is
   const isTimeSet = item.item_start_timestamp !== '0';
-  const agendaItemTime = isTimeSet
-    ? toTimeString(item.item_start_timestamp)
-    : null;
+  const agendaItemTime = isTimeSet ? toTimeString(item.item_start_timestamp) : null;
 
-  const [updateAgendaItemStatus, { loadingStatus, errorMsg }] = useMutation(
-    UPDATE_MEETING_ITEM,
-    {
-      onCompleted: () => {
-        try {
-          refetchAllMeeting(); // need to refetch meeting in case status changes to "In Progress"
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`Error updating agenda item status: ${error.message}`);
-        }
-      },
-      onError: (error) => {
+  const [updateAgendaItemStatus, { loadingStatus, errorMsg }] = useMutation(UPDATE_MEETING_ITEM, {
+    onCompleted: () => {
+      try {
+        refetchAllMeeting(); // need to refetch meeting in case status changes to "In Progress"
+      } catch (error) {
         // eslint-disable-next-line no-console
         console.log(`Error updating agenda item status: ${error.message}`);
-      },
-    }
-  );
+      }
+    },
+    onError: error => {
+      // eslint-disable-next-line no-console
+      console.log(`Error updating agenda item status: ${error.message}`);
+    },
+  });
   // Define prop values for the confirmation modal for admins to change the agenda item status:
   // Note: different language support can be added later as this is for Admins anyhow (translation currently missing in .yaml files)
   const modalHeaderText = t('meeting.tabs.agenda.status.modal.title2'); // note: translation missing from yaml files
@@ -227,22 +217,19 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
     }
   }, [subStatus, dragOverlay, admin]);
 
-  const [createSubscriptions, { loading, error }] = useMutation(
-    CREATE_SUBSCRIPTIONS,
-    {
-      onCompleted: (data) => {
-        setSubscribed(true);
-        setSubscriptions(data?.createSubscriptions ?? null);
-        refetchSubs();
-      },
-    }
-  );
+  const [createSubscriptions, { loading, error }] = useMutation(CREATE_SUBSCRIPTIONS, {
+    onCompleted: data => {
+      setSubscribed(true);
+      setSubscriptions(data?.createSubscriptions ?? null);
+      refetchSubs();
+    },
+  });
 
   const [updateItem] = useMutation(UPDATE_MEETING_ITEM, {
     onCompleted: () => {
       refetchAllMeeting();
     },
-    onError: (error) => {
+    onError: error => {
       // eslint-disable-next-line no-console
       console.log(`Error resetting time: ${error.message}`);
     },
@@ -265,15 +252,13 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   // re-render whenever agenda item status prop changes (e.g. by ano/ user)
   useEffect(() => {
     if (item?.status && agendaItemStatus.value !== item.status) {
-      setAgendaItemStatus(
-        agendaItemStatuses[statusIndexMap.indexOf(item.status)]
-      );
+      setAgendaItemStatus(agendaItemStatuses[statusIndexMap.indexOf(item.status)]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- TODO: for agendaItemStatus
   }, [item.status]);
 
   // handle new user selection for meeting status
-  const handleSelectStatus = (option) => {
+  const handleSelectStatus = option => {
     openConfirmationModal();
     setPendingAgendaItemStatus(option);
   };
@@ -288,12 +273,12 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
     });
   };
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = e => {
     e.preventDefault();
     const phone = getUserPhone();
     const email = getUserEmail();
     const subscriptionQueryString = convertQueryStringToServerFormat(
-      buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } })
+      buildSubscriptionQueryString({ [item.meetingId]: { [item.id]: true } }),
     );
     createSubscriptions({
       variables: {
@@ -312,7 +297,6 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
 
   const closeConfirmation = () => {
     if (modalRef.current) modalRef.current.portal.close();
-
   };
 
   const changeItemStartTimeArgs = {
@@ -326,12 +310,8 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
   // Without this the dragOverlay prevented the pressing of the checkbox
   return (
     <div ref={itemRef}>
-      <div
-        {...props}
-        ref={ref}
-        className={`AgendaItem ${agendaItemStatus.class}`}
-      >
-        <div className="row">
+      <div {...props} ref={ref} className={`AgendaItem ${agendaItemStatus.class}`}>
+        <div className='row'>
           {item.status === MeetingItemStates.UPCOMING}
           <h4>{item.title_loc_key}</h4>
         </div>
@@ -342,27 +322,25 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
             ref={modalRef}
           />
         )}
-        {error && <div className="form-error">{error.message}</div>}
-        {getSubError && <div className="form-error">{getSubError.message}</div>}
-        {displaySetStartTimeModal && (
-          <UpdateItemStartTimeModal args={changeItemStartTimeArgs} />
-        )}
+        {error && <div className='form-error'>{error.message}</div>}
+        {getSubError && <div className='form-error'>{getSubError.message}</div>}
+        {displaySetStartTimeModal && <UpdateItemStartTimeModal args={changeItemStartTimeArgs} />}
 
-        <div className="item-links">
+        <div className='item-links'>
           {/* verify user is admin,
                   if agenda item has a time specified, show time and icon to reset time,
                   If no time is specified, show button to open set time modal */}
           {admin && (
-            <div className="link status">
+            <div className='link status'>
               {isTimeSet ? (
-                <div className="time admin">
+                <div className='time admin'>
                   <span>{agendaItemTime}</span>
-                  <button type="button" onClick={handleItemTimeReset}>
+                  <button type='button' onClick={handleItemTimeReset}>
                     <CloseIcon />
                   </button>
                 </div>
               ) : (
-                <button type="button" onClick={handleDisplaySetStartTimeModal}>
+                <button type='button' onClick={handleDisplaySetStartTimeModal}>
                   {t('meeting.tabs.agenda.status.modal.set-time.title')}
                 </button>
               )}
@@ -372,14 +350,14 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
             otherwise we show the item status (completed, on hold, in progress, deferred) */}
           {!admin &&
             (isTimeSet ? (
-              <div className="link status">
-                <p className="time">
+              <div className='link status'>
+                <p className='time'>
                   <ScheduleBlueIcon />
                   {agendaItemTime}
                 </p>
               </div>
             ) : (
-              <div className="link status">
+              <div className='link status'>
                 <p className={agendaItemStatus.class}>
                   {item.status === MeetingItemStates.IN_PROGRESS && (
                     <span>
@@ -406,12 +384,12 @@ const RenderedAgendaItem = forwardRef(({ subStatus, args, ...props }, ref) => {
 
           {admin && (
             <>
-              <div className="dropdown-container">
+              <div className='dropdown-container'>
                 <Dropdown
                   options={agendaItemStatuses}
                   value={agendaItemStatus}
                   onChange={handleSelectStatus}
-                  className="agenda-item-status"
+                  className='agenda-item-status'
                 />
               </div>
               {showConfirmationModal && (

@@ -6,7 +6,7 @@ import { AdminMeetingItemLinks } from '../components/MeetingListView/MeetingList
 
 // Mock to allow react-i18next in AdminMeetingItemLinks: https://stackoverflow.com/questions/66973857/next-i18next-jest-testing-with-usetranslation
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key) => key }),
+  useTranslation: () => ({ t: key => key }),
 }));
 
 // Mock to allow i18next in 'frontend/src/utils/timestampHelper.js': https://stackoverflow.com/questions/70850517/testing-i18next-complain-about-cannot-read-property-use-of-undefined
@@ -15,7 +15,7 @@ jest.mock('i18next', () => ({
   use: () => {},
   init: () => {},
   default: {
-    t: (key) => key,
+    t: key => key,
   },
 }));
 

@@ -1,11 +1,13 @@
 const REQUIRED_FIELD_ERROR = 'This field is required.';
 const WRONG_COUNTRY_CODE = 'Country code is required to be 1.';
-const UNEXPECTED_PHONE_LENGTH = 'Unexpected length of the phone. Country and area codes are required.';
+const UNEXPECTED_PHONE_LENGTH =
+  'Unexpected length of the phone. Country and area codes are required.';
 const BAD_EMAIL = 'We didn\u2019t recognize this email address.';
 const NO_AT_IN_EMAIL = 'An email address must contain a single @.';
 
 // Taken from: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function getPhoneDigits(phone) {
   return (phone.match(/\d/g) || []).join('');

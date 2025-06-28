@@ -21,9 +21,8 @@ const useCreateMeeting = () => {
     setShowModal(true);
   };
 
-  const CreateModal = () => (showModal ?
-    <CreateMeetingModal isOpen={showModal} closeModal={closeModal} />
-    : null);
+  const CreateModal = () =>
+    showModal ? <CreateMeetingModal isOpen={showModal} closeModal={closeModal} /> : null;
 
   return [openModal, CreateModal];
 };

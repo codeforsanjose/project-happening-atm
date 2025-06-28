@@ -12,7 +12,7 @@ const SUBSCRIPTION_QUERY_PARAM_NAME = 'items';
  */
 export function buildSubscriptionQueryString(selectedItems) {
   const subscriptionQueryString = new URLSearchParams();
-  Object.keys(selectedItems).forEach((meetingId) => {
+  Object.keys(selectedItems).forEach(meetingId => {
     subscriptionQueryString.append(
       SUBSCRIPTION_QUERY_PARAM_NAME,
       `${Object.keys(selectedItems[meetingId]).join(',')}`,
@@ -33,8 +33,8 @@ export function buildSubscriptionQueryString(selectedItems) {
 export function convertQueryStringToServerFormat(queryString) {
   const searchParams = new URLSearchParams(queryString);
   const meetingItems = [];
-  searchParams.getAll(SUBSCRIPTION_QUERY_PARAM_NAME).forEach((itemsElement) => {
-    itemsElement.split(',').forEach((meetingItemId) => {
+  searchParams.getAll(SUBSCRIPTION_QUERY_PARAM_NAME).forEach(itemsElement => {
+    itemsElement.split(',').forEach(meetingItemId => {
       meetingItems.push({
         meeting_item_id: parseInt(meetingItemId, 10),
       });

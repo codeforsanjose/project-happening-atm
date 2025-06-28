@@ -8,7 +8,6 @@ import MeetingStates from '../../constants/MeetingStates';
 import Dropdown from '../Dropdown/Dropdown';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
-
 import { toTimeString, i18Date } from '../../utils/timestampHelper';
 import { buildDropdownMeetingStatuses } from '../../utils/buildDropdownStatusClasses';
 
@@ -20,11 +19,7 @@ import { StatusInProgress } from '../../utils/_icons';
 // functions used by this component
 import isAdmin from '../../utils/isAdmin';
 
-function MeetingHeader({
-  loading,
-  meeting,
-  progressStatus,
-}) {
+function MeetingHeader({ loading, meeting, progressStatus }) {
   const { t } = useTranslation();
 
   // possible meeting statuses to be passed into meeting status dropdown w/ internationalization of status labels
@@ -35,13 +30,13 @@ function MeetingHeader({
   const i18DateString = `${i18Day} ${i18DayNumber}`;
 
   // index map of different meeting statuses
-  const statusIndexMap = statuses.map((status) => status.value);
+  const statusIndexMap = statuses.map(status => status.value);
   // define state for selected meeting status and the graphql mutation for updating meeting in DB
   // Set default status of meetings to Upcoming if no status exists yet
   const [meetingStatus, setMeetingStatus] = useState(
     meeting.status !== undefined
       ? statuses[statusIndexMap.indexOf(meeting.status)]
-      : statuses[statusIndexMap.indexOf(MeetingStates.UPCOMING)]
+      : statuses[statusIndexMap.indexOf(MeetingStates.UPCOMING)],
   );
   const [updateMeeting, { updating, error }] = useMutation(UPDATE_MEETING);
   // open/close states for meeting status change confirmation modal:
@@ -112,7 +107,7 @@ function MeetingHeader({
   }, [progressStatus]);
 
   // handle new user selection for meeting status
-  const handleSelectStatus = (option) => {
+  const handleSelectStatus = option => {
     openModal();
     setPendingStatus(option);
   };
@@ -120,27 +115,23 @@ function MeetingHeader({
   const isInProgress = meetingStatus.value === 'IN PROGRESS';
 
   return (
-    <div className="meeting-header">
+    <div className='meeting-header'>
       {!loading && (
         <>
           {isAdmin() && (
             <>
-              <div
-                className={classNames(meetingStatus.class, 'selector-panel')}
-              >
-                <label htmlFor="meeting-status-dropdown" className="label">
+              <div className={classNames(meetingStatus.class, 'selector-panel')}>
+                <label htmlFor='meeting-status-dropdown' className='label'>
                   {t('meeting.status.label')}
                 </label>
-                <div id="meeting-status-dropdown">
+                <div id='meeting-status-dropdown'>
                   <Dropdown
-                    id="meeting-status-dropdown"
+                    id='meeting-status-dropdown'
                     options={statuses}
                     value={meetingStatus}
-                    onChange={(option) => handleSelectStatus(option)}
+                    onChange={option => handleSelectStatus(option)}
                     className={classNames(
-                      progressStatus
-                        ? 'meeting-status in-progress'
-                        : 'meeting-status'
+                      progressStatus ? 'meeting-status in-progress' : 'meeting-status',
                     )}
                   />
                 </div>
@@ -158,7 +149,7 @@ function MeetingHeader({
                     setPendingStatus(meetingStatus);
                     closeModal();
                   }}
-                  contentLabel="Update Meeting Status"
+                  contentLabel='Update Meeting Status'
                 />
               )}
             </>
@@ -166,20 +157,15 @@ function MeetingHeader({
         </>
       )}
       <div
-        className={classNames(
-          'header-shared-content',
-          isAdmin() && 'header-shared-content--admin'
-        )}
+        className={classNames('header-shared-content', isAdmin() && 'header-shared-content--admin')}
       >
-        <div className="meeting-info">
+        <div className='meeting-info'>
           {loading && <Spinner />}
-          <div className="meeting-info-panel">
+          <div className='meeting-info-panel'>
             {!loading && (
-              <div className="date-status-wrapper">
-                <div className="date">
-                  {`${i18DateString 
-                    }, ${ 
-                    toTimeString(meeting.meeting_start_timestamp)}`}
+              <div className='date-status-wrapper'>
+                <div className='date'>
+                  {`${i18DateString}, ${toTimeString(meeting.meeting_start_timestamp)}`}
                 </div>
                 {/* display meeting status for community users: */}
                 {!isAdmin() && (
@@ -190,7 +176,7 @@ function MeetingHeader({
                   >
                     {isInProgress && (
                       <>
-                        <StatusInProgress className="status-icon" />
+                        <StatusInProgress className='status-icon' />
                       </>
                     )}
                     {t(meetingStatus.label)}
@@ -199,7 +185,7 @@ function MeetingHeader({
               </div>
             )}
           </div>
-          <div className="title">
+          <div className='title'>
             {t('header.city-council-meetings')}
             <br />
             {t('header.meeting-agenda')}

@@ -10,18 +10,18 @@ const LINKS = [
   {
     key: 'editDetails',
     icon: InfoIcon,
-    linkText: 'Edit Meeting Details'
+    linkText: 'Edit Meeting Details',
   },
   {
     key: 'editAgenda',
     icon: EditIcon,
-    linkText: 'Edit Agenda Items'
+    linkText: 'Edit Agenda Items',
   },
   {
     key: 'uploadAgenda',
     icon: PublishIcon,
-    linkText: 'Upload Agenda'
-  }
+    linkText: 'Upload Agenda',
+  },
 ];
 
 /**
@@ -36,15 +36,15 @@ function AdminNavigation() {
       <div className='links'>
         <ul>
           {LINKS.map(link => (
-              <AdminNavigationLink
-                key={link.key}
-                Icon={link.icon}
+            <AdminNavigationLink
+              key={link.key}
+              Icon={link.icon}
               linkText={link.linkText}
-                // eslint-disable-next-line no-console
-                handleClick={() => console.log(link.key)} // DEBUG: replace with click function
-                active={link.key === 'editDetails'} // DEBUG: replace with conditional for current view
-              />
-            ))}
+              // eslint-disable-next-line no-console
+              handleClick={() => console.log(link.key)} // DEBUG: replace with click function
+              active={link.key === 'editDetails'} // DEBUG: replace with conditional for current view
+            />
+          ))}
         </ul>
       </div>
 

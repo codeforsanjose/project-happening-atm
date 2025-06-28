@@ -19,25 +19,21 @@ function Header({ toggled, handleToggle }) {
 
   return (
     <header>
-      <nav className="no-select">
-        {loginContext.signedIn ? '' : <Redirect to="/login" />}
-        <div className="nav-bar">
-          <div className="home-button-group">
+      <nav className='no-select'>
+        {loginContext.signedIn ? '' : <Redirect to='/login' />}
+        <div className='nav-bar'>
+          <div className='home-button-group'>
             {meetingCalendar ? (
               <>
-                <ATMLogoPinRainbowIcon className="home-button-icon" />
-                <span className="home-button-text">{t('navbar.city')}</span>
+                <ATMLogoPinRainbowIcon className='home-button-icon' />
+                <span className='home-button-text'>{t('navbar.city')}</span>
               </>
             ) : (
               <BackNavigation />
             )}
           </div>
           {meetingCalendar ? '' : <ATMLogoPinRainbowIcon />}
-          <HamburgerIcon
-            className="button-icon"
-            onClick={handleToggle}
-            toggled={toggled}
-          />
+          <HamburgerIcon className='button-icon' onClick={handleToggle} toggled={toggled} />
         </div>
         <NavLinks toggled={toggled} t={t} />
       </nav>

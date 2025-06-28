@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {
-  DragOverlay,
-} from '@dnd-kit/core';
+import { DragOverlay } from '@dnd-kit/core';
 
 import { RenderedAgendaItem } from '../AgendaItem';
 
@@ -13,7 +11,9 @@ function DragOverlayHandler(props) {
   // deconstructing all the props, had to disable deconstructing rule
   // so that I can deconstruct as an object
   const {
-    agendaGroups, activeId, subbedItems,
+    agendaGroups,
+    activeId,
+    subbedItems,
     // eslint-disable-next-line react/destructuring-assignment
   } = props.dragOverlayProps;
 
@@ -23,7 +23,7 @@ function DragOverlayHandler(props) {
 
   // Need to get the parentContainer's index in agendaGroup
   agendaGroups.forEach((parent, i) => {
-    parent.items.forEach((item) => {
+    parent.items.forEach(item => {
       if (item.id === activeId) {
         parentContainerIndex = i;
       }
@@ -31,7 +31,7 @@ function DragOverlayHandler(props) {
   });
   // Need to get the activeItem itself and assign it, this is necessary
   // as the RenderAgendaItem needs its information to build a draggable overlay
-  activeItem = agendaGroups[parentContainerIndex].items.find((item) => item.id === activeId);
+  activeItem = agendaGroups[parentContainerIndex].items.find(item => item.id === activeId);
 
   const RenderedAgendaItemArgs = {
     item: activeItem,
@@ -40,11 +40,7 @@ function DragOverlayHandler(props) {
   return (
     <DragOverlay>
       <RenderedAgendaItem
-        subStatus={
-          subbedItems.some(
-            (sub) => (sub.meeting_item_id === activeId),
-          )
-        }
+        subStatus={subbedItems.some(sub => sub.meeting_item_id === activeId)}
         args={RenderedAgendaItemArgs}
       />
     </DragOverlay>

@@ -1,17 +1,13 @@
-@import "../../utils/_colors.scss";
+@import '../../utils/_colors.scss';
 
 // removed height: 100vh; in .app-root due to bug where the change status modal
 // was forced off screen.
 
 .LoginHandler {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 
   .loginHeader {
-    background: linear-gradient(
-      180deg,
-      rgba(37, 66, 118, 1) 0%,
-      $cityBlue 100%
-    );
+    background: linear-gradient(180deg, rgba(37, 66, 118, 1) 0%, $cityBlue 100%);
     min-height: 6rem;
     width: 100vw;
     display: flex;
@@ -31,12 +27,7 @@
   }
 
   .loginTitle {
-    background: -webkit-linear-gradient(
-      0deg,
-      #fff7aa 0%,
-      #b9fbff 44.94%,
-      #feb6fb 96.96%
-    );
+    background: -webkit-linear-gradient(0deg, #fff7aa 0%, #b9fbff 44.94%, #feb6fb 96.96%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-top: 24px;
@@ -115,7 +106,7 @@
           border-width: 1px;
         }
         span {
-          font-family: "Poppins", sans-serif;
+          font-family: 'Poppins', sans-serif;
           letter-spacing: 1.5px;
           margin-left: 1.5rem;
           font-weight: 600;

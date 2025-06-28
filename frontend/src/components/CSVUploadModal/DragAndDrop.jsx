@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './DragAndDrop.scss';
 
 function DragAndDrop({ dropHandler, children }) {
@@ -11,7 +6,7 @@ function DragAndDrop({ dropHandler, children }) {
   const dragCounter = useRef(0);
   const [dragging, setDragging] = useState(false);
 
-  const handleDragIn = useCallback((e) => {
+  const handleDragIn = useCallback(e => {
     e.preventDefault();
     e.stopPropagation();
     dragCounter.current += 1;
@@ -21,7 +16,7 @@ function DragAndDrop({ dropHandler, children }) {
     }
   }, []);
 
-  const handleDragOut = useCallback((e) => {
+  const handleDragOut = useCallback(e => {
     e.preventDefault();
     e.stopPropagation();
     dragCounter.current -= 1;
@@ -29,17 +24,20 @@ function DragAndDrop({ dropHandler, children }) {
     if (dragCounter.current === 0) setDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragging(false);
+  const handleDrop = useCallback(
+    e => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragging(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      dropHandler(e.dataTransfer.files);
-    }
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        dropHandler(e.dataTransfer.files);
+      }
 
-    dragCounter.current = 0;
-  }, [dropHandler]);
+      dragCounter.current = 0;
+    },
+    [dropHandler],
+  );
 
   function handleDrag(e) {
     e.preventDefault();
@@ -62,8 +60,8 @@ function DragAndDrop({ dropHandler, children }) {
   }, [handleDragIn, handleDragOut, handleDrop]);
 
   return (
-    <div className="DragAndDrop" ref={dropRef}>
-      {dragging && <div className="overlay" />}
+    <div className='DragAndDrop' ref={dropRef}>
+      {dragging && <div className='overlay' />}
       {children}
     </div>
   );

@@ -1,7 +1,7 @@
 // takes a jwt and parses it into a json object
 
 // this will decode a token into a usable json object, allows the access of the json properties
-const parseJwt = (token) => {
+const parseJwt = token => {
   try {
     const partToRead = token;
 

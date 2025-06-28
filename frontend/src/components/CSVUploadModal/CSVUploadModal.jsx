@@ -9,12 +9,7 @@ import uploadCSV from '../../utils/uploadHelper';
 import DragAndDrop from './DragAndDrop';
 import Spinner from '../Spinner/Spinner';
 import SuccessModal from '../SuccessModal/SuccessModal';
-import {
-  PublishIcon,
-  CancelIcon,
-  DocumentIcon,
-  DeleteIcon,
-} from '../../utils/_icons';
+import { PublishIcon, CancelIcon, DocumentIcon, DeleteIcon } from '../../utils/_icons';
 import { Desktop, TabletOrMobile } from '../../utils/mediaquery';
 
 /**
@@ -58,7 +53,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
     setSelectedFile(fileRef.files[0]);
   }
 
-  const handleFileDrop = useCallback((files) => {
+  const handleFileDrop = useCallback(files => {
     if (files.length === 0 || files[0].type !== 'text/csv') return;
     setSelectedFile(files[0]);
   }, []);
@@ -100,9 +95,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
   }
 
   const redirect = pathname === '/';
-  const publishButtonText = isLoading
-    ? 'Uploading and Publishing'
-    : 'Upload and Publish';
+  const publishButtonText = isLoading ? 'Uploading and Publishing' : 'Upload and Publish';
 
   Modal.setAppElement('#root');
 
@@ -111,7 +104,7 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
       <SuccessModal
         isOpen={isOpen}
         closeModal={clearAndCloseModal}
-        headerText="Agenda Successfully Uploaded!"
+        headerText='Agenda Successfully Uploaded!'
         confirmModal={redirect ? redirectToMeeting : clearAndCloseModal}
         confirmText={redirect ? 'Go to Meeting' : 'Close'}
       />
@@ -122,16 +115,12 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
     <Modal
       isOpen={isOpen}
       onRequestClose={clearAndCloseModal}
-      contentLabel="CSV Upload Modal"
-      className="CSVUploadModal"
-      overlayClassName="modal-overlay"
+      contentLabel='CSV Upload Modal'
+      className='CSVUploadModal'
+      overlayClassName='modal-overlay'
     >
-      <div className="wrapper">
-        <button
-          type="button"
-          onClick={clearAndCloseModal}
-          className="cancel-button close-modal"
-        >
+      <div className='wrapper'>
+        <button type='button' onClick={clearAndCloseModal} className='cancel-button close-modal'>
           <CancelIcon />
         </button>
 
@@ -140,22 +129,18 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
             <>
               <h2>Are you sure you want to upload a new agenda?</h2>
 
-              <p className="confirm-message">
-                This action will overwrite the existing meeting and unsubscribe
-                and notify all subscribed users.
+              <p className='confirm-message'>
+                This action will overwrite the existing meeting and unsubscribe and notify all
+                subscribed users.
               </p>
 
-              <div className="confirm-buttons">
-                <button
-                  type="button"
-                  className="modal-button"
-                  onClick={handleUpload}
-                >
+              <div className='confirm-buttons'>
+                <button type='button' className='modal-button' onClick={handleUpload}>
                   Upload Agenda
                 </button>
                 <button
-                  type="button"
-                  className="modal-button"
+                  type='button'
+                  className='modal-button'
                   onClick={() => setShowConfirm(false)}
                 >
                   Cancel
@@ -166,17 +151,17 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
             <>
               <h2>Upload Agenda</h2>
               <DragAndDrop dropHandler={handleFileDrop}>
-                <div className="upload-area">
+                <div className='upload-area'>
                   {selectedFile && (
-                    <div className="file-preview">
+                    <div className='file-preview'>
                       <button
-                        type="button"
+                        type='button'
                         onClick={clearSelectedFile}
-                        className="cancel-button cancel-file"
+                        className='cancel-button cancel-file'
                       >
                         <CancelIcon />
                       </button>
-                      <div className="csv-icon">
+                      <div className='csv-icon'>
                         <DocumentIcon />
                       </div>
                       <p>{selectedFile.name}</p>
@@ -187,23 +172,23 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
                     <>
                       <PublishIcon />
                       <p>Drag and Drop CSV File</p>
-                      <label htmlFor="csv">
+                      <label htmlFor='csv'>
                         Or Upload from your Computer
                         <input
-                          className="visually-hidden"
-                          type="file"
-                          name="csv"
-                          id="csv"
-                          accept=".csv"
+                          className='visually-hidden'
+                          type='file'
+                          name='csv'
+                          id='csv'
+                          accept='.csv'
                           onChange={handleFileChange}
                           ref={fileInputRef}
                         />
                       </label>
                     </>
-                    ) : (
-                        <button
-                      type="button"
-                      className="remove-csv"
+                  ) : (
+                    <button
+                      type='button'
+                      className='remove-csv'
                       onClick={() => clearSelectedFile()}
                       ref={fileInputRef}
                     >
@@ -214,24 +199,20 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
                 </div>
               </DragAndDrop>
 
-              <div className="lower-buttons">
+              <div className='lower-buttons'>
                 {!selectedFile ? (
                   <></>
                 ) : (
                   <button
-                    type="button"
-                    className="upload-button modal-button"
+                    type='button'
+                    className='upload-button modal-button'
                     onClick={() => setShowConfirm(true)}
                   >
                     {isLoading && <Spinner />}
                     {publishButtonText}
                   </button>
                 )}
-                <button
-                  type="button"
-                  className="delete-button modal-button"
-                  onClick={closeModal}
-                >
+                <button type='button' className='delete-button modal-button' onClick={closeModal}>
                   {t('meeting.list.delete-meeting.modal.buttons.cancel')}
                 </button>
               </div>
@@ -239,19 +220,15 @@ function CSVUploadModal({ isOpen, closeModal, meetingId = null }) {
           )}
         </Desktop>
         <TabletOrMobile>
-          <h2 className="disabled-upload-header">Upload Agenda</h2>
-          <div className="upload-area">
+          <h2 className='disabled-upload-header'>Upload Agenda</h2>
+          <div className='upload-area'>
             <p>
               You are currently using the mobile version.&nbsp;
-              <span className="inline-text">
+              <span className='inline-text'>
                 To upload a file, use the desktop version from your computer.
               </span>
             </p>
-            <button
-              type="button"
-              className="close-button modal-button"
-              onClick={closeModal}
-            >
+            <button type='button' className='close-button modal-button' onClick={closeModal}>
               OK
             </button>
           </div>

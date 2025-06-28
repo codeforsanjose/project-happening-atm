@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import "../Footer/Footer.scss";
-import NavBarHeader from "../NavBarHeader/NavBarHeader";
-import sendFeedbackLanguages from "./SendFeedbackLanguageHTMLBlocks";
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../Footer/Footer.scss';
+import NavBarHeader from '../NavBarHeader/NavBarHeader';
+import sendFeedbackLanguages from './SendFeedbackLanguageHTMLBlocks';
 
 function SendFeedback() {
   const { i18n } = useTranslation();
@@ -15,9 +15,7 @@ function SendFeedback() {
   return (
     <div>
       <NavBarHeader toggled={navToggled} handleToggle={handleToggle} />
-      <div className="footer-pages-container">
-        {sendFeedbackLanguages(language)}
-      </div>
+      <div className='footer-pages-container'>{sendFeedbackLanguages(language)}</div>
     </div>
   );
 }
