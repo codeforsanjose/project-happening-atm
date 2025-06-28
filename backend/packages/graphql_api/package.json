@@ -1,0 +1,49 @@
+{
+  "name": "graphql-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.mjs",
+  "engines": {
+    "node": "22.x",
+    "npm": "10.x"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.12.2",
+    "aws-sdk": "^2.830.0",
+    "axios": "^1.10.0",
+    "bcrypt": "^5.0.1",
+    "date-fns": "^2.25.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^16.11.0",
+    "graphql-tag": "^2.12.6",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.3.3",
+    "postgres-migrations": "^5.1.1",
+    "winston": "^3.3.3",
+    "yargs": "^17.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^5.5.1",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  },
+  "scripts": {
+    "format": "prettier -w .",
+    "lint": "eslint ./**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeforsanjose/gov-agenda-notifier.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeforsanjose/gov-agenda-notifier/issues"
+  }
+}

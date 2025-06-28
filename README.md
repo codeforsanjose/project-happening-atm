@@ -43,8 +43,13 @@ Application is hosted on AWS
 TODO via Github Actions
 
 ## Set up local environment development
-- Install Docker
-- Run the app, and wait for the engine to run (green status bar on bottom left)
+1. Install [Docker Desktop](https://docs.docker.com/desktop/)
+2. Clone the repository:
+   ```bash
+   git clone
+   ```
+3. Create a `.env` file in the root of the project. 
+4. 
 - In the terminal, go to your repository and run `docker compose build`. You only need to run this command once, then you can bring up your environment again by using `docker compose up`.
 
 

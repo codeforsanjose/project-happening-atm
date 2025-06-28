@@ -1,22 +1,13 @@
-FROM docker.io/library/node:14.21.3 as node_modules_cache
+FROM docker.io/library/node:lts
+
 LABEL org.opensourcesanjose.app="happening-atm"
 
 WORKDIR /usr/src/app
 
-COPY ./backend/graphql_api/package*.json .
-RUN npm install --from-lockfile
+COPY ./backend/packages/graphql_api/package.json .
 
-FROM docker.io/library/node:14.21.3
-LABEL org.opensourcesanjose.app="happening-atm"
-
-WORKDIR /usr/src/app
-
-COPY ./backend/graphql_api .
-
-COPY --from=node_modules_cache /usr/src/app/node_modules /usr/src/app/node_modules
-
-RUN npm install --from-lockfile 
+RUN npm install
 
 EXPOSE 3000/tcp
 
-CMD ["npm", "run", "start"]
+CMD ["npx", "nodemon", "--legacy-watch", "."]
