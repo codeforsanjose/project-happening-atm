@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('@apollo/server');
 
 const getMutationResolver = require('./resolvers/mutation');
 const getQueryResolver = require('./resolvers/query');
@@ -178,7 +178,6 @@ module.exports = (logger) => {
     },
   };
 
-  // ApolloServer documentation: https://www.apollographql.com/docs/apollo-server/
   return new ApolloServer({
     typeDefs,
     resolvers,
@@ -188,15 +187,5 @@ module.exports = (logger) => {
 
     // Empty implementation for local and deployed dev use:
     // TODO: Auth needs to be refactored for AWS
-    context: ({ req }) => {
-      if (req.headers.authorization) {
-        const context = authentication.getToken(req.headers.authorization);
-        return context;
-      }
-      // if no token in headers setting token to null
-      return {
-        token: null,
-      };
-    },
   });
 };

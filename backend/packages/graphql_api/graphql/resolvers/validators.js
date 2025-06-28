@@ -2,7 +2,8 @@
 // I'm disabling this error because we're using variable names from the schema
 // that use snake_case since they're referencing values in our DB that also uses snake_case
 
-const { UserInputError, ForbiddenError } = require('apollo-server');
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
+const { GraphQLError } = require('graphql');
 
 // TODO: We might want to have these set up in a config file for easy modification
 // JYIP: Need to filter to latest statuses per MVP designs
@@ -26,7 +27,20 @@ module.exports = (logger) => {
 
   const throwUserInputError = (errorMsg, context) => {
     logger.debug(`UserInputError - ${context}: ${errorMsg}`);
-    throw new UserInputError(errorMsg);
+    throw new GraphQLError(errorMsg, {
+      extensions: {
+        code: ApolloServerErrorCode.BAD_USER_INPUT,
+        context,
+      },
+    });
+  };
+
+  const throwForbiddenError = (message) => {
+    throw new GraphQLError(message, {
+      extensions: {
+        code: ApolloServerErrorCode.FORBIDDEN,
+      },
+    });
   };
 
   const validateStatus = (status, fieldName, context) => {
@@ -145,7 +159,7 @@ module.exports = (logger) => {
       logger.debug(
         `${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without admin credentials`,
       );
-      throw new ForbiddenError('No admin credentials provided.');
+      throwForbiddenError('No admin credentials provided.');
     }
   };
 
@@ -157,7 +171,7 @@ module.exports = (logger) => {
       logger.debug(
         `${context.user.first_name} ${context.user.last_name} with ${context.user.email}: Attempted without user credentials`,
       );
-      throw new ForbiddenError('No user credentials provided. Please log in.');
+      throwForbiddenError('No user credentials provided. Please log in.');
     }
   };
 
@@ -167,7 +181,7 @@ module.exports = (logger) => {
       logger.debug(
         `Incorrect login type: User auth type is ${authType} and tried to login with ${loginMethod} type.`,
       );
-      throw new ForbiddenError('Incorrect authentication type');
+      throwForbiddenError('Incorrect authentication type');
     }
   };
 

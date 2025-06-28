@@ -35,7 +35,7 @@ module.exports = (logger, dbClient) => {
         data: user,
       },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' },
+      { expiresIn: '1h', algorithm: 'RS256' },
     );
 
     res.cookie('jwt', token);
@@ -64,12 +64,11 @@ module.exports = (logger, dbClient) => {
 
     let decoded = {};
 
-    // This environment variable is used elsewhere under the hood. For example: https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/
     if (process.env.NODE_ENV === 'development') {
       decoded.data = { admin: true };
     } else {
       try {
-        decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+        decoded = jwt.verify(jwtToken, process.env.JWT_SECRET, { algorithms: ['RS256'] });
       } catch (err) {
         switch (err.name) {
           case 'TokenExpiredError':
